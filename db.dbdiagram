@@ -1,0 +1,504 @@
+{
+  "version": "1.0.0",
+  "darkMode": true,
+  "gridEnabling": false,
+  "detailLevel": "All",
+  "tablePositions": [
+    {
+      "name": "users",
+      "schemaName": "public",
+      "x": 0,
+      "y": 50
+    },
+    {
+      "name": "teams",
+      "schemaName": "public",
+      "x": 686.6237223004085,
+      "y": -244.64945553077732
+    },
+    {
+      "name": "team_members",
+      "schemaName": "public",
+      "x": 305.00222413045043,
+      "y": -220.5261082943394
+    },
+    {
+      "name": "sessions",
+      "schemaName": "public",
+      "x": -496.63455333152433,
+      "y": 17.26117160769138
+    },
+    {
+      "name": "api_tokens",
+      "schemaName": "public",
+      "x": 1606.560546875,
+      "y": 50
+    },
+    {
+      "name": "password_resets",
+      "schemaName": "public",
+      "x": -326.7220182412852,
+      "y": 355.48271295105724
+    },
+    {
+      "name": "magic_links",
+      "schemaName": "public",
+      "x": -426.30690245265464,
+      "y": -350.69345729144874
+    },
+    {
+      "name": "registration_codes",
+      "schemaName": "public",
+      "x": 1606.560546875,
+      "y": 356
+    },
+    {
+      "name": "categories",
+      "schemaName": "public",
+      "x": 1200.615234375,
+      "y": 726
+    },
+    {
+      "name": "challenges",
+      "schemaName": "public",
+      "x": 1606.560546875,
+      "y": 630
+    },
+    {
+      "name": "challenge_categories",
+      "schemaName": "public",
+      "x": 0,
+      "y": 1416
+    },
+    {
+      "name": "files",
+      "schemaName": "public",
+      "x": -496.63455333152433,
+      "y": 2864
+    },
+    {
+      "name": "challenge_timers",
+      "schemaName": "public",
+      "x": 854.669921875,
+      "y": 968
+    },
+    {
+      "name": "hints",
+      "schemaName": "public",
+      "x": 1200.615234375,
+      "y": 968
+    },
+    {
+      "name": "hint_unlocks",
+      "schemaName": "public",
+      "x": 1606.560546875,
+      "y": 1000
+    },
+    {
+      "name": "flags",
+      "schemaName": "public",
+      "x": 0,
+      "y": 1594
+    },
+    {
+      "name": "submissions",
+      "schemaName": "public",
+      "x": 553.9453125,
+      "y": 1210
+    },
+    {
+      "name": "notifications",
+      "schemaName": "public",
+      "x": 1200.615234375,
+      "y": 1306
+    },
+    {
+      "name": "user_notifications",
+      "schemaName": "public",
+      "x": 1606.560546875,
+      "y": 1242
+    },
+    {
+      "name": "pages",
+      "schemaName": "public",
+      "x": 0,
+      "y": 2028
+    },
+    {
+      "name": "config",
+      "schemaName": "public",
+      "x": 854.669921875,
+      "y": 1420
+    },
+    {
+      "name": "email_templates",
+      "schemaName": "public",
+      "x": 1606.560546875,
+      "y": 1484
+    }
+  ],
+  "tableGroupCollapseStates": [],
+  "stickyNoteLayouts": [],
+  "referencePaths": [
+    {
+      "firstFieldNames": [
+        "id"
+      ],
+      "firstTableName": "registration_codes",
+      "firstSchemaName": "public",
+      "firstRelation": "1",
+      "secondFieldNames": [
+        "code_id"
+      ],
+      "secondTableName": "users",
+      "secondSchemaName": "public",
+      "secondRelation": "*",
+      "checkPoints": []
+    },
+    {
+      "firstFieldNames": [
+        "id"
+      ],
+      "firstTableName": "teams",
+      "firstSchemaName": "public",
+      "firstRelation": "1",
+      "secondFieldNames": [
+        "team_id"
+      ],
+      "secondTableName": "team_members",
+      "secondSchemaName": "public",
+      "secondRelation": "*",
+      "checkPoints": []
+    },
+    {
+      "firstFieldNames": [
+        "id"
+      ],
+      "firstTableName": "users",
+      "firstSchemaName": "public",
+      "firstRelation": "1",
+      "secondFieldNames": [
+        "user_id"
+      ],
+      "secondTableName": "team_members",
+      "secondSchemaName": "public",
+      "secondRelation": "*",
+      "checkPoints": []
+    },
+    {
+      "firstFieldNames": [
+        "id"
+      ],
+      "firstTableName": "users",
+      "firstSchemaName": "public",
+      "firstRelation": "1",
+      "secondFieldNames": [
+        "user_id"
+      ],
+      "secondTableName": "sessions",
+      "secondSchemaName": "public",
+      "secondRelation": "*",
+      "checkPoints": []
+    },
+    {
+      "firstFieldNames": [
+        "id"
+      ],
+      "firstTableName": "users",
+      "firstSchemaName": "public",
+      "firstRelation": "1",
+      "secondFieldNames": [
+        "user_id"
+      ],
+      "secondTableName": "api_tokens",
+      "secondSchemaName": "public",
+      "secondRelation": "*",
+      "checkPoints": []
+    },
+    {
+      "firstFieldNames": [
+        "id"
+      ],
+      "firstTableName": "users",
+      "firstSchemaName": "public",
+      "firstRelation": "1",
+      "secondFieldNames": [
+        "user_id"
+      ],
+      "secondTableName": "password_resets",
+      "secondSchemaName": "public",
+      "secondRelation": "*",
+      "checkPoints": []
+    },
+    {
+      "firstFieldNames": [
+        "id"
+      ],
+      "firstTableName": "users",
+      "firstSchemaName": "public",
+      "firstRelation": "1",
+      "secondFieldNames": [
+        "user_id"
+      ],
+      "secondTableName": "magic_links",
+      "secondSchemaName": "public",
+      "secondRelation": "*",
+      "checkPoints": []
+    },
+    {
+      "firstFieldNames": [
+        "id"
+      ],
+      "firstTableName": "challenges",
+      "firstSchemaName": "public",
+      "firstRelation": "1",
+      "secondFieldNames": [
+        "challenge_id"
+      ],
+      "secondTableName": "challenge_categories",
+      "secondSchemaName": "public",
+      "secondRelation": "*",
+      "checkPoints": []
+    },
+    {
+      "firstFieldNames": [
+        "id"
+      ],
+      "firstTableName": "categories",
+      "firstSchemaName": "public",
+      "firstRelation": "1",
+      "secondFieldNames": [
+        "category_id"
+      ],
+      "secondTableName": "challenge_categories",
+      "secondSchemaName": "public",
+      "secondRelation": "*",
+      "checkPoints": []
+    },
+    {
+      "firstFieldNames": [
+        "id"
+      ],
+      "firstTableName": "challenges",
+      "firstSchemaName": "public",
+      "firstRelation": "1",
+      "secondFieldNames": [
+        "challenge_id"
+      ],
+      "secondTableName": "challenge_timers",
+      "secondSchemaName": "public",
+      "secondRelation": "*",
+      "checkPoints": []
+    },
+    {
+      "firstFieldNames": [
+        "id"
+      ],
+      "firstTableName": "users",
+      "firstSchemaName": "public",
+      "firstRelation": "1",
+      "secondFieldNames": [
+        "user_id"
+      ],
+      "secondTableName": "challenge_timers",
+      "secondSchemaName": "public",
+      "secondRelation": "*",
+      "checkPoints": []
+    },
+    {
+      "firstFieldNames": [
+        "id"
+      ],
+      "firstTableName": "teams",
+      "firstSchemaName": "public",
+      "firstRelation": "1",
+      "secondFieldNames": [
+        "team_id"
+      ],
+      "secondTableName": "challenge_timers",
+      "secondSchemaName": "public",
+      "secondRelation": "*",
+      "checkPoints": []
+    },
+    {
+      "firstFieldNames": [
+        "id"
+      ],
+      "firstTableName": "challenges",
+      "firstSchemaName": "public",
+      "firstRelation": "1",
+      "secondFieldNames": [
+        "challenge_id"
+      ],
+      "secondTableName": "hints",
+      "secondSchemaName": "public",
+      "secondRelation": "*",
+      "checkPoints": []
+    },
+    {
+      "firstFieldNames": [
+        "id"
+      ],
+      "firstTableName": "hints",
+      "firstSchemaName": "public",
+      "firstRelation": "1",
+      "secondFieldNames": [
+        "hint_id"
+      ],
+      "secondTableName": "hint_unlocks",
+      "secondSchemaName": "public",
+      "secondRelation": "*",
+      "checkPoints": []
+    },
+    {
+      "firstFieldNames": [
+        "id"
+      ],
+      "firstTableName": "users",
+      "firstSchemaName": "public",
+      "firstRelation": "1",
+      "secondFieldNames": [
+        "user_id"
+      ],
+      "secondTableName": "hint_unlocks",
+      "secondSchemaName": "public",
+      "secondRelation": "*",
+      "checkPoints": []
+    },
+    {
+      "firstFieldNames": [
+        "id"
+      ],
+      "firstTableName": "teams",
+      "firstSchemaName": "public",
+      "firstRelation": "1",
+      "secondFieldNames": [
+        "team_id"
+      ],
+      "secondTableName": "hint_unlocks",
+      "secondSchemaName": "public",
+      "secondRelation": "*",
+      "checkPoints": []
+    },
+    {
+      "firstFieldNames": [
+        "id"
+      ],
+      "firstTableName": "challenges",
+      "firstSchemaName": "public",
+      "firstRelation": "1",
+      "secondFieldNames": [
+        "challenge_id"
+      ],
+      "secondTableName": "flags",
+      "secondSchemaName": "public",
+      "secondRelation": "*",
+      "checkPoints": []
+    },
+    {
+      "firstFieldNames": [
+        "id"
+      ],
+      "firstTableName": "users",
+      "firstSchemaName": "public",
+      "firstRelation": "1",
+      "secondFieldNames": [
+        "user_id"
+      ],
+      "secondTableName": "submissions",
+      "secondSchemaName": "public",
+      "secondRelation": "*",
+      "checkPoints": []
+    },
+    {
+      "firstFieldNames": [
+        "id"
+      ],
+      "firstTableName": "teams",
+      "firstSchemaName": "public",
+      "firstRelation": "1",
+      "secondFieldNames": [
+        "team_id"
+      ],
+      "secondTableName": "submissions",
+      "secondSchemaName": "public",
+      "secondRelation": "*",
+      "checkPoints": []
+    },
+    {
+      "firstFieldNames": [
+        "id"
+      ],
+      "firstTableName": "challenges",
+      "firstSchemaName": "public",
+      "firstRelation": "1",
+      "secondFieldNames": [
+        "challenge_id"
+      ],
+      "secondTableName": "submissions",
+      "secondSchemaName": "public",
+      "secondRelation": "*",
+      "checkPoints": []
+    },
+    {
+      "firstFieldNames": [
+        "id"
+      ],
+      "firstTableName": "flags",
+      "firstSchemaName": "public",
+      "firstRelation": "1",
+      "secondFieldNames": [
+        "flag_id"
+      ],
+      "secondTableName": "submissions",
+      "secondSchemaName": "public",
+      "secondRelation": "*",
+      "checkPoints": []
+    },
+    {
+      "firstFieldNames": [
+        "id"
+      ],
+      "firstTableName": "files",
+      "firstSchemaName": "public",
+      "firstRelation": "1",
+      "secondFieldNames": [
+        "sound_file_id"
+      ],
+      "secondTableName": "notifications",
+      "secondSchemaName": "public",
+      "secondRelation": "*",
+      "checkPoints": []
+    },
+    {
+      "firstFieldNames": [
+        "id"
+      ],
+      "firstTableName": "notifications",
+      "firstSchemaName": "public",
+      "firstRelation": "1",
+      "secondFieldNames": [
+        "notification_id"
+      ],
+      "secondTableName": "user_notifications",
+      "secondSchemaName": "public",
+      "secondRelation": "*",
+      "checkPoints": []
+    },
+    {
+      "firstFieldNames": [
+        "id"
+      ],
+      "firstTableName": "users",
+      "firstSchemaName": "public",
+      "firstRelation": "1",
+      "secondFieldNames": [
+        "user_id"
+      ],
+      "secondTableName": "user_notifications",
+      "secondSchemaName": "public",
+      "secondRelation": "*",
+      "checkPoints": []
+    }
+  ]
+}
