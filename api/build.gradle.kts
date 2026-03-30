@@ -26,6 +26,7 @@ dependencies {
     implementation(libs.ktor.server.websockets)
     implementation(libs.exposed.core)
     implementation(libs.exposed.jdbc)
+    implementation(libs.exposed.dao)
     implementation(libs.h2)
     implementation(libs.postgresql)
     implementation(libs.ktor.server.swagger)
@@ -34,5 +35,6 @@ dependencies {
     implementation(libs.logback.classic)
     implementation(libs.ktor.server.config.yaml)
     testImplementation(libs.ktor.server.test.host)
+    testImplementation(libs.ktor.client.content.negotiation)
     testImplementation(libs.kotlin.test.junit)
 }
