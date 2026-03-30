@@ -24,10 +24,24 @@ import java.time.Duration
 import kotlin.time.Duration.Companion.seconds
 import org.jetbrains.exposed.sql.*
 
-fun Application.configureHTTP() {
+fun Application.configureSockets() {
+    install(WebSockets) {
+        pingPeriod = 15.seconds
+        timeout = 15.seconds
+        maxFrameSize = Long.MAX_VALUE
+        masking = false
+    }
     routing {
-        swaggerUI(path = "openapi") {
-            info = OpenApiInfo(title = "My API", version = "1.0.0")
+        webSocket("/ws") { // websocketSession
+            for (frame in incoming) {
+                if (frame is Frame.Text) {
+                    val text = frame.readText()
+                    outgoing.send(Frame.Text("YOU SAID: $text"))
+                    if (text.equals("bye", ignoreCase = true)) {
+                        close(CloseReason(CloseReason.Codes.NORMAL, "Client said BYE"))
+                    }
+                }
+            }
         }
     }
 }
