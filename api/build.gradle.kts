@@ -27,6 +27,8 @@ dependencies {
     implementation(libs.exposed.core)
     implementation(libs.exposed.jdbc)
     implementation(libs.exposed.dao)
+    implementation(libs.exposed.datetime)
+    implementation(libs.exposed.json)
     implementation(libs.h2)
     implementation(libs.postgresql)
     implementation(libs.ktor.server.swagger)
