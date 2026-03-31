@@ -1,0 +1,13 @@
+package com.ctfp.domain.model
+
+import org.jetbrains.exposed.v1.core.dao.id.IntIdTable
+import org.jetbrains.exposed.v1.datetime.*
+
+object SubmissionTable : IntIdTable("submission") {
+    val userId = reference("user_id", UserTable)
+    val teamId = reference("team_id", TeamTable).nullable()
+    val challengeId = reference("challenge_id", ChallengeTable)
+    val flagId = reference("flag_id", FlagTable).nullable()
+    val submittedFlag = reference("submitted_flag", FlagTable).nullable()
+    val submittedAt = datetime("submitted_at").defaultExpression(CurrentDateTime)
+}
