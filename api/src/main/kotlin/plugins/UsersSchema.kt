@@ -1,4 +1,4 @@
-package com.ctfp
+package com.ctfp.plugins
 
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext

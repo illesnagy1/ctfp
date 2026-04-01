@@ -1,4 +1,4 @@
-package com.ctfp
+package com.ctfp.plugins
 
 import com.ctfp.controller.auth
 import com.ctfp.controller.challenge
@@ -12,6 +12,7 @@ import com.ctfp.controller.registrationCode
 import com.ctfp.controller.submission
 import com.ctfp.controller.team
 import com.ctfp.controller.user
+import com.ctfp.repository.postgres.PostgresChallengeRepository
 import io.ktor.server.application.*
 import io.ktor.server.response.*
 import io.ktor.server.routing.*
@@ -21,7 +22,7 @@ fun Application.configureRouting() {
         get("/") {
             call.respondText("Hello World!")
         }
-        challenge()
+        challenge(PostgresChallengeRepository())
         auth()
         emailTemplate()
         file()

@@ -1,4 +1,4 @@
-package com.ctfp
+package com.ctfp.plugins
 
 import io.ktor.http.*
 import io.ktor.server.application.*

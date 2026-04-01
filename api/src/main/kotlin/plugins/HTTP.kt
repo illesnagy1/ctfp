@@ -1,4 +1,4 @@
-package com.ctfp
+package com.ctfp.plugins
 
 import io.ktor.openapi.*
 import io.ktor.server.application.*
