@@ -1,6 +1,7 @@
 package com.ctfp.repository
 
 import com.ctfp.dto.Challenge
+import com.ctfp.dto.Flag
 
 
 interface ChallengeRepository {

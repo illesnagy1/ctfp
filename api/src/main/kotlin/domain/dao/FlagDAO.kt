@@ -1,6 +1,8 @@
 package com.ctfp.domain.dao
 
 import com.ctfp.domain.model.FlagTable
+import com.ctfp.dto.Challenge
+import com.ctfp.dto.Flag
 import org.jetbrains.exposed.v1.core.dao.id.EntityID
 import org.jetbrains.exposed.v1.dao.IntEntity
 import org.jetbrains.exposed.v1.dao.IntEntityClass
@@ -17,4 +19,16 @@ class FlagDAO(id: EntityID<Int>) : IntEntity(id) {
     var decayFun by FlagTable.decayFun
     var sortOrder by FlagTable.sortOrder
     var createdAt by FlagTable.createdAt
+
+    fun toModel() = Flag(
+        challengeId = challengeId.value,
+        pattern = pattern,
+        isCaseSensitive = isCaseSensitive,
+        baseValue = baseValue,
+        decayValue = decayValue,
+        minValue = minValue,
+        decayFun = decayFun,
+        sortOrder = sortOrder,
+        createdAt = createdAt,
+    )
 }
