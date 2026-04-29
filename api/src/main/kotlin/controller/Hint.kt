@@ -8,7 +8,7 @@ import io.ktor.server.routing.put
 import io.ktor.server.routing.route
 
 fun Route.hint() {
-    route("/hint") {
+    route("/challenge/{challengeId}/hint") {
         get {
 
         }

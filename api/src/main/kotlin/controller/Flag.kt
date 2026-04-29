@@ -8,7 +8,7 @@ import io.ktor.server.routing.put
 import io.ktor.server.routing.route
 
 fun Route.flag() {
-    route("/flag") {
+    route("/challenge/{challengeId}/flag") {
         get {
 
         }

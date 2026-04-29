@@ -49,25 +49,5 @@ fun Route.challenge(repository: ChallengeRepository, flagRepository: FlagReposit
 
             call.respond(HttpStatusCode.NoContent)
         }
-
-        route("/{challengeId}/flag") {
-            val challengeId = parameters["challengeId"]?.toIntOrNull() ?: throw BadRequestException("invalid id")
-            get {
-                call.respond(flagRepository.)
-            }
-            get("/{id}") {
-                val id = call.getId()
-
-            }
-            post {
-
-            }
-            put("/{id}") {
-
-            }
-            delete("/{id}") {
-
-            }
-        }
     }
 }

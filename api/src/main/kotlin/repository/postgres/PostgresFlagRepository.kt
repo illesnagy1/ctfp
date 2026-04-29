@@ -1,6 +1,5 @@
 package com.ctfp.repository.postgres
 
-import com.ctfp.domain.dao.ChallengeDAO
 import com.ctfp.domain.dao.FlagDAO
 import com.ctfp.domain.db.withTransaction
 import com.ctfp.dto.Flag
@@ -11,7 +10,7 @@ class PostgresFlagRepository : FlagRepository {
         FlagDAO[id].toModel()
     }
 
-    override suspend fun getFlagsForChallenge(challengeId: Int): List<Flag> {
+    override suspend fun getFlagsForChallenge(challengeId: Int): List<Flag> = withTransaction {
         TODO("Not yet implemented")
     }
 
