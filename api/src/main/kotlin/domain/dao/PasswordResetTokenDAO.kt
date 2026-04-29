@@ -1,6 +1,7 @@
 package com.ctfp.domain.dao
 
 import com.ctfp.domain.model.PasswordResetTokenTable
+import com.ctfp.dto.PasswordResetToken
 import org.jetbrains.exposed.v1.core.dao.id.EntityID
 import org.jetbrains.exposed.v1.dao.IntEntity
 import org.jetbrains.exposed.v1.dao.IntEntityClass
@@ -13,4 +14,12 @@ class PasswordResetTokenDAO(id: EntityID<Int>) : IntEntity(id) {
     var createdAt by PasswordResetTokenTable.createdAt
     var expiresAt by PasswordResetTokenTable.expiresAt
     var usedAt by PasswordResetTokenTable.usedAt
+
+    fun toModel() = PasswordResetToken(
+        userId = userId.value,
+        token = token,
+        createdAt = createdAt,
+        expiresAt = expiresAt,
+        usedAt = usedAt,
+    )
 }

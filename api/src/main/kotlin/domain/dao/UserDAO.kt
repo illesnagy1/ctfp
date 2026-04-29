@@ -1,6 +1,7 @@
 package com.ctfp.domain.dao
 
 import com.ctfp.domain.model.UserTable
+import com.ctfp.dto.User
 import org.jetbrains.exposed.v1.core.dao.id.EntityID
 import org.jetbrains.exposed.v1.dao.IntEntity
 import org.jetbrains.exposed.v1.dao.IntEntityClass
@@ -25,4 +26,24 @@ class UserDAO(id: EntityID<Int>) : IntEntity(id) {
     var visibilitySettings by UserTable.visibilitySettings
     var createdAt by UserTable.createdAt
     var updatedAt by UserTable.updatedAt
+
+    fun toModel() = User(
+        codeId = codeId.value,
+        username = username,
+        email = email,
+        passwordHash = passwordHash,
+        language = language,
+        country = country,
+        website = website,
+        role = role,
+        isVerified = isVerified,
+        isHidden = isHidden,
+        isBanned = isBanned,
+        totpSecret = totpSecret,
+        totpEnabled = totpEnabled,
+        soundEnabled = soundEnabled,
+        visibilitySettings = visibilitySettings,
+        createdAt = createdAt,
+        updatedAt = updatedAt,
+    )
 }

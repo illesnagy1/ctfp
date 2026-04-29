@@ -8,7 +8,6 @@ import kotlinx.serialization.Serializable
 
 @Serializable
 data class User(
-    val id: Int,
     val codeId: Int,
     val username: String,
     val email: String,

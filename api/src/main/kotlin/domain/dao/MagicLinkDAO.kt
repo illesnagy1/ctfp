@@ -1,6 +1,7 @@
 package com.ctfp.domain.dao
 
 import com.ctfp.domain.model.MagicLinkTable
+import com.ctfp.dto.MagicLink
 import org.jetbrains.exposed.v1.core.dao.id.EntityID
 import org.jetbrains.exposed.v1.dao.IntEntity
 import org.jetbrains.exposed.v1.dao.IntEntityClass
@@ -13,4 +14,12 @@ class MagicLinkDAO(id: EntityID<Int>) : IntEntity(id) {
     var createdAt by MagicLinkTable.createdAt
     var expiresAt by MagicLinkTable.expiresAt
     var usedAt by MagicLinkTable.usedAt
+
+    fun toModel() = MagicLink(
+        userId = userId.value,
+        token = token,
+        createdAt = createdAt,
+        expiresAt = expiresAt,
+        usedAt = usedAt,
+    )
 }

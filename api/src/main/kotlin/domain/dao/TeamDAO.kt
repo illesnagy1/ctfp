@@ -1,6 +1,7 @@
 package com.ctfp.domain.dao
 
 import com.ctfp.domain.model.TeamTable
+import com.ctfp.dto.Team
 import org.jetbrains.exposed.v1.core.dao.id.EntityID
 import org.jetbrains.exposed.v1.dao.IntEntity
 import org.jetbrains.exposed.v1.dao.IntEntityClass
@@ -16,4 +17,15 @@ class TeamDAO(id: EntityID<Int>) : IntEntity(id) {
     var isBanned by TeamTable.isBanned
     var createdAt by TeamTable.createdAt
     var updatedAt by TeamTable.updatedAt
+
+    fun toModel() = Team(
+        name = name,
+        ownerId = ownerId.value,
+        country = country,
+        website = website,
+        isHidden = isHidden,
+        isBanned = isBanned,
+        createdAt = createdAt,
+        updatedAt = updatedAt,
+    )
 }
