@@ -3,10 +3,9 @@ package com.ctfp.repository
 import com.ctfp.dto.Flag
 
 interface FlagRepository {
-    suspend fun getFlag(id: Int): Flag
+    suspend fun getFlagForChallenge(challengeId: Int, id: Int): Flag
     suspend fun getFlagsForChallenge(challengeId: Int): List<Flag>
-    suspend fun getAllFlags(): List<Flag>
-    suspend fun createFlag(flag: Flag): Int
-    suspend fun updateFlag(id: Int, flag: Flag)
+    suspend fun createFlag(challengeId: Int, flag: Flag): Int
+    suspend fun updateFlag(challengeId: Int, id: Int, flag: Flag)
     suspend fun deleteFlag(id: Int)
 }
