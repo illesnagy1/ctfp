@@ -29,6 +29,8 @@ dependencies {
     implementation(libs.exposed.dao)
     implementation(libs.exposed.datetime)
     implementation(libs.exposed.json)
+    implementation(libs.exposed.migration.core)
+    implementation(libs.exposed.migration.jdbc)
     implementation(libs.h2)
     implementation(libs.postgresql)
     implementation(libs.ktor.server.swagger)
@@ -41,4 +43,11 @@ dependencies {
     testImplementation(libs.ktor.server.test.host)
     testImplementation(libs.ktor.client.content.negotiation)
     testImplementation(libs.kotlin.test.junit)
+}
+
+tasks.register<JavaExec>("generateMigration") {
+    group = "build"
+    description = "Generate migration"
+    classpath = sourceSets.main.get().runtimeClasspath
+    mainClass = "GenerateMigrationKt"
 }
