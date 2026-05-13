@@ -2,8 +2,10 @@ package com.ctfp.repository.postgres
 
 import com.ctfp.domain.dao.TeamDAO
 import com.ctfp.domain.db.withTransaction
+import com.ctfp.domain.model.TeamTable
 import com.ctfp.dto.Team
 import com.ctfp.repository.TeamRepository
+import org.jetbrains.exposed.v1.core.dao.id.EntityID
 
 
 class PostgresTeamRepository : TeamRepository {
@@ -16,9 +18,9 @@ class PostgresTeamRepository : TeamRepository {
     }
 
     override suspend fun createTeam(team: Team) = withTransaction {
-        TeamDAO.new {
+        val team = TeamDAO.new {
             name = team.name
-            ownerId = team.ownerId
+            ownerId = EntityID(team.ownerId, TeamTable)
             country = team.country
             website = team.website
             isHidden = team.isHidden
@@ -26,13 +28,14 @@ class PostgresTeamRepository : TeamRepository {
             createdAt = team.createdAt
             updatedAt = team.updatedAt
         }
+        team.id.value
     }
 
     override suspend fun updateTeam(id: Int, team: Team) = withTransaction {
         val dbTeam = TeamDAO[id]
         dbTeam.run {
             name = team.name
-            ownerId = team.ownerId
+            ownerId = EntityID(team.ownerId, TeamTable)
             country = team.country
             website = team.website
             isHidden = team.isHidden

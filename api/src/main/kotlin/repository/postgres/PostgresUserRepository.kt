@@ -2,8 +2,10 @@ package com.ctfp.repository.postgres
 
 import com.ctfp.domain.dao.UserDAO
 import com.ctfp.domain.db.withTransaction
+import com.ctfp.domain.model.RegistrationCodeTable
 import com.ctfp.dto.User
 import com.ctfp.repository.UserRepository
+import org.jetbrains.exposed.v1.core.dao.id.EntityID
 
 
 class PostgresUserRepository : UserRepository {
@@ -17,7 +19,7 @@ class PostgresUserRepository : UserRepository {
 
     override suspend fun createUser(user: User) = withTransaction {
         UserDAO.new {
-            codeId = user.codeId
+            codeId = EntityID(user.codeId, RegistrationCodeTable)
             username = user.username
             email = user.email
             passwordHash = user.passwordHash
@@ -34,13 +36,13 @@ class PostgresUserRepository : UserRepository {
             visibilitySettings = user.visibilitySettings
             createdAt = user.createdAt
             updatedAt = user.updatedAt
-        }
+        }.id.value
     }
 
     override suspend fun updateUser(id: Int, user: User) = withTransaction {
         val dbUser = UserDAO[id]
         dbUser.run {
-            codeId = user.codeId
+            codeId = EntityID(user.codeId, RegistrationCodeTable)
             username = user.username
             email = user.email
             passwordHash = user.passwordHash

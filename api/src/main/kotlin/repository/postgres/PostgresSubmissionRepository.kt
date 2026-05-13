@@ -2,7 +2,10 @@ package com.ctfp.repository.postgres
 
 import com.ctfp.domain.dao.SubmissionDAO
 import com.ctfp.domain.db.withTransaction
+import com.ctfp.domain.model.ChallengeTable
+import com.ctfp.domain.model.FlagTable
 import com.ctfp.domain.model.TeamTable
+import com.ctfp.domain.model.UserTable
 import com.ctfp.dto.Submission
 import com.ctfp.repository.SubmissionRepository
 import org.jetbrains.exposed.v1.core.dao.id.EntityID
@@ -19,11 +22,10 @@ class PostgresSubmissionRepository : SubmissionRepository {
 
     override suspend fun createSubmission(submission: Submission): Int = withTransaction {
         val newSubmission = SubmissionDAO.new {
-            userId = submission.userId
-            teamId = submission.teamId
-            challengeId = submission.challengeId
-            flagId = submission.flagId
-            submittedFlag = submission.submittedFlag
+            userId = EntityID(submission.userId, UserTable)
+            teamId = submission.teamId?.let { EntityID(it, TeamTable) }
+            challengeId = EntityID(submission.challengeId, ChallengeTable)
+            flagId = submission.flagId?.let { EntityID(it, FlagTable) }
             submittedAt = submission.submittedAt
         }
         newSubmission.id.value
@@ -32,11 +34,10 @@ class PostgresSubmissionRepository : SubmissionRepository {
     override suspend fun updateSubmission(id: Int, submission: Submission) = withTransaction {
         val dbSubmission = SubmissionDAO[id]
         dbSubmission.run {
-            userId = submission.userId
-            teamId = submission.teamId
-            challengeId = submission.challengeId
-            flagId = submission.flagId
-            submittedFlag = submission.submittedFlag
+            userId = EntityID(submission.userId, UserTable)
+            teamId = submission.teamId?.let { EntityID(it, TeamTable) }
+            challengeId = EntityID(submission.challengeId, ChallengeTable)
+            flagId = submission.flagId?.let { EntityID(it, FlagTable) }
             submittedAt = submission.submittedAt
         }
     }

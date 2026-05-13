@@ -27,15 +27,17 @@ fun Route.flag(repository: FlagRepository) {
             call.respond(flag)
         }
         post {
+            val challengeId = call.parameters["challengeId"]?.toIntOrNull() ?: throw IllegalArgumentException("Invalid challengeId")
             val flag = call.receive<Flag>()
-            repository.createFlag(flag)
+            repository.createFlag(challengeId, flag)
 
             call.respond(HttpStatusCode.Created)
         }
         put("/{id}") {
             val id = call.getId()
             val flag = call.receive<Flag>()
-            repository.updateFlag(id, flag)
+            val challengeId = call.parameters["challengeId"]?.toIntOrNull() ?: throw IllegalArgumentException("Invalid challengeId")
+            repository.updateFlag(challengeId, id, flag)
 
             call.respond(HttpStatusCode.NoContent)
         }

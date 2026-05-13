@@ -13,7 +13,6 @@ class SubmissionDAO(id: EntityID<Int>) : IntEntity(id) {
     var teamId by SubmissionTable.teamId
     var challengeId by SubmissionTable.challengeId
     var flagId by SubmissionTable.flagId
-    var submittedFlag by SubmissionTable.submittedFlag
     var submittedAt by SubmissionTable.submittedAt
 
     fun toModel() = Submission(
@@ -21,7 +20,6 @@ class SubmissionDAO(id: EntityID<Int>) : IntEntity(id) {
         teamId = teamId?.value,
         challengeId = challengeId.value,
         flagId = flagId?.value,
-        submittedFlag = submittedFlag.value,
         submittedAt = submittedAt,
     )
 }

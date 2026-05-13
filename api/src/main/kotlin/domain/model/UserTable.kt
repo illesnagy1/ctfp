@@ -12,7 +12,7 @@ object UserTable : IntIdTable("user") {
     val passwordHash = varchar("password_hash", 255)
     val language = customEnumeration(
         "language",
-        fromDb = { value -> Language.valueOf(value as String) },
+        fromDb = { value -> Language.entries.first { it.code == value as String } },
         toDb = { it.code }
     )
     val country = varchar("country", 2).nullable()

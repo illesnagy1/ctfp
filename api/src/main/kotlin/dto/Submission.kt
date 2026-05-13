@@ -10,6 +10,5 @@ data class Submission(
     val teamId: Int?,
     val challengeId: Int,
     val flagId: Int?,
-    val submittedFlag: String?,
     val submittedAt: LocalDateTime,
 )

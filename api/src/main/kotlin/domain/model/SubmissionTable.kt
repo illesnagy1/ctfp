@@ -8,6 +8,5 @@ object SubmissionTable : IntIdTable("submission") {
     val teamId = reference("team_id", TeamTable).nullable()
     val challengeId = reference("challenge_id", ChallengeTable)
     val flagId = reference("flag_id", FlagTable).nullable()
-    val submittedFlag = reference("submitted_flag", FlagTable).nullable()
     val submittedAt = datetime("submitted_at").defaultExpression(CurrentDateTime)
 }
