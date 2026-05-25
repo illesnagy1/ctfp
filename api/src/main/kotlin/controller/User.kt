@@ -2,7 +2,7 @@ package com.ctfp.controller
 
 import com.ctfp.controller.helper.getId
 import com.ctfp.dto.User
-import com.ctfp.repository.IUserRepository
+import com.ctfp.service.UserService
 import io.ktor.http.HttpStatusCode
 import io.ktor.server.request.receive
 import io.ktor.server.routing.Route
@@ -13,33 +13,33 @@ import io.ktor.server.routing.put
 import io.ktor.server.routing.route
 import io.ktor.server.response.respond
 
-fun Route.user(repository: IUserRepository) {
+fun Route.user(service: UserService) {
     route("/user") {
         get {
-            call.respond(repository.getAllUsers())
+            call.respond(service.getAllUsers())
         }
         get("/{id}") {
             val id = call.getId()
-            val user = repository.getUser(id)
+            val user = service.getUser(id)
 
             call.respond(user)
         }
         post {
             val user = call.receive<User>()
-            repository.createUser(user)
+            service.createUser(user)
 
             call.respond(HttpStatusCode.Created)
         }
         put("/{id}") {
             val id = call.getId()
             val user = call.receive<User>()
-            repository.updateUser(id, user)
+            service.updateUser(id, user)
 
             call.respond(HttpStatusCode.NoContent)
         }
         delete("/{id}") {
             val id = call.getId()
-            repository.deleteUser(id)
+            service.deleteUser(id)
 
             call.respond(HttpStatusCode.NoContent)
         }

@@ -1,12 +1,11 @@
-package com.ctfp.repository.postgres
+package com.ctfp.service
 
 import com.ctfp.domain.dao.RegistrationCodeDAO
 import com.ctfp.domain.db.withTransaction
 import com.ctfp.dto.RegistrationCode
-import com.ctfp.repository.IRegistrationCodeRepository
 
 
-class PostgresRegistrationCodeRepository : IRegistrationCodeRepository {
+class RegistrationCodeService {
     suspend fun getRegistrationCode(id: Int): RegistrationCode = withTransaction {
         RegistrationCodeDAO[id].toModel()
     }

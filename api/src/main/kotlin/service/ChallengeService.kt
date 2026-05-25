@@ -1,21 +1,20 @@
-package com.ctfp.repository.postgres
+package com.ctfp.service
 
 import com.ctfp.domain.dao.ChallengeDAO
 import com.ctfp.dto.Challenge
-import com.ctfp.repository.IChallengeRepository
 import com.ctfp.domain.db.withTransaction
 
 
-class PostgresChallengeRepository : IChallengeRepository {
-    override suspend fun getChallenge(id: Int): Challenge = withTransaction {
+class ChallengeService {
+    suspend fun getChallenge(id: Int): Challenge = withTransaction {
         ChallengeDAO[id].toModel()
     }
 
-    override suspend fun getAllChallenges(): List<Challenge> = withTransaction {
+    suspend fun getAllChallenges(): List<Challenge> = withTransaction {
         ChallengeDAO.all().map { it.toModel() }
     }
 
-    override suspend fun createChallenge(challenge: Challenge): Int = withTransaction {
+    suspend fun createChallenge(challenge: Challenge): Int = withTransaction {
         val newChallenge = ChallengeDAO.new {
             title = challenge.title
             description = challenge.description
@@ -30,7 +29,7 @@ class PostgresChallengeRepository : IChallengeRepository {
         newChallenge.id.value
     }
 
-    override suspend fun updateChallenge(id: Int, challenge: Challenge) = withTransaction {
+    suspend fun updateChallenge(id: Int, challenge: Challenge) = withTransaction {
         ChallengeDAO
         val dbChallenge = ChallengeDAO[id]
         dbChallenge.run {
@@ -46,7 +45,7 @@ class PostgresChallengeRepository : IChallengeRepository {
         }
     }
 
-    override suspend fun deleteChallenge(id: Int) = withTransaction {
+    suspend fun deleteChallenge(id: Int) = withTransaction {
         ChallengeDAO[id].delete()
     }
 }

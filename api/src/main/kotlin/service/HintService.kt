@@ -1,27 +1,26 @@
-package com.ctfp.repository.postgres
+package com.ctfp.service
 
 import com.ctfp.domain.dao.HintDAO
 import com.ctfp.domain.db.withTransaction
 import com.ctfp.domain.model.ChallengeTable
 import com.ctfp.dto.Hint
-import com.ctfp.repository.IHintRepository
 import org.jetbrains.exposed.v1.core.dao.id.EntityID
 
 
-class PostgresHintRepository : IHintRepository {
-    override suspend fun getHint(id: Int): Hint = withTransaction {
+class HintService {
+    suspend fun getHint(id: Int): Hint = withTransaction {
         HintDAO[id].toModel()
     }
 
-    override suspend fun getHintsForChallenge(challengeId: Int): List<Hint> = withTransaction {
+    suspend fun getHintsForChallenge(challengeId: Int): List<Hint> = withTransaction {
         TODO()
     }
 
-    override suspend fun getAllHints(): List<Hint> = withTransaction {
+    suspend fun getAllHints(): List<Hint> = withTransaction {
         HintDAO.all().map { it.toModel() }
     }
 
-    override suspend fun createHint(hint: Hint): Int = withTransaction {
+    suspend fun createHint(hint: Hint): Int = withTransaction {
         val newHint = HintDAO.new {
             challengeId = EntityID(hint.challengeId, ChallengeTable)
             body = hint.body
@@ -31,7 +30,7 @@ class PostgresHintRepository : IHintRepository {
         newHint.id.value
     }
 
-    override suspend fun updateHint(id: Int, hint: Hint) = withTransaction {
+    suspend fun updateHint(id: Int, hint: Hint) = withTransaction {
         val dbHint = HintDAO[id]
         dbHint.run {
             challengeId = EntityID(hint.challengeId, ChallengeTable)
@@ -41,7 +40,7 @@ class PostgresHintRepository : IHintRepository {
         }
     }
 
-    override suspend fun deleteHint(id: Int) = withTransaction {
+    suspend fun deleteHint(id: Int) = withTransaction {
         HintDAO[id].delete()
     }
 }

@@ -1,21 +1,20 @@
-package com.ctfp.repository.postgres
+package com.ctfp.service
 
 import com.ctfp.domain.dao.NotificationDAO
 import com.ctfp.domain.db.withTransaction
 import com.ctfp.dto.Notification
-import com.ctfp.repository.INotificationRepository
 
 
-class PostgresNotificationRepository : INotificationRepository {
-    override suspend fun getNotification(id: Int): Notification = withTransaction {
+class NotificationService {
+    suspend fun getNotification(id: Int): Notification = withTransaction {
         NotificationDAO[id].toModel()
     }
 
-    override suspend fun getAllNotifications(): List<Notification> = withTransaction {
+    suspend fun getAllNotifications(): List<Notification> = withTransaction {
         NotificationDAO.all().map { it.toModel() }
     }
 
-    override suspend fun createNotification(template: Notification): Int = withTransaction {
+    suspend fun createNotification(template: Notification): Int = withTransaction {
         val newNotification = NotificationDAO.new {
             title = template.title
             message = template.message
@@ -27,7 +26,7 @@ class PostgresNotificationRepository : INotificationRepository {
         newNotification.id.value
     }
 
-    override suspend fun updateNotification(id: Int, notification: Notification) = withTransaction {
+    suspend fun updateNotification(id: Int, notification: Notification) = withTransaction {
         val dbNotification = NotificationDAO[id]
         dbNotification.run {
             title = notification.title
@@ -39,7 +38,7 @@ class PostgresNotificationRepository : INotificationRepository {
         }
     }
 
-    override suspend fun deleteNotification(id: Int) = withTransaction {
+    suspend fun deleteNotification(id: Int) = withTransaction {
         NotificationDAO[id].delete()
     }
 }

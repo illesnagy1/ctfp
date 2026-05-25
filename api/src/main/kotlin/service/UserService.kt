@@ -1,23 +1,22 @@
-package com.ctfp.repository.postgres
+package com.ctfp.service
 
 import com.ctfp.domain.dao.UserDAO
 import com.ctfp.domain.db.withTransaction
 import com.ctfp.domain.model.RegistrationCodeTable
 import com.ctfp.dto.User
-import com.ctfp.repository.IUserRepository
 import org.jetbrains.exposed.v1.core.dao.id.EntityID
 
 
-class PostgresUserRepository : IUserRepository {
-    override suspend fun getUser(id: Int): User = withTransaction {
+class UserService {
+    suspend fun getUser(id: Int): User = withTransaction {
         UserDAO[id].toModel()
     }
 
-    override suspend fun getAllUsers(): List<User> = withTransaction {
+    suspend fun getAllUsers(): List<User> = withTransaction {
         UserDAO.all().map { it.toModel() }
     }
 
-    override suspend fun createUser(user: User) = withTransaction {
+    suspend fun createUser(user: User) = withTransaction {
         UserDAO.new {
             codeId = EntityID(user.codeId, RegistrationCodeTable)
             username = user.username
@@ -39,7 +38,7 @@ class PostgresUserRepository : IUserRepository {
         }.id.value
     }
 
-    override suspend fun updateUser(id: Int, user: User) = withTransaction {
+    suspend fun updateUser(id: Int, user: User) = withTransaction {
         val dbUser = UserDAO[id]
         dbUser.run {
             codeId = EntityID(user.codeId, RegistrationCodeTable)
@@ -62,7 +61,7 @@ class PostgresUserRepository : IUserRepository {
         }
     }
 
-    override suspend fun deleteUser(id: Int) = withTransaction {
+    suspend fun deleteUser(id: Int) = withTransaction {
         UserDAO[id].delete()
     }
 }

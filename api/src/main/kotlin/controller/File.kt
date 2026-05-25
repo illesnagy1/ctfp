@@ -2,7 +2,7 @@ package com.ctfp.controller
 
 import com.ctfp.controller.helper.getId
 import com.ctfp.dto.File
-import com.ctfp.repository.IFileRepository
+import com.ctfp.service.FileService
 import io.ktor.http.HttpStatusCode
 import io.ktor.server.request.receive
 import io.ktor.server.routing.Route
@@ -12,26 +12,26 @@ import io.ktor.server.routing.post
 import io.ktor.server.routing.route
 import io.ktor.server.response.respond
 
-fun Route.file(repository: IFileRepository) {
+fun Route.file(service: FileService) {
     route("/file") {
         get {
-            call.respond(repository.getAllFiles())
+            call.respond(service.getAllFiles())
         }
         get("/{id}") {
             val id = call.getId()
-            val file = repository.getFile(id)
+            val file = service.getFile(id)
 
             call.respond(file)
         }
         post {
             val file = call.receive<File>()
-            repository.createFile(file)
+            service.createFile(file)
 
             call.respond(HttpStatusCode.Created)
         }
         delete("/{id}") {
             val id = call.getId()
-            repository.deleteFile(id)
+            service.deleteFile(id)
 
             call.respond(HttpStatusCode.NoContent)
         }

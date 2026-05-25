@@ -1,23 +1,22 @@
-package com.ctfp.repository.postgres
+package com.ctfp.service
 
 import com.ctfp.domain.dao.TeamDAO
 import com.ctfp.domain.db.withTransaction
 import com.ctfp.domain.model.TeamTable
 import com.ctfp.dto.Team
-import com.ctfp.repository.ITeamRepository
 import org.jetbrains.exposed.v1.core.dao.id.EntityID
 
 
-class PostgresTeamRepository : ITeamRepository {
-    override suspend fun getTeam(id: Int): Team = withTransaction {
+class TeamService {
+    suspend fun getTeam(id: Int): Team = withTransaction {
         TeamDAO[id].toModel()
     }
 
-    override suspend fun getAllTeams(): List<Team> = withTransaction {
+    suspend fun getAllTeams(): List<Team> = withTransaction {
         TeamDAO.all().map { it.toModel() }
     }
 
-    override suspend fun createTeam(team: Team) = withTransaction {
+    suspend fun createTeam(team: Team) = withTransaction {
         val team = TeamDAO.new {
             name = team.name
             ownerId = EntityID(team.ownerId, TeamTable)
@@ -31,7 +30,7 @@ class PostgresTeamRepository : ITeamRepository {
         team.id.value
     }
 
-    override suspend fun updateTeam(id: Int, team: Team) = withTransaction {
+    suspend fun updateTeam(id: Int, team: Team) = withTransaction {
         val dbTeam = TeamDAO[id]
         dbTeam.run {
             name = team.name
@@ -45,7 +44,7 @@ class PostgresTeamRepository : ITeamRepository {
         }
     }
 
-    override suspend fun deleteTeam(id: Int) = withTransaction {
+    suspend fun deleteTeam(id: Int) = withTransaction {
         TeamDAO[id].delete()
     }
 }

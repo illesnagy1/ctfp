@@ -2,7 +2,7 @@ package com.ctfp.controller
 
 import com.ctfp.controller.helper.getId
 import com.ctfp.dto.RegistrationCode
-import com.ctfp.repository.postgres.PostgresRegistrationCodeRepository
+import com.ctfp.service.RegistrationCodeService
 import io.ktor.http.HttpStatusCode
 import io.ktor.server.request.receive
 import io.ktor.server.routing.Route
@@ -13,7 +13,7 @@ import io.ktor.server.routing.put
 import io.ktor.server.routing.route
 import io.ktor.server.response.respond
 
-fun Route.registrationCode(repository: PostgresRegistrationCodeRepository) {
+fun Route.registrationCode(repository: RegistrationCodeService) {
     route("/registration-code") {
         get {
             call.respond(repository.getAllRegistrationCodes())

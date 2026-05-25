@@ -1,4 +1,4 @@
-package com.ctfp.repository.postgres
+package com.ctfp.service
 
 import com.ctfp.domain.dao.SubmissionDAO
 import com.ctfp.domain.db.withTransaction
@@ -7,20 +7,19 @@ import com.ctfp.domain.model.FlagTable
 import com.ctfp.domain.model.TeamTable
 import com.ctfp.domain.model.UserTable
 import com.ctfp.dto.Submission
-import com.ctfp.repository.ISubmissionRepository
 import org.jetbrains.exposed.v1.core.dao.id.EntityID
 
 
-class PostgresSubmissionRepository : ISubmissionRepository {
-    override suspend fun getSubmission(id: Int): Submission = withTransaction {
+class SubmissionService {
+    suspend fun getSubmission(id: Int): Submission = withTransaction {
         SubmissionDAO[id].toModel()
     }
 
-    override suspend fun getAllSubmissions(): List<Submission> = withTransaction {
+    suspend fun getAllSubmissions(): List<Submission> = withTransaction {
         SubmissionDAO.all().map { it.toModel() }
     }
 
-    override suspend fun createSubmission(submission: Submission): Int = withTransaction {
+    suspend fun createSubmission(submission: Submission): Int = withTransaction {
         val newSubmission = SubmissionDAO.new {
             userId = EntityID(submission.userId, UserTable)
             teamId = submission.teamId?.let { EntityID(it, TeamTable) }
@@ -31,7 +30,7 @@ class PostgresSubmissionRepository : ISubmissionRepository {
         newSubmission.id.value
     }
 
-    override suspend fun updateSubmission(id: Int, submission: Submission) = withTransaction {
+    suspend fun updateSubmission(id: Int, submission: Submission) = withTransaction {
         val dbSubmission = SubmissionDAO[id]
         dbSubmission.run {
             userId = EntityID(submission.userId, UserTable)
@@ -42,7 +41,7 @@ class PostgresSubmissionRepository : ISubmissionRepository {
         }
     }
 
-    override suspend fun deleteSubmission(id: Int) = withTransaction {
+    suspend fun deleteSubmission(id: Int) = withTransaction {
         SubmissionDAO[id].delete()
     }
 }

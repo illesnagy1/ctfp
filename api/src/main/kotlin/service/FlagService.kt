@@ -1,22 +1,21 @@
-package com.ctfp.repository.postgres
+package com.ctfp.service
 
 import com.ctfp.domain.dao.FlagDAO
 import com.ctfp.domain.db.withTransaction
 import com.ctfp.domain.model.ChallengeTable
 import com.ctfp.dto.Flag
-import com.ctfp.repository.IFlagRepository
 import org.jetbrains.exposed.v1.core.dao.id.EntityID
 
-class PostgresFlagRepository : IFlagRepository {
-    override suspend fun getFlagForChallenge(challengeId: Int, id: Int): Flag = withTransaction {
+class FlagService {
+    suspend fun getFlagForChallenge(challengeId: Int, id: Int): Flag = withTransaction {
         FlagDAO[id].toModel()
     }
 
-    override suspend fun getFlagsForChallenge(challengeId: Int): List<Flag> = withTransaction {
+    suspend fun getFlagsForChallenge(challengeId: Int): List<Flag> = withTransaction {
         TODO("Not yet implemented")
     }
 
-    override suspend fun createFlag(challengeId: Int, flag: Flag): Int = withTransaction {
+    suspend fun createFlag(challengeId: Int, flag: Flag): Int = withTransaction {
         val newFlag = FlagDAO.new {
             pattern = flag.pattern
             isCaseSensitive = flag.isCaseSensitive
@@ -31,7 +30,7 @@ class PostgresFlagRepository : IFlagRepository {
         newFlag.id.value
     }
 
-    override suspend fun updateFlag(challengeId: Int, id: Int, flag: Flag) = withTransaction {
+    suspend fun updateFlag(challengeId: Int, id: Int, flag: Flag) = withTransaction {
         val dbFlag = FlagDAO[id]
         dbFlag.run {
             pattern = flag.pattern
@@ -45,7 +44,7 @@ class PostgresFlagRepository : IFlagRepository {
         }
     }
 
-    override suspend fun deleteFlag(id: Int) = withTransaction {
+    suspend fun deleteFlag(id: Int) = withTransaction {
         FlagDAO[id].delete()
     }
 }

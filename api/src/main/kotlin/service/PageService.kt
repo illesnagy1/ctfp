@@ -1,21 +1,20 @@
-package com.ctfp.repository.postgres
+package com.ctfp.service
 
 import com.ctfp.domain.dao.PageDAO
 import com.ctfp.domain.db.withTransaction
 import com.ctfp.dto.Page
-import com.ctfp.repository.IPageRepository
 
 
-class PostgresPageRepository : IPageRepository {
-    override suspend fun getPage(id: Int): Page = withTransaction {
+class PageService {
+    suspend fun getPage(id: Int): Page = withTransaction {
         PageDAO[id].toModel()
     }
 
-    override suspend fun getAllPages(): List<Page> = withTransaction {
+    suspend fun getAllPages(): List<Page> = withTransaction {
         PageDAO.all().map { it.toModel() }
     }
 
-    override suspend fun createPage(page: Page): Int = withTransaction {
+    suspend fun createPage(page: Page): Int = withTransaction {
         val newPage = PageDAO.new {
             title = page.title
             route = page.route
@@ -31,7 +30,7 @@ class PostgresPageRepository : IPageRepository {
         newPage.id.value
     }
 
-    override suspend fun updatePage(id: Int, page: Page) = withTransaction {
+    suspend fun updatePage(id: Int, page: Page) = withTransaction {
         val dbPage = PageDAO[id]
         dbPage.run {
             title = page.title
@@ -47,7 +46,7 @@ class PostgresPageRepository : IPageRepository {
         }
     }
 
-    override suspend fun deletePage(id: Int) = withTransaction {
+    suspend fun deletePage(id: Int) = withTransaction {
         PageDAO[id].delete()
     }
 }

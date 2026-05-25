@@ -2,9 +2,7 @@ package com.ctfp.controller
 
 import com.ctfp.controller.helper.getId
 import com.ctfp.dto.Challenge
-import com.ctfp.repository.IChallengeRepository
-import com.ctfp.repository.IFlagRepository
-import com.ctfp.repository.IHintRepository
+import com.ctfp.service.ChallengeService
 import io.ktor.http.HttpStatusCode
 import io.ktor.server.request.receive
 import io.ktor.server.routing.Route
@@ -16,33 +14,33 @@ import io.ktor.server.routing.route
 import io.ktor.server.response.respond
 
 
-fun Route.challenge(repository: IChallengeRepository, flagRepository: IFlagRepository, hintRepository: IHintRepository) {
+fun Route.challenge(service: ChallengeService) {
     route("/challenge") {
         get {
-            call.respond(repository.getAllChallenges())
+            call.respond(service.getAllChallenges())
         }
         get("/{id}") {
             val id = call.getId()
-            val challenge = repository.getChallenge(id)
+            val challenge = service.getChallenge(id)
 
             call.respond(challenge)
         }
         post {
             val challenge = call.receive<Challenge>()
-            repository.createChallenge(challenge)
+            service.createChallenge(challenge)
 
             call.respond(HttpStatusCode.Created)
         }
         put("/{id}") {
             val id = call.getId()
             val challenge = call.receive<Challenge>()
-            repository.updateChallenge(id, challenge)
+            service.updateChallenge(id, challenge)
 
             call.respond(HttpStatusCode.NoContent)
         }
         delete("/{id}") {
             val id = call.getId()
-            repository.deleteChallenge(id)
+            service.deleteChallenge(id)
 
             call.respond(HttpStatusCode.NoContent)
         }
