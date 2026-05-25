@@ -3,7 +3,7 @@ package com.ctfp.repository
 import com.ctfp.dto.Notification
 
 
-interface NotificationRepository {
+interface INotificationRepository {
     suspend fun getNotification(id: Int): Notification
     suspend fun getAllNotifications(): List<Notification>
     suspend fun createNotification(template: Notification): Int

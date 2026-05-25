@@ -1,9 +1,8 @@
 package com.ctfp.controller
 
 import com.ctfp.controller.helper.getId
-import com.ctfp.dto.Challenge
 import com.ctfp.dto.EmailTemplate
-import com.ctfp.repository.EmailTemplateRepository
+import com.ctfp.repository.IEmailTemplateRepository
 import io.ktor.http.HttpStatusCode
 import io.ktor.server.request.receive
 import io.ktor.server.routing.Route
@@ -14,7 +13,7 @@ import io.ktor.server.routing.put
 import io.ktor.server.routing.route
 import io.ktor.server.response.respond
 
-fun Route.emailTemplate(repository: EmailTemplateRepository) {
+fun Route.emailTemplate(repository: IEmailTemplateRepository) {
     route("/email-template") {
         get {
             call.respond(repository.getAllEmailTemplates())

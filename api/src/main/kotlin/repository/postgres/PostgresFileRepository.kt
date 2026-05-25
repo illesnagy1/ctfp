@@ -1,10 +1,10 @@
 package com.ctfp.repository.postgres
 
 import com.ctfp.dto.File
-import com.ctfp.repository.FileRepository
+import com.ctfp.repository.IFileRepository
 
 
-class PostgresFileRepository : FileRepository {
+class PostgresFileRepository : IFileRepository {
     override suspend fun getFile(id: Int): File {
         TODO("Not yet implemented")
     }

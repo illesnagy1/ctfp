@@ -1,10 +1,9 @@
 package com.ctfp.repository
 
-import com.ctfp.dto.Hint
 import com.ctfp.dto.Page
 
 
-interface PageRepository {
+interface IPageRepository {
     suspend fun getPage(id: Int): Page
     suspend fun getAllPages(): List<Page>
     suspend fun createPage(page: Page): Int

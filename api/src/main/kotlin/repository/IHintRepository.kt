@@ -1,10 +1,9 @@
 package com.ctfp.repository
 
-import com.ctfp.dto.Challenge
 import com.ctfp.dto.Hint
 
 
-interface HintRepository {
+interface IHintRepository {
     suspend fun getHint(id: Int): Hint
     suspend fun getHintsForChallenge(challengeId: Int): List<Hint>
     suspend fun getAllHints(): List<Hint>

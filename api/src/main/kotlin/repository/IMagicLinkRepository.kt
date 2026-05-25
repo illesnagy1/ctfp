@@ -1,6 +1,6 @@
 package com.ctfp.repository
 
 
-interface MagicLinkRepository {
+interface IMagicLinkRepository {
 
 }

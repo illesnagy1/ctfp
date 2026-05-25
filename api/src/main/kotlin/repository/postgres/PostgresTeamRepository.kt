@@ -4,11 +4,11 @@ import com.ctfp.domain.dao.TeamDAO
 import com.ctfp.domain.db.withTransaction
 import com.ctfp.domain.model.TeamTable
 import com.ctfp.dto.Team
-import com.ctfp.repository.TeamRepository
+import com.ctfp.repository.ITeamRepository
 import org.jetbrains.exposed.v1.core.dao.id.EntityID
 
 
-class PostgresTeamRepository : TeamRepository {
+class PostgresTeamRepository : ITeamRepository {
     override suspend fun getTeam(id: Int): Team = withTransaction {
         TeamDAO[id].toModel()
     }

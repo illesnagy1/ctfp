@@ -1,15 +1,13 @@
 package com.ctfp.repository.postgres
 
-import com.ctfp.domain.dao.ChallengeDAO
 import com.ctfp.domain.dao.FlagDAO
 import com.ctfp.domain.db.withTransaction
 import com.ctfp.domain.model.ChallengeTable
 import com.ctfp.dto.Flag
-import com.ctfp.repository.FlagRepository
+import com.ctfp.repository.IFlagRepository
 import org.jetbrains.exposed.v1.core.dao.id.EntityID
-import org.jetbrains.exposed.v1.jdbc.insertAndGetId
 
-class PostgresFlagRepository : FlagRepository {
+class PostgresFlagRepository : IFlagRepository {
     override suspend fun getFlagForChallenge(challengeId: Int, id: Int): Flag = withTransaction {
         FlagDAO[id].toModel()
     }

@@ -3,10 +3,10 @@ package com.ctfp.repository.postgres
 import com.ctfp.domain.dao.EmailTemplateDAO
 import com.ctfp.domain.db.withTransaction
 import com.ctfp.dto.EmailTemplate
-import com.ctfp.repository.EmailTemplateRepository
+import com.ctfp.repository.IEmailTemplateRepository
 
 
-class PostgresEmailTemplateRepository : EmailTemplateRepository {
+class PostgresEmailTemplateRepository : IEmailTemplateRepository {
     override suspend fun getEmailTemplate(id: Int): EmailTemplate = withTransaction {
         EmailTemplateDAO[id].toModel()
     }

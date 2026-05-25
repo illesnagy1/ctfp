@@ -2,7 +2,7 @@ package com.ctfp.controller
 
 import com.ctfp.controller.helper.getId
 import com.ctfp.dto.Page
-import com.ctfp.repository.PageRepository
+import com.ctfp.repository.IPageRepository
 import io.ktor.http.HttpStatusCode
 import io.ktor.server.request.receive
 import io.ktor.server.routing.Route
@@ -13,7 +13,7 @@ import io.ktor.server.routing.put
 import io.ktor.server.routing.route
 import io.ktor.server.response.respond
 
-fun Route.page(repository: PageRepository) {
+fun Route.page(repository: IPageRepository) {
     route("/page") {
         get {
             call.respond(repository.getAllPages())

@@ -2,7 +2,7 @@ package com.ctfp.controller
 
 import com.ctfp.controller.helper.getId
 import com.ctfp.dto.Team
-import com.ctfp.repository.TeamRepository
+import com.ctfp.repository.ITeamRepository
 import io.ktor.http.HttpStatusCode
 import io.ktor.server.request.receive
 import io.ktor.server.routing.Route
@@ -13,7 +13,7 @@ import io.ktor.server.routing.put
 import io.ktor.server.routing.route
 import io.ktor.server.response.respond
 
-fun Route.team(repository: TeamRepository) {
+fun Route.team(repository: ITeamRepository) {
     route("/team") {
         get {
             call.respond(repository.getAllTeams())

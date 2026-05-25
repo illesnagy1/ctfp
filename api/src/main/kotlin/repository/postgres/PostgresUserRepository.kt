@@ -4,11 +4,11 @@ import com.ctfp.domain.dao.UserDAO
 import com.ctfp.domain.db.withTransaction
 import com.ctfp.domain.model.RegistrationCodeTable
 import com.ctfp.dto.User
-import com.ctfp.repository.UserRepository
+import com.ctfp.repository.IUserRepository
 import org.jetbrains.exposed.v1.core.dao.id.EntityID
 
 
-class PostgresUserRepository : UserRepository {
+class PostgresUserRepository : IUserRepository {
     override suspend fun getUser(id: Int): User = withTransaction {
         UserDAO[id].toModel()
     }

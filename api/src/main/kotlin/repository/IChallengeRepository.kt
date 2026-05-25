@@ -1,10 +1,9 @@
 package com.ctfp.repository
 
 import com.ctfp.dto.Challenge
-import com.ctfp.dto.Flag
 
 
-interface ChallengeRepository {
+interface IChallengeRepository {
     suspend fun getChallenge(id: Int): Challenge
     suspend fun getAllChallenges(): List<Challenge>
     suspend fun createChallenge(challenge: Challenge): Int

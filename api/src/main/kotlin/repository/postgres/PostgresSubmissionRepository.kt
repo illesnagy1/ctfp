@@ -7,11 +7,11 @@ import com.ctfp.domain.model.FlagTable
 import com.ctfp.domain.model.TeamTable
 import com.ctfp.domain.model.UserTable
 import com.ctfp.dto.Submission
-import com.ctfp.repository.SubmissionRepository
+import com.ctfp.repository.ISubmissionRepository
 import org.jetbrains.exposed.v1.core.dao.id.EntityID
 
 
-class PostgresSubmissionRepository : SubmissionRepository {
+class PostgresSubmissionRepository : ISubmissionRepository {
     override suspend fun getSubmission(id: Int): Submission = withTransaction {
         SubmissionDAO[id].toModel()
     }

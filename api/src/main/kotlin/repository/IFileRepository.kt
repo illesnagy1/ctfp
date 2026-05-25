@@ -2,7 +2,7 @@ package com.ctfp.repository
 
 import com.ctfp.dto.File
 
-interface FileRepository {
+interface IFileRepository {
     suspend fun getFile(id: Int): File
     suspend fun getAllFiles(): List<File>
     suspend fun createFile(file: File): Int

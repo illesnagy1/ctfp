@@ -1,18 +1,23 @@
 [versions]
 exposed = "1.2.0"
 h2 = "2.4.240"
-kotlin = "2.3.20"
 koin = "4.2.0"
+kotlin = "2.3.21"
 logback = "1.5.32"
 postgresql = "42.7.10"
 flyway = "12.4.0"
-rateLimiting = "2.2.1"
-asyncapi = "3.2.1"
+flaxoos = "2.3.0"
+asyncapi = "3.2.2"
 
 [libraries]
 exposed-core = { module = "org.jetbrains.exposed:exposed-core", version.ref = "exposed" }
 exposed-r2dbc = { module = "org.jetbrains.exposed:exposed-r2dbc", version.ref = "exposed" }
-flaxoos-ktor-server-rateLimiting = { module = "io.github.flaxoos:ktor-server-rate-limiting", version.ref = "rateLimiting" }
+exposed-dao = { module = "org.jetbrains.exposed:exposed-dao", version.ref = "exposed" }
+exposed-datetime = { module = "org.jetbrains.exposed:exposed-kotlin-datetime", version.ref = "exposed" }
+exposed-json = { module = "org.jetbrains.exposed:exposed-json", version.ref = "exposed" }
+exposed-migration-core = { module = "org.jetbrains.exposed:exposed-migration-core", version.ref = "exposed" }
+exposed-migration-r2dbc = { module = "org.jetbrains.exposed:exposed-migration-r2dbc", version.ref = "exposed" }
+flaxoos-ktor-server-rateLimiting = { module = "io.github.flaxoos:ktor-server-rate-limiting", version.ref = "flaxoos" }
 h2database-h2 = { module = "com.h2database:h2", version.ref = "h2" }
 h2database-r2dbc = { module = "io.r2dbc:r2dbc-h2", version = "1.1.0.RELEASE" }
 koin-ktor = { module = "io.insert-koin:koin-ktor", version.ref = "koin" }

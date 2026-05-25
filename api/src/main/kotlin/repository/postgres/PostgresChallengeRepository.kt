@@ -2,13 +2,11 @@ package com.ctfp.repository.postgres
 
 import com.ctfp.domain.dao.ChallengeDAO
 import com.ctfp.dto.Challenge
-import com.ctfp.repository.ChallengeRepository
+import com.ctfp.repository.IChallengeRepository
 import com.ctfp.domain.db.withTransaction
-import com.ctfp.domain.model.ChallengeTable
-import org.jetbrains.exposed.v1.jdbc.selectAll
 
 
-class PostgresChallengeRepository : ChallengeRepository {
+class PostgresChallengeRepository : IChallengeRepository {
     override suspend fun getChallenge(id: Int): Challenge = withTransaction {
         ChallengeDAO[id].toModel()
     }

@@ -3,13 +3,12 @@ package com.ctfp.repository.postgres
 import com.ctfp.domain.dao.HintDAO
 import com.ctfp.domain.db.withTransaction
 import com.ctfp.domain.model.ChallengeTable
-import com.ctfp.domain.model.HintTable
 import com.ctfp.dto.Hint
-import com.ctfp.repository.HintRepository
+import com.ctfp.repository.IHintRepository
 import org.jetbrains.exposed.v1.core.dao.id.EntityID
 
 
-class PostgresHintRepository : HintRepository {
+class PostgresHintRepository : IHintRepository {
     override suspend fun getHint(id: Int): Hint = withTransaction {
         HintDAO[id].toModel()
     }

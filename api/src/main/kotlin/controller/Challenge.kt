@@ -2,12 +2,10 @@ package com.ctfp.controller
 
 import com.ctfp.controller.helper.getId
 import com.ctfp.dto.Challenge
-import com.ctfp.repository.ChallengeRepository
-import com.ctfp.repository.FlagRepository
-import com.ctfp.repository.HintRepository
+import com.ctfp.repository.IChallengeRepository
+import com.ctfp.repository.IFlagRepository
+import com.ctfp.repository.IHintRepository
 import io.ktor.http.HttpStatusCode
-import io.ktor.http.parameters
-import io.ktor.server.plugins.BadRequestException
 import io.ktor.server.request.receive
 import io.ktor.server.routing.Route
 import io.ktor.server.routing.delete
@@ -16,10 +14,9 @@ import io.ktor.server.routing.post
 import io.ktor.server.routing.put
 import io.ktor.server.routing.route
 import io.ktor.server.response.respond
-import kotlin.text.toIntOrNull
 
 
-fun Route.challenge(repository: ChallengeRepository, flagRepository: FlagRepository, hintRepository: HintRepository) {
+fun Route.challenge(repository: IChallengeRepository, flagRepository: IFlagRepository, hintRepository: IHintRepository) {
     route("/challenge") {
         get {
             call.respond(repository.getAllChallenges())

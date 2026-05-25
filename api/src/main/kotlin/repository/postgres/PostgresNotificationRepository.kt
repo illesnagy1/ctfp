@@ -3,10 +3,10 @@ package com.ctfp.repository.postgres
 import com.ctfp.domain.dao.NotificationDAO
 import com.ctfp.domain.db.withTransaction
 import com.ctfp.dto.Notification
-import com.ctfp.repository.NotificationRepository
+import com.ctfp.repository.INotificationRepository
 
 
-class PostgresNotificationRepository : NotificationRepository {
+class PostgresNotificationRepository : INotificationRepository {
     override suspend fun getNotification(id: Int): Notification = withTransaction {
         NotificationDAO[id].toModel()
     }

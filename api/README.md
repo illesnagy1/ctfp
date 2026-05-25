@@ -4,30 +4,30 @@ This project was created using the [Ktor Project Generator](https://start.ktor.i
 
 Here are some useful links to get you started:
 
-- [Ktor Documentation](https://ktor.io/docs/home.html)
-- [Ktor GitHub page](https://github.com/ktorio/ktor)
-- The [Ktor Slack chat](https://app.slack.com/client/T09229ZC6/C0A974TJ9). You'll need to [request an invite](https://surveys.jetbrains.com/s3/kotlin-slack-sign-up) to join.
+* [Ktor Documentation](https://ktor.io/docs/home.html)
+* [Ktor GitHub page](https://github.com/ktorio/ktor)
+* [Ktor Slack chat](https://app.slack.com/client/T09229ZC6/C0A974TJ9). [Request an invite](https://surveys.jetbrains.com/s3/kotlin-slack-sign-up).
 
 ## Features
 
 Here's a list of features included in this project:
 
-| Name                                                                   | Description                                                                        |
-|------------------------------------------------------------------------|------------------------------------------------------------------------------------|
+| Name                                                                                  | Description                                                                        |
+|---------------------------------------------------------------------------------------|------------------------------------------------------------------------------------|
 | [AsyncAPI](https://start.ktor.io/p/com.asyncapi/server-asyncapi)                      | Generates and serves AsyncAPI documentation                                        |
-| [OpenAPI](https://start.ktor.io/p/io.ktor/server-openapi)                             | Serves OpenAPI documentation                                                       |
+| [Caching Headers](https://start.ktor.io/p/io.ktor/server-caching-headers)             | Provides options for responding with standard cache-control headers                |
+| [Compression](https://start.ktor.io/p/io.ktor/server-compression)                     | Compresses responses using encoding algorithms like GZIP                           |
+| [Conditional Headers](https://start.ktor.io/p/io.ktor/server-conditional-headers)     | Skips response body, depending on ETag and LastModified headers                    |
+| [Default Headers](https://start.ktor.io/p/io.ktor/server-default-headers)             | Adds a default set of headers to HTTP responses                                    |
+| [Forwarded Headers](https://start.ktor.io/p/io.ktor/server-forwarded-header-support)  | Allows handling proxied headers (X-Forwarded-*)                                    |
+| [HSTS](https://start.ktor.io/p/io.ktor/server-hsts)                                   | Enables HTTP Strict Transport Security (HSTS)                                      |
 | [HttpsRedirect](https://start.ktor.io/p/io.ktor/server-https-redirect)                | Redirects insecure HTTP requests to the respective HTTPS endpoint                  |
+| [OpenAPI](https://start.ktor.io/p/io.ktor/server-openapi)                             | Serves OpenAPI documentation                                                       |
 | [Partial Content](https://start.ktor.io/p/io.ktor/server-partial-content)             | Handles requests with the Range header                                             |
 | [Simple Cache](https://start.ktor.io/p/com.ucasoft/server-simple-cache)               | Provides API for cache management                                                  |
 | [Simple Memory Cache](https://start.ktor.io/p/com.ucasoft/server-simple-memory-cache) | Provides memory cache for Simple Cache plugin                                      |
-| [Swagger](https://start.ktor.io/p/io.ktor/server-swagger)                             | Serves Swagger UI for your project                                                 |
 | [Simple Redis Cache](https://start.ktor.io/p/com.ucasoft/server-simple-redis-cache)   | Provides Redis cache for Simple Cache plugin                                       |
-| [HSTS](https://start.ktor.io/p/io.ktor/server-hsts)                                   | Enables HTTP Strict Transport Security (HSTS)                                      |
-| [Forwarded Headers](https://start.ktor.io/p/io.ktor/server-forwarded-header-support)  | Allows handling proxied headers (X-Forwarded-*)                                    |
-| [Default Headers](https://start.ktor.io/p/io.ktor/server-default-headers)             | Adds a default set of headers to HTTP responses                                    |
-| [Conditional Headers](https://start.ktor.io/p/io.ktor/server-conditional-headers)     | Skips response body, depending on ETag and LastModified headers                    |
-| [Compression](https://start.ktor.io/p/io.ktor/server-compression)                     | Compresses responses using encoding algorithms like GZIP                           |
-| [Caching Headers](https://start.ktor.io/p/io.ktor/server-caching-headers)             | Provides options for responding with standard cache-control headers                |
+| [Swagger](https://start.ktor.io/p/io.ktor/server-swagger)                             | Serves Swagger UI for your project                                                 |
 | [Authentication](https://start.ktor.io/p/io.ktor/server-auth)                         | Provides extension point for handling the Authorization header                     |
 | [Authentication JWT](https://start.ktor.io/p/io.ktor/server-auth-jwt)                 | Handles JSON Web Token (JWT) bearer authentication scheme                          |
 | [AutoHeadResponse](https://start.ktor.io/p/io.ktor/server-auto-head-response)         | Provides automatic responses for HEAD requests                                     |

@@ -2,7 +2,7 @@ package com.ctfp.controller
 
 import com.ctfp.controller.helper.getId
 import com.ctfp.dto.Hint
-import com.ctfp.repository.HintRepository
+import com.ctfp.repository.IHintRepository
 import io.ktor.http.HttpStatusCode
 import io.ktor.server.request.receive
 import io.ktor.server.routing.Route
@@ -13,7 +13,7 @@ import io.ktor.server.routing.put
 import io.ktor.server.routing.route
 import io.ktor.server.response.respond
 
-fun Route.hint(repository: HintRepository) {
+fun Route.hint(repository: IHintRepository) {
     route("/challenge/{challengeId}/hint") {
         get {
             val challengeId = call.parameters["challengeId"]?.toIntOrNull() ?: throw IllegalArgumentException("Invalid challengeId")

@@ -3,7 +3,7 @@ package com.ctfp.repository
 import com.ctfp.dto.User
 
 
-interface UserRepository {
+interface IUserRepository {
     suspend fun getUser(id: Int): User
     suspend fun getAllUsers(): List<User>
     suspend fun createUser(user: User): Int

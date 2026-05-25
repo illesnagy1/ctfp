@@ -2,7 +2,7 @@ package com.ctfp.controller
 
 import com.ctfp.controller.helper.getId
 import com.ctfp.dto.User
-import com.ctfp.repository.UserRepository
+import com.ctfp.repository.IUserRepository
 import io.ktor.http.HttpStatusCode
 import io.ktor.server.request.receive
 import io.ktor.server.routing.Route
@@ -13,7 +13,7 @@ import io.ktor.server.routing.put
 import io.ktor.server.routing.route
 import io.ktor.server.response.respond
 
-fun Route.user(repository: UserRepository) {
+fun Route.user(repository: IUserRepository) {
     route("/user") {
         get {
             call.respond(repository.getAllUsers())

@@ -3,10 +3,10 @@ package com.ctfp.repository.postgres
 import com.ctfp.domain.dao.PageDAO
 import com.ctfp.domain.db.withTransaction
 import com.ctfp.dto.Page
-import com.ctfp.repository.PageRepository
+import com.ctfp.repository.IPageRepository
 
 
-class PostgresPageRepository : PageRepository {
+class PostgresPageRepository : IPageRepository {
     override suspend fun getPage(id: Int): Page = withTransaction {
         PageDAO[id].toModel()
     }
