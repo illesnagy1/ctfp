@@ -1,11 +1,11 @@
 plugins {
     alias(libs.plugins.kotlin.jvm)
-    alias(libs.plugins.ktor)
-    alias(libs.plugins.kotlin.plugin.serialization)
+    alias(ktorLibs.plugins.ktor)
+    alias(libs.plugins.kotlin.serialization)
 }
 
 group = "com.ctfp"
-version = "0.0.1"
+version = "1.0.0-SNAPSHOT"
 
 application {
     mainClass = "io.ktor.server.netty.EngineMain"
@@ -16,33 +16,50 @@ kotlin {
 }
 
 dependencies {
-    implementation(libs.ktor.serialization.kotlinx.json)
-    implementation(libs.ktor.server.content.negotiation)
-    implementation(libs.ktor.server.core)
-    implementation(libs.ktor.server.auth)
-    implementation(libs.ktor.client.core)
-    implementation(libs.ktor.client.apache)
-    implementation(libs.ktor.server.auth.jwt)
-    implementation(libs.ktor.server.websockets)
+    implementation(ktorLibs.network.tls)
+    implementation(ktorLibs.serialization.kotlinx.json)
+    implementation(ktorLibs.server.auth)
+    implementation(ktorLibs.server.auth.jwt)
+    implementation(ktorLibs.server.autoHeadResponse)
+    implementation(ktorLibs.server.cachingHeaders)
+    implementation(ktorLibs.server.callId)
+    implementation(ktorLibs.server.callLogging)
+    implementation(ktorLibs.server.compression)
+    implementation(ktorLibs.server.conditionalHeaders)
+    implementation(ktorLibs.server.contentNegotiation)
+    implementation(ktorLibs.server.core)
+    implementation(ktorLibs.server.defaultHeaders)
+    implementation(ktorLibs.server.di)
+    implementation(ktorLibs.server.forwardedHeader)
+    implementation(ktorLibs.server.hsts)
+    implementation(ktorLibs.server.httpRedirect)
+    implementation(ktorLibs.server.metrics)
+    implementation(ktorLibs.server.netty)
+    implementation(ktorLibs.server.openapi)
+    implementation(ktorLibs.server.partialContent)
+    implementation(ktorLibs.server.requestValidation)
+    implementation(ktorLibs.server.resources)
+    implementation(ktorLibs.server.routingOpenapi)
+    implementation(ktorLibs.server.sse)
+    implementation(ktorLibs.server.statusPages)
+    implementation(ktorLibs.server.swagger)
+    implementation(ktorLibs.server.websockets)
     implementation(libs.exposed.core)
-    implementation(libs.exposed.jdbc)
-    implementation(libs.exposed.dao)
-    implementation(libs.exposed.datetime)
-    implementation(libs.exposed.json)
-    implementation(libs.exposed.migration.core)
-    implementation(libs.exposed.migration.jdbc)
-    implementation(libs.h2)
-    implementation(libs.postgresql)
-    implementation(libs.ktor.server.swagger)
-    implementation(libs.ktor.server.routing.openapi)
-    implementation(libs.ktor.server.netty)
+    implementation(libs.exposed.r2dbc)
+    implementation(libs.flaxoos.ktor.server.rateLimiting)
+    implementation(libs.h2database.h2)
+    implementation(libs.h2database.r2dbc)
+    implementation(libs.koin.ktor)
+    implementation(libs.koin.loggerSlf4j)
     implementation(libs.logback.classic)
-    implementation(libs.ktor.server.config.yaml)
-    implementation(libs.flyway.core)
-    implementation(libs.flyway.database.postgresql)
-    testImplementation(libs.ktor.server.test.host)
-    testImplementation(libs.ktor.client.content.negotiation)
-    testImplementation(libs.kotlin.test.junit)
+    implementation(libs.openfolder.kotlinAsyncapiKtor)
+    implementation(libs.postgresql)
+    implementation(libs.ucasoft.ktorSimpleCache)
+    implementation(libs.ucasoft.ktorSimpleMemoryCache)
+    implementation(libs.ucasoft.ktorSimpleRedisCache)
+
+    testImplementation(kotlin("test"))
+    testImplementation(ktorLibs.server.testHost)
 }
 
 tasks.register<JavaExec>("generateMigration") {
