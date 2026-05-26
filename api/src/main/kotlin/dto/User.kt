@@ -2,7 +2,7 @@ package com.ctfp.dto
 
 import com.ctfp.config.enum.Language
 import com.ctfp.config.enum.UserRole
-import kotlinx.datetime.LocalDateTime
+import kotlin.time.Instant
 import kotlinx.serialization.Serializable
 
 
@@ -23,6 +23,6 @@ data class User(
     val totpEnabled: Boolean = false,
     val soundEnabled: Boolean = true,
     val visibilitySettings: String?,
-    val createdAt: LocalDateTime,
-    val updatedAt: LocalDateTime
+    val createdAt: Instant,
+    val updatedAt: Instant
 )

@@ -1,7 +1,8 @@
 package com.ctfp.domain.model
 
 import org.jetbrains.exposed.v1.core.dao.id.IntIdTable
-import org.jetbrains.exposed.v1.datetime.*
+import org.jetbrains.exposed.v1.datetime.CurrentTimestamp
+import org.jetbrains.exposed.v1.datetime.timestamp
 
 object FlagTable : IntIdTable("flag") {
     val challengeId = reference("challenge_id", ChallengeTable)
@@ -12,5 +13,5 @@ object FlagTable : IntIdTable("flag") {
     val minValue = integer("min_value").nullable()
     val decayFun = varchar("decay_fun", 50).default("static")
     val sortOrder = integer("sort_order").default(1)
-    val createdAt = datetime("created_at").defaultExpression(CurrentDateTime)
+    val createdAt = timestamp("created_at").defaultExpression(CurrentTimestamp)
 }

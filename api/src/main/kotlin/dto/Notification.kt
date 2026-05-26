@@ -1,7 +1,7 @@
 package com.ctfp.dto
 
 import com.ctfp.config.enum.NotificationType
-import kotlinx.datetime.LocalDateTime
+import kotlin.time.Instant
 import kotlinx.serialization.Serializable
 
 
@@ -11,6 +11,6 @@ data class Notification(
     val message: String,
     val type: NotificationType,
     val sendEmail: Boolean = false,
-    val pushAt: LocalDateTime,
-    val createdAt: LocalDateTime
+    val pushAt: Instant,
+    val createdAt: Instant
 )

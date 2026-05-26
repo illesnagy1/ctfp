@@ -1,6 +1,6 @@
 package com.ctfp.dto
 
-import kotlinx.datetime.LocalDateTime
+import kotlin.time.Instant
 import kotlinx.serialization.Serializable
 
 
@@ -10,5 +10,5 @@ data class Submission(
     val teamId: Int?,
     val challengeId: Int,
     val flagId: Int?,
-    val submittedAt: LocalDateTime,
+    val submittedAt: Instant,
 )

@@ -2,7 +2,8 @@ package com.ctfp.domain.model
 
 import com.ctfp.config.enum.NotificationType
 import org.jetbrains.exposed.v1.core.dao.id.IntIdTable
-import org.jetbrains.exposed.v1.datetime.*
+import org.jetbrains.exposed.v1.datetime.CurrentTimestamp
+import org.jetbrains.exposed.v1.datetime.timestamp
 
 object NotificationTable : IntIdTable("notification") {
     val title = varchar("title", 255)
@@ -13,6 +14,6 @@ object NotificationTable : IntIdTable("notification") {
         toDb = { it.name }
     )
     val sendEmail = bool("send_email").default(false)
-    val pushAt = datetime("push_at").defaultExpression(CurrentDateTime)
-    val createdAt = datetime("created_at").defaultExpression(CurrentDateTime)
+    val pushAt = timestamp("push_at").defaultExpression(CurrentTimestamp)
+    val createdAt = timestamp("created_at").defaultExpression(CurrentTimestamp)
 }

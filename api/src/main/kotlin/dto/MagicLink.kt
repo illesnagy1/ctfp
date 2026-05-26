@@ -1,6 +1,6 @@
 package com.ctfp.dto
 
-import kotlinx.datetime.LocalDateTime
+import kotlin.time.Instant
 import kotlinx.serialization.Serializable
 
 
@@ -8,7 +8,7 @@ import kotlinx.serialization.Serializable
 data class MagicLink(
     val userId: Int,
     val token: String,
-    val createdAt: LocalDateTime,
-    val expiresAt: LocalDateTime,
-    val usedAt: LocalDateTime?
+    val createdAt: Instant,
+    val expiresAt: Instant,
+    val usedAt: Instant?
 )

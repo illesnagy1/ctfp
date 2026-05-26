@@ -1,6 +1,6 @@
 package com.ctfp.dto
 
-import kotlinx.datetime.LocalDateTime
+import kotlin.time.Instant
 import kotlinx.serialization.Serializable
 
 
@@ -8,6 +8,6 @@ import kotlinx.serialization.Serializable
 data class RegistrationCode(
     val code: String,
     val maxUses: Int,
-    val createdAt: LocalDateTime,
-    val expiresAt: LocalDateTime,
+    val createdAt: Instant,
+    val expiresAt: Instant,
 )

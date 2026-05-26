@@ -1,6 +1,6 @@
 package com.ctfp.dto
 
-import kotlinx.datetime.LocalDateTime
+import kotlin.time.Instant
 import kotlinx.serialization.Serializable
 
 
@@ -9,5 +9,5 @@ data class HintUnlock(
     val hintId: Int,
     val userId: Int,
     val teamId: Int?,
-    val unlockedAt: LocalDateTime
+    val unlockedAt: Instant
 )

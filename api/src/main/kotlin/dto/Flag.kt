@@ -1,6 +1,6 @@
 package com.ctfp.dto
 
-import kotlinx.datetime.LocalDateTime
+import kotlin.time.Instant
 import kotlinx.serialization.Serializable
 
 
@@ -14,5 +14,5 @@ data class Flag(
     val minValue: Int? = null,
     val decayFun: String = "static",
     val sortOrder: Int = 1,
-    val createdAt: LocalDateTime
+    val createdAt: Instant
 )

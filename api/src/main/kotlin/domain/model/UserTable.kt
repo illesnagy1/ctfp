@@ -3,7 +3,8 @@ package com.ctfp.domain.model
 import com.ctfp.config.enum.Language
 import com.ctfp.config.enum.UserRole
 import org.jetbrains.exposed.v1.core.dao.id.IntIdTable
-import org.jetbrains.exposed.v1.datetime.*
+import org.jetbrains.exposed.v1.datetime.CurrentTimestamp
+import org.jetbrains.exposed.v1.datetime.timestamp
 
 object UserTable : IntIdTable("user") {
     val codeId = reference("code_id", RegistrationCodeTable)
@@ -30,6 +31,6 @@ object UserTable : IntIdTable("user") {
     val soundEnabled = bool("sound_enabled").default(true)
     // TODO: JSON
     val visibilitySettings = text("visibility_settings").nullable()
-    val createdAt = datetime("created_at").defaultExpression(CurrentDateTime)
-    val updatedAt = datetime("updated_at").defaultExpression(CurrentDateTime)
+    val createdAt = timestamp("created_at").defaultExpression(CurrentTimestamp)
+    val updatedAt = timestamp("updated_at").defaultExpression(CurrentTimestamp)
 }

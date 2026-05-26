@@ -1,7 +1,8 @@
 package com.ctfp.domain.model
 
 import org.jetbrains.exposed.v1.core.dao.id.IntIdTable
-import org.jetbrains.exposed.v1.datetime.*
+import org.jetbrains.exposed.v1.datetime.CurrentTimestamp
+import org.jetbrains.exposed.v1.datetime.timestamp
 
 object PageTable : IntIdTable("page") {
     val title = varchar("title", 255)
@@ -12,8 +13,8 @@ object PageTable : IntIdTable("page") {
     val body = text("body")
     val isHidden = bool("is_hidden").default(false)
     val isPrivate = bool("is_protected").default(false)
-    val createdAt = datetime("created_at").defaultExpression(CurrentDateTime)
-    val updatedAt = datetime("updated_at").defaultExpression(CurrentDateTime)
+    val createdAt = timestamp("created_at").defaultExpression(CurrentTimestamp)
+    val updatedAt = timestamp("updated_at").defaultExpression(CurrentTimestamp)
 
     init {
         uniqueIndex(route, language)

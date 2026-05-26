@@ -1,6 +1,6 @@
 package com.ctfp.dto
 
-import kotlinx.datetime.LocalDateTime
+import kotlin.time.Instant
 import kotlinx.serialization.Serializable
 
 
@@ -9,5 +9,5 @@ data class Hint(
     val challengeId: Int,
     val body: String,
     val cost: Int = 0,
-    val createdAt: LocalDateTime
+    val createdAt: Instant
 )

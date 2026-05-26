@@ -1,6 +1,6 @@
 package com.ctfp.dto
 
-import kotlinx.datetime.LocalDateTime
+import kotlin.time.Instant
 import kotlinx.serialization.Serializable
 
 
@@ -8,5 +8,5 @@ import kotlinx.serialization.Serializable
 data class TeamMember(
     val teamId: Int,
     val userId: Int,
-    val joinedAt: LocalDateTime,
+    val joinedAt: Instant,
 )

@@ -1,7 +1,8 @@
 package com.ctfp.domain.model
 
 import org.jetbrains.exposed.v1.core.dao.id.IntIdTable
-import org.jetbrains.exposed.v1.datetime.*
+import org.jetbrains.exposed.v1.datetime.CurrentTimestamp
+import org.jetbrains.exposed.v1.datetime.timestamp
 
 object TeamTable : IntIdTable("team") {
     val name = varchar("name", 64).uniqueIndex()
@@ -10,6 +11,6 @@ object TeamTable : IntIdTable("team") {
     val website = varchar("website", 255).nullable()
     val isHidden = bool("is_hidden").default(false)
     val isBanned = bool("is_banned").default(false)
-    val createdAt = datetime("created_at").defaultExpression(CurrentDateTime)
-    val updatedAt = datetime("updated_at").defaultExpression(CurrentDateTime)
+    val createdAt = timestamp("created_at").defaultExpression(CurrentTimestamp)
+    val updatedAt = timestamp("updated_at").defaultExpression(CurrentTimestamp)
 }

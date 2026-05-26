@@ -1,6 +1,6 @@
 package com.ctfp.dto
 
-import kotlinx.datetime.LocalDateTime
+import kotlin.time.Instant
 import kotlinx.serialization.Serializable
 
 
@@ -9,10 +9,10 @@ data class Challenge (
     val title: String,
     val description: String?,
     val isVisible: Boolean = true,
-    val publishAt: LocalDateTime,
+    val publishAt: Instant,
     val maxAttempts: Int,
     val categories: List<String>,
     val timeLimit: Int,
-    val createdAt: LocalDateTime,
-    val updatedAt: LocalDateTime
+    val createdAt: Instant,
+    val updatedAt: Instant
 )
