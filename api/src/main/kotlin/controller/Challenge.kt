@@ -1,7 +1,7 @@
 package com.ctfp.controller
 
 import com.ctfp.controller.helper.getId
-import com.ctfp.dto.Challenge
+import com.ctfp.dto.ChallengeRequest
 import com.ctfp.service.ChallengeService
 import io.ktor.http.HttpStatusCode
 import io.ktor.server.request.receive
@@ -20,7 +20,7 @@ fun Route.challenge(service: ChallengeService) {
             call.respond(service.getAllChallenges())
         }
         post {
-            val challenge = call.receive<Challenge>()
+            val challenge = call.receive<ChallengeRequest>()
             service.createChallenge(challenge)
 
             call.respond(HttpStatusCode.Created)
@@ -38,7 +38,7 @@ fun Route.challenge(service: ChallengeService) {
             }
             put {
                 val id = call.getId()
-                val challenge = call.receive<Challenge>()
+                val challenge = call.receive<ChallengeRequest>()
                 service.updateChallenge(id, challenge)
 
                 call.respond(HttpStatusCode.NoContent)

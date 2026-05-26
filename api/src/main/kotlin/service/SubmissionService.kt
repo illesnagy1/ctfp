@@ -2,42 +2,31 @@ package com.ctfp.service
 
 import com.ctfp.domain.dao.SubmissionDAO
 import com.ctfp.domain.db.withTransaction
-import com.ctfp.domain.model.ChallengeTable
-import com.ctfp.domain.model.FlagTable
-import com.ctfp.domain.model.TeamTable
-import com.ctfp.domain.model.UserTable
-import com.ctfp.dto.Submission
-import org.jetbrains.exposed.v1.core.dao.id.EntityID
+import com.ctfp.dto.SubmissionRequest
+import com.ctfp.dto.SubmissionResponse
+import com.ctfp.dto.apply
+import com.ctfp.dto.toDto
 
 
 class SubmissionService {
-    suspend fun getSubmission(id: Int): Submission = withTransaction {
-        SubmissionDAO[id].toModel()
+    suspend fun getSubmission(id: Int): SubmissionResponse = withTransaction {
+        SubmissionDAO[id].toDto()
     }
 
-    suspend fun getAllSubmissions(): List<Submission> = withTransaction {
-        SubmissionDAO.all().map { it.toModel() }
+    suspend fun getAllSubmissions(): List<SubmissionResponse> = withTransaction {
+        SubmissionDAO.all().map { it.toDto() }
     }
 
-    suspend fun createSubmission(submission: Submission): Int = withTransaction {
+    suspend fun createSubmission(submission: SubmissionRequest): Int = withTransaction {
         val newSubmission = SubmissionDAO.new {
-            userId = EntityID(submission.userId, UserTable)
-            teamId = submission.teamId?.let { EntityID(it, TeamTable) }
-            challengeId = EntityID(submission.challengeId, ChallengeTable)
-            flagId = submission.flagId?.let { EntityID(it, FlagTable) }
-            submittedAt = submission.submittedAt
+            apply(submission)
         }
         newSubmission.id.value
     }
 
-    suspend fun updateSubmission(id: Int, submission: Submission) = withTransaction {
-        val dbSubmission = SubmissionDAO[id]
-        dbSubmission.run {
-            userId = EntityID(submission.userId, UserTable)
-            teamId = submission.teamId?.let { EntityID(it, TeamTable) }
-            challengeId = EntityID(submission.challengeId, ChallengeTable)
-            flagId = submission.flagId?.let { EntityID(it, FlagTable) }
-            submittedAt = submission.submittedAt
+    suspend fun updateSubmission(id: Int, submission: SubmissionRequest) = withTransaction {
+        SubmissionDAO.findByIdAndUpdate(id) {
+            it.apply(submission)
         }
     }
 

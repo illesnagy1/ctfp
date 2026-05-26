@@ -4,7 +4,7 @@ import org.jetbrains.exposed.v1.core.dao.id.IntIdTable
 import org.jetbrains.exposed.v1.datetime.CurrentTimestamp
 import org.jetbrains.exposed.v1.datetime.timestamp
 
-object PageTable : IntIdTable("page") {
+object PageTable : IntIdTable() {
     val title = varchar("title", 255)
     val route = varchar("route", 255)
     val language = varchar("language", 2).default("en")

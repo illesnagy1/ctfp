@@ -1,7 +1,7 @@
 package com.ctfp.controller
 
 import com.ctfp.controller.helper.getId
-import com.ctfp.dto.RegistrationCode
+import com.ctfp.dto.RegistrationCodeRequest
 import com.ctfp.service.RegistrationCodeService
 import io.ktor.http.HttpStatusCode
 import io.ktor.server.request.receive
@@ -19,7 +19,7 @@ fun Route.registrationCode(repository: RegistrationCodeService) {
             call.respond(repository.getAllRegistrationCodes())
         }
         post {
-            val code = call.receive<RegistrationCode>()
+            val code = call.receive<RegistrationCodeRequest>()
             repository.createRegistrationCode(code)
 
             call.respond(HttpStatusCode.Created)
@@ -39,7 +39,7 @@ fun Route.registrationCode(repository: RegistrationCodeService) {
             }
             put {
                 val id = call.getId()
-                val code = call.receive<RegistrationCode>()
+                val code = call.receive<RegistrationCodeRequest>()
                 repository.updateRegistrationCode(id, code)
 
                 call.respond(HttpStatusCode.NoContent)

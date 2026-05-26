@@ -1,7 +1,7 @@
 package com.ctfp.controller
 
 import com.ctfp.controller.helper.getId
-import com.ctfp.dto.Hint
+import com.ctfp.dto.HintRequest
 import com.ctfp.service.HintService
 import io.ktor.http.HttpStatusCode
 import io.ktor.server.request.receive
@@ -20,7 +20,7 @@ fun Route.hint(service: HintService) {
             call.respond(service.getHintsForChallenge(challengeId))
         }
         post {
-            val hint = call.receive<Hint>()
+            val hint = call.receive<HintRequest>()
             service.createHint(hint)
 
             call.respond(HttpStatusCode.Created)
@@ -40,7 +40,7 @@ fun Route.hint(service: HintService) {
             }
             put {
                 val id = call.getId()
-                val hint = call.receive<Hint>()
+                val hint = call.receive<HintRequest>()
                 service.updateHint(id, hint)
 
                 call.respond(HttpStatusCode.NoContent)

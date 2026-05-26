@@ -7,4 +7,6 @@ import org.jetbrains.exposed.v1.dao.IntEntityClass
 
 class FileDAO(id: EntityID<Int>) : IntEntity(id) {
     companion object : IntEntityClass<FileDAO>(FileTable)
+
+    var name by FileTable.name
 }

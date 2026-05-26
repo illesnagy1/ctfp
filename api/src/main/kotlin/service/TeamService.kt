@@ -2,45 +2,31 @@ package com.ctfp.service
 
 import com.ctfp.domain.dao.TeamDAO
 import com.ctfp.domain.db.withTransaction
-import com.ctfp.domain.model.TeamTable
-import com.ctfp.dto.Team
-import org.jetbrains.exposed.v1.core.dao.id.EntityID
+import com.ctfp.dto.TeamRequest
+import com.ctfp.dto.TeamResponse
+import com.ctfp.dto.apply
+import com.ctfp.dto.toDto
 
 
 class TeamService {
-    suspend fun getTeam(id: Int): Team = withTransaction {
-        TeamDAO[id].toModel()
+    suspend fun getTeam(id: Int): TeamResponse = withTransaction {
+        TeamDAO[id].toDto()
     }
 
-    suspend fun getAllTeams(): List<Team> = withTransaction {
-        TeamDAO.all().map { it.toModel() }
+    suspend fun getAllTeams(): List<TeamResponse> = withTransaction {
+        TeamDAO.all().map { it.toDto() }
     }
 
-    suspend fun createTeam(team: Team) = withTransaction {
-        val team = TeamDAO.new {
-            name = team.name
-            ownerId = EntityID(team.ownerId, TeamTable)
-            country = team.country
-            website = team.website
-            isHidden = team.isHidden
-            isBanned = team.isBanned
-            createdAt = team.createdAt
-            updatedAt = team.updatedAt
+    suspend fun createTeam(team: TeamRequest): Int = withTransaction {
+        val newTeam = TeamDAO.new {
+            apply(team)
         }
-        team.id.value
+        newTeam.id.value
     }
 
-    suspend fun updateTeam(id: Int, team: Team) = withTransaction {
-        val dbTeam = TeamDAO[id]
-        dbTeam.run {
-            name = team.name
-            ownerId = EntityID(team.ownerId, TeamTable)
-            country = team.country
-            website = team.website
-            isHidden = team.isHidden
-            isBanned = team.isBanned
-            createdAt = team.createdAt
-            updatedAt = team.updatedAt
+    suspend fun updateTeam(id: Int, team: TeamRequest) = withTransaction {
+        TeamDAO.findByIdAndUpdate(id) {
+            it.apply(team)
         }
     }
 

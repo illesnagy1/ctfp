@@ -1,7 +1,7 @@
 package com.ctfp.controller
 
 import com.ctfp.controller.helper.getId
-import com.ctfp.dto.EmailTemplate
+import com.ctfp.dto.EmailTemplateRequest
 import com.ctfp.service.EmailTemplateService
 import io.ktor.http.HttpStatusCode
 import io.ktor.server.request.receive
@@ -19,7 +19,7 @@ fun Route.emailTemplate(service: EmailTemplateService) {
             call.respond(service.getAllEmailTemplates())
         }
         post {
-            val emailTemplate = call.receive<EmailTemplate>()
+            val emailTemplate = call.receive<EmailTemplateRequest>()
             service.createEmailTemplate(emailTemplate)
 
             call.respond(HttpStatusCode.Created)
@@ -39,7 +39,7 @@ fun Route.emailTemplate(service: EmailTemplateService) {
             }
             put {
                 val id = call.getId()
-                val emailTemplate = call.receive<EmailTemplate>()
+                val emailTemplate = call.receive<EmailTemplateRequest>()
                 service.updateEmailTemplate(id, emailTemplate)
 
                 call.respond(HttpStatusCode.NoContent)

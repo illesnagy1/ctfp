@@ -1,7 +1,7 @@
 package com.ctfp.controller
 
 import com.ctfp.controller.helper.getId
-import com.ctfp.dto.Flag
+import com.ctfp.dto.FlagRequest
 import com.ctfp.service.FlagService
 import io.ktor.http.HttpStatusCode
 import io.ktor.server.request.receive
@@ -20,9 +20,8 @@ fun Route.flag(service: FlagService) {
             call.respond(service.getFlagsForChallenge(challengeId))
         }
         post {
-            val challengeId = call.parameters["challengeId"]?.toIntOrNull() ?: throw IllegalArgumentException("Invalid challengeId")
-            val flag = call.receive<Flag>()
-            service.createFlag(challengeId, flag)
+            val flag = call.receive<FlagRequest>()
+            service.createFlag(flag)
 
             call.respond(HttpStatusCode.Created)
         }
@@ -42,7 +41,7 @@ fun Route.flag(service: FlagService) {
             }
             put {
                 val id = call.getId()
-                val flag = call.receive<Flag>()
+                val flag = call.receive<FlagRequest>()
                 val challengeId = call.parameters["challengeId"]?.toIntOrNull() ?: throw IllegalArgumentException("Invalid challengeId")
                 service.updateFlag(challengeId, id, flag)
 

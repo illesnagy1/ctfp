@@ -1,7 +1,7 @@
 package com.ctfp.controller
 
 import com.ctfp.controller.helper.getId
-import com.ctfp.dto.Submission
+import com.ctfp.dto.SubmissionRequest
 import com.ctfp.service.SubmissionService
 import io.ktor.http.HttpStatusCode
 import io.ktor.server.request.receive
@@ -19,7 +19,7 @@ fun Route.submission(service: SubmissionService) {
             call.respond(service.getAllSubmissions())
         }
         post {
-            val submission = call.receive<Submission>()
+            val submission = call.receive<SubmissionRequest>()
             service.createSubmission(submission)
 
             call.respond(HttpStatusCode.Created)

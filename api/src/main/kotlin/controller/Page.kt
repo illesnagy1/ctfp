@@ -1,7 +1,7 @@
 package com.ctfp.controller
 
 import com.ctfp.controller.helper.getId
-import com.ctfp.dto.Page
+import com.ctfp.dto.PageRequest
 import com.ctfp.service.PageService
 import io.ktor.http.HttpStatusCode
 import io.ktor.server.request.receive
@@ -19,7 +19,7 @@ fun Route.page(service: PageService) {
             call.respond(service.getAllPages())
         }
         post {
-            val page = call.receive<Page>()
+            val page = call.receive<PageRequest>()
             service.createPage(page)
 
             call.respond(HttpStatusCode.Created)
@@ -39,7 +39,7 @@ fun Route.page(service: PageService) {
             }
             put {
                 val id = call.getId()
-                val page = call.receive<Page>()
+                val page = call.receive<PageRequest>()
                 service.updatePage(id, page)
 
                 call.respond(HttpStatusCode.NoContent)

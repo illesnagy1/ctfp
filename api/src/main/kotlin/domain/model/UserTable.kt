@@ -6,7 +6,7 @@ import org.jetbrains.exposed.v1.core.dao.id.IntIdTable
 import org.jetbrains.exposed.v1.datetime.CurrentTimestamp
 import org.jetbrains.exposed.v1.datetime.timestamp
 
-object UserTable : IntIdTable("user") {
+object UserTable : IntIdTable() {
     val codeId = reference("code_id", RegistrationCodeTable)
     val username = varchar("username", 64).uniqueIndex()
     val email = varchar("email", 255).uniqueIndex()

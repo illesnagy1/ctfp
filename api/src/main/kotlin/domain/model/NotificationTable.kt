@@ -5,7 +5,7 @@ import org.jetbrains.exposed.v1.core.dao.id.IntIdTable
 import org.jetbrains.exposed.v1.datetime.CurrentTimestamp
 import org.jetbrains.exposed.v1.datetime.timestamp
 
-object NotificationTable : IntIdTable("notification") {
+object NotificationTable : IntIdTable() {
     val title = varchar("title", 255)
     val message = text("message")
     val type = customEnumeration(

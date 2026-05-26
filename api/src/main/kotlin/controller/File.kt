@@ -1,7 +1,7 @@
 package com.ctfp.controller
 
 import com.ctfp.controller.helper.getId
-import com.ctfp.dto.File
+import com.ctfp.dto.FileRequest
 import com.ctfp.service.FileService
 import io.ktor.http.HttpStatusCode
 import io.ktor.server.request.receive
@@ -19,7 +19,7 @@ fun Route.file(service: FileService) {
             call.respond(service.getAllFiles())
         }
         post {
-            val file = call.receive<File>()
+            val file = call.receive<FileRequest>()
             service.createFile(file)
 
             call.respond(HttpStatusCode.Created)

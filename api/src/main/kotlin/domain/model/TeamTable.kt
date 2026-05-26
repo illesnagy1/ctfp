@@ -4,7 +4,7 @@ import org.jetbrains.exposed.v1.core.dao.id.IntIdTable
 import org.jetbrains.exposed.v1.datetime.CurrentTimestamp
 import org.jetbrains.exposed.v1.datetime.timestamp
 
-object TeamTable : IntIdTable("team") {
+object TeamTable : IntIdTable() {
     val name = varchar("name", 64).uniqueIndex()
     val ownerId = reference("owner_id", UserTable)
     val country = varchar("country", 2).nullable()

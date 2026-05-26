@@ -1,47 +1,32 @@
 package com.ctfp.service
 
 import com.ctfp.domain.dao.ChallengeDAO
-import com.ctfp.dto.Challenge
 import com.ctfp.domain.db.withTransaction
+import com.ctfp.dto.ChallengeRequest
+import com.ctfp.dto.ChallengeResponse
+import com.ctfp.dto.apply
+import com.ctfp.dto.toDto
 
 
 class ChallengeService {
-    suspend fun getChallenge(id: Int): Challenge = withTransaction {
-        ChallengeDAO[id].toModel()
+    suspend fun getChallenge(id: Int): ChallengeResponse = withTransaction {
+        ChallengeDAO[id].toDto()
     }
 
-    suspend fun getAllChallenges(): List<Challenge> = withTransaction {
-        ChallengeDAO.all().map { it.toModel() }
+    suspend fun getAllChallenges(): List<ChallengeResponse> = withTransaction {
+        ChallengeDAO.all().map { it.toDto() }
     }
 
-    suspend fun createChallenge(challenge: Challenge): Int = withTransaction {
+    suspend fun createChallenge(challenge: ChallengeRequest): Int = withTransaction {
         val newChallenge = ChallengeDAO.new {
-            title = challenge.title
-            description = challenge.description
-            isVisible = challenge.isVisible
-            publishAt = challenge.publishAt
-            maxAttempts = challenge.maxAttempts
-            categories = challenge.categories
-            timeLimit = challenge.timeLimit
-            createdAt = challenge.createdAt
-            updatedAt = challenge.updatedAt
+            apply(challenge)
         }
         newChallenge.id.value
     }
 
-    suspend fun updateChallenge(id: Int, challenge: Challenge) = withTransaction {
-        ChallengeDAO
-        val dbChallenge = ChallengeDAO[id]
-        dbChallenge.run {
-            title = challenge.title
-            description = challenge.description
-            isVisible = challenge.isVisible
-            publishAt = challenge.publishAt
-            maxAttempts = challenge.maxAttempts
-            categories = challenge.categories
-            timeLimit = challenge.timeLimit
-            createdAt = challenge.createdAt
-            updatedAt = challenge.updatedAt
+    suspend fun updateChallenge(id: Int, challenge: ChallengeRequest) = withTransaction {
+        ChallengeDAO.findByIdAndUpdate(id) {
+            it.apply(challenge)
         }
     }
 

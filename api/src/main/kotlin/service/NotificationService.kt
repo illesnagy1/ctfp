@@ -2,39 +2,31 @@ package com.ctfp.service
 
 import com.ctfp.domain.dao.NotificationDAO
 import com.ctfp.domain.db.withTransaction
-import com.ctfp.dto.Notification
+import com.ctfp.dto.NotificationRequest
+import com.ctfp.dto.NotificationResponse
+import com.ctfp.dto.apply
+import com.ctfp.dto.toDto
 
 
 class NotificationService {
-    suspend fun getNotification(id: Int): Notification = withTransaction {
-        NotificationDAO[id].toModel()
+    suspend fun getNotification(id: Int): NotificationResponse = withTransaction {
+        NotificationDAO[id].toDto()
     }
 
-    suspend fun getAllNotifications(): List<Notification> = withTransaction {
-        NotificationDAO.all().map { it.toModel() }
+    suspend fun getAllNotifications(): List<NotificationResponse> = withTransaction {
+        NotificationDAO.all().map { it.toDto() }
     }
 
-    suspend fun createNotification(template: Notification): Int = withTransaction {
+    suspend fun createNotification(template: NotificationRequest): Int = withTransaction {
         val newNotification = NotificationDAO.new {
-            title = template.title
-            message = template.message
-            type = template.type
-            sendEmail = template.sendEmail
-            pushAt = template.pushAt
-            createdAt = template.createdAt
+            apply(template)
         }
         newNotification.id.value
     }
 
-    suspend fun updateNotification(id: Int, notification: Notification) = withTransaction {
-        val dbNotification = NotificationDAO[id]
-        dbNotification.run {
-            title = notification.title
-            message = notification.message
-            type = notification.type
-            sendEmail = notification.sendEmail
-            pushAt = notification.pushAt
-            createdAt = notification.createdAt
+    suspend fun updateNotification(id: Int, notification: NotificationRequest) = withTransaction {
+        NotificationDAO.findByIdAndUpdate(id) {
+            it.apply(notification)
         }
     }
 

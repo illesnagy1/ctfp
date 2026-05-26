@@ -4,7 +4,7 @@ import org.jetbrains.exposed.v1.core.dao.id.IntIdTable
 import org.jetbrains.exposed.v1.datetime.CurrentTimestamp
 import org.jetbrains.exposed.v1.datetime.timestamp
 
-object FlagTable : IntIdTable("flag") {
+object FlagTable : IntIdTable() {
     val challengeId = reference("challenge_id", ChallengeTable)
     val pattern = varchar("pattern", 255).uniqueIndex()
     val isCaseSensitive = bool("is_case_sensitive")

@@ -1,7 +1,6 @@
 package com.ctfp.domain.dao
 
 import com.ctfp.domain.model.HintTable
-import com.ctfp.dto.Hint
 import org.jetbrains.exposed.v1.core.dao.id.EntityID
 import org.jetbrains.exposed.v1.dao.IntEntity
 import org.jetbrains.exposed.v1.dao.IntEntityClass
@@ -13,11 +12,4 @@ class HintDAO(id: EntityID<Int>) : IntEntity(id) {
     var body by HintTable.body
     var cost by HintTable.cost
     var createdAt by HintTable.createdAt
-
-    fun toModel() = Hint(
-        challengeId = challengeId.value,
-        body = body,
-        cost = cost,
-        createdAt = createdAt,
-    )
 }

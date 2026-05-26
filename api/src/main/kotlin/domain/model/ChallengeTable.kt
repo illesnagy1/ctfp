@@ -4,7 +4,7 @@ import org.jetbrains.exposed.v1.core.dao.id.IntIdTable
 import org.jetbrains.exposed.v1.datetime.CurrentTimestamp
 import org.jetbrains.exposed.v1.datetime.timestamp
 
-object ChallengeTable : IntIdTable("challenge") {
+object ChallengeTable : IntIdTable() {
     val title = varchar("title", 255).uniqueIndex()
     val description = text("description").nullable()
     val isVisible = bool("is_visible").default(true)

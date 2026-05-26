@@ -4,7 +4,7 @@ import org.jetbrains.exposed.v1.core.dao.id.IntIdTable
 import org.jetbrains.exposed.v1.datetime.CurrentTimestamp
 import org.jetbrains.exposed.v1.datetime.timestamp
 
-object PasswordResetTokenTable : IntIdTable("password_reset_token") {
+object PasswordResetTokenTable : IntIdTable() {
     val userId = reference("user_id", UserTable)
     val token = varchar("token", 255).uniqueIndex()
     val createdAt = timestamp("created_at").defaultExpression(CurrentTimestamp)

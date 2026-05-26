@@ -2,41 +2,36 @@ package com.ctfp.service
 
 import com.ctfp.domain.dao.HintDAO
 import com.ctfp.domain.db.withTransaction
-import com.ctfp.domain.model.ChallengeTable
-import com.ctfp.dto.Hint
-import org.jetbrains.exposed.v1.core.dao.id.EntityID
+import com.ctfp.dto.HintRequest
+import com.ctfp.dto.HintResponse
+import com.ctfp.dto.apply
+import com.ctfp.dto.toDto
+import org.jetbrains.exposed.v1.core.eq
 
 
 class HintService {
-    suspend fun getHint(id: Int): Hint = withTransaction {
-        HintDAO[id].toModel()
+    suspend fun getHint(id: Int): HintResponse = withTransaction {
+        HintDAO[id].toDto()
     }
 
-    suspend fun getHintsForChallenge(challengeId: Int): List<Hint> = withTransaction {
-        TODO()
+    suspend fun getHintsForChallenge(challengeId: Int): List<HintResponse> = withTransaction {
+        HintDAO.find { com.ctfp.domain.model.HintTable.challengeId eq challengeId }.map { it.toDto() }
     }
 
-    suspend fun getAllHints(): List<Hint> = withTransaction {
-        HintDAO.all().map { it.toModel() }
+    suspend fun getAllHints(): List<HintResponse> = withTransaction {
+        HintDAO.all().map { it.toDto() }
     }
 
-    suspend fun createHint(hint: Hint): Int = withTransaction {
+    suspend fun createHint(hint: HintRequest): Int = withTransaction {
         val newHint = HintDAO.new {
-            challengeId = EntityID(hint.challengeId, ChallengeTable)
-            body = hint.body
-            cost = hint.cost
-            createdAt = hint.createdAt
+            apply(hint)
         }
         newHint.id.value
     }
 
-    suspend fun updateHint(id: Int, hint: Hint) = withTransaction {
-        val dbHint = HintDAO[id]
-        dbHint.run {
-            challengeId = EntityID(hint.challengeId, ChallengeTable)
-            body = hint.body
-            cost = hint.cost
-            createdAt = hint.createdAt
+    suspend fun updateHint(id: Int, hint: HintRequest) = withTransaction {
+        HintDAO.findByIdAndUpdate(id) {
+            it.apply(hint)
         }
     }
 

@@ -2,35 +2,31 @@ package com.ctfp.service
 
 import com.ctfp.domain.dao.RegistrationCodeDAO
 import com.ctfp.domain.db.withTransaction
-import com.ctfp.dto.RegistrationCode
+import com.ctfp.dto.RegistrationCodeRequest
+import com.ctfp.dto.RegistrationCodeResponse
+import com.ctfp.dto.apply
+import com.ctfp.dto.toDto
 
 
 class RegistrationCodeService {
-    suspend fun getRegistrationCode(id: Int): RegistrationCode = withTransaction {
-        RegistrationCodeDAO[id].toModel()
+    suspend fun getRegistrationCode(id: Int): RegistrationCodeResponse = withTransaction {
+        RegistrationCodeDAO[id].toDto()
     }
 
-    suspend fun getAllRegistrationCodes(): List<RegistrationCode> = withTransaction {
-        RegistrationCodeDAO.all().map { it.toModel() }
+    suspend fun getAllRegistrationCodes(): List<RegistrationCodeResponse> = withTransaction {
+        RegistrationCodeDAO.all().map { it.toDto() }
     }
 
-    suspend fun createRegistrationCode(regcode: RegistrationCode): Int = withTransaction {
-        val newCode = RegistrationCodeDAO.new {
-            code = regcode.code
-            maxUses = regcode.maxUses
-            createdAt = regcode.createdAt
-            expiresAt = regcode.expiresAt
+    suspend fun createRegistrationCode(regcode: RegistrationCodeRequest): Int = withTransaction {
+        val newRegistrationCode = RegistrationCodeDAO.new {
+            apply(regcode)
         }
-        newCode.id.value
+        newRegistrationCode.id.value
     }
 
-    suspend fun updateRegistrationCode(id: Int, regcode: RegistrationCode) = withTransaction {
-        val dbCode = RegistrationCodeDAO[id]
-        dbCode.run {
-            code = regcode.code
-            maxUses = regcode.maxUses
-            createdAt = regcode.createdAt
-            expiresAt = regcode.expiresAt
+    suspend fun updateRegistrationCode(id: Int, regcode: RegistrationCodeRequest) = withTransaction {
+        RegistrationCodeDAO.findByIdAndUpdate(id) {
+            it.apply(regcode)
         }
     }
 

@@ -2,45 +2,36 @@ package com.ctfp.service
 
 import com.ctfp.domain.dao.FlagDAO
 import com.ctfp.domain.db.withTransaction
-import com.ctfp.domain.model.ChallengeTable
-import com.ctfp.dto.Flag
-import org.jetbrains.exposed.v1.core.dao.id.EntityID
+import com.ctfp.dto.FlagRequest
+import com.ctfp.dto.FlagResponse
+import com.ctfp.dto.apply
+import com.ctfp.dto.toDto
+import org.jetbrains.exposed.v1.core.eq
+
 
 class FlagService {
-    suspend fun getFlagForChallenge(challengeId: Int, id: Int): Flag = withTransaction {
-        FlagDAO[id].toModel()
+    suspend fun getFlag(id: Int): FlagResponse = withTransaction {
+        FlagDAO[id].toDto()
     }
 
-    suspend fun getFlagsForChallenge(challengeId: Int): List<Flag> = withTransaction {
-        TODO("Not yet implemented")
+    suspend fun getFlagForChallenge(challengeId: Int, id: Int): FlagResponse = withTransaction {
+        FlagDAO[id].toDto()
     }
 
-    suspend fun createFlag(challengeId: Int, flag: Flag): Int = withTransaction {
+    suspend fun getFlagsForChallenge(challengeId: Int): List<FlagResponse> = withTransaction {
+        FlagDAO.find { com.ctfp.domain.model.FlagTable.challengeId eq challengeId }.map { it.toDto() }
+    }
+
+    suspend fun createFlag(flag: FlagRequest): Int = withTransaction {
         val newFlag = FlagDAO.new {
-            pattern = flag.pattern
-            isCaseSensitive = flag.isCaseSensitive
-            baseValue = flag.baseValue
-            decayValue = flag.decayValue
-            minValue = flag.minValue
-            decayFun = flag.decayFun
-            sortOrder = flag.sortOrder
-            createdAt = flag.createdAt
+            apply(flag)
         }
-        newFlag.challengeId = EntityID(challengeId, ChallengeTable)
         newFlag.id.value
     }
 
-    suspend fun updateFlag(challengeId: Int, id: Int, flag: Flag) = withTransaction {
-        val dbFlag = FlagDAO[id]
-        dbFlag.run {
-            pattern = flag.pattern
-            isCaseSensitive = flag.isCaseSensitive
-            baseValue = flag.baseValue
-            decayValue = flag.decayValue
-            minValue = flag.minValue
-            decayFun = flag.decayFun
-            sortOrder = flag.sortOrder
-            createdAt = flag.createdAt
+    suspend fun updateFlag(challengeId: Int, id: Int, flag: FlagRequest) = withTransaction {
+        FlagDAO.findByIdAndUpdate(id) {
+            it.apply(flag)
         }
     }
 
