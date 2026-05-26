@@ -12,41 +12,42 @@ import com.ctfp.controller.registrationCode
 import com.ctfp.controller.submission
 import com.ctfp.controller.team
 import com.ctfp.controller.user
-import com.ctfp.repository.postgres.PostgresChallengeRepository
-import com.ctfp.repository.postgres.PostgresEmailTemplateRepository
-import com.ctfp.repository.postgres.PostgresFileRepository
-import com.ctfp.repository.postgres.PostgresFlagRepository
-import com.ctfp.repository.postgres.PostgresHintRepository
-import com.ctfp.repository.postgres.PostgresNotificationRepository
-import com.ctfp.repository.postgres.PostgresPageRepository
-import com.ctfp.repository.postgres.PostgresRegistrationCodeRepository
-import com.ctfp.repository.postgres.PostgresSubmissionRepository
-import com.ctfp.repository.postgres.PostgresTeamRepository
-import com.ctfp.repository.postgres.PostgresUserRepository
+import com.ctfp.service.AuthService
+import com.ctfp.service.ChallengeService
+import com.ctfp.service.EmailTemplateService
+import com.ctfp.service.FileService
+import com.ctfp.service.FlagService
+import com.ctfp.service.HintService
+import com.ctfp.service.NotificationService
+import com.ctfp.service.PageService
+import com.ctfp.service.RegistrationCodeService
+import com.ctfp.service.SubmissionService
+import com.ctfp.service.TeamService
+import com.ctfp.service.UserService
 import io.ktor.server.application.*
 import io.ktor.server.response.*
 import io.ktor.server.routing.*
+import io.ktor.server.http.content.*
 
 fun Application.configureRouting() {
     routing {
         get("/") {
-            call.respondText("Hello World!")
+            call.respondText("Hello, World!")
         }
-        challenge(
-            PostgresChallengeRepository(),
-            PostgresFlagRepository(),
-            PostgresHintRepository()
-        )
-        auth()
-        emailTemplate(PostgresEmailTemplateRepository())
-        file(PostgresFileRepository())
-        flag(PostgresFlagRepository())
-        hint(PostgresHintRepository())
-        notification(PostgresNotificationRepository())
-        page(PostgresPageRepository())
-        registrationCode(PostgresRegistrationCodeRepository())
-        submission(PostgresSubmissionRepository())
-        team(PostgresTeamRepository())
-        user(PostgresUserRepository())
+
+        challenge(ChallengeService())
+        auth(AuthService())
+        emailTemplate(EmailTemplateService())
+        file(FileService())
+        flag(FlagService())
+        hint(HintService())
+        notification(NotificationService())
+        page(PageService())
+        registrationCode(RegistrationCodeService())
+        submission(SubmissionService())
+        team(TeamService())
+        user(UserService())
+
+        staticResources("/static", "static")
     }
 }

@@ -1,25 +1,27 @@
 package com.ctfp.plugins
 
-import io.ktor.server.application.*
-import io.ktor.http.*
-import io.ktor.http.content.*
-import io.ktor.server.plugins.cachingheaders.*
-import com.asyncapi.kotlinasyncapi.ktor.AsyncApiPlugin
 import com.asyncapi.kotlinasyncapi.context.service.AsyncApiExtension
+import com.asyncapi.kotlinasyncapi.ktor.AsyncApiPlugin
 import com.ucasoft.ktor.simpleCache.SimpleCache
 import com.ucasoft.ktor.simpleMemoryCache.*
-import kotlin.time.Duration.Companion.seconds
 import com.ucasoft.ktor.simpleRedisCache.*
+import io.ktor.http.*
+import io.ktor.http.content.*
+import io.ktor.server.application.*
+import io.ktor.server.plugins.cachingheaders.*
 import io.ktor.server.plugins.compression.*
 import io.ktor.server.plugins.conditionalheaders.*
+import io.ktor.server.plugins.cors.routing.*
 import io.ktor.server.plugins.defaultheaders.*
 import io.ktor.server.plugins.forwardedheaders.*
 import io.ktor.server.plugins.hsts.*
 import io.ktor.server.plugins.httpsredirect.*
 import io.ktor.server.plugins.openapi.*
-import io.ktor.server.routing.*
 import io.ktor.server.plugins.partialcontent.*
 import io.ktor.server.plugins.swagger.*
+import io.ktor.server.response.*
+import io.ktor.server.routing.*
+import kotlin.time.Duration.Companion.seconds
 
 fun Application.configureHttp() {
     install(CachingHeaders) {
@@ -60,17 +62,17 @@ fun Application.configureHttp() {
     install(HSTS) {
         includeSubDomains = true
     }
-    install(HttpsRedirect) {
-        // The port to redirect to. By default 443, the default HTTPS port.
-        sslPort = 443
-        // 301 Moved Permanently, or 302 Found redirect.
-        permanentRedirect = true
-    }
+//    install(HttpsRedirect) {
+//        // The port to redirect to. By default 443, the default HTTPS port.
+//        sslPort = 443
+//        // 301 Moved Permanently, or 302 Found redirect.
+//        permanentRedirect = true
+//    }
     routing {
         openAPI(path = "openapi") {
             /*
              Documentation source configuration goes here.
-    
+
              This can be from file (documentation.yaml), or it can be served dynamically from your sources using the
              `describe {}` API on routes.  When `openApi` enabled in Gradle, these calls will be automatically injected
              based on your code and comments.
@@ -83,10 +85,10 @@ fun Application.configureHttp() {
         maxRangeCount = 10
     }
     routing {
-        swaggerUI(path = "openapi") {
+        swaggerUI(path = "swagger") {
             /*
              Documentation source configuration goes here.
-    
+
              This can be from file (documentation.yaml), or it can be served dynamically from your sources using the
              `describe {}` API on routes.  When `openApi` enabled in Gradle, these calls will be automatically injected
              based on your code and comments.

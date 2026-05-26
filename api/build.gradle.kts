@@ -43,6 +43,7 @@ dependencies {
     implementation(ktorLibs.server.statusPages)
     implementation(ktorLibs.server.swagger)
     implementation(ktorLibs.server.websockets)
+    implementation(ktorLibs.server.cors)
     implementation(libs.exposed.core)
     implementation(libs.exposed.jdbc)
     implementation(libs.exposed.dao)
@@ -72,4 +73,12 @@ tasks.register<JavaExec>("generateMigration") {
     description = "Generate migration"
     classpath = sourceSets.main.get().runtimeClasspath
     mainClass = "GenerateMigrationKt"
+}
+
+ktor {
+    openApi {
+        enabled = true
+        codeInferenceEnabled = true
+        onlyCommented = false
+    }
 }
