@@ -14,15 +14,9 @@ import io.ktor.server.routing.route
 import io.ktor.server.response.respond
 
 fun Route.registrationCode(repository: RegistrationCodeService) {
-    route("/registration-code") {
+    route("/registration-codes") {
         get {
             call.respond(repository.getAllRegistrationCodes())
-        }
-        get("/{id}") {
-            val id = call.getId()
-            val code = repository.getRegistrationCode(id)
-
-            call.respond(code)
         }
         post {
             val code = call.receive<RegistrationCode>()
@@ -30,18 +24,32 @@ fun Route.registrationCode(repository: RegistrationCodeService) {
 
             call.respond(HttpStatusCode.Created)
         }
-        put("/{id}") {
-            val id = call.getId()
-            val code = call.receive<RegistrationCode>()
-            repository.updateRegistrationCode(id, code)
+        put {
 
-            call.respond(HttpStatusCode.NoContent)
         }
-        delete("/{id}") {
-            val id = call.getId()
-            repository.deleteRegistrationCode(id)
+        delete {
 
-            call.respond(HttpStatusCode.NoContent)
+        }
+        route("/{id}") {
+            get {
+                val id = call.getId()
+                val code = repository.getRegistrationCode(id)
+
+                call.respond(code)
+            }
+            put {
+                val id = call.getId()
+                val code = call.receive<RegistrationCode>()
+                repository.updateRegistrationCode(id, code)
+
+                call.respond(HttpStatusCode.NoContent)
+            }
+            delete {
+                val id = call.getId()
+                repository.deleteRegistrationCode(id)
+
+                call.respond(HttpStatusCode.NoContent)
+            }
         }
     }
 }

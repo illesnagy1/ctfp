@@ -15,15 +15,9 @@ import io.ktor.server.response.respond
 
 
 fun Route.challenge(service: ChallengeService) {
-    route("/challenge") {
+    route("/challenges") {
         get {
             call.respond(service.getAllChallenges())
-        }
-        get("/{id}") {
-            val id = call.getId()
-            val challenge = service.getChallenge(id)
-
-            call.respond(challenge)
         }
         post {
             val challenge = call.receive<Challenge>()
@@ -31,18 +25,75 @@ fun Route.challenge(service: ChallengeService) {
 
             call.respond(HttpStatusCode.Created)
         }
-        put("/{id}") {
-            val id = call.getId()
-            val challenge = call.receive<Challenge>()
-            service.updateChallenge(id, challenge)
-
-            call.respond(HttpStatusCode.NoContent)
+        put {
         }
-        delete("/{id}") {
-            val id = call.getId()
-            service.deleteChallenge(id)
+        delete {
+        }
+        route("/{id}") {
+            get {
+                val id = call.getId()
+                val challenge = service.getChallenge(id)
 
-            call.respond(HttpStatusCode.NoContent)
+                call.respond(challenge)
+            }
+            put {
+                val id = call.getId()
+                val challenge = call.receive<Challenge>()
+                service.updateChallenge(id, challenge)
+
+                call.respond(HttpStatusCode.NoContent)
+            }
+            delete {
+                val id = call.getId()
+                service.deleteChallenge(id)
+
+                call.respond(HttpStatusCode.NoContent)
+            }
+
+            route("flags") {
+                get {
+
+                }
+                post {
+
+                }
+                put {
+
+                }
+                delete {
+
+                }
+            }
+
+            route("hints") {
+                get {
+
+                }
+                post {
+
+                }
+                put {
+
+                }
+                delete {
+
+                }
+            }
+
+            route("submissions") {
+                get {
+
+                }
+                post {
+
+                }
+                put {
+
+                }
+                delete {
+
+                }
+            }
         }
     }
 }

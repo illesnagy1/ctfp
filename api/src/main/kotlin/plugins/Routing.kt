@@ -35,18 +35,20 @@ fun Application.configureRouting() {
             call.respondText("Hello, World!")
         }
 
-        challenge(ChallengeService())
-        auth(AuthService())
-        emailTemplate(EmailTemplateService())
-        file(FileService())
-        flag(FlagService())
-        hint(HintService())
-        notification(NotificationService())
-        page(PageService())
-        registrationCode(RegistrationCodeService())
-        submission(SubmissionService())
-        team(TeamService())
-        user(UserService())
+        route("v1") {
+            challenge(ChallengeService())
+            auth(AuthService())
+            emailTemplate(EmailTemplateService())
+            file(FileService())
+            flag(FlagService())
+            hint(HintService())
+            notification(NotificationService())
+            page(PageService())
+            registrationCode(RegistrationCodeService())
+            submission(SubmissionService())
+            team(TeamService())
+            user(UserService())
+        }
 
         staticResources("/static", "static")
     }

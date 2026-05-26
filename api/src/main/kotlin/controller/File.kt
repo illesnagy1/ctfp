@@ -11,17 +11,12 @@ import io.ktor.server.routing.get
 import io.ktor.server.routing.post
 import io.ktor.server.routing.route
 import io.ktor.server.response.respond
+import io.ktor.server.routing.put
 
 fun Route.file(service: FileService) {
-    route("/file") {
+    route("/files") {
         get {
             call.respond(service.getAllFiles())
-        }
-        get("/{id}") {
-            val id = call.getId()
-            val file = service.getFile(id)
-
-            call.respond(file)
         }
         post {
             val file = call.receive<File>()
@@ -29,11 +24,28 @@ fun Route.file(service: FileService) {
 
             call.respond(HttpStatusCode.Created)
         }
-        delete("/{id}") {
-            val id = call.getId()
-            service.deleteFile(id)
+        put {
 
-            call.respond(HttpStatusCode.NoContent)
+        }
+        delete {
+
+        }
+        route("/{id}") {
+            get {
+                val id = call.getId()
+                val file = service.getFile(id)
+
+                call.respond(file)
+            }
+            put {
+
+            }
+            delete {
+                val id = call.getId()
+                service.deleteFile(id)
+
+                call.respond(HttpStatusCode.NoContent)
+            }
         }
     }
 }

@@ -14,15 +14,9 @@ import io.ktor.server.routing.route
 import io.ktor.server.response.respond
 
 fun Route.emailTemplate(service: EmailTemplateService) {
-    route("/email-template") {
+    route("/email-templates") {
         get {
             call.respond(service.getAllEmailTemplates())
-        }
-        get("/{id}") {
-            val id = call.getId()
-            val emailTemplate = service.getEmailTemplate(id)
-
-            call.respond(emailTemplate)
         }
         post {
             val emailTemplate = call.receive<EmailTemplate>()
@@ -30,18 +24,32 @@ fun Route.emailTemplate(service: EmailTemplateService) {
 
             call.respond(HttpStatusCode.Created)
         }
-        put("/{id}") {
-            val id = call.getId()
-            val emailTemplate = call.receive<EmailTemplate>()
-            service.updateEmailTemplate(id, emailTemplate)
+        put {
 
-            call.respond(HttpStatusCode.NoContent)
         }
-        delete("/{id}") {
-            val id = call.getId()
-            service.deleteEmailTemplate(id)
+        delete {
 
-            call.respond(HttpStatusCode.NoContent)
+        }
+        route("/{id}") {
+            get {
+                val id = call.getId()
+                val emailTemplate = service.getEmailTemplate(id)
+
+                call.respond(emailTemplate)
+            }
+            put {
+                val id = call.getId()
+                val emailTemplate = call.receive<EmailTemplate>()
+                service.updateEmailTemplate(id, emailTemplate)
+
+                call.respond(HttpStatusCode.NoContent)
+            }
+            delete {
+                val id = call.getId()
+                service.deleteEmailTemplate(id)
+
+                call.respond(HttpStatusCode.NoContent)
+            }
         }
     }
 }

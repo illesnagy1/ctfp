@@ -11,17 +11,12 @@ import io.ktor.server.routing.get
 import io.ktor.server.routing.post
 import io.ktor.server.routing.route
 import io.ktor.server.response.respond
+import io.ktor.server.routing.put
 
 fun Route.submission(service: SubmissionService) {
-    route("/submission") {
+    route("/submissions") {
         get {
             call.respond(service.getAllSubmissions())
-        }
-        get("/{id}") {
-            val id = call.getId()
-            val submission = service.getSubmission(id)
-
-            call.respond(submission)
         }
         post {
             val submission = call.receive<Submission>()
@@ -29,11 +24,28 @@ fun Route.submission(service: SubmissionService) {
 
             call.respond(HttpStatusCode.Created)
         }
-        delete("/{id}") {
-            val id = call.getId()
-            service.deleteSubmission(id)
+        put {
 
-            call.respond(HttpStatusCode.NoContent)
+        }
+        delete {
+
+        }
+        route("/{id}") {
+            get {
+                val id = call.getId()
+                val submission = service.getSubmission(id)
+
+                call.respond(submission)
+            }
+            put {
+
+            }
+            delete {
+                val id = call.getId()
+                service.deleteSubmission(id)
+
+                call.respond(HttpStatusCode.NoContent)
+            }
         }
     }
 }

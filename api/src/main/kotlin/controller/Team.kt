@@ -14,15 +14,9 @@ import io.ktor.server.routing.route
 import io.ktor.server.response.respond
 
 fun Route.team(service: TeamService) {
-    route("/team") {
+    route("/teams") {
         get {
             call.respond(service.getAllTeams())
-        }
-        get("/{id}") {
-            val id = call.getId()
-            val team = service.getTeam(id)
-
-            call.respond(team)
         }
         post {
             val team = call.receive<Team>()
@@ -30,18 +24,62 @@ fun Route.team(service: TeamService) {
 
             call.respond(HttpStatusCode.Created)
         }
-        put("/{id}") {
-            val id = call.getId()
-            val team = call.receive<Team>()
-            service.updateTeam(id, team)
+        put {
 
-            call.respond(HttpStatusCode.NoContent)
         }
-        delete("/{id}") {
-            val id = call.getId()
-            service.deleteTeam(id)
+        delete {
 
-            call.respond(HttpStatusCode.NoContent)
+        }
+        route("/{id}") {
+            get {
+                val id = call.getId()
+                val team = service.getTeam(id)
+
+                call.respond(team)
+            }
+            put {
+                val id = call.getId()
+                val team = call.receive<Team>()
+                service.updateTeam(id, team)
+
+                call.respond(HttpStatusCode.NoContent)
+            }
+            delete {
+                val id = call.getId()
+                service.deleteTeam(id)
+
+                call.respond(HttpStatusCode.NoContent)
+            }
+
+            route("/submissions") {
+                get {
+
+                }
+                post {
+
+                }
+                put {
+
+                }
+                delete {
+
+                }
+            }
+
+            route("users") {
+                get {
+
+                }
+                post {
+
+                }
+                put {
+
+                }
+                delete {
+
+                }
+            }
         }
     }
 }

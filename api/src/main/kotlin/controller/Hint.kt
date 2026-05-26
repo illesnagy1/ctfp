@@ -14,16 +14,10 @@ import io.ktor.server.routing.route
 import io.ktor.server.response.respond
 
 fun Route.hint(service: HintService) {
-    route("/challenge/{challengeId}/hint") {
+    route("/hints") {
         get {
             val challengeId = call.parameters["challengeId"]?.toIntOrNull() ?: throw IllegalArgumentException("Invalid challengeId")
             call.respond(service.getHintsForChallenge(challengeId))
-        }
-        get("/{id}") {
-            val id = call.getId()
-            val hint = service.getHint(id)
-
-            call.respond(hint)
         }
         post {
             val hint = call.receive<Hint>()
@@ -31,18 +25,32 @@ fun Route.hint(service: HintService) {
 
             call.respond(HttpStatusCode.Created)
         }
-        put("/{id}") {
-            val id = call.getId()
-            val hint = call.receive<Hint>()
-            service.updateHint(id, hint)
+        put {
 
-            call.respond(HttpStatusCode.NoContent)
         }
-        delete("/{id}") {
-            val id = call.getId()
-            service.deleteHint(id)
+        delete {
 
-            call.respond(HttpStatusCode.NoContent)
+        }
+        route("/{id}") {
+            get {
+                val id = call.getId()
+                val hint = service.getHint(id)
+
+                call.respond(hint)
+            }
+            put {
+                val id = call.getId()
+                val hint = call.receive<Hint>()
+                service.updateHint(id, hint)
+
+                call.respond(HttpStatusCode.NoContent)
+            }
+            delete {
+                val id = call.getId()
+                service.deleteHint(id)
+
+                call.respond(HttpStatusCode.NoContent)
+            }
         }
     }
 }

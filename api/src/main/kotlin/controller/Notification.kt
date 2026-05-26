@@ -14,15 +14,9 @@ import io.ktor.server.routing.route
 import io.ktor.server.response.respond
 
 fun Route.notification(service: NotificationService) {
-    route("/notification") {
+    route("/notifications") {
         get {
             call.respond(service.getAllNotifications())
-        }
-        get("/{id}") {
-            val id = call.getId()
-            val notification = service.getNotification(id)
-
-            call.respond(notification)
         }
         post {
             val notification = call.receive<Notification>()
@@ -30,18 +24,32 @@ fun Route.notification(service: NotificationService) {
 
             call.respond(HttpStatusCode.Created)
         }
-        put("/{id}") {
-            val id = call.getId()
-            val notification = call.receive<Notification>()
-            service.updateNotification(id, notification)
+        put {
 
-            call.respond(HttpStatusCode.NoContent)
         }
-        delete("/{id}") {
-            val id = call.getId()
-            service.deleteNotification(id)
+        delete {
 
-            call.respond(HttpStatusCode.NoContent)
+        }
+        route("/{id}") {
+            get {
+                val id = call.getId()
+                val notification = service.getNotification(id)
+
+                call.respond(notification)
+            }
+            put {
+                val id = call.getId()
+                val notification = call.receive<Notification>()
+                service.updateNotification(id, notification)
+
+                call.respond(HttpStatusCode.NoContent)
+            }
+            delete {
+                val id = call.getId()
+                service.deleteNotification(id)
+
+                call.respond(HttpStatusCode.NoContent)
+            }
         }
     }
 }

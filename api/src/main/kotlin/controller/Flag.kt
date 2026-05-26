@@ -14,17 +14,10 @@ import io.ktor.server.routing.route
 import io.ktor.server.response.respond
 
 fun Route.flag(service: FlagService) {
-    route("/challenge/{challengeId}/flag") {
+    route("/flags") {
         get {
             val challengeId = call.parameters["challengeId"]?.toIntOrNull() ?: throw IllegalArgumentException("Invalid challengeId")
             call.respond(service.getFlagsForChallenge(challengeId))
-        }
-        get("/{id}") {
-            val id = call.getId()
-            val challengeId = call.parameters["challengeId"]?.toIntOrNull() ?: throw IllegalArgumentException("Invalid challengeId")
-            val flag = service.getFlagForChallenge(challengeId, id)
-
-            call.respond(flag)
         }
         post {
             val challengeId = call.parameters["challengeId"]?.toIntOrNull() ?: throw IllegalArgumentException("Invalid challengeId")
@@ -33,19 +26,34 @@ fun Route.flag(service: FlagService) {
 
             call.respond(HttpStatusCode.Created)
         }
-        put("/{id}") {
-            val id = call.getId()
-            val flag = call.receive<Flag>()
-            val challengeId = call.parameters["challengeId"]?.toIntOrNull() ?: throw IllegalArgumentException("Invalid challengeId")
-            service.updateFlag(challengeId, id, flag)
+        put {
 
-            call.respond(HttpStatusCode.NoContent)
         }
-        delete("/{id}") {
-            val id = call.getId()
-            service.deleteFlag(id)
+        delete {
 
-            call.respond(HttpStatusCode.NoContent)
+        }
+        route("/{id}") {
+            get {
+                val id = call.getId()
+                val challengeId = call.parameters["challengeId"]?.toIntOrNull() ?: throw IllegalArgumentException("Invalid challengeId")
+                val flag = service.getFlagForChallenge(challengeId, id)
+
+                call.respond(flag)
+            }
+            put {
+                val id = call.getId()
+                val flag = call.receive<Flag>()
+                val challengeId = call.parameters["challengeId"]?.toIntOrNull() ?: throw IllegalArgumentException("Invalid challengeId")
+                service.updateFlag(challengeId, id, flag)
+
+                call.respond(HttpStatusCode.NoContent)
+            }
+            delete {
+                val id = call.getId()
+                service.deleteFlag(id)
+
+                call.respond(HttpStatusCode.NoContent)
+            }
         }
     }
 }

@@ -14,15 +14,9 @@ import io.ktor.server.routing.route
 import io.ktor.server.response.respond
 
 fun Route.user(service: UserService) {
-    route("/user") {
+    route("/users") {
         get {
             call.respond(service.getAllUsers())
-        }
-        get("/{id}") {
-            val id = call.getId()
-            val user = service.getUser(id)
-
-            call.respond(user)
         }
         post {
             val user = call.receive<User>()
@@ -30,18 +24,47 @@ fun Route.user(service: UserService) {
 
             call.respond(HttpStatusCode.Created)
         }
-        put("/{id}") {
-            val id = call.getId()
-            val user = call.receive<User>()
-            service.updateUser(id, user)
+        put {
 
-            call.respond(HttpStatusCode.NoContent)
         }
-        delete("/{id}") {
-            val id = call.getId()
-            service.deleteUser(id)
+        delete {
 
-            call.respond(HttpStatusCode.NoContent)
+        }
+        route("/{id}") {
+            get("/{id}") {
+                val id = call.getId()
+                val user = service.getUser(id)
+
+                call.respond(user)
+            }
+            put("/{id}") {
+                val id = call.getId()
+                val user = call.receive<User>()
+                service.updateUser(id, user)
+
+                call.respond(HttpStatusCode.NoContent)
+            }
+            delete("/{id}") {
+                val id = call.getId()
+                service.deleteUser(id)
+
+                call.respond(HttpStatusCode.NoContent)
+            }
+
+            route("submissions") {
+                get {
+
+                }
+                post {
+
+                }
+                put {
+
+                }
+                delete {
+
+                }
+            }
         }
     }
 }

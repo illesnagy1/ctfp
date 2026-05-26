@@ -14,15 +14,9 @@ import io.ktor.server.routing.route
 import io.ktor.server.response.respond
 
 fun Route.page(service: PageService) {
-    route("/page") {
+    route("/pages") {
         get {
             call.respond(service.getAllPages())
-        }
-        get("/{id}") {
-            val id = call.getId()
-            val page = service.getPage(id)
-
-            call.respond(page)
         }
         post {
             val page = call.receive<Page>()
@@ -30,18 +24,32 @@ fun Route.page(service: PageService) {
 
             call.respond(HttpStatusCode.Created)
         }
-        put("/{id}") {
-            val id = call.getId()
-            val page = call.receive<Page>()
-            service.updatePage(id, page)
+        put {
 
-            call.respond(HttpStatusCode.NoContent)
         }
-        delete("/{id}") {
-            val id = call.getId()
-            service.deletePage(id)
+        delete {
 
-            call.respond(HttpStatusCode.NoContent)
+        }
+        route("/{id}") {
+            get {
+                val id = call.getId()
+                val page = service.getPage(id)
+
+                call.respond(page)
+            }
+            put {
+                val id = call.getId()
+                val page = call.receive<Page>()
+                service.updatePage(id, page)
+
+                call.respond(HttpStatusCode.NoContent)
+            }
+            delete {
+                val id = call.getId()
+                service.deletePage(id)
+
+                call.respond(HttpStatusCode.NoContent)
+            }
         }
     }
 }
