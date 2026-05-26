@@ -1,10 +1,9 @@
 package com.ctfp.dto
 
 import com.ctfp.domain.dao.FlagDAO
-import com.ctfp.domain.model.ChallengeTable
+import com.ctfp.domain.dao.ChallengeDAO
 import kotlin.time.Instant
 import kotlinx.serialization.Serializable
-import org.jetbrains.exposed.v1.core.dao.id.EntityID
 
 @Serializable
 data class FlagRequest(
@@ -33,7 +32,7 @@ data class FlagResponse(
 )
 
 fun FlagDAO.apply(dto: FlagRequest) {
-    challengeId = EntityID(dto.challengeId, ChallengeTable)
+    challenge = ChallengeDAO[dto.challengeId]
     pattern = dto.pattern
     isCaseSensitive = dto.isCaseSensitive
     baseValue = dto.baseValue
@@ -45,7 +44,7 @@ fun FlagDAO.apply(dto: FlagRequest) {
 
 fun FlagDAO.toDto() = FlagResponse(
     id = id.value,
-    challengeId = challengeId.value,
+    challengeId = challenge.id.value,
     pattern = pattern,
     isCaseSensitive = isCaseSensitive,
     baseValue = baseValue,

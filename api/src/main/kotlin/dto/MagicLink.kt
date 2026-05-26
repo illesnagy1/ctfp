@@ -1,10 +1,9 @@
 package com.ctfp.dto
 
 import com.ctfp.domain.dao.MagicLinkDAO
-import com.ctfp.domain.model.UserTable
+import com.ctfp.domain.dao.UserDAO
 import kotlin.time.Instant
 import kotlinx.serialization.Serializable
-import org.jetbrains.exposed.v1.core.dao.id.EntityID
 
 @Serializable
 data class MagicLinkRequest(
@@ -24,14 +23,14 @@ data class MagicLinkResponse(
 )
 
 fun MagicLinkDAO.apply(dto: MagicLinkRequest) {
-    userId = EntityID(dto.userId, UserTable)
+    user = UserDAO[dto.userId]
     token = dto.token
     expiresAt = dto.expiresAt
 }
 
 fun MagicLinkDAO.toDto() = MagicLinkResponse(
     id = id.value,
-    userId = userId.value,
+    userId = user.id.value,
     token = token,
     createdAt = createdAt,
     expiresAt = expiresAt,

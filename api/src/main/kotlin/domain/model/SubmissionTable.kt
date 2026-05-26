@@ -6,8 +6,8 @@ import org.jetbrains.exposed.v1.datetime.timestamp
 
 object SubmissionTable : IntIdTable() {
     val userId = reference("user_id", UserTable)
-    val teamId = reference("team_id", TeamTable).nullable()
+    val teamId = optReference("team_id", TeamTable)
     val challengeId = reference("challenge_id", ChallengeTable)
-    val flagId = reference("flag_id", FlagTable).nullable()
+    val flagId = optReference("flag_id", FlagTable)
     val submittedAt = timestamp("submitted_at").defaultExpression(CurrentTimestamp)
 }

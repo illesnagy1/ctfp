@@ -1,6 +1,7 @@
 package com.ctfp.domain.dao
 
 import com.ctfp.domain.model.FlagTable
+import com.ctfp.domain.model.SubmissionTable
 import org.jetbrains.exposed.v1.core.dao.id.EntityID
 import org.jetbrains.exposed.v1.dao.IntEntity
 import org.jetbrains.exposed.v1.dao.IntEntityClass
@@ -8,7 +9,7 @@ import org.jetbrains.exposed.v1.dao.IntEntityClass
 class FlagDAO(id: EntityID<Int>) : IntEntity(id) {
     companion object : IntEntityClass<FlagDAO>(FlagTable)
 
-    var challengeId by FlagTable.challengeId
+    var challenge by ChallengeDAO referencedOn FlagTable.challengeId
     var pattern by FlagTable.pattern
     var isCaseSensitive by FlagTable.isCaseSensitive
     var baseValue by FlagTable.baseValue
@@ -17,4 +18,6 @@ class FlagDAO(id: EntityID<Int>) : IntEntity(id) {
     var decayFun by FlagTable.decayFun
     var sortOrder by FlagTable.sortOrder
     var createdAt by FlagTable.createdAt
+
+    val submissions by SubmissionDAO optionalReferrersOn SubmissionTable.flagId
 }

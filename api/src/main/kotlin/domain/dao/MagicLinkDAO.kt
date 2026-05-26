@@ -8,7 +8,7 @@ import org.jetbrains.exposed.v1.dao.IntEntityClass
 class MagicLinkDAO(id: EntityID<Int>) : IntEntity(id) {
     companion object : IntEntityClass<MagicLinkDAO>(MagicLinkTable)
 
-    var userId by MagicLinkTable.userId
+    var user by UserDAO referencedOn MagicLinkTable.userId
     var token by MagicLinkTable.token
     var createdAt by MagicLinkTable.createdAt
     var expiresAt by MagicLinkTable.expiresAt

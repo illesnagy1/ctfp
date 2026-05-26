@@ -1,10 +1,9 @@
 package com.ctfp.dto
 
 import com.ctfp.domain.dao.HintDAO
-import com.ctfp.domain.model.ChallengeTable
+import com.ctfp.domain.dao.ChallengeDAO
 import kotlin.time.Instant
 import kotlinx.serialization.Serializable
-import org.jetbrains.exposed.v1.core.dao.id.EntityID
 
 @Serializable
 data class HintRequest(
@@ -23,14 +22,14 @@ data class HintResponse(
 )
 
 fun HintDAO.apply(dto: HintRequest) {
-    challengeId = EntityID(dto.challengeId, ChallengeTable)
+    challenge = ChallengeDAO[dto.challengeId]
     body = dto.body
     cost = dto.cost
 }
 
 fun HintDAO.toDto() = HintResponse(
     id = id.value,
-    challengeId = challengeId.value,
+    challengeId = challenge.id.value,
     body = body,
     cost = cost,
     createdAt = createdAt

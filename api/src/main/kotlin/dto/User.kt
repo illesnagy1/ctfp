@@ -1,12 +1,10 @@
 package com.ctfp.dto
 
-import com.ctfp.config.enum.Language
 import com.ctfp.config.enum.UserRole
 import com.ctfp.domain.dao.UserDAO
-import com.ctfp.domain.model.RegistrationCodeTable
+import com.ctfp.domain.dao.RegistrationCodeDAO
 import kotlin.time.Instant
 import kotlinx.serialization.Serializable
-import org.jetbrains.exposed.v1.core.dao.id.EntityID
 
 @Serializable
 data class UserRequest(
@@ -14,7 +12,7 @@ data class UserRequest(
     val username: String,
     val email: String,
     val passwordHash: String,
-    val language: Language,
+    val language: String?,
     val country: String?,
     val website: String?,
     val role: UserRole,
@@ -34,7 +32,7 @@ data class UserResponse(
     val username: String,
     val email: String,
     val passwordHash: String,
-    val language: Language,
+    val language: String?,
     val country: String?,
     val website: String?,
     val role: UserRole,
@@ -50,7 +48,7 @@ data class UserResponse(
 )
 
 fun UserDAO.apply(dto: UserRequest) {
-    codeId = EntityID(dto.codeId, RegistrationCodeTable)
+    registrationCode = RegistrationCodeDAO[dto.codeId]
     username = dto.username
     email = dto.email
     passwordHash = dto.passwordHash
@@ -69,7 +67,7 @@ fun UserDAO.apply(dto: UserRequest) {
 
 fun UserDAO.toDto() = UserResponse(
     id = id.value,
-    codeId = codeId.value,
+    codeId = registrationCode.id.value,
     username = username,
     email = email,
     passwordHash = passwordHash,

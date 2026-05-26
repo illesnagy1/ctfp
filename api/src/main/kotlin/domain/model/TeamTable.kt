@@ -6,7 +6,7 @@ import org.jetbrains.exposed.v1.datetime.timestamp
 
 object TeamTable : IntIdTable() {
     val name = varchar("name", 64).uniqueIndex()
-    val ownerId = reference("owner_id", UserTable)
+    val ownerId = reference("owner_id", UserTable) // TODO: handle owner ban
     val country = varchar("country", 2).nullable()
     val website = varchar("website", 255).nullable()
     val isHidden = bool("is_hidden").default(false)

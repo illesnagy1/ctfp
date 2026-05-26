@@ -8,7 +8,7 @@ import org.jetbrains.exposed.v1.dao.IntEntityClass
 class TeamMemberDAO(id: EntityID<Int>) : IntEntity(id) {
     companion object : IntEntityClass<TeamMemberDAO>(TeamMemberTable)
 
-    var teamId by TeamMemberTable.teamId
-    var userId by TeamMemberTable.userId
+    var team by TeamDAO referencedOn TeamMemberTable.teamId
+    var user by UserDAO referencedOn TeamMemberTable.userId
     var joinedAt by TeamMemberTable.joinedAt
 }

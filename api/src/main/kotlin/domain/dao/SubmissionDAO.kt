@@ -8,9 +8,9 @@ import org.jetbrains.exposed.v1.dao.IntEntityClass
 class SubmissionDAO(id: EntityID<Int>) : IntEntity(id) {
     companion object : IntEntityClass<SubmissionDAO>(SubmissionTable)
 
-    var userId by SubmissionTable.userId
-    var teamId by SubmissionTable.teamId
-    var challengeId by SubmissionTable.challengeId
-    var flagId by SubmissionTable.flagId
+    var user by UserDAO referencedOn SubmissionTable.userId
+    var team by TeamDAO optionalReferencedOn SubmissionTable.teamId
+    var challenge by ChallengeDAO referencedOn SubmissionTable.challengeId
+    var flag by FlagDAO optionalReferencedOn SubmissionTable.flagId
     var submittedAt by SubmissionTable.submittedAt
 }

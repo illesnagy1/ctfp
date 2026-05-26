@@ -1,10 +1,9 @@
 package com.ctfp.dto
 
 import com.ctfp.domain.dao.TeamDAO
-import com.ctfp.domain.model.UserTable
+import com.ctfp.domain.dao.UserDAO
 import kotlin.time.Instant
 import kotlinx.serialization.Serializable
-import org.jetbrains.exposed.v1.core.dao.id.EntityID
 
 @Serializable
 data class TeamRequest(
@@ -31,7 +30,7 @@ data class TeamResponse(
 
 fun TeamDAO.apply(dto: TeamRequest) {
     name = dto.name
-    ownerId = EntityID(dto.ownerId, UserTable)
+    owner = UserDAO[dto.ownerId]
     country = dto.country
     website = dto.website
     isHidden = dto.isHidden
@@ -41,7 +40,7 @@ fun TeamDAO.apply(dto: TeamRequest) {
 fun TeamDAO.toDto() = TeamResponse(
     id = id.value,
     name = name,
-    ownerId = ownerId.value,
+    ownerId = owner.id.value,
     country = country,
     website = website,
     isHidden = isHidden,

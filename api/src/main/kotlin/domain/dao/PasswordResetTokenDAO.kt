@@ -8,7 +8,7 @@ import org.jetbrains.exposed.v1.dao.IntEntityClass
 class PasswordResetTokenDAO(id: EntityID<Int>) : IntEntity(id) {
     companion object : IntEntityClass<PasswordResetTokenDAO>(PasswordResetTokenTable)
 
-    var userId by PasswordResetTokenTable.userId
+    var user by UserDAO referencedOn PasswordResetTokenTable.userId
     var token by PasswordResetTokenTable.token
     var createdAt by PasswordResetTokenTable.createdAt
     var expiresAt by PasswordResetTokenTable.expiresAt

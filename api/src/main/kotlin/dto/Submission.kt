@@ -1,13 +1,12 @@
 package com.ctfp.dto
 
 import com.ctfp.domain.dao.SubmissionDAO
-import com.ctfp.domain.model.ChallengeTable
-import com.ctfp.domain.model.FlagTable
-import com.ctfp.domain.model.TeamTable
-import com.ctfp.domain.model.UserTable
+import com.ctfp.domain.dao.UserDAO
+import com.ctfp.domain.dao.ChallengeDAO
+import com.ctfp.domain.dao.FlagDAO
+import com.ctfp.domain.dao.TeamDAO
 import kotlin.time.Instant
 import kotlinx.serialization.Serializable
-import org.jetbrains.exposed.v1.core.dao.id.EntityID
 
 @Serializable
 data class SubmissionRequest(
@@ -28,17 +27,17 @@ data class SubmissionResponse(
 )
 
 fun SubmissionDAO.apply(dto: SubmissionRequest) {
-    userId = EntityID(dto.userId, UserTable)
-    teamId = dto.teamId?.let { EntityID(it, TeamTable) }
-    challengeId = EntityID(dto.challengeId, ChallengeTable)
-    flagId = dto.flagId?.let { EntityID(it, FlagTable) }
+    user = UserDAO[dto.userId]
+    team = dto.teamId?.let { TeamDAO[it] }
+    challenge = ChallengeDAO[dto.challengeId]
+    flag = dto.flagId?.let { FlagDAO[it] }
 }
 
 fun SubmissionDAO.toDto() = SubmissionResponse(
     id = id.value,
-    userId = userId.value,
-    teamId = teamId?.value,
-    challengeId = challengeId.value,
-    flagId = flagId?.value,
+    userId = user.id.value,
+    teamId = team?.id?.value,
+    challengeId = challenge.id.value,
+    flagId = flag?.id?.value,
     submittedAt = submittedAt
 )
