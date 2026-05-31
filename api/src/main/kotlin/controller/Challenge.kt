@@ -17,35 +17,43 @@ import io.ktor.server.response.respond
 fun Route.challenge(service: ChallengeService) {
     route("/challenges") {
         get {
-            call.respond(service.getAllChallenges())
+            call.respond(service.getAll())
         }
         post {
             val challenge = call.receive<ChallengeRequest>()
-            service.createChallenge(challenge)
+            service.create(challenge)
 
             call.respond(HttpStatusCode.Created)
         }
         put {
+            val challenges = call.receive<Map<Int, ChallengeRequest>>()
+            service.updateMany(challenges)
+
+            call.respond(HttpStatusCode.NoContent)
         }
         delete {
+            val ids = call.receive<List<Int>>()
+            service.deleteMany(ids)
+
+            call.respond(HttpStatusCode.NoContent)
         }
         route("/{id}") {
             get {
                 val id = call.getId()
-                val challenge = service.getChallenge(id)
+                val challenge = service.get(id)
 
                 call.respond(challenge)
             }
             put {
                 val id = call.getId()
                 val challenge = call.receive<ChallengeRequest>()
-                service.updateChallenge(id, challenge)
+                service.update(id, challenge)
 
                 call.respond(HttpStatusCode.NoContent)
             }
             delete {
                 val id = call.getId()
-                service.deleteChallenge(id)
+                service.delete(id)
 
                 call.respond(HttpStatusCode.NoContent)
             }

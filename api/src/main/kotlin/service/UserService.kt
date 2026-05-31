@@ -2,10 +2,13 @@ package com.ctfp.service
 
 import com.ctfp.domain.dao.UserDAO
 import com.ctfp.domain.db.withTransaction
+import com.ctfp.domain.model.UserTable
 import com.ctfp.dto.UserRequest
 import com.ctfp.dto.UserResponse
 import com.ctfp.dto.apply
 import com.ctfp.dto.toDto
+import org.jetbrains.exposed.v1.core.inList
+import org.jetbrains.exposed.v1.jdbc.deleteWhere
 
 
 class UserService {
@@ -30,7 +33,15 @@ class UserService {
         }
     }
 
+    suspend fun updateUsers(users: Map<Int, UserRequest>) = withTransaction {
+
+    }
+
     suspend fun deleteUser(id: Int) = withTransaction {
         UserDAO[id].delete()
+    }
+
+    suspend fun deleteUsers(ids: List<Int>) = withTransaction {
+        UserTable.deleteWhere { UserTable.id inList ids }
     }
 }

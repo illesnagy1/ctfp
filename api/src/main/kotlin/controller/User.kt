@@ -25,7 +25,9 @@ fun Route.user(service: UserService) {
             call.respond(HttpStatusCode.Created)
         }
         put {
-
+            val users = call.receive<Map<Int, UserRequest>>()
+            service.updateUsers(users)
+            call.respond(HttpStatusCode.NoContent)
         }
         delete {
 
