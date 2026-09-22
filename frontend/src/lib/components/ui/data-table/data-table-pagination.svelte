@@ -1,23 +1,23 @@
 <script lang="ts" generics="TData">
-	import { Button } from "$lib/components/ui/button";
-	import ChevronRightIcon from "@lucide/svelte/icons/chevron-right";
-	import ChevronLeftIcon from "@lucide/svelte/icons/chevron-left";
-	import ChevronsLeftIcon from "@lucide/svelte/icons/chevrons-left";
-	import ChevronsRightIcon from "@lucide/svelte/icons/chevrons-right";
-	import * as Select from "$lib/components/ui/select";
-	import type { Table } from "@tanstack/table-core";
+	import { Button } from '$lib/components/ui/button';
+	import ChevronRightIcon from '@lucide/svelte/icons/chevron-right';
+	import ChevronLeftIcon from '@lucide/svelte/icons/chevron-left';
+	import ChevronsLeftIcon from '@lucide/svelte/icons/chevrons-left';
+	import ChevronsRightIcon from '@lucide/svelte/icons/chevrons-right';
+	import * as Select from '$lib/components/ui/select';
+	import type { Table } from '@tanstack/table-core';
 
-    let { table }: {table: Table<TData>} = $props();
+	let { table }: { table: Table<TData> } = $props();
 
-    const pageCount = $derived(table.getPageCount());
-    const selectedRows = $derived(table.getFilteredSelectedRowModel().rows.length);
-    const totalRows = $derived(table.getFilteredRowModel().rows.length);
-    const pageSize = $derived(table.getState().pagination.pageSize);
-    const pageIndex = $derived(table.getState().pagination.pageIndex);
+	const pageCount = $derived(table.getPageCount());
+	const selectedRows = $derived(table.getFilteredSelectedRowModel().rows.length);
+	const totalRows = $derived(table.getFilteredRowModel().rows.length);
+	const pageSize = $derived(table.getState().pagination.pageSize);
+	const pageIndex = $derived(table.getState().pagination.pageIndex);
 </script>
 
 <div class="flex items-center justify-between px-2">
-	<div class="text-muted-foreground flex-1 text-sm">
+	<div class="flex-1 text-sm text-muted-foreground">
 		{selectedRows} of {totalRows} row(s) selected.
 	</div>
 	<div class="flex items-center space-x-6 lg:space-x-8">
@@ -46,43 +46,43 @@
 		<div class="flex w-[100px] items-center justify-center text-sm font-medium">
 			Page {pageIndex + 1} of {pageCount}
 		</div>
-        <div class="flex items-center space-x-2">
-            <Button
-                variant="outline"
-                class="hidden size-8 p-0 lg:flex"
-                onclick={() => table.setPageIndex(0)}
-                disabled={!table.getCanPreviousPage()}
-            >
-                <span class="sr-only">Go to first page</span>
-                <ChevronsLeftIcon />
-            </Button>
-            <Button
-                variant="outline"
-                class="size-8 p-0"
-                onclick={() => table.previousPage()}
-                disabled={!table.getCanPreviousPage()}
-            >
-                <span class="sr-only">Go to previous page</span>
-                <ChevronLeftIcon />
-            </Button>
-            <Button
-                variant="outline"
-                class="size-8 p-0"
-                onclick={() => table.nextPage()}
-                disabled={!table.getCanNextPage()}
-            >
-                <span class="sr-only">Go to next page</span>
-                <ChevronRightIcon />
-            </Button>
-            <Button
-                variant="outline"
-                class="hidden size-8 p-0 lg:flex"
-                onclick={() => table.setPageIndex(pageCount - 1)}
-                disabled={!table.getCanNextPage()}
-            >
-                <span class="sr-only">Go to last page</span>
-                <ChevronsRightIcon />
-            </Button>
-        </div>
-    </div>
+		<div class="flex items-center space-x-2">
+			<Button
+				variant="outline"
+				class="hidden size-8 p-0 lg:flex"
+				onclick={() => table.setPageIndex(0)}
+				disabled={!table.getCanPreviousPage()}
+			>
+				<span class="sr-only">Go to first page</span>
+				<ChevronsLeftIcon />
+			</Button>
+			<Button
+				variant="outline"
+				class="size-8 p-0"
+				onclick={() => table.previousPage()}
+				disabled={!table.getCanPreviousPage()}
+			>
+				<span class="sr-only">Go to previous page</span>
+				<ChevronLeftIcon />
+			</Button>
+			<Button
+				variant="outline"
+				class="size-8 p-0"
+				onclick={() => table.nextPage()}
+				disabled={!table.getCanNextPage()}
+			>
+				<span class="sr-only">Go to next page</span>
+				<ChevronRightIcon />
+			</Button>
+			<Button
+				variant="outline"
+				class="hidden size-8 p-0 lg:flex"
+				onclick={() => table.setPageIndex(pageCount - 1)}
+				disabled={!table.getCanNextPage()}
+			>
+				<span class="sr-only">Go to last page</span>
+				<ChevronsRightIcon />
+			</Button>
+		</div>
+	</div>
 </div>

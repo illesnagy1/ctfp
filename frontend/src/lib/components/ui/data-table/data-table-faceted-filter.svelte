@@ -1,20 +1,20 @@
 <script lang="ts" generics="TData, TValue">
-	import CirclePlusIcon from "@lucide/svelte/icons/circle-plus";
-	import CheckIcon from "@lucide/svelte/icons/check";
-	import type { Column } from "@tanstack/table-core";
-	import { SvelteSet } from "svelte/reactivity";
-	import * as Command from "$lib/components/ui/command";
-	import * as Popover from "$lib/components/ui/popover";
-	import { Button } from "$lib/components/ui/button";
-	import { cn } from "$lib/utils.js";
-	import { Separator } from "$lib/components/ui/separator";
-	import { Badge } from "$lib/components/ui/badge";
-	import type { Component } from "svelte";
+	import CirclePlusIcon from '@lucide/svelte/icons/circle-plus';
+	import CheckIcon from '@lucide/svelte/icons/check';
+	import type { Column } from '@tanstack/table-core';
+	import { SvelteSet } from 'svelte/reactivity';
+	import * as Command from '$lib/components/ui/command';
+	import * as Popover from '$lib/components/ui/popover';
+	import { Button } from '$lib/components/ui/button';
+	import { cn } from '$lib/utils.js';
+	import { Separator } from '$lib/components/ui/separator';
+	import { Badge } from '$lib/components/ui/badge';
+	import type { Component } from 'svelte';
 
 	let {
 		column,
 		title,
-		options,
+		options
 	}: {
 		column: Column<TData, TValue>;
 		title: string;
@@ -46,7 +46,7 @@
 								{selectedValues.size} selected
 							</Badge>
 						{:else}
-							{#each options.filter( (opt) => selectedValues.has(opt.value) ) as option (option)}
+							{#each options.filter((opt) => selectedValues.has(opt.value)) as option (option)}
 								<Badge variant="secondary" class="rounded-sm px-1 font-normal">
 									{option.label}
 								</Badge>
@@ -73,17 +73,13 @@
 									selectedValues.add(option.value);
 								}
 								const filterValues = Array.from(selectedValues);
-								column?.setFilterValue(
-									filterValues.length ? filterValues : undefined
-								);
+								column?.setFilterValue(filterValues.length ? filterValues : undefined);
 							}}
 						>
 							<div
 								class={cn(
-									"border-primary me-2 flex size-4 items-center justify-center rounded-sm border",
-									isSelected
-										? "bg-primary text-primary-foreground"
-										: "opacity-50 [&_svg]:invisible"
+									'me-2 flex size-4 items-center justify-center rounded-sm border border-primary',
+									isSelected ? 'bg-primary text-primary-foreground' : 'opacity-50 [&_svg]:invisible'
 								)}
 							>
 								<CheckIcon class="size-4" />
@@ -95,9 +91,7 @@
 
 							<span>{option.label}</span>
 							{#if facets?.get(option.value)}
-								<span
-									class="ms-auto flex size-4 items-center justify-center font-mono text-xs"
-								>
+								<span class="ms-auto flex size-4 items-center justify-center font-mono text-xs">
 									{facets.get(option.value)}
 								</span>
 							{/if}

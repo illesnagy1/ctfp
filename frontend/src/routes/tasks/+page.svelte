@@ -1,7 +1,7 @@
 <script lang="ts">
-	import DataTable from "./components/data-table.svelte";
-	import { data } from "./data/tasks.js";
-	import { columns } from "./components/columns.js";
+	import DataTable from './components/data-table.svelte';
+	import { data } from './data/tasks.js';
+	import { columns } from './components/columns.js';
 </script>
 
 <div class="hidden h-full flex-1 flex-col gap-8 p-8 md:flex">
@@ -11,5 +11,5 @@
 			<p class="text-muted-foreground">Here&apos;s a list of your tasks for this month.</p>
 		</div>
 	</div>
-	<DataTable {data} {columns}/>
+	<DataTable {data} {columns} />
 </div>
