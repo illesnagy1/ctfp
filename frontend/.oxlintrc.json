@@ -1,6 +1,6 @@
 {
   "$schema": "./node_modules/oxlint/configuration_schema.json",
-  "plugins": ["eslint", "oxc", "typescript", "unicorn", "import", "promise", "node", "jsdoc",],
+  "plugins": ["eslint", "oxc", "typescript", "unicorn", "import", "promise", "node", "jsdoc"],
   "jsPlugins": ["eslint-plugin-svelte"],
   "options": {
     "typeAware": true
