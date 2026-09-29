@@ -7,7 +7,7 @@ import org.jetbrains.exposed.v1.jdbc.Database
 import org.jetbrains.exposed.v1.jdbc.SchemaUtils
 
 suspend fun Application.configureExposed() {
-    connectToDatabase(true)
+    connectToDatabase(environment.config.property("postgres.embedded").getString().toBoolean())
 
     createSchemas()
 }
@@ -20,7 +20,7 @@ suspend fun createSchemas() = withTransaction {
 
 fun Application.connectToDatabase(embedded: Boolean): Database {
     if (embedded) {
-        log.info("Using embedded H2 database for testing; replace this flag to use postgres")
+        log.info("Using embedded H2 database for testing; set POSTGRES_EMBEDDED=false to use postgres")
         return Database.connect(
             url = "jdbc:h2:mem:test;DB_CLOSE_DELAY=-1",
             user = "root",

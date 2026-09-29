@@ -1,0 +1,50 @@
+name: ctfp
+
+services:
+  frontend:
+    build:
+      context: ./frontend
+      dockerfile: Containerfile
+    ports:
+      - "3000:3000"
+    environment:
+      ORIGIN: ${ORIGIN:-http://localhost:3000}
+      BETTER_AUTH_SECRET: ${BETTER_AUTH_SECRET:?set BETTER_AUTH_SECRET}
+    depends_on:
+      api:
+        condition: service_started
+    restart: unless-stopped
+
+  api:
+    build:
+      context: ./api
+      dockerfile: Containerfile
+    ports:
+      - "8081:8080"
+    environment:
+      POSTGRES_EMBEDDED: "false"
+      POSTGRES_URL: jdbc:postgresql://db:5432/ctfp
+      POSTGRES_USER: ctfp
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-ctfp}
+    depends_on:
+      db:
+        condition: service_healthy
+    restart: unless-stopped
+
+  db:
+    image: postgres:18-alpine
+    environment:
+      POSTGRES_DB: ctfp
+      POSTGRES_USER: ctfp
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-ctfp}
+    volumes:
+      - db-data:/var/lib/postgresql:z
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U ctfp -d ctfp"]
+      interval: 5s
+      timeout: 3s
+      retries: 10
+    restart: unless-stopped
+
+volumes:
+  db-data:
