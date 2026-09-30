@@ -30,7 +30,7 @@ class UserDAO(id: EntityID<Int>) : IntEntity(id) {
     var createdAt by UserTable.createdAt
     var updatedAt by UserTable.updatedAt
 
-    var registrationCode by RegistrationCodeDAO referencedOn UserTable.codeId
+    var registrationCode by RegistrationCodeDAO optionalReferencedOn UserTable.codeId
     val ownedTeams by TeamDAO referrersOn TeamTable.ownerId
     val teamMemberships by TeamMemberDAO referrersOn TeamMemberTable.userId
     val submissions by SubmissionDAO referrersOn SubmissionTable.userId

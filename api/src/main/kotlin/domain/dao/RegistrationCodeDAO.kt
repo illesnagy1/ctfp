@@ -14,5 +14,5 @@ class RegistrationCodeDAO(id: EntityID<Int>) : IntEntity(id) {
     var createdAt by RegistrationCodeTable.createdAt
     var expiresAt by RegistrationCodeTable.expiresAt
 
-    val usedByUsers by UserDAO referrersOn UserTable.codeId
+    val usedByUsers by UserDAO optionalReferrersOn UserTable.codeId
 }

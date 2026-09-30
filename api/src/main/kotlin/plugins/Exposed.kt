@@ -2,6 +2,8 @@ package com.ctfp.plugins
 
 import com.ctfp.domain.db.withTransaction
 import com.ctfp.domain.model.ChallengeTable
+import com.ctfp.domain.model.RegistrationCodeTable
+import com.ctfp.domain.model.UserTable
 import io.ktor.server.application.*
 import org.jetbrains.exposed.v1.jdbc.Database
 import org.jetbrains.exposed.v1.jdbc.SchemaUtils
@@ -15,6 +17,8 @@ suspend fun Application.configureExposed() {
 suspend fun createSchemas() = withTransaction {
     SchemaUtils.create(
         ChallengeTable,
+        RegistrationCodeTable,
+        UserTable,
     )
 }
 

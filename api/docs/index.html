@@ -689,6 +689,29 @@
   <script>
     // Script section to load models into a JS Var
     var defs = {}
+            defs["AuthResponse"] = {
+  "title" : "AuthResponse",
+  "required" : [ "expiresAt", "token", "user" ],
+  "properties" : {
+    "token" : { },
+    "expiresAt" : { },
+    "user" : {
+      "$ref" : "#/components/schemas/AuthUser"
+    }
+  }
+};
+            defs["AuthUser"] = {
+  "title" : "AuthUser",
+  "required" : [ "email", "id", "role", "username" ],
+  "properties" : {
+    "id" : { },
+    "username" : { },
+    "email" : { },
+    "role" : {
+      "enum" : [ "ADMIN", "USER" ]
+    }
+  }
+};
             defs["ChallengeRequest"] = {
   "title" : "ChallengeRequest",
   "required" : [ "categories", "maxAttempts", "publishAt", "timeLimit", "title" ],
@@ -816,6 +839,14 @@
     }
   }
 };
+            defs["LoginRequest"] = {
+  "title" : "LoginRequest",
+  "required" : [ "login", "password" ],
+  "properties" : {
+    "login" : { },
+    "password" : { }
+  }
+};
             defs["NotificationRequest"] = {
   "title" : "NotificationRequest",
   "required" : [ "message", "pushAt", "title", "type" ],
@@ -883,6 +914,16 @@
     "updatedAt" : {
       "format" : "date-time"
     }
+  }
+};
+            defs["RegisterRequest"] = {
+  "title" : "RegisterRequest",
+  "required" : [ "email", "password", "username" ],
+  "properties" : {
+    "username" : { },
+    "email" : { },
+    "password" : { },
+    "registrationCode" : { }
   }
 };
             defs["RegistrationCodeRequest"] = {
@@ -968,7 +1009,7 @@
 };
             defs["UserRequest"] = {
   "title" : "UserRequest",
-  "required" : [ "codeId", "email", "passwordHash", "role", "username" ],
+  "required" : [ "email", "passwordHash", "role", "username" ],
   "properties" : {
     "codeId" : { },
     "username" : { },
@@ -991,13 +1032,12 @@
 };
             defs["UserResponse"] = {
   "title" : "UserResponse",
-  "required" : [ "codeId", "createdAt", "email", "id", "passwordHash", "role", "updatedAt", "username" ],
+  "required" : [ "createdAt", "email", "id", "role", "updatedAt", "username" ],
   "properties" : {
     "id" : { },
     "codeId" : { },
     "username" : { },
     "email" : { },
-    "passwordHash" : { },
     "language" : { },
     "country" : { },
     "website" : { },
@@ -1007,7 +1047,6 @@
     "isVerified" : { },
     "isHidden" : { },
     "isBanned" : { },
-    "totpSecret" : { },
     "totpEnabled" : { },
     "soundEnabled" : { },
     "visibilitySettings" : { },
@@ -1045,8 +1084,8 @@
                     <li data-group="Default" data-name="v1AuthLoginPost" class="">
                       <a href="#api-Default-v1AuthLoginPost">v1AuthLoginPost</a>
                     </li>
-                    <li data-group="Default" data-name="v1AuthLogoutPost" class="">
-                      <a href="#api-Default-v1AuthLogoutPost">v1AuthLogoutPost</a>
+                    <li data-group="Default" data-name="v1AuthMeGet" class="">
+                      <a href="#api-Default-v1AuthMeGet">v1AuthMeGet</a>
                     </li>
                     <li data-group="Default" data-name="v1AuthRegisterPost" class="">
                       <a href="#api-Default-v1AuthRegisterPost">v1AuthRegisterPost</a>
@@ -1811,6 +1850,8 @@ except ApiException as e:
                         <div class="tab-content">
                           <div class="tab-pane active" id="examples-Default-v1AuthLoginPost-0-curl">
                            <pre class="prettyprint"><code class="language-bsh">curl -X POST\
+-H "Accept: application/json"\
+-H "Content-Type: application/json"\
 "//v1/auth/login"</code></pre>
                           </div>
                           <div class="tab-pane" id="examples-Default-v1AuthLoginPost-0-java">
@@ -1827,8 +1868,10 @@ public class DefaultApiExample {
     public static void main(String[] args) {
         
         DefaultApi apiInstance = new DefaultApi();
+        LoginRequest body = ; // LoginRequest | 
         try {
-            apiInstance.v1AuthLoginPost();
+            AuthResponse result = apiInstance.v1AuthLoginPost(body);
+            System.out.println(result);
         } catch (ApiException e) {
             System.err.println("Exception when calling DefaultApi#v1AuthLoginPost");
             e.printStackTrace();
@@ -1844,8 +1887,10 @@ public class DefaultApiExample {
 
     public static void main(String[] args) {
         DefaultApi apiInstance = new DefaultApi();
+        LoginRequest body = ; // LoginRequest | 
         try {
-            apiInstance.v1AuthLoginPost();
+            AuthResponse result = apiInstance.v1AuthLoginPost(body);
+            System.out.println(result);
         } catch (ApiException e) {
             System.err.println("Exception when calling DefaultApi#v1AuthLoginPost");
             e.printStackTrace();
@@ -1858,11 +1903,15 @@ public class DefaultApiExample {
   <pre class="prettyprint language-json prettyprinted" data-type="json"><code>Coming Soon!</code></pre>
   </div> -->
                             <div class="tab-pane" id="examples-Default-v1AuthLoginPost-0-objc">
-                              <pre class="prettyprint"><code class="language-cpp">
+                              <pre class="prettyprint"><code class="language-cpp">LoginRequest *body = ; //  (optional)
+
 DefaultApi *apiInstance = [[DefaultApi alloc] init];
 
-[apiInstance v1AuthLoginPostWithCompletionHandler: 
-              ^(NSError* error) {
+[apiInstance v1AuthLoginPostWith:body
+              completionHandler: ^(AuthResponse output, NSError* error) {
+                            if (output) {
+                                NSLog(@"%@", output);
+                            }
                             if (error) {
                                 NSLog(@"Error: %@", error);
                             }
@@ -1874,14 +1923,17 @@ DefaultApi *apiInstance = [[DefaultApi alloc] init];
                               <pre class="prettyprint"><code class="language-js">var UntitledApi = require('untitled_api');
 
 var api = new UntitledApi.DefaultApi()
+var opts = { 
+  'body':  // {{LoginRequest}} 
+};
 var callback = function(error, data, response) {
   if (error) {
     console.error(error);
   } else {
-    console.log('API called successfully.');
+    console.log('API called successfully. Returned data: ' + data);
   }
 };
-api.v1AuthLoginPost(callback);
+api.v1AuthLoginPost(opts, callback);
 </code></pre>
                             </div>
 
@@ -1903,10 +1955,12 @@ namespace Example
         {
 
             var apiInstance = new DefaultApi();
+            var body = new LoginRequest(); // LoginRequest |  (optional) 
 
             try
             {
-                apiInstance.v1AuthLoginPost();
+                AuthResponse result = apiInstance.v1AuthLoginPost(body);
+                Debug.WriteLine(result);
             }
             catch (Exception e)
             {
@@ -1923,9 +1977,11 @@ namespace Example
 require_once(__DIR__ . '/vendor/autoload.php');
 
 $api_instance = new Swagger\Client\ApiDefaultApi();
+$body = ; // LoginRequest | 
 
 try {
-    $api_instance->v1AuthLoginPost();
+    $result = $api_instance->v1AuthLoginPost($body);
+    print_r($result);
 } catch (Exception $e) {
     echo 'Exception when calling DefaultApi->v1AuthLoginPost: ', $e->getMessage(), PHP_EOL;
 }
@@ -1938,9 +1994,11 @@ use WWW::SwaggerClient::Configuration;
 use WWW::SwaggerClient::DefaultApi;
 
 my $api_instance = WWW::SwaggerClient::DefaultApi->new();
+my $body = WWW::SwaggerClient::Object::LoginRequest->new(); # LoginRequest | 
 
 eval { 
-    $api_instance->v1AuthLoginPost();
+    my $result = $api_instance->v1AuthLoginPost(body => $body);
+    print Dumper($result);
 };
 if ($@) {
     warn "Exception when calling DefaultApi->v1AuthLoginPost: $@\n";
@@ -1956,9 +2014,11 @@ from pprint import pprint
 
 # create an instance of the API class
 api_instance = swagger_client.DefaultApi()
+body =  # LoginRequest |  (optional)
 
 try: 
-    api_instance.v1_auth_login_post()
+    api_response = api_instance.v1_auth_login_post(body=body)
+    pprint(api_response)
 except ApiException as e:
     print("Exception when calling DefaultApi->v1AuthLoginPost: %s\n" % e)</code></pre>
                             </div>
@@ -1968,17 +2028,107 @@ except ApiException as e:
 
 
 
+                            <div class="methodsubtabletitle">Body parameters</div>
+                            <table id="methodsubtable">
+                              <tr>
+                                <th width="150px">Name</th>
+                                <th>Description</th>
+                              </tr>
+                                <tr><td style="width:150px;">body </td>
+                                <td>
+                                
+                                
+                                <script>
+                                $(document).ready(function() {
+                                  var schemaWrapper = {
+  "content" : {
+    "application/json" : {
+      "schema" : {
+        "$ref" : "#/components/schemas/LoginRequest"
+      }
+    }
+  }
+};
+                                  var schema = schemaWrapper.content["application/json"].schema;
+                                  if (schema.$ref != null) {
+                                    schema = defsParser.$refs.get(schema.$ref);
+                                  } else {
+                                    schemaWrapper.components = {};
+                                    schemaWrapper.components.schemas = Object.assign({}, defs);
+                                    $RefParser.dereference(schemaWrapper).catch(function(err) {
+                                      console.log(err);
+                                    });
+                                  }
+                                
+                                  var view = new JSONSchemaView(schema,2,{isBodyParam: true});
+                                  var result = $('#d2e199_v1AuthLoginPost_body');
+                                  result.empty();
+                                  result.append(view.render());
+                                });
+                                </script>
+                                <div id="d2e199_v1AuthLoginPost_body"></div>
+                                </td>
+                                </tr>
+                            </table>
 
 
 
                           <h2>Responses</h2>
+                            <h3> Status: 200 -  </h3>
+
+                            <ul class="nav nav-tabs nav-tabs-examples" >
+                                <li class="active">
+                                  <a data-toggle="tab" href="#responses-v1AuthLoginPost-200-schema">Schema</a>
+                                </li>
+
+                            </ul>
+
+                            <div class="tab-content" style='margin-bottom: 10px;'>
+                                <div class="tab-pane active" id="responses-v1AuthLoginPost-200-schema">
+                                  <div id='responses-v1AuthLoginPost-200-schema-200' style="padding: 30px; border-left: 1px solid #eee; border-right: 1px solid #eee; border-bottom: 1px solid #eee;">
+                                    <script>
+                                      $(document).ready(function() {
+                                        var schemaWrapper = {
+  "description" : "",
+  "content" : {
+    "application/json" : {
+      "schema" : {
+        "$ref" : "#/components/schemas/AuthResponse"
+      }
+    }
+  }
+};
+                                        var schema = schemaWrapper.content["application/json"].schema;
+                                        if (schema.$ref != null) {
+                                          schema = defsParser.$refs.get(schema.$ref);
+                                        } else {
+                                          schemaWrapper.components = {};
+                                          schemaWrapper.components.schemas = Object.assign({}, defs);
+                                          $RefParser.dereference(schemaWrapper).catch(function(err) {
+                                            console.log(err);
+                                          });
+                                        }
+
+                                        //console.log(JSON.stringify(schema));
+                                        var view = new JSONSchemaView(schema, 3);
+                                        $('#responses-v1AuthLoginPost-200-schema-data').val(stringify(schema));
+                                        var result = $('#responses-v1AuthLoginPost-200-schema-200');
+                                        result.empty();
+                                        result.append(view.render());
+                                      });
+                                    </script>
+                                  </div>
+                                  <input id='responses-v1AuthLoginPost-200-schema-data' type='hidden' value=''></input>
+                                </div>
+                            </div>
+
                         </article>
                       </div>
                       <hr>
-                    <div id="api-Default-v1AuthLogoutPost">
-                      <article id="api-Default-v1AuthLogoutPost-0" data-group="User" data-name="v1AuthLogoutPost" data-version="0">
+                    <div id="api-Default-v1AuthMeGet">
+                      <article id="api-Default-v1AuthMeGet-0" data-group="User" data-name="v1AuthMeGet" data-version="0">
                         <div class="pull-left">
-                          <h1>v1AuthLogoutPost</h1>
+                          <h1>v1AuthMeGet</h1>
                           <p></p>
                         </div>
                         <div class="pull-right"></div>
@@ -1987,30 +2137,32 @@ except ApiException as e:
                         <p class="marked"></p>
                         <p></p>
                         <br />
-                        <pre class="prettyprint language-html prettyprinted" data-type="post"><code><span class="pln">/v1/auth/logout</span></code></pre>
+                        <pre class="prettyprint language-html prettyprinted" data-type="get"><code><span class="pln">/v1/auth/me</span></code></pre>
                         <p>
                           <h3>Usage and SDK Samples</h3>
                         </p>
                         <ul class="nav nav-tabs nav-tabs-examples">
-                          <li class="active"><a href="#examples-Default-v1AuthLogoutPost-0-curl">Curl</a></li>
-                          <li class=""><a href="#examples-Default-v1AuthLogoutPost-0-java">Java</a></li>
-                          <li class=""><a href="#examples-Default-v1AuthLogoutPost-0-android">Android</a></li>
-                          <!--<li class=""><a href="#examples-Default-v1AuthLogoutPost-0-groovy">Groovy</a></li>-->
-                          <li class=""><a href="#examples-Default-v1AuthLogoutPost-0-objc">Obj-C</a></li>
-                          <li class=""><a href="#examples-Default-v1AuthLogoutPost-0-javascript">JavaScript</a></li>
-                          <!--<li class=""><a href="#examples-Default-v1AuthLogoutPost-0-angular">Angular</a></li>-->
-                          <li class=""><a href="#examples-Default-v1AuthLogoutPost-0-csharp">C#</a></li>
-                          <li class=""><a href="#examples-Default-v1AuthLogoutPost-0-php">PHP</a></li>
-                          <li class=""><a href="#examples-Default-v1AuthLogoutPost-0-perl">Perl</a></li>
-                          <li class=""><a href="#examples-Default-v1AuthLogoutPost-0-python">Python</a></li>
+                          <li class="active"><a href="#examples-Default-v1AuthMeGet-0-curl">Curl</a></li>
+                          <li class=""><a href="#examples-Default-v1AuthMeGet-0-java">Java</a></li>
+                          <li class=""><a href="#examples-Default-v1AuthMeGet-0-android">Android</a></li>
+                          <!--<li class=""><a href="#examples-Default-v1AuthMeGet-0-groovy">Groovy</a></li>-->
+                          <li class=""><a href="#examples-Default-v1AuthMeGet-0-objc">Obj-C</a></li>
+                          <li class=""><a href="#examples-Default-v1AuthMeGet-0-javascript">JavaScript</a></li>
+                          <!--<li class=""><a href="#examples-Default-v1AuthMeGet-0-angular">Angular</a></li>-->
+                          <li class=""><a href="#examples-Default-v1AuthMeGet-0-csharp">C#</a></li>
+                          <li class=""><a href="#examples-Default-v1AuthMeGet-0-php">PHP</a></li>
+                          <li class=""><a href="#examples-Default-v1AuthMeGet-0-perl">Perl</a></li>
+                          <li class=""><a href="#examples-Default-v1AuthMeGet-0-python">Python</a></li>
                         </ul>
 
                         <div class="tab-content">
-                          <div class="tab-pane active" id="examples-Default-v1AuthLogoutPost-0-curl">
-                           <pre class="prettyprint"><code class="language-bsh">curl -X POST\
-"//v1/auth/logout"</code></pre>
+                          <div class="tab-pane active" id="examples-Default-v1AuthMeGet-0-curl">
+                           <pre class="prettyprint"><code class="language-bsh">curl -X GET\
+ -H "Authorization: Bearer [[accessToken]]"\
+-H "Accept: application/json"\
+"//v1/auth/me"</code></pre>
                           </div>
-                          <div class="tab-pane" id="examples-Default-v1AuthLogoutPost-0-java">
+                          <div class="tab-pane" id="examples-Default-v1AuthMeGet-0-java">
                             <pre class="prettyprint"><code class="language-java">import io.swagger.client.*;
 import io.swagger.client.auth.*;
 import io.swagger.client.model.*;
@@ -2022,19 +2174,22 @@ import java.util.*;
 public class DefaultApiExample {
 
     public static void main(String[] args) {
-        
+        ApiClient defaultClient = Configuration.getDefaultApiClient();
+
+
         DefaultApi apiInstance = new DefaultApi();
         try {
-            apiInstance.v1AuthLogoutPost();
+            AuthUser result = apiInstance.v1AuthMeGet();
+            System.out.println(result);
         } catch (ApiException e) {
-            System.err.println("Exception when calling DefaultApi#v1AuthLogoutPost");
+            System.err.println("Exception when calling DefaultApi#v1AuthMeGet");
             e.printStackTrace();
         }
     }
 }</code></pre>
                           </div>
 
-                          <div class="tab-pane" id="examples-Default-v1AuthLogoutPost-0-android">
+                          <div class="tab-pane" id="examples-Default-v1AuthMeGet-0-android">
                             <pre class="prettyprint"><code class="language-java">import io.swagger.client.api.DefaultApi;
 
 public class DefaultApiExample {
@@ -2042,24 +2197,29 @@ public class DefaultApiExample {
     public static void main(String[] args) {
         DefaultApi apiInstance = new DefaultApi();
         try {
-            apiInstance.v1AuthLogoutPost();
+            AuthUser result = apiInstance.v1AuthMeGet();
+            System.out.println(result);
         } catch (ApiException e) {
-            System.err.println("Exception when calling DefaultApi#v1AuthLogoutPost");
+            System.err.println("Exception when calling DefaultApi#v1AuthMeGet");
             e.printStackTrace();
         }
     }
 }</code></pre>
                           </div>
   <!--
-  <div class="tab-pane" id="examples-Default-v1AuthLogoutPost-0-groovy">
+  <div class="tab-pane" id="examples-Default-v1AuthMeGet-0-groovy">
   <pre class="prettyprint language-json prettyprinted" data-type="json"><code>Coming Soon!</code></pre>
   </div> -->
-                            <div class="tab-pane" id="examples-Default-v1AuthLogoutPost-0-objc">
-                              <pre class="prettyprint"><code class="language-cpp">
+                            <div class="tab-pane" id="examples-Default-v1AuthMeGet-0-objc">
+                              <pre class="prettyprint"><code class="language-cpp">Configuration *apiConfig = [Configuration sharedConfig];
+
 DefaultApi *apiInstance = [[DefaultApi alloc] init];
 
-[apiInstance v1AuthLogoutPostWithCompletionHandler: 
-              ^(NSError* error) {
+[apiInstance v1AuthMeGetWithCompletionHandler: 
+              ^(AuthUser output, NSError* error) {
+                            if (output) {
+                                NSLog(@"%@", output);
+                            }
                             if (error) {
                                 NSLog(@"Error: %@", error);
                             }
@@ -2067,25 +2227,27 @@ DefaultApi *apiInstance = [[DefaultApi alloc] init];
 </code></pre>
                             </div>
 
-                            <div class="tab-pane" id="examples-Default-v1AuthLogoutPost-0-javascript">
+                            <div class="tab-pane" id="examples-Default-v1AuthMeGet-0-javascript">
                               <pre class="prettyprint"><code class="language-js">var UntitledApi = require('untitled_api');
+var defaultClient = UntitledApi.ApiClient.instance;
+
 
 var api = new UntitledApi.DefaultApi()
 var callback = function(error, data, response) {
   if (error) {
     console.error(error);
   } else {
-    console.log('API called successfully.');
+    console.log('API called successfully. Returned data: ' + data);
   }
 };
-api.v1AuthLogoutPost(callback);
+api.v1AuthMeGet(callback);
 </code></pre>
                             </div>
 
-                            <!--<div class="tab-pane" id="examples-Default-v1AuthLogoutPost-0-angular">
+                            <!--<div class="tab-pane" id="examples-Default-v1AuthMeGet-0-angular">
               <pre class="prettyprint language-json prettyprinted" data-type="json"><code>Coming Soon!</code></pre>
             </div>-->
-                            <div class="tab-pane" id="examples-Default-v1AuthLogoutPost-0-csharp">
+                            <div class="tab-pane" id="examples-Default-v1AuthMeGet-0-csharp">
                               <pre class="prettyprint"><code class="language-cs">using System;
 using System.Diagnostics;
 using IO.Swagger.Api;
@@ -2094,20 +2256,22 @@ using IO.Swagger.Model;
 
 namespace Example
 {
-    public class v1AuthLogoutPostExample
+    public class v1AuthMeGetExample
     {
         public void main()
         {
+
 
             var apiInstance = new DefaultApi();
 
             try
             {
-                apiInstance.v1AuthLogoutPost();
+                AuthUser result = apiInstance.v1AuthMeGet();
+                Debug.WriteLine(result);
             }
             catch (Exception e)
             {
-                Debug.Print("Exception when calling DefaultApi.v1AuthLogoutPost: " + e.Message );
+                Debug.Print("Exception when calling DefaultApi.v1AuthMeGet: " + e.Message );
             }
         }
     }
@@ -2115,49 +2279,55 @@ namespace Example
 </code></pre>
                             </div>
 
-                            <div class="tab-pane" id="examples-Default-v1AuthLogoutPost-0-php">
+                            <div class="tab-pane" id="examples-Default-v1AuthMeGet-0-php">
                               <pre class="prettyprint"><code class="language-php"><&#63;php
 require_once(__DIR__ . '/vendor/autoload.php');
+
 
 $api_instance = new Swagger\Client\ApiDefaultApi();
 
 try {
-    $api_instance->v1AuthLogoutPost();
+    $result = $api_instance->v1AuthMeGet();
+    print_r($result);
 } catch (Exception $e) {
-    echo 'Exception when calling DefaultApi->v1AuthLogoutPost: ', $e->getMessage(), PHP_EOL;
+    echo 'Exception when calling DefaultApi->v1AuthMeGet: ', $e->getMessage(), PHP_EOL;
 }
 ?></code></pre>
                             </div>
 
-                            <div class="tab-pane" id="examples-Default-v1AuthLogoutPost-0-perl">
+                            <div class="tab-pane" id="examples-Default-v1AuthMeGet-0-perl">
                               <pre class="prettyprint"><code class="language-perl">use Data::Dumper;
 use WWW::SwaggerClient::Configuration;
 use WWW::SwaggerClient::DefaultApi;
 
+
 my $api_instance = WWW::SwaggerClient::DefaultApi->new();
 
 eval { 
-    $api_instance->v1AuthLogoutPost();
+    my $result = $api_instance->v1AuthMeGet();
+    print Dumper($result);
 };
 if ($@) {
-    warn "Exception when calling DefaultApi->v1AuthLogoutPost: $@\n";
+    warn "Exception when calling DefaultApi->v1AuthMeGet: $@\n";
 }</code></pre>
                             </div>
 
-                            <div class="tab-pane" id="examples-Default-v1AuthLogoutPost-0-python">
+                            <div class="tab-pane" id="examples-Default-v1AuthMeGet-0-python">
                               <pre class="prettyprint"><code class="language-python">from __future__ import print_statement
 import time
 import swagger_client
 from swagger_client.rest import ApiException
 from pprint import pprint
 
+
 # create an instance of the API class
 api_instance = swagger_client.DefaultApi()
 
 try: 
-    api_instance.v1_auth_logout_post()
+    api_response = api_instance.v1_auth_me_get()
+    pprint(api_response)
 except ApiException as e:
-    print("Exception when calling DefaultApi->v1AuthLogoutPost: %s\n" % e)</code></pre>
+    print("Exception when calling DefaultApi->v1AuthMeGet: %s\n" % e)</code></pre>
                             </div>
                           </div>
 
@@ -2169,6 +2339,54 @@ except ApiException as e:
 
 
                           <h2>Responses</h2>
+                            <h3> Status: 200 -  </h3>
+
+                            <ul class="nav nav-tabs nav-tabs-examples" >
+                                <li class="active">
+                                  <a data-toggle="tab" href="#responses-v1AuthMeGet-200-schema">Schema</a>
+                                </li>
+
+                            </ul>
+
+                            <div class="tab-content" style='margin-bottom: 10px;'>
+                                <div class="tab-pane active" id="responses-v1AuthMeGet-200-schema">
+                                  <div id='responses-v1AuthMeGet-200-schema-200' style="padding: 30px; border-left: 1px solid #eee; border-right: 1px solid #eee; border-bottom: 1px solid #eee;">
+                                    <script>
+                                      $(document).ready(function() {
+                                        var schemaWrapper = {
+  "description" : "",
+  "content" : {
+    "application/json" : {
+      "schema" : {
+        "$ref" : "#/components/schemas/AuthUser"
+      }
+    }
+  }
+};
+                                        var schema = schemaWrapper.content["application/json"].schema;
+                                        if (schema.$ref != null) {
+                                          schema = defsParser.$refs.get(schema.$ref);
+                                        } else {
+                                          schemaWrapper.components = {};
+                                          schemaWrapper.components.schemas = Object.assign({}, defs);
+                                          $RefParser.dereference(schemaWrapper).catch(function(err) {
+                                            console.log(err);
+                                          });
+                                        }
+
+                                        //console.log(JSON.stringify(schema));
+                                        var view = new JSONSchemaView(schema, 3);
+                                        $('#responses-v1AuthMeGet-200-schema-data').val(stringify(schema));
+                                        var result = $('#responses-v1AuthMeGet-200-schema-200');
+                                        result.empty();
+                                        result.append(view.render());
+                                      });
+                                    </script>
+                                  </div>
+                                  <input id='responses-v1AuthMeGet-200-schema-data' type='hidden' value=''></input>
+                                </div>
+                            </div>
+
                         </article>
                       </div>
                       <hr>
@@ -2205,6 +2423,8 @@ except ApiException as e:
                         <div class="tab-content">
                           <div class="tab-pane active" id="examples-Default-v1AuthRegisterPost-0-curl">
                            <pre class="prettyprint"><code class="language-bsh">curl -X POST\
+-H "Accept: application/json"\
+-H "Content-Type: application/json"\
 "//v1/auth/register"</code></pre>
                           </div>
                           <div class="tab-pane" id="examples-Default-v1AuthRegisterPost-0-java">
@@ -2221,8 +2441,10 @@ public class DefaultApiExample {
     public static void main(String[] args) {
         
         DefaultApi apiInstance = new DefaultApi();
+        RegisterRequest body = ; // RegisterRequest | 
         try {
-            apiInstance.v1AuthRegisterPost();
+            AuthResponse result = apiInstance.v1AuthRegisterPost(body);
+            System.out.println(result);
         } catch (ApiException e) {
             System.err.println("Exception when calling DefaultApi#v1AuthRegisterPost");
             e.printStackTrace();
@@ -2238,8 +2460,10 @@ public class DefaultApiExample {
 
     public static void main(String[] args) {
         DefaultApi apiInstance = new DefaultApi();
+        RegisterRequest body = ; // RegisterRequest | 
         try {
-            apiInstance.v1AuthRegisterPost();
+            AuthResponse result = apiInstance.v1AuthRegisterPost(body);
+            System.out.println(result);
         } catch (ApiException e) {
             System.err.println("Exception when calling DefaultApi#v1AuthRegisterPost");
             e.printStackTrace();
@@ -2252,11 +2476,15 @@ public class DefaultApiExample {
   <pre class="prettyprint language-json prettyprinted" data-type="json"><code>Coming Soon!</code></pre>
   </div> -->
                             <div class="tab-pane" id="examples-Default-v1AuthRegisterPost-0-objc">
-                              <pre class="prettyprint"><code class="language-cpp">
+                              <pre class="prettyprint"><code class="language-cpp">RegisterRequest *body = ; //  (optional)
+
 DefaultApi *apiInstance = [[DefaultApi alloc] init];
 
-[apiInstance v1AuthRegisterPostWithCompletionHandler: 
-              ^(NSError* error) {
+[apiInstance v1AuthRegisterPostWith:body
+              completionHandler: ^(AuthResponse output, NSError* error) {
+                            if (output) {
+                                NSLog(@"%@", output);
+                            }
                             if (error) {
                                 NSLog(@"Error: %@", error);
                             }
@@ -2268,14 +2496,17 @@ DefaultApi *apiInstance = [[DefaultApi alloc] init];
                               <pre class="prettyprint"><code class="language-js">var UntitledApi = require('untitled_api');
 
 var api = new UntitledApi.DefaultApi()
+var opts = { 
+  'body':  // {{RegisterRequest}} 
+};
 var callback = function(error, data, response) {
   if (error) {
     console.error(error);
   } else {
-    console.log('API called successfully.');
+    console.log('API called successfully. Returned data: ' + data);
   }
 };
-api.v1AuthRegisterPost(callback);
+api.v1AuthRegisterPost(opts, callback);
 </code></pre>
                             </div>
 
@@ -2297,10 +2528,12 @@ namespace Example
         {
 
             var apiInstance = new DefaultApi();
+            var body = new RegisterRequest(); // RegisterRequest |  (optional) 
 
             try
             {
-                apiInstance.v1AuthRegisterPost();
+                AuthResponse result = apiInstance.v1AuthRegisterPost(body);
+                Debug.WriteLine(result);
             }
             catch (Exception e)
             {
@@ -2317,9 +2550,11 @@ namespace Example
 require_once(__DIR__ . '/vendor/autoload.php');
 
 $api_instance = new Swagger\Client\ApiDefaultApi();
+$body = ; // RegisterRequest | 
 
 try {
-    $api_instance->v1AuthRegisterPost();
+    $result = $api_instance->v1AuthRegisterPost($body);
+    print_r($result);
 } catch (Exception $e) {
     echo 'Exception when calling DefaultApi->v1AuthRegisterPost: ', $e->getMessage(), PHP_EOL;
 }
@@ -2332,9 +2567,11 @@ use WWW::SwaggerClient::Configuration;
 use WWW::SwaggerClient::DefaultApi;
 
 my $api_instance = WWW::SwaggerClient::DefaultApi->new();
+my $body = WWW::SwaggerClient::Object::RegisterRequest->new(); # RegisterRequest | 
 
 eval { 
-    $api_instance->v1AuthRegisterPost();
+    my $result = $api_instance->v1AuthRegisterPost(body => $body);
+    print Dumper($result);
 };
 if ($@) {
     warn "Exception when calling DefaultApi->v1AuthRegisterPost: $@\n";
@@ -2350,9 +2587,11 @@ from pprint import pprint
 
 # create an instance of the API class
 api_instance = swagger_client.DefaultApi()
+body =  # RegisterRequest |  (optional)
 
 try: 
-    api_instance.v1_auth_register_post()
+    api_response = api_instance.v1_auth_register_post(body=body)
+    pprint(api_response)
 except ApiException as e:
     print("Exception when calling DefaultApi->v1AuthRegisterPost: %s\n" % e)</code></pre>
                             </div>
@@ -2362,10 +2601,100 @@ except ApiException as e:
 
 
 
+                            <div class="methodsubtabletitle">Body parameters</div>
+                            <table id="methodsubtable">
+                              <tr>
+                                <th width="150px">Name</th>
+                                <th>Description</th>
+                              </tr>
+                                <tr><td style="width:150px;">body </td>
+                                <td>
+                                
+                                
+                                <script>
+                                $(document).ready(function() {
+                                  var schemaWrapper = {
+  "content" : {
+    "application/json" : {
+      "schema" : {
+        "$ref" : "#/components/schemas/RegisterRequest"
+      }
+    }
+  }
+};
+                                  var schema = schemaWrapper.content["application/json"].schema;
+                                  if (schema.$ref != null) {
+                                    schema = defsParser.$refs.get(schema.$ref);
+                                  } else {
+                                    schemaWrapper.components = {};
+                                    schemaWrapper.components.schemas = Object.assign({}, defs);
+                                    $RefParser.dereference(schemaWrapper).catch(function(err) {
+                                      console.log(err);
+                                    });
+                                  }
+                                
+                                  var view = new JSONSchemaView(schema,2,{isBodyParam: true});
+                                  var result = $('#d2e199_v1AuthRegisterPost_body');
+                                  result.empty();
+                                  result.append(view.render());
+                                });
+                                </script>
+                                <div id="d2e199_v1AuthRegisterPost_body"></div>
+                                </td>
+                                </tr>
+                            </table>
 
 
 
                           <h2>Responses</h2>
+                            <h3> Status: 201 -  </h3>
+
+                            <ul class="nav nav-tabs nav-tabs-examples" >
+                                <li class="active">
+                                  <a data-toggle="tab" href="#responses-v1AuthRegisterPost-201-schema">Schema</a>
+                                </li>
+
+                            </ul>
+
+                            <div class="tab-content" style='margin-bottom: 10px;'>
+                                <div class="tab-pane active" id="responses-v1AuthRegisterPost-201-schema">
+                                  <div id='responses-v1AuthRegisterPost-201-schema-201' style="padding: 30px; border-left: 1px solid #eee; border-right: 1px solid #eee; border-bottom: 1px solid #eee;">
+                                    <script>
+                                      $(document).ready(function() {
+                                        var schemaWrapper = {
+  "description" : "",
+  "content" : {
+    "application/json" : {
+      "schema" : {
+        "$ref" : "#/components/schemas/AuthResponse"
+      }
+    }
+  }
+};
+                                        var schema = schemaWrapper.content["application/json"].schema;
+                                        if (schema.$ref != null) {
+                                          schema = defsParser.$refs.get(schema.$ref);
+                                        } else {
+                                          schemaWrapper.components = {};
+                                          schemaWrapper.components.schemas = Object.assign({}, defs);
+                                          $RefParser.dereference(schemaWrapper).catch(function(err) {
+                                            console.log(err);
+                                          });
+                                        }
+
+                                        //console.log(JSON.stringify(schema));
+                                        var view = new JSONSchemaView(schema, 3);
+                                        $('#responses-v1AuthRegisterPost-201-schema-data').val(stringify(schema));
+                                        var result = $('#responses-v1AuthRegisterPost-201-schema-201');
+                                        result.empty();
+                                        result.append(view.render());
+                                      });
+                                    </script>
+                                  </div>
+                                  <input id='responses-v1AuthRegisterPost-201-schema-data' type='hidden' value=''></input>
+                                </div>
+                            </div>
+
                         </article>
                       </div>
                       <hr>

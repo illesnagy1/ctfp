@@ -58,6 +58,7 @@ dependencies {
     implementation(libs.logback.classic)
     implementation(libs.openfolder.kotlinAsyncapiKtor)
     implementation(libs.postgresql)
+    implementation(libs.bouncycastle.bcprov)
     implementation(libs.ucasoft.ktorSimpleCache)
     implementation(libs.ucasoft.ktorSimpleMemoryCache)
     implementation(libs.ucasoft.ktorSimpleRedisCache)

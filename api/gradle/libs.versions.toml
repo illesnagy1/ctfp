@@ -9,6 +9,7 @@ flyway = "13.8.1"
 flaxoos = "2.3.0"
 ucasoft = "0.72.1"
 asyncapi = "3.2.4"
+bouncycastle = "1.86"
 
 [libraries]
 exposed-core = { module = "org.jetbrains.exposed:exposed-core", version.ref = "exposed" }
@@ -28,6 +29,7 @@ postgresql = { module = "org.postgresql:postgresql", version.ref = "postgresql" 
 ucasoft-ktorSimpleCache = { module = "com.ucasoft.ktor:ktor-simple-cache", version.ref = "ucasoft" }
 ucasoft-ktorSimpleMemoryCache = { module = "com.ucasoft.ktor:ktor-simple-memory-cache", version.ref = "ucasoft" }
 ucasoft-ktorSimpleRedisCache = { module = "com.ucasoft.ktor:ktor-simple-redis-cache", version.ref = "ucasoft" }
+bouncycastle-bcprov = { module = "org.bouncycastle:bcprov-jdk18on", version.ref = "bouncycastle" }
 flyway-core = { module = "org.flywaydb:flyway-core", version.ref = "flyway" }
 flyway-database-postgresql = { module = "org.flywaydb:flyway-database-postgresql", version.ref = "flyway" }
 
