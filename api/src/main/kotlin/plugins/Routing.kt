@@ -20,6 +20,7 @@ import com.ctfp.service.FlagService
 import com.ctfp.service.HintService
 import com.ctfp.service.NotificationService
 import com.ctfp.service.PageService
+import com.ctfp.service.helper.PasswordHasher
 import com.ctfp.service.RegistrationCodeService
 import com.ctfp.service.SubmissionService
 import com.ctfp.service.TeamService
@@ -35,9 +36,11 @@ fun Application.configureRouting() {
             call.respondText("Hello, World!")
         }
 
+        val hasher = PasswordHasher()
+
         route("v1") {
             challenge(ChallengeService())
-            auth(AuthService())
+            auth(AuthService(environment.config.jwtConfig(), hasher))
             emailTemplate(EmailTemplateService())
             file(FileService())
             flag(FlagService())
@@ -47,7 +50,7 @@ fun Application.configureRouting() {
             registrationCode(RegistrationCodeService())
             submission(SubmissionService())
             team(TeamService())
-            user(UserService())
+            user(UserService(hasher))
         }
 
         staticResources("/static", "static")
