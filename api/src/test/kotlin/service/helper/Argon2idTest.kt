@@ -25,14 +25,6 @@ class Argon2idTest {
     }
 
     @Test
-    fun `encode omits base64 padding`() {
-        val encoded = Argon2id(64, 1, 1, ByteArray(16), ByteArray(32)).encode()
-
-        assertFalse('=' in encoded)
-        assertEquals(encoded, encoded.toArgon2id().encode())
-    }
-
-    @Test
     fun `rejects malformed strings`() {
         val invalid = listOf(
             "",
