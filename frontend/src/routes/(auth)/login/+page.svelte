@@ -31,9 +31,11 @@
         <Button type="submit">Login</Button>
       </form>
     </Card.Content>
-    <Card.Footer class="text-sm text-muted-foreground">
-      No account?
-      <a href={resolve('register')} class="underline">Register</a>
+    <Card.Footer>
+      <p class="text-sm text-muted-foreground">
+        No account?
+        <a href={resolve('register')} class="underline">Register</a>
+      </p>
     </Card.Footer>
   </Card.Root>
 </div>

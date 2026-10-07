@@ -2,7 +2,7 @@
   import Settings2Icon from '@lucide/svelte/icons/settings-2';
   import type { RowData, SvelteTable } from '@tanstack/svelte-table';
 
-  import { buttonVariants } from '#lib/components/ui/button/index.js';
+  import { Button } from '#lib/components/ui/button/index.js';
   import * as DropdownMenu from '#lib/components/ui/dropdown-menu/index.js';
 
   import type { TasksTableFeatures } from './data-table-features.js';
@@ -11,15 +11,13 @@
 </script>
 
 <DropdownMenu.Root>
-  <DropdownMenu.Trigger
-    class={buttonVariants({
-      variant: 'outline',
-      size: 'sm',
-      class: 'ms-auto hidden h-8 lg:flex',
-    })}
-  >
-    <Settings2Icon />
-    View
+  <DropdownMenu.Trigger>
+    {#snippet child({ props })}
+      <Button {...props} variant="outline" size="sm" class="ms-auto hidden lg:flex">
+        <Settings2Icon />
+        View
+      </Button>
+    {/snippet}
   </DropdownMenu.Trigger>
   <DropdownMenu.Content>
     <DropdownMenu.Group>
@@ -28,11 +26,8 @@
       {#each table
         .getAllColumns()
         .filter((col) => typeof col.accessorFn !== 'undefined' && col.getCanHide()) as column (column.id)}
-        <DropdownMenu.CheckboxItem
-          bind:checked={() => column.getIsVisible(), (v) => column.toggleVisibility(!!v)}
-          class="capitalize"
-        >
-          {column.id}
+        <DropdownMenu.CheckboxItem bind:checked={() => column.getIsVisible(), (v) => column.toggleVisibility(!!v)}>
+          <span class="capitalize">{column.id}</span>
         </DropdownMenu.CheckboxItem>
       {/each}
     </DropdownMenu.Group>

@@ -28,7 +28,7 @@
       onchange={(e) => {
         table.getColumn('title')?.setFilterValue(e.currentTarget.value);
       }}
-      class="h-8 w-[150px] lg:w-[250px]"
+      class="h-8 w-37.5 lg:w-62.5"
     />
 
     {#if statusCol}
@@ -39,7 +39,7 @@
     {/if}
 
     {#if isFiltered}
-      <Button variant="ghost" onclick={() => table.resetColumnFilters()} class="h-8 px-2 lg:px-3">
+      <Button variant="ghost" size="sm" onclick={() => table.resetColumnFilters()}>
         Reset
         <XIcon />
       </Button>

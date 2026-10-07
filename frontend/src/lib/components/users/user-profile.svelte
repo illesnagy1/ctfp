@@ -15,7 +15,7 @@
     <Card.Description>Joined {new Date(user.createdAt).toLocaleDateString()}</Card.Description>
   </Card.Header>
   <Card.Content>
-    <dl class="grid grid-cols-[max-content_1fr] gap-x-6 gap-y-2 text-sm">
+    <dl class="grid grid-cols-label-value gap-x-6 gap-y-2 text-sm">
       <dt class="text-muted-foreground">Country</dt>
       <dd>{user.country ?? '-'}</dd>
       <dt class="text-muted-foreground">Website</dt>

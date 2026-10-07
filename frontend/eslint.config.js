@@ -44,8 +44,12 @@ export default defineConfig([
     rules,
   },
   {
-    // The design system itself: components style their own parts.
+    // The design system itself: components style their own parts, define the off-scale values, and compose variants.
     files: ['src/lib/components/ui/**'],
-    rules: { 'shadcn/no-restyle': 'off' },
+    rules: {
+      'shadcn/no-restyle': 'off',
+      'shadcn/no-arbitrary-values': 'off',
+      'shadcn/require-static-classes': 'off',
+    },
   },
 ]);

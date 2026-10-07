@@ -81,17 +81,13 @@
     </nav>
   </header>
 
-  <main class="grow" style="text-align: justify;">
+  <main class="grow text-justify">
     {@render children?.()}
   </main>
 
   <footer class="border-t bg-background/95">
     <div class="mx-auto flex max-w-6xl items-center justify-center px-4 py-6">
-      <Button variant="link" class="text-muted-foreground">
-        <a href="/" rel="noreferrer" target="_blank">
-          <small>CTF+</small>
-        </a>
-      </Button>
+      <a href="/" rel="noreferrer" target="_blank" class="text-xs text-muted-foreground hover:underline">CTF+</a>
     </div>
   </footer>
 </div>

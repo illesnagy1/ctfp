@@ -12,7 +12,7 @@
   {#if label}
     <Badge variant="outline">{label.label}</Badge>
   {/if}
-  <span class="max-w-[500px] truncate font-medium">
+  <span class="max-w-125 truncate font-medium">
     {value}
   </span>
 </div>

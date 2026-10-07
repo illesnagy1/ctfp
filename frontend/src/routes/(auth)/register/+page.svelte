@@ -59,9 +59,11 @@
         <Button type="submit">Register</Button>
       </form>
     </Card.Content>
-    <Card.Footer class="text-sm text-muted-foreground">
-      Already registered?
-      <a href={resolve('login')} class="underline">Login</a>
+    <Card.Footer>
+      <p class="text-sm text-muted-foreground">
+        Already registered?
+        <a href={resolve('login')} class="underline">Login</a>
+      </p>
     </Card.Footer>
   </Card.Root>
 </div>

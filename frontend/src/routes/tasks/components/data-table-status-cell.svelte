@@ -7,7 +7,7 @@
 </script>
 
 {#if status}
-  <div class="flex w-[100px] items-center">
+  <div class="flex w-25 items-center">
     <status.icon class="me-2 size-4 text-muted-foreground" />
     <span>{status.label}</span>
   </div>

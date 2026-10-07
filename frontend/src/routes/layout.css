@@ -129,3 +129,13 @@
     @apply font-sans;
   }
 }
+
+/* Mirrors directional icons (chevrons) in right-to-left layouts. Used by shadcn components. */
+@utility cn-rtl-flip {
+  @apply rtl:rotate-180;
+}
+
+/* Label/value grid: labels take their natural width, values fill the rest. */
+@utility grid-cols-label-value {
+  grid-template-columns: max-content 1fr;
+}

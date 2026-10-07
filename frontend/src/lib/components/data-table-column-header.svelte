@@ -19,12 +19,7 @@
 
 <div class={className} {...restProps}>
   {#if column.getCanSort()}
-    <Button
-      variant="ghost"
-      size="sm"
-      class="-ms-3 h-8 data-[state=open]:bg-accent"
-      onclick={column.getToggleSortingHandler()}
-    >
+    <Button variant="ghost" size="sm" class="-ms-3" onclick={column.getToggleSortingHandler()}>
       <span>
         {title}
       </span>

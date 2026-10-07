@@ -17,13 +17,13 @@
 <DropdownMenu.Root>
   <DropdownMenu.Trigger>
     {#snippet child({ props })}
-      <Button {...props} variant="ghost" class="flex h-8 w-8 p-0 data-[state=open]:bg-muted">
+      <Button {...props} variant="ghost" size="icon-sm">
         <EllipsisIcon />
         <span class="sr-only">Open Menu</span>
       </Button>
     {/snippet}
   </DropdownMenu.Trigger>
-  <DropdownMenu.Content class="w-[160px]" align="end">
+  <DropdownMenu.Content class="w-40" align="end">
     <DropdownMenu.Item>Edit</DropdownMenu.Item>
     <DropdownMenu.Item>Make a copy</DropdownMenu.Item>
     <DropdownMenu.Item>Favorite</DropdownMenu.Item>

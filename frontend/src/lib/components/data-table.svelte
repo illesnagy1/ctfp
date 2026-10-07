@@ -50,11 +50,8 @@
       </DropdownMenu.Trigger>
       <DropdownMenu.Content align="end">
         {#each table.getAllColumns().filter((col) => col.getCanHide()) as column (column.id)}
-          <DropdownMenu.CheckboxItem
-            class="capitalize"
-            bind:checked={() => column.getIsVisible(), (v) => column.toggleVisibility(!!v)}
-          >
-            {column.id}
+          <DropdownMenu.CheckboxItem bind:checked={() => column.getIsVisible(), (v) => column.toggleVisibility(!!v)}>
+            <span class="capitalize">{column.id}</span>
           </DropdownMenu.CheckboxItem>
         {/each}
       </DropdownMenu.Content>

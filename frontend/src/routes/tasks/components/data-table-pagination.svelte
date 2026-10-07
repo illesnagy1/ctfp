@@ -35,7 +35,7 @@
           table.setPageSize(Number(value));
         }}
       >
-        <Select.Trigger class="h-8 w-[70px]">
+        <Select.Trigger class="h-8 w-17.5">
           {pageSize.toString()}
         </Select.Trigger>
         <Select.Content side="top">
@@ -47,13 +47,14 @@
         </Select.Content>
       </Select.Root>
     </div>
-    <div class="flex w-[100px] items-center justify-center text-sm font-medium">
+    <div class="flex w-25 items-center justify-center text-sm font-medium">
       Page {pageIndex + 1} of {pageCount}
     </div>
     <div class="flex items-center space-x-2">
       <Button
         variant="outline"
-        class="hidden size-8 p-0 lg:flex"
+        size="icon-sm"
+        class="hidden lg:flex"
         onclick={() => table.setPageIndex(0)}
         disabled={!table.getCanPreviousPage()}
       >
@@ -62,20 +63,21 @@
       </Button>
       <Button
         variant="outline"
-        class="size-8 p-0"
+        size="icon-sm"
         onclick={() => table.previousPage()}
         disabled={!table.getCanPreviousPage()}
       >
         <span class="sr-only">Go to previous page</span>
         <ChevronLeftIcon />
       </Button>
-      <Button variant="outline" class="size-8 p-0" onclick={() => table.nextPage()} disabled={!table.getCanNextPage()}>
+      <Button variant="outline" size="icon-sm" onclick={() => table.nextPage()} disabled={!table.getCanNextPage()}>
         <span class="sr-only">Go to next page</span>
         <ChevronRightIcon />
       </Button>
       <Button
         variant="outline"
-        class="hidden size-8 p-0 lg:flex"
+        size="icon-sm"
+        class="hidden lg:flex"
         onclick={() => table.setPageIndex(pageCount - 1)}
         disabled={!table.getCanNextPage()}
       >

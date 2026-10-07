@@ -35,22 +35,22 @@
 <Popover.Root>
   <Popover.Trigger>
     {#snippet child({ props })}
-      <Button {...props} variant="outline" size="sm" class="h-8 border-dashed">
+      <Button {...props} variant="outline" size="sm">
         <CirclePlusIcon />
         {title}
         {#if selectedValues.size > 0}
           <Separator orientation="vertical" class="mx-2 h-4" />
-          <Badge variant="secondary" class="rounded-sm px-1 font-normal lg:hidden">
+          <Badge variant="secondary" class="lg:hidden">
             {selectedValues.size}
           </Badge>
           <div class="hidden space-x-1 lg:flex">
             {#if selectedValues.size > 2}
-              <Badge variant="secondary" class="rounded-sm px-1 font-normal">
+              <Badge variant="secondary">
                 {selectedValues.size} selected
               </Badge>
             {:else}
               {#each options.filter((opt) => selectedValues.has(opt.value)) as option (option)}
-                <Badge variant="secondary" class="rounded-sm px-1 font-normal">
+                <Badge variant="secondary">
                   {option.label}
                 </Badge>
               {/each}
@@ -60,7 +60,7 @@
       </Button>
     {/snippet}
   </Popover.Trigger>
-  <Popover.Content class="w-[200px] p-0" align="start">
+  <Popover.Content class="w-50 p-0" align="start">
     <Command.Root>
       <Command.Input placeholder={title} />
       <Command.List>
