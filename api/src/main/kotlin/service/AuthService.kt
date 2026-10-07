@@ -15,6 +15,7 @@ import com.ctfp.dto.RegisterRequest
 import com.ctfp.dto.toAuthUser
 import com.ctfp.plugins.JwtConfig
 import com.ctfp.service.helper.PasswordHasher
+import com.ctfp.service.helper.ensureAvailable
 import com.ctfp.service.helper.validateEmail
 import com.ctfp.service.helper.validatePassword
 import com.ctfp.service.helper.validateUsername
@@ -36,14 +37,15 @@ class AuthService(
     suspend fun register(request: RegisterRequest): AuthResponse {
         val username = request.username.trim()
         val email = request.email.trim().lowercase()
-        validateRegistration(username, email, request.password)
+
+        validateUsername(username)
+        validateEmail(email)
+        validatePassword(request.password)
 
         val passwordHash = hasher.hash(request.password)
 
         val user = withTransaction {
-            if (!UserDAO.find { (UserTable.username eq username) or (UserTable.email eq email) }.empty()) {
-                throw ApiException(HttpStatusCode.Conflict, "Username or email is already taken")
-            }
+            ensureAvailable(request.username, request.email)
 
             val code = request.registrationCode?.takeIf { it.isNotBlank() }?.let { findUsableCode(it.trim()) }
 
@@ -115,11 +117,5 @@ class AuthService(
             throw ApiException(HttpStatusCode.BadRequest, "Invalid registration code")
         }
         return registrationCode
-    }
-
-    private fun validateRegistration(username: String, email: String, password: String) {
-        validateUsername(username)
-        validateEmail(email)
-        validatePassword(password)
     }
 }

@@ -8,10 +8,10 @@
   import { ThemeSelector } from '$lib/components/ui/theme-selector';
   import { Bell, CircleUser, LogIn, LogOut, Menu, UserPlus, Users, Wrench, X } from '@lucide/svelte';
 
-  let { children } = $props();
+  let { children, data } = $props();
   let menuOpen = $state(false);
-  let loggedIn = $state(true);
-  let isAdmin = $state(true);
+  let loggedIn = $derived(!!data.user);
+  let isAdmin = $derived(data.user?.role === 'ADMIN');
 
   const languages: Language[] = [
     { code: 'en', label: 'English' },
@@ -69,14 +69,16 @@
               <Users />
               Team
             </Button>
-            <Button href={resolve('/user')} variant="ghost">
+            <Button href={resolve('/users/[id]', { id: String(data.user?.id) })} variant="ghost">
               <CircleUser />
               Profile
             </Button>
-            <Button href={resolve('/logout')} variant="outline">
-              <LogOut />
-              Logout
-            </Button>
+            <form method="post" action={resolve('/logout')}>
+              <Button type="submit" variant="outline" class="w-full">
+                <LogOut />
+                Logout
+              </Button>
+            </form>
           {:else}
             <Button href={resolve('/register')}>
               <UserPlus />

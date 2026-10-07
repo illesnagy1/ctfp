@@ -1,68 +1,21 @@
 <script lang="ts">
-  import { createSvelteTable } from '$lib/components/ui/data-table/index.js';
-  import {
-    type ColumnFiltersState,
-    type PaginationState,
-    type SortingState,
-    getCoreRowModel,
-    getFilteredRowModel,
-    getPaginationRowModel,
-    getSortedRowModel,
-  } from '@tanstack/table-core';
+  import { isAdminUser } from '$lib/types/user';
 
-  import { columns } from './columns.js';
+  import { adminColumns, columns } from './columns.js';
   import DataTable from './data-table.svelte';
 
-  let { data } = $props();
+  let { data, form } = $props();
 
-  let pagination = $state<PaginationState>({ pageIndex: 0, pageSize: 10 });
-  let sorting = $state<SortingState>([]);
-  let columnFilters = $state<ColumnFiltersState>([]);
-
-  const table = createSvelteTable({
-    get data() {
-      return data;
-    },
-    columns,
-    state: {
-      get pagination() {
-        return pagination;
-      },
-      get sorting() {
-        return sorting;
-      },
-      get columnFilters() {
-        return columnFilters;
-      },
-    },
-    onPaginationChange: (updater) => {
-      if (typeof updater === 'function') {
-        pagination = updater(pagination);
-      } else {
-        pagination = updater;
-      }
-    },
-    onSortingChange: (updater) => {
-      if (typeof updater === 'function') {
-        sorting = updater(sorting);
-      } else {
-        sorting = updater;
-      }
-    },
-    onColumnFiltersChange: (updater) => {
-      if (typeof updater === 'function') {
-        columnFilters = updater(columnFilters);
-      } else {
-        columnFilters = updater;
-      }
-    },
-    getCoreRowModel: getCoreRowModel(),
-    getPaginationRowModel: getPaginationRowModel(),
-    getSortedRowModel: getSortedRowModel(),
-    getFilteredRowModel: getFilteredRowModel(),
-  });
+  let isAdmin = $derived(data.user?.role === 'ADMIN');
 </script>
 
-<div class="w-full">
-  <DataTable data={data.users} {columns} />
+<div class="mx-auto w-full max-w-6xl px-4 py-6">
+  {#if form?.message}
+    <p class="pb-4 text-sm text-destructive">{form.message}</p>
+  {/if}
+  {#if isAdmin}
+    <DataTable data={data.users.filter(isAdminUser)} columns={adminColumns} />
+  {:else}
+    <DataTable data={data.users} {columns} />
+  {/if}
 </div>

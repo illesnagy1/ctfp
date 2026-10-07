@@ -1,22 +1,31 @@
 import { Checkbox } from '$lib/components/ui/checkbox';
-import { renderComponent } from '$lib/components/ui/data-table';
-import { DataTableColumnHeader } from '$lib/components/ui/data-table';
-import type { ColumnDef } from '@tanstack/table-core';
-import { z } from 'zod';
+import { DataTableColumnHeader, renderComponent } from '$lib/components/ui/data-table';
+import type { AdminUser, User } from '$lib/types/user';
+import type { Column, ColumnDef } from '@tanstack/table-core';
 
 import DataTableActions from './data-table-actions.svelte';
 
-export const userSchema = z.object({
-  id: z.string(),
-  name: z.string().max(100),
-  email: z.email(),
-  website: z.url().optional(),
-  country: z.string().length(2),
-});
-
-export type User = z.infer<typeof userSchema>;
+function sortableColumn<T>(key: keyof T & string, title: string): ColumnDef<T> {
+  return {
+    accessorKey: key,
+    // renderComponent can't infer the header's generics, so it expects Column<unknown>.
+    header: ({ column }) => renderComponent(DataTableColumnHeader, { title, column: column as Column<unknown> }),
+  };
+}
 
 export const columns: ColumnDef<User>[] = [
+  sortableColumn('username', 'Username'),
+  sortableColumn('website', 'Website'),
+  sortableColumn('country', 'Country'),
+  {
+    id: 'actions',
+    enableSorting: false,
+    enableHiding: false,
+    cell: ({ row }) => renderComponent(DataTableActions, { id: row.original.id }),
+  },
+];
+
+export const adminColumns: ColumnDef<AdminUser>[] = [
   {
     id: 'select',
     header: ({ table }) =>
@@ -35,41 +44,21 @@ export const columns: ColumnDef<User>[] = [
     enableSorting: false,
     enableHiding: false,
   },
+  sortableColumn('username', 'Username'),
+  sortableColumn('email', 'Email'),
+  sortableColumn('website', 'Website'),
+  sortableColumn('country', 'Country'),
+  sortableColumn('role', 'Role'),
   {
-    accessorKey: 'name',
-    header: ({ column }) =>
-      renderComponent(DataTableColumnHeader, {
-        title: 'Name',
-        column: column,
-      }),
-  },
-  {
-    accessorKey: 'email',
-    header: ({ column }) =>
-      renderComponent(DataTableColumnHeader, {
-        title: 'Email',
-        column: column,
-      }),
-  },
-  {
-    accessorKey: 'website',
-    header: ({ column }) =>
-      renderComponent(DataTableColumnHeader, {
-        title: 'Website',
-        column: column,
-      }),
-  },
-  {
-    accessorKey: 'country',
-    header: ({ column }) =>
-      renderComponent(DataTableColumnHeader, {
-        title: 'Country',
-        column: column,
-      }),
+    id: 'status',
+    header: 'Status',
+    accessorFn: (user) =>
+      [user.isBanned && 'Banned', user.isHidden && 'Hidden', !user.isVerified && 'Unverified'].filter(Boolean).join(', '),
   },
   {
     id: 'actions',
     enableSorting: false,
-    cell: ({ row }) => renderComponent(DataTableActions, { id: row.original.id }),
+    enableHiding: false,
+    cell: ({ row }) => renderComponent(DataTableActions, { id: row.original.id, banned: row.original.isBanned }),
   },
 ];

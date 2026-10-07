@@ -1,10 +1,8 @@
-import { building } from '$app/environment';
 import { getTextDirection } from '$lib/paraglide/runtime';
 import { paraglideMiddleware } from '$lib/paraglide/server';
-import { auth } from '$lib/server/auth';
+import { SESSION_COOKIE, getSession } from '$lib/server/session';
 import type { Handle } from '@sveltejs/kit';
 import { sequence } from '@sveltejs/kit/hooks';
-import { svelteKitHandler } from 'better-auth/svelte-kit';
 
 const handleParaglide: Handle = ({ event, resolve }) =>
   paraglideMiddleware(event.request, ({ request, locale }) => {
@@ -16,15 +14,18 @@ const handleParaglide: Handle = ({ event, resolve }) =>
     });
   });
 
-const handleBetterAuth: Handle = async ({ event, resolve }) => {
-  const session = await auth.api.getSession({ headers: event.request.headers });
+const handleSession: Handle = async ({ event, resolve }) => {
+  const sessionId = event.cookies.get(SESSION_COOKIE);
+  const session = sessionId ? await getSession(sessionId) : undefined;
 
   if (session) {
-    event.locals.session = session.session;
+    event.locals.session = session;
     event.locals.user = session.user;
+  } else if (sessionId) {
+    event.cookies.delete(SESSION_COOKIE, { path: '/' });
   }
 
-  return svelteKitHandler({ event, resolve, auth, building });
+  return resolve(event);
 };
 
-export const handle: Handle = sequence(handleParaglide, handleBetterAuth);
+export const handle: Handle = sequence(handleParaglide, handleSession);
