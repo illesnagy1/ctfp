@@ -27,7 +27,7 @@
   data-slot="pagination-link"
   data-active={isActive}
   data-size={size}
-  class={cn(buttonVariants({ size, variant: isActive ? 'outline' : 'ghost' }), 'cn-pagination-link', className)}
+  class={cn(buttonVariants({ size, variant: isActive ? 'outline' : 'ghost' }), '', className)}
   {...restProps}
 >
   {#if children}

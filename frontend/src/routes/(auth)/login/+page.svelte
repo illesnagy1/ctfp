@@ -31,7 +31,8 @@
       </form>
     </Card.Content>
     <Card.Footer class="text-sm text-muted-foreground">
-      No account?&nbsp;<a href={resolve('/register')} class="underline">Register</a>
+      No account?&nbsp;
+      <a href={resolve('/register')} class="underline">Register</a>
     </Card.Footer>
   </Card.Root>
 </div>

@@ -59,7 +59,8 @@
       </form>
     </Card.Content>
     <Card.Footer class="text-sm text-muted-foreground">
-      Already registered?&nbsp;<a href={resolve('/login')} class="underline">Login</a>
+      Already registered?&nbsp;
+      <a href={resolve('/login')} class="underline">Login</a>
     </Card.Footer>
   </Card.Root>
 </div>

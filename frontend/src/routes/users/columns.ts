@@ -53,7 +53,9 @@ export const adminColumns: ColumnDef<AdminUser>[] = [
     id: 'status',
     header: 'Status',
     accessorFn: (user) =>
-      [user.isBanned && 'Banned', user.isHidden && 'Hidden', !user.isVerified && 'Unverified'].filter(Boolean).join(', '),
+      [user.isBanned && 'Banned', user.isHidden && 'Hidden', !user.isVerified && 'Unverified']
+        .filter(Boolean)
+        .join(', '),
   },
   {
     id: 'actions',

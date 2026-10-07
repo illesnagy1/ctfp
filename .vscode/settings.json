@@ -1,6 +1,7 @@
 {
     "conventionalCommits.scopes": [
         "frontend",
-        "api"
+        "api",
+        "dolgozat"
     ]
 }

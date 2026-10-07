@@ -13,6 +13,6 @@
   class={cn(buttonVariants({ variant: 'ghost', size: 'default' }), 'pr-2!', className)}
   {...restProps}
 >
-  <span class="cn-pagination-next-text hidden sm:block">Next</span>
-  <ChevronRightIcon data-icon="inline-end" />
+  <span class="hidden sm:block">Next</span>
+  <ChevronRightIcon data-icon="inline-end" class="cn-rtl-flip" />
 </PaginationPrimitive.NextButton>

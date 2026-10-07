@@ -27,7 +27,8 @@ export const actions: Actions = {
       });
       await createSession(event.cookies, session);
     } catch (error) {
-      if (error instanceof ApiError && error.status < 500) return fail(error.status, { ...values, message: error.message });
+      if (error instanceof ApiError && error.status < 500)
+        return fail(error.status, { ...values, message: error.message });
       console.error('Registration failed', error);
       return fail(500, { ...values, message: 'Something went wrong, try again later' });
     }
