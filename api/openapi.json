@@ -1575,6 +1575,281 @@
             }
         },
         "/v1/users": {
+            "get": {
+                "summary": "Documents the [ErrorResponse]s this route can return. They are sent by StatusPages (and the auth challenge), so\nOpenAPI inference can't see them.",
+                "responses": {
+                    "200": {
+                        "description": "",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "array",
+                                    "items": {
+                                        "$ref": "#/components/schemas/UserResponse"
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "401": {
+                        "description": "Unauthorized",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/ErrorResponse"
+                                }
+                            }
+                        }
+                    }
+                },
+                "security": [
+                    {
+                        "default": []
+                    }
+                ]
+            }
+        },
+        "/v1/users/me": {
+            "put": {
+                "summary": "Documents the [ErrorResponse]s this route can return. They are sent by StatusPages (and the auth challenge), so\nOpenAPI inference can't see them.",
+                "requestBody": {
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/UserUpdateRequest"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "204": {
+                        "description": ""
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/ErrorResponse"
+                                }
+                            }
+                        }
+                    },
+                    "401": {
+                        "description": "Unauthorized",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/ErrorResponse"
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "Not Found",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/ErrorResponse"
+                                }
+                            }
+                        }
+                    },
+                    "409": {
+                        "description": "Conflict",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/ErrorResponse"
+                                }
+                            }
+                        }
+                    }
+                },
+                "security": [
+                    {
+                        "default": []
+                    }
+                ]
+            },
+            "get": {
+                "summary": "Documents the [ErrorResponse]s this route can return. They are sent by StatusPages (and the auth challenge), so\nOpenAPI inference can't see them.",
+                "responses": {
+                    "200": {
+                        "description": "",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/AdminUserResponse"
+                                }
+                            }
+                        }
+                    },
+                    "401": {
+                        "description": "Unauthorized",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/ErrorResponse"
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "Not Found",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/ErrorResponse"
+                                }
+                            }
+                        }
+                    }
+                },
+                "security": [
+                    {
+                        "default": []
+                    }
+                ]
+            }
+        },
+        "/v1/users/{id}": {
+            "get": {
+                "summary": "Documents the [ErrorResponse]s this route can return. They are sent by StatusPages (and the auth challenge), so\nOpenAPI inference can't see them.",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/UserResponse"
+                                }
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/ErrorResponse"
+                                }
+                            }
+                        }
+                    },
+                    "401": {
+                        "description": "Unauthorized",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/ErrorResponse"
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "Not Found",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/ErrorResponse"
+                                }
+                            }
+                        }
+                    }
+                },
+                "security": [
+                    {
+                        "default": []
+                    }
+                ]
+            }
+        },
+        "/v1/users/{id}/submissions": {
+            "put": {
+                "summary": "",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                ],
+                "security": [
+                    {
+                        "default": []
+                    }
+                ]
+            },
+            "post": {
+                "summary": "",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                ],
+                "security": [
+                    {
+                        "default": []
+                    }
+                ]
+            },
+            "delete": {
+                "summary": "",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                ],
+                "security": [
+                    {
+                        "default": []
+                    }
+                ]
+            },
+            "get": {
+                "summary": "",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                ],
+                "security": [
+                    {
+                        "default": []
+                    }
+                ]
+            }
+        },
+        "/v1/admin/users": {
             "put": {
                 "summary": "Documents the [ErrorResponse]s this route can return. They are sent by StatusPages (and the auth challenge), so\nOpenAPI inference can't see them.",
                 "requestBody": {
@@ -1730,7 +2005,7 @@
                                 "schema": {
                                     "type": "array",
                                     "items": {
-                                        "$ref": "#/components/schemas/UserResponse"
+                                        "$ref": "#/components/schemas/AdminUserResponse"
                                     }
                                 }
                             }
@@ -1738,6 +2013,16 @@
                     },
                     "401": {
                         "description": "Unauthorized",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/ErrorResponse"
+                                }
+                            }
+                        }
+                    },
+                    "403": {
+                        "description": "Forbidden",
                         "content": {
                             "application/json": {
                                 "schema": {
@@ -1754,7 +2039,7 @@
                 ]
             }
         },
-        "/v1/users/{id}": {
+        "/v1/admin/users/{id}": {
             "put": {
                 "summary": "Documents the [ErrorResponse]s this route can return. They are sent by StatusPages (and the auth challenge), so\nOpenAPI inference can't see them.",
                 "parameters": [
@@ -1771,7 +2056,7 @@
                     "content": {
                         "application/json": {
                             "schema": {
-                                "$ref": "#/components/schemas/UserUpdateRequest"
+                                "$ref": "#/components/schemas/AdminUserUpdateRequest"
                             }
                         }
                     }
@@ -1918,7 +2203,7 @@
                         "content": {
                             "application/json": {
                                 "schema": {
-                                    "$ref": "#/components/schemas/UserResponse"
+                                    "$ref": "#/components/schemas/AdminUserResponse"
                                 }
                             }
                         }
@@ -1943,6 +2228,16 @@
                             }
                         }
                     },
+                    "403": {
+                        "description": "Forbidden",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/ErrorResponse"
+                                }
+                            }
+                        }
+                    },
                     "404": {
                         "description": "Not Found",
                         "content": {
@@ -1954,80 +2249,6 @@
                         }
                     }
                 },
-                "security": [
-                    {
-                        "default": []
-                    }
-                ]
-            }
-        },
-        "/v1/users/{id}/submissions": {
-            "put": {
-                "summary": "",
-                "parameters": [
-                    {
-                        "name": "id",
-                        "in": "path",
-                        "required": true,
-                        "schema": {
-                            "type": "string"
-                        }
-                    }
-                ],
-                "security": [
-                    {
-                        "default": []
-                    }
-                ]
-            },
-            "post": {
-                "summary": "",
-                "parameters": [
-                    {
-                        "name": "id",
-                        "in": "path",
-                        "required": true,
-                        "schema": {
-                            "type": "string"
-                        }
-                    }
-                ],
-                "security": [
-                    {
-                        "default": []
-                    }
-                ]
-            },
-            "delete": {
-                "summary": "",
-                "parameters": [
-                    {
-                        "name": "id",
-                        "in": "path",
-                        "required": true,
-                        "schema": {
-                            "type": "string"
-                        }
-                    }
-                ],
-                "security": [
-                    {
-                        "default": []
-                    }
-                ]
-            },
-            "get": {
-                "summary": "",
-                "parameters": [
-                    {
-                        "name": "id",
-                        "in": "path",
-                        "required": true,
-                        "schema": {
-                            "type": "string"
-                        }
-                    }
-                ],
                 "security": [
                     {
                         "default": []
@@ -2837,6 +3058,132 @@
                     }
                 }
             },
+            "AdminUserResponse": {
+                "type": "object",
+                "title": "AdminUserResponse",
+                "required": [
+                    "id",
+                    "username",
+                    "email",
+                    "role",
+                    "createdAt",
+                    "updatedAt"
+                ],
+                "properties": {
+                    "id": {
+                        "type": "integer"
+                    },
+                    "codeId": {
+                        "type": [
+                            "integer",
+                            "null"
+                        ]
+                    },
+                    "username": {
+                        "type": "string"
+                    },
+                    "email": {
+                        "type": "string"
+                    },
+                    "language": {
+                        "type": [
+                            "string",
+                            "null"
+                        ]
+                    },
+                    "country": {
+                        "type": [
+                            "string",
+                            "null"
+                        ]
+                    },
+                    "website": {
+                        "type": [
+                            "string",
+                            "null"
+                        ]
+                    },
+                    "role": {
+                        "type": "string",
+                        "enum": [
+                            "ADMIN",
+                            "USER"
+                        ]
+                    },
+                    "isVerified": {
+                        "type": "boolean"
+                    },
+                    "isHidden": {
+                        "type": "boolean"
+                    },
+                    "isBanned": {
+                        "type": "boolean"
+                    },
+                    "totpEnabled": {
+                        "type": "boolean"
+                    },
+                    "soundEnabled": {
+                        "type": "boolean"
+                    },
+                    "visibilitySettings": {
+                        "type": [
+                            "string",
+                            "null"
+                        ]
+                    },
+                    "createdAt": {
+                        "type": "string",
+                        "format": "date-time"
+                    },
+                    "updatedAt": {
+                        "type": "string",
+                        "format": "date-time"
+                    }
+                }
+            },
+            "UserUpdateRequest": {
+                "type": "object",
+                "title": "UserUpdateRequest",
+                "required": [
+                    "username",
+                    "email"
+                ],
+                "properties": {
+                    "username": {
+                        "type": "string"
+                    },
+                    "email": {
+                        "type": "string"
+                    },
+                    "language": {
+                        "type": [
+                            "string",
+                            "null"
+                        ]
+                    },
+                    "country": {
+                        "type": [
+                            "string",
+                            "null"
+                        ]
+                    },
+                    "website": {
+                        "type": [
+                            "string",
+                            "null"
+                        ]
+                    },
+                    "soundEnabled": {
+                        "type": "boolean"
+                    },
+                    "visibilitySettings": {
+                        "type": [
+                            "string",
+                            "null"
+                        ]
+                    }
+                }
+            },
             "AdminUserCreateRequest": {
                 "type": "object",
                 "title": "AdminUserCreateRequest",
@@ -2961,49 +3308,6 @@
                     },
                     "isBanned": {
                         "type": "boolean"
-                    },
-                    "soundEnabled": {
-                        "type": "boolean"
-                    },
-                    "visibilitySettings": {
-                        "type": [
-                            "string",
-                            "null"
-                        ]
-                    }
-                }
-            },
-            "UserUpdateRequest": {
-                "type": "object",
-                "title": "UserUpdateRequest",
-                "required": [
-                    "username",
-                    "email"
-                ],
-                "properties": {
-                    "username": {
-                        "type": "string"
-                    },
-                    "email": {
-                        "type": "string"
-                    },
-                    "language": {
-                        "type": [
-                            "string",
-                            "null"
-                        ]
-                    },
-                    "country": {
-                        "type": [
-                            "string",
-                            "null"
-                        ]
-                    },
-                    "website": {
-                        "type": [
-                            "string",
-                            "null"
-                        ]
                     },
                     "soundEnabled": {
                         "type": "boolean"

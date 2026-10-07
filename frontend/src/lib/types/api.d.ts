@@ -2043,6 +2043,305 @@ export interface paths {
         };
       };
     };
+    put?: never;
+    post?: never;
+    delete?: never;
+    options?: never;
+    head?: never;
+    patch?: never;
+    trace?: never;
+  };
+  '/v1/users/me': {
+    parameters: {
+      query?: never;
+      header?: never;
+      path?: never;
+      cookie?: never;
+    };
+    /**
+     * Documents the [ErrorResponse]s this route can return. They are sent by StatusPages (and the auth challenge), so
+     *     OpenAPI inference can't see them.
+     */
+    get: {
+      parameters: {
+        query?: never;
+        header?: never;
+        path?: never;
+        cookie?: never;
+      };
+      requestBody?: never;
+      responses: {
+        200: {
+          headers: {
+            [name: string]: unknown;
+          };
+          content: {
+            'application/json': components['schemas']['AdminUserResponse'];
+          };
+        };
+        /** @description Unauthorized */
+        401: {
+          headers: {
+            [name: string]: unknown;
+          };
+          content: {
+            'application/json': components['schemas']['ErrorResponse'];
+          };
+        };
+        /** @description Not Found */
+        404: {
+          headers: {
+            [name: string]: unknown;
+          };
+          content: {
+            'application/json': components['schemas']['ErrorResponse'];
+          };
+        };
+      };
+    };
+    /**
+     * Documents the [ErrorResponse]s this route can return. They are sent by StatusPages (and the auth challenge), so
+     *     OpenAPI inference can't see them.
+     */
+    put: {
+      parameters: {
+        query?: never;
+        header?: never;
+        path?: never;
+        cookie?: never;
+      };
+      requestBody?: {
+        content: {
+          'application/json': components['schemas']['UserUpdateRequest'];
+        };
+      };
+      responses: {
+        204: {
+          headers: {
+            [name: string]: unknown;
+          };
+          content?: never;
+        };
+        /** @description Bad Request */
+        400: {
+          headers: {
+            [name: string]: unknown;
+          };
+          content: {
+            'application/json': components['schemas']['ErrorResponse'];
+          };
+        };
+        /** @description Unauthorized */
+        401: {
+          headers: {
+            [name: string]: unknown;
+          };
+          content: {
+            'application/json': components['schemas']['ErrorResponse'];
+          };
+        };
+        /** @description Not Found */
+        404: {
+          headers: {
+            [name: string]: unknown;
+          };
+          content: {
+            'application/json': components['schemas']['ErrorResponse'];
+          };
+        };
+        /** @description Conflict */
+        409: {
+          headers: {
+            [name: string]: unknown;
+          };
+          content: {
+            'application/json': components['schemas']['ErrorResponse'];
+          };
+        };
+      };
+    };
+    post?: never;
+    delete?: never;
+    options?: never;
+    head?: never;
+    patch?: never;
+    trace?: never;
+  };
+  '/v1/users/{id}': {
+    parameters: {
+      query?: never;
+      header?: never;
+      path?: never;
+      cookie?: never;
+    };
+    /**
+     * Documents the [ErrorResponse]s this route can return. They are sent by StatusPages (and the auth challenge), so
+     *     OpenAPI inference can't see them.
+     */
+    get: {
+      parameters: {
+        query?: never;
+        header?: never;
+        path: {
+          id: string;
+        };
+        cookie?: never;
+      };
+      requestBody?: never;
+      responses: {
+        200: {
+          headers: {
+            [name: string]: unknown;
+          };
+          content: {
+            'application/json': components['schemas']['UserResponse'];
+          };
+        };
+        /** @description Bad Request */
+        400: {
+          headers: {
+            [name: string]: unknown;
+          };
+          content: {
+            'application/json': components['schemas']['ErrorResponse'];
+          };
+        };
+        /** @description Unauthorized */
+        401: {
+          headers: {
+            [name: string]: unknown;
+          };
+          content: {
+            'application/json': components['schemas']['ErrorResponse'];
+          };
+        };
+        /** @description Not Found */
+        404: {
+          headers: {
+            [name: string]: unknown;
+          };
+          content: {
+            'application/json': components['schemas']['ErrorResponse'];
+          };
+        };
+      };
+    };
+    put?: never;
+    post?: never;
+    delete?: never;
+    options?: never;
+    head?: never;
+    patch?: never;
+    trace?: never;
+  };
+  '/v1/users/{id}/submissions': {
+    parameters: {
+      query?: never;
+      header?: never;
+      path?: never;
+      cookie?: never;
+    };
+    get: {
+      parameters: {
+        query?: never;
+        header?: never;
+        path: {
+          id: string;
+        };
+        cookie?: never;
+      };
+      requestBody?: never;
+      responses: never;
+    };
+    put: {
+      parameters: {
+        query?: never;
+        header?: never;
+        path: {
+          id: string;
+        };
+        cookie?: never;
+      };
+      requestBody?: never;
+      responses: never;
+    };
+    post: {
+      parameters: {
+        query?: never;
+        header?: never;
+        path: {
+          id: string;
+        };
+        cookie?: never;
+      };
+      requestBody?: never;
+      responses: never;
+    };
+    delete: {
+      parameters: {
+        query?: never;
+        header?: never;
+        path: {
+          id: string;
+        };
+        cookie?: never;
+      };
+      requestBody?: never;
+      responses: never;
+    };
+    options?: never;
+    head?: never;
+    patch?: never;
+    trace?: never;
+  };
+  '/v1/admin/users': {
+    parameters: {
+      query?: never;
+      header?: never;
+      path?: never;
+      cookie?: never;
+    };
+    /**
+     * Documents the [ErrorResponse]s this route can return. They are sent by StatusPages (and the auth challenge), so
+     *     OpenAPI inference can't see them.
+     */
+    get: {
+      parameters: {
+        query?: never;
+        header?: never;
+        path?: never;
+        cookie?: never;
+      };
+      requestBody?: never;
+      responses: {
+        200: {
+          headers: {
+            [name: string]: unknown;
+          };
+          content: {
+            'application/json': components['schemas']['AdminUserResponse'][];
+          };
+        };
+        /** @description Unauthorized */
+        401: {
+          headers: {
+            [name: string]: unknown;
+          };
+          content: {
+            'application/json': components['schemas']['ErrorResponse'];
+          };
+        };
+        /** @description Forbidden */
+        403: {
+          headers: {
+            [name: string]: unknown;
+          };
+          content: {
+            'application/json': components['schemas']['ErrorResponse'];
+          };
+        };
+      };
+    };
     /**
      * Documents the [ErrorResponse]s this route can return. They are sent by StatusPages (and the auth challenge), so
      *     OpenAPI inference can't see them.
@@ -2191,7 +2490,7 @@ export interface paths {
     patch?: never;
     trace?: never;
   };
-  '/v1/users/{id}': {
+  '/v1/admin/users/{id}': {
     parameters: {
       query?: never;
       header?: never;
@@ -2218,7 +2517,7 @@ export interface paths {
             [name: string]: unknown;
           };
           content: {
-            'application/json': components['schemas']['UserResponse'];
+            'application/json': components['schemas']['AdminUserResponse'];
           };
         };
         /** @description Bad Request */
@@ -2232,6 +2531,15 @@ export interface paths {
         };
         /** @description Unauthorized */
         401: {
+          headers: {
+            [name: string]: unknown;
+          };
+          content: {
+            'application/json': components['schemas']['ErrorResponse'];
+          };
+        };
+        /** @description Forbidden */
+        403: {
           headers: {
             [name: string]: unknown;
           };
@@ -2265,7 +2573,7 @@ export interface paths {
       };
       requestBody?: {
         content: {
-          'application/json': components['schemas']['UserUpdateRequest'];
+          'application/json': components['schemas']['AdminUserUpdateRequest'];
         };
       };
       responses: {
@@ -2381,66 +2689,6 @@ export interface paths {
           };
         };
       };
-    };
-    options?: never;
-    head?: never;
-    patch?: never;
-    trace?: never;
-  };
-  '/v1/users/{id}/submissions': {
-    parameters: {
-      query?: never;
-      header?: never;
-      path?: never;
-      cookie?: never;
-    };
-    get: {
-      parameters: {
-        query?: never;
-        header?: never;
-        path: {
-          id: string;
-        };
-        cookie?: never;
-      };
-      requestBody?: never;
-      responses: never;
-    };
-    put: {
-      parameters: {
-        query?: never;
-        header?: never;
-        path: {
-          id: string;
-        };
-        cookie?: never;
-      };
-      requestBody?: never;
-      responses: never;
-    };
-    post: {
-      parameters: {
-        query?: never;
-        header?: never;
-        path: {
-          id: string;
-        };
-        cookie?: never;
-      };
-      requestBody?: never;
-      responses: never;
-    };
-    delete: {
-      parameters: {
-        query?: never;
-        header?: never;
-        path: {
-          id: string;
-        };
-        cookie?: never;
-      };
-      requestBody?: never;
-      responses: never;
     };
     options?: never;
     head?: never;
@@ -2709,6 +2957,38 @@ export interface components {
       /** Format: date-time */
       createdAt: string;
     };
+    /** AdminUserResponse */
+    AdminUserResponse: {
+      id: number;
+      codeId?: number | null;
+      username: string;
+      email: string;
+      language?: string | null;
+      country?: string | null;
+      website?: string | null;
+      /** @enum {string} */
+      role: 'ADMIN' | 'USER';
+      isVerified?: boolean;
+      isHidden?: boolean;
+      isBanned?: boolean;
+      totpEnabled?: boolean;
+      soundEnabled?: boolean;
+      visibilitySettings?: string | null;
+      /** Format: date-time */
+      createdAt: string;
+      /** Format: date-time */
+      updatedAt: string;
+    };
+    /** UserUpdateRequest */
+    UserUpdateRequest: {
+      username: string;
+      email: string;
+      language?: string | null;
+      country?: string | null;
+      website?: string | null;
+      soundEnabled?: boolean;
+      visibilitySettings?: string | null;
+    };
     /** AdminUserCreateRequest */
     AdminUserCreateRequest: {
       codeId?: number | null;
@@ -2739,16 +3019,6 @@ export interface components {
       isVerified?: boolean;
       isHidden?: boolean;
       isBanned?: boolean;
-      soundEnabled?: boolean;
-      visibilitySettings?: string | null;
-    };
-    /** UserUpdateRequest */
-    UserUpdateRequest: {
-      username: string;
-      email: string;
-      language?: string | null;
-      country?: string | null;
-      website?: string | null;
       soundEnabled?: boolean;
       visibilitySettings?: string | null;
     };

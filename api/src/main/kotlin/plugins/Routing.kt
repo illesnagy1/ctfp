@@ -1,5 +1,6 @@
 package com.ctfp.plugins
 
+import com.ctfp.controller.adminUser
 import com.ctfp.controller.auth
 import com.ctfp.controller.challenge
 import com.ctfp.controller.emailTemplate
@@ -37,6 +38,7 @@ fun Application.configureRouting() {
         }
 
         val hasher = PasswordHasher()
+        val userService = UserService(hasher)
 
         route("v1") {
             challenge(ChallengeService())
@@ -50,7 +52,8 @@ fun Application.configureRouting() {
             registrationCode(RegistrationCodeService())
             submission(SubmissionService())
             team(TeamService())
-            user(UserService(hasher))
+            user(userService)
+            adminUser(userService)
         }
 
         staticResources("/static", "static")

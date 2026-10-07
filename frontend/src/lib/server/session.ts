@@ -25,7 +25,7 @@ interface SessionStore {
 }
 
 class MemoryStore implements SessionStore {
-  private sessions = new Map<string, Session>();
+  private readonly sessions = new Map<string, Session>();
 
   constructor() {
     setInterval(() => {
@@ -55,8 +55,8 @@ class MemoryStore implements SessionStore {
 }
 
 class RedisStore implements SessionStore {
-  private client: ReturnType<typeof createClient>;
-  private ready: Promise<unknown>;
+  private readonly client: ReturnType<typeof createClient>;
+  private readonly ready: Promise<unknown>;
 
   constructor(url: string) {
     this.client = createClient({ url });
@@ -109,7 +109,7 @@ export async function createSession(cookies: Cookies, session: Session) {
   });
 }
 
-export async function getSession(sessionId: string) {
+export async function getSession(sessionId: string): Promise<Session | undefined>{
   return store.get(await storeKey(sessionId));
 }
 

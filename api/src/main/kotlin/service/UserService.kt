@@ -28,15 +28,6 @@ import com.ctfp.service.helper.validate
 class UserService(
     private val hasher: PasswordHasher,
 ) {
-    /** Throws 403 unless [userId] is an admin that isn't banned. */
-    suspend fun requireAdmin(userId: Int) {
-        if (!isAdmin(userId)) throw ApiException(HttpStatusCode.Forbidden, "Admin access required")
-    }
-
-    suspend fun isAdmin(userId: Int): Boolean = withTransaction {
-        UserDAO.findById(userId)?.let { it.role == UserRole.ADMIN && !it.isBanned } ?: false
-    }
-
     suspend fun getUser(id: Int): UserResponse = withTransaction {
         findUser(id).takeUnless { it.isHidden || it.isBanned }?.toDto()
             ?: throw ApiException(HttpStatusCode.NotFound, "User $id not found")
