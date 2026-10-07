@@ -31,6 +31,7 @@
 
   import { buttonVariants } from '#lib/components/ui/button/index.js';
   import * as DropdownMenu from '#lib/components/ui/dropdown-menu/index.js';
+  import { m } from '#lib/paraglide/messages.js';
   import { cn } from '#lib/utils.js';
 
   let {
@@ -51,9 +52,12 @@
 </script>
 
 <DropdownMenu.Root>
-  <DropdownMenu.Trigger class={cn(buttonVariants({ variant, size: 'icon' }), className)} aria-label="Change language">
+  <DropdownMenu.Trigger
+    class={cn(buttonVariants({ variant, size: 'icon' }), className)}
+    aria-label={m.language_change()}
+  >
     <GlobeIcon class="size-4" />
-    <span class="sr-only">Change language</span>
+    <span class="sr-only">{m.language_change()}</span>
   </DropdownMenu.Trigger>
   <DropdownMenu.Content {align}>
     <DropdownMenu.RadioGroup bind:value onValueChange={onChange}>

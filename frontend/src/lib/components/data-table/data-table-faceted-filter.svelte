@@ -9,6 +9,7 @@
   import * as Command from '#lib/components/ui/command/index.js';
   import * as Popover from '#lib/components/ui/popover/index.js';
   import { Separator } from '#lib/components/ui/separator/index.js';
+  import { m } from '#lib/paraglide/messages.js';
   import { cn } from '#lib/utils.js';
 
   import type { DataTableFeatures } from './features.js';
@@ -42,7 +43,7 @@
           <div class="hidden space-x-1 lg:flex">
             {#if selectedValues.size > 2}
               <Badge variant="secondary">
-                {selectedValues.size} selected
+                {m.data_table_filter_selected({ count: selectedValues.size })}
               </Badge>
             {:else}
               {#each options.filter((opt) => selectedValues.has(opt.value)) as option (option)}
@@ -62,7 +63,7 @@
     <Command.Root>
       <Command.Input placeholder={title} />
       <Command.List>
-        <Command.Empty>No results found.</Command.Empty>
+        <Command.Empty>{m.data_table_filter_no_results()}</Command.Empty>
         <Command.Group>
           {#each options as option (option)}
             {@const isSelected = selectedValues.has(option.value)}
@@ -103,7 +104,7 @@
           <Command.Separator />
           <Command.Group>
             <Command.Item onSelect={() => column.setFilterValue(undefined)} class="justify-center text-center">
-              Clear filters
+              {m.data_table_clear_filters()}
             </Command.Item>
           </Command.Group>
         {/if}

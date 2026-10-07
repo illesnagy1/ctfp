@@ -2,6 +2,7 @@
   import { createTable, FlexRender, type ColumnDef, type RowData } from '@tanstack/svelte-table';
 
   import * as Table from '#lib/components/ui/table/index.js';
+  import { m } from '#lib/paraglide/messages.js';
 
   import DataTablePagination from './data-table-pagination.svelte';
   import DataTableToolbar from './data-table-toolbar.svelte';
@@ -63,7 +64,7 @@
           </Table.Row>
         {:else}
           <Table.Row>
-            <Table.Cell colspan={columns.length} class="h-24 text-center">No results.</Table.Cell>
+            <Table.Cell colspan={columns.length} class="h-24 text-center">{m.data_table_no_results()}</Table.Cell>
           </Table.Row>
         {/each}
       </Table.Body>

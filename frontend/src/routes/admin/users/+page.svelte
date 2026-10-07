@@ -1,7 +1,9 @@
 <script lang="ts">
   import { DataTable } from '#lib/components/data-table/index.js';
+  import { roleOptions } from '#lib/components/users/labels.js';
+  import { m } from '#lib/paraglide/messages.js';
 
-  import { columns, roles } from './columns.js';
+  import { columns } from './columns.js';
 
   let { data, form } = $props();
 </script>
@@ -13,7 +15,7 @@
   <DataTable
     data={data.users}
     {columns}
-    search={{ column: 'username', placeholder: 'Filter usernames...' }}
-    filters={[{ column: 'role', title: 'Role', options: roles }]}
+    search={{ column: 'username', placeholder: m.users_filter_placeholder() }}
+    filters={[{ column: 'role', title: m.users_column_role(), options: roleOptions() }]}
   />
 </div>

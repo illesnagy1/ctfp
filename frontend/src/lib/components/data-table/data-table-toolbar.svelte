@@ -4,6 +4,7 @@
 
   import { Button } from '#lib/components/ui/button/index.js';
   import { Input } from '#lib/components/ui/input/index.js';
+  import { m } from '#lib/paraglide/messages.js';
 
   import DataTableFacetedFilter from './data-table-faceted-filter.svelte';
   import DataTableViewOptions from './data-table-view-options.svelte';
@@ -44,7 +45,7 @@
 
     {#if isFiltered}
       <Button variant="ghost" size="sm" onclick={() => table.resetColumnFilters()}>
-        Reset
+        {m.data_table_reset()}
         <XIcon />
       </Button>
     {/if}

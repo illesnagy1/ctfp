@@ -4,6 +4,7 @@
 
   import { DataTableRowMenu } from '#lib/components/data-table/index.js';
   import * as DropdownMenu from '#lib/components/ui/dropdown-menu/index.js';
+  import { m } from '#lib/paraglide/messages.js';
 
   let { id, banned }: { id: number; banned: boolean } = $props();
 
@@ -18,8 +19,10 @@
 <DataTableRowMenu>
   <DropdownMenu.Item>
     {#snippet child({ props })}
-      <a {...props} href={resolve('/admin/users/[id]', { id: String(id) })}>Details</a>
+      <a {...props} href={resolve('/admin/users/[id]', { id: String(id) })}>{m.users_action_details()}</a>
     {/snippet}
   </DropdownMenu.Item>
-  <DropdownMenu.Item onSelect={() => banForm?.requestSubmit()}>{banned ? 'Unban' : 'Ban'}</DropdownMenu.Item>
+  <DropdownMenu.Item onSelect={() => banForm?.requestSubmit()}>
+    {banned ? m.users_action_unban() : m.users_action_ban()}
+  </DropdownMenu.Item>
 </DataTableRowMenu>

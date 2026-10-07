@@ -4,6 +4,7 @@
 
   import { Button } from '#lib/components/ui/button/index.js';
   import * as DropdownMenu from '#lib/components/ui/dropdown-menu/index.js';
+  import { m } from '#lib/paraglide/messages.js';
 
   /** The "⋯" menu at the end of a row; `children` are the `DropdownMenu` items. */
   let { children }: { children: Snippet } = $props();
@@ -13,7 +14,7 @@
   <DropdownMenu.Trigger>
     {#snippet child({ props })}
       <Button {...props} variant="ghost" size="icon-sm">
-        <span class="sr-only">Open menu</span>
+        <span class="sr-only">{m.data_table_open_menu()}</span>
         <EllipsisIcon />
       </Button>
     {/snippet}

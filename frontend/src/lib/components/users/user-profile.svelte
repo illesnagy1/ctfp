@@ -1,24 +1,32 @@
 <script lang="ts">
   import * as Card from '#lib/components/ui/card/index.js';
+  import { m } from '#lib/paraglide/messages.js';
+  import { getLocale } from '#lib/paraglide/runtime.js';
   import { type User, isAdminUser } from '#lib/types/user.js';
+
+  import { roleLabel } from './labels.js';
 
   /** Shows the account details too when given the full view (own account, or an admin looking). */
   let { user }: { user: User } = $props();
 
   // User-supplied; only link http(s) so a `javascript:` URL can't run script.
   let safeWebsite = $derived(user.website && /^https?:\/\//i.test(user.website) ? user.website : undefined);
+  // The Paraglide locale, not the browser's or server's, so SSR and hydration agree.
+  let joined = $derived(new Date(user.createdAt).toLocaleDateString(getLocale()));
+
+  const yesNo = (value: boolean | undefined) => (value ? m.user_profile_yes() : m.user_profile_no());
 </script>
 
 <Card.Root>
   <Card.Header>
     <Card.Title>{user.username}</Card.Title>
-    <Card.Description>Joined {new Date(user.createdAt).toLocaleDateString()}</Card.Description>
+    <Card.Description>{m.user_profile_joined({ date: joined })}</Card.Description>
   </Card.Header>
   <Card.Content>
     <dl class="grid grid-cols-label-value gap-x-6 gap-y-2 text-sm">
-      <dt class="text-muted-foreground">Country</dt>
+      <dt class="text-muted-foreground">{m.users_column_country()}</dt>
       <dd>{user.country ?? '-'}</dd>
-      <dt class="text-muted-foreground">Website</dt>
+      <dt class="text-muted-foreground">{m.users_column_website()}</dt>
       <dd>
         {#if safeWebsite}
           <a href={safeWebsite} rel="noreferrer nofollow" target="_blank" class="underline">{safeWebsite}</a>
@@ -27,18 +35,18 @@
         {/if}
       </dd>
       {#if isAdminUser(user)}
-        <dt class="text-muted-foreground">Email</dt>
+        <dt class="text-muted-foreground">{m.users_column_email()}</dt>
         <dd>{user.email}</dd>
-        <dt class="text-muted-foreground">Role</dt>
-        <dd>{user.role}</dd>
-        <dt class="text-muted-foreground">Verified</dt>
-        <dd>{user.isVerified ? 'Yes' : 'No'}</dd>
-        <dt class="text-muted-foreground">Hidden</dt>
-        <dd>{user.isHidden ? 'Yes' : 'No'}</dd>
-        <dt class="text-muted-foreground">Banned</dt>
-        <dd>{user.isBanned ? 'Yes' : 'No'}</dd>
-        <dt class="text-muted-foreground">Two-factor</dt>
-        <dd>{user.totpEnabled ? 'Enabled' : 'Disabled'}</dd>
+        <dt class="text-muted-foreground">{m.users_column_role()}</dt>
+        <dd>{roleLabel(user.role)}</dd>
+        <dt class="text-muted-foreground">{m.user_profile_verified()}</dt>
+        <dd>{yesNo(user.isVerified)}</dd>
+        <dt class="text-muted-foreground">{m.users_status_hidden()}</dt>
+        <dd>{yesNo(user.isHidden)}</dd>
+        <dt class="text-muted-foreground">{m.users_status_banned()}</dt>
+        <dd>{yesNo(user.isBanned)}</dd>
+        <dt class="text-muted-foreground">{m.user_profile_two_factor()}</dt>
+        <dd>{user.totpEnabled ? m.user_profile_enabled() : m.user_profile_disabled()}</dd>
       {/if}
     </dl>
   </Card.Content>

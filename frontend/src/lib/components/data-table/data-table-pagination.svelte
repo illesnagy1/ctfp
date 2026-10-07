@@ -7,6 +7,7 @@
 
   import { Button } from '#lib/components/ui/button/index.js';
   import * as Select from '#lib/components/ui/select/index.js';
+  import { m } from '#lib/paraglide/messages.js';
 
   import type { DataTableFeatures } from './features.js';
 
@@ -22,11 +23,11 @@
 
 <div class="flex items-center justify-between px-2">
   <div class="flex-1 text-sm text-muted-foreground">
-    {selectedRows} of {totalRows} row(s) selected.
+    {m.data_table_selected_rows({ count: selectedRows, total: totalRows })}
   </div>
   <div class="flex items-center space-x-6 lg:space-x-8">
     <div class="flex items-center space-x-2">
-      <p class="text-sm font-medium">Rows per page</p>
+      <p class="text-sm font-medium">{m.data_table_rows_per_page()}</p>
       <Select.Root
         allowDeselect={false}
         type="single"
@@ -48,7 +49,7 @@
       </Select.Root>
     </div>
     <div class="flex w-25 items-center justify-center text-sm font-medium">
-      Page {pageIndex + 1} of {pageCount}
+      {m.data_table_page({ page: pageIndex + 1, pages: pageCount })}
     </div>
     <div class="flex items-center space-x-2">
       <Button
@@ -58,7 +59,7 @@
         onclick={() => table.setPageIndex(0)}
         disabled={!table.getCanPreviousPage()}
       >
-        <span class="sr-only">Go to first page</span>
+        <span class="sr-only">{m.data_table_first_page()}</span>
         <ChevronsLeftIcon />
       </Button>
       <Button
@@ -67,11 +68,11 @@
         onclick={() => table.previousPage()}
         disabled={!table.getCanPreviousPage()}
       >
-        <span class="sr-only">Go to previous page</span>
+        <span class="sr-only">{m.data_table_previous_page()}</span>
         <ChevronLeftIcon />
       </Button>
       <Button variant="outline" size="icon-sm" onclick={() => table.nextPage()} disabled={!table.getCanNextPage()}>
-        <span class="sr-only">Go to next page</span>
+        <span class="sr-only">{m.data_table_next_page()}</span>
         <ChevronRightIcon />
       </Button>
       <Button
@@ -81,7 +82,7 @@
         onclick={() => table.setPageIndex(pageCount - 1)}
         disabled={!table.getCanNextPage()}
       >
-        <span class="sr-only">Go to last page</span>
+        <span class="sr-only">{m.data_table_last_page()}</span>
         <ChevronsRightIcon />
       </Button>
     </div>

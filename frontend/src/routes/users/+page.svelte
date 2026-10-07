@@ -1,5 +1,6 @@
 <script lang="ts">
   import { DataTable } from '#lib/components/data-table/index.js';
+  import { m } from '#lib/paraglide/messages.js';
 
   import { columns } from './columns.js';
 
@@ -7,5 +8,5 @@
 </script>
 
 <div class="mx-auto w-full max-w-6xl px-4 py-6">
-  <DataTable data={data.users} {columns} search={{ column: 'username', placeholder: 'Filter usernames...' }} />
+  <DataTable data={data.users} {columns} search={{ column: 'username', placeholder: m.users_filter_placeholder() }} />
 </div>
