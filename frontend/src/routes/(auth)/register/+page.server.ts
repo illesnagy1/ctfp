@@ -1,6 +1,7 @@
-import { ApiError, api } from '$lib/server/api';
-import { type Session, createSession } from '$lib/server/session';
 import { fail, redirect } from '@sveltejs/kit';
+
+import { ApiError, api } from '#lib/server/api.js';
+import { type Session, createSession } from '#lib/server/session.js';
 
 import type { Actions, PageServerLoad } from './$types';
 

@@ -1,11 +1,12 @@
 <script lang="ts" generics="TData">
-  import { Button } from '$lib/components/ui/button';
-  import * as Select from '$lib/components/ui/select';
   import ChevronLeftIcon from '@lucide/svelte/icons/chevron-left';
   import ChevronRightIcon from '@lucide/svelte/icons/chevron-right';
   import ChevronsLeftIcon from '@lucide/svelte/icons/chevrons-left';
   import ChevronsRightIcon from '@lucide/svelte/icons/chevrons-right';
   import type { Table } from '@tanstack/table-core';
+
+  import { Button } from '#lib/components/ui/button/index.js';
+  import * as Select from '#lib/components/ui/select/index.js';
 
   let { table }: { table: Table<TData> } = $props();
 

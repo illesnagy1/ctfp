@@ -1,18 +1,18 @@
-import { getTextDirection } from '$lib/paraglide/runtime';
-import { paraglideMiddleware } from '$lib/paraglide/server';
-import { SESSION_COOKIE, getSession } from '$lib/server/session';
-import type { Handle } from '@sveltejs/kit';
-import { sequence } from '@sveltejs/kit/hooks';
+import { sequence, type Handle } from '@sveltejs/kit/hooks';
+
+import { getTextDirection } from '#lib/paraglide/runtime.js';
+import { paraglideMiddleware } from '#lib/paraglide/server.js';
+import { SESSION_COOKIE, getSession } from '#lib/server/session.js';
 
 const handleParaglide: Handle = ({ event, resolve }) =>
-  paraglideMiddleware(event.request, ({ request, locale }) => {
-    event.request = request;
-
-    return resolve(event, {
+  // `event.request` is read-only in SvelteKit 3. Paraglide's request only differs with the `url` strategy, which
+  // isn't used; URL de-localization is handled by `reroute` in hooks.ts.
+  paraglideMiddleware(event.request, ({ locale }) =>
+    resolve(event, {
       transformPageChunk: ({ html }) =>
         html.replace('%paraglide.lang%', locale).replace('%paraglide.dir%', getTextDirection(locale)),
-    });
-  });
+    }),
+  );
 
 const handleSession: Handle = async ({ event, resolve }) => {
   const sessionId = event.cookies.get(SESSION_COOKIE);

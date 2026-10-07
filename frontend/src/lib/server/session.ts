@@ -1,5 +1,5 @@
-import { dev } from '$app/environment';
-import { env } from '$env/dynamic/private';
+import { dev } from '$app/env';
+import { REDIS_URL } from '$app/env/private';
 import type { Cookies } from '@sveltejs/kit';
 import { createClient } from 'redis';
 
@@ -83,7 +83,7 @@ class RedisStore implements SessionStore {
 
 // Kept on globalThis so the in-memory store survives Vite hot reloads in dev.
 const globalStore = globalThis as typeof globalThis & { __sessionStore?: SessionStore };
-const store = (globalStore.__sessionStore ??= env.REDIS_URL ? new RedisStore(env.REDIS_URL) : new MemoryStore());
+const store = (globalStore.__sessionStore ??= REDIS_URL ? new RedisStore(REDIS_URL) : new MemoryStore());
 
 export const SESSION_COOKIE = 'session';
 

@@ -1,9 +1,10 @@
 <script lang="ts" generics="TData">
-  import Button from '$lib/components/ui/button/button.svelte';
-  import { DataTableViewOptions, DataTableFacetedFilter } from '$lib/components/ui/data-table';
-  import { Input } from '$lib/components/ui/input';
   import XIcon from '@lucide/svelte/icons/x';
   import type { Table } from '@tanstack/table-core';
+
+  import Button from '#lib/components/ui/button/button.svelte';
+  import { DataTableViewOptions, DataTableFacetedFilter } from '#lib/components/ui/data-table/index.js';
+  import { Input } from '#lib/components/ui/input/index.js';
 
   import { priorities, statuses } from '../data/data.js';
 

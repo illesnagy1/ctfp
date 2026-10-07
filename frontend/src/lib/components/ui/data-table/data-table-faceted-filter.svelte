@@ -1,15 +1,16 @@
 <script lang="ts" generics="TData, TValue">
-  import { Badge } from '$lib/components/ui/badge';
-  import { Button } from '$lib/components/ui/button';
-  import * as Command from '$lib/components/ui/command';
-  import * as Popover from '$lib/components/ui/popover';
-  import { Separator } from '$lib/components/ui/separator';
-  import { cn } from '$lib/utils.js';
   import CheckIcon from '@lucide/svelte/icons/check';
   import CirclePlusIcon from '@lucide/svelte/icons/circle-plus';
   import type { Column } from '@tanstack/table-core';
   import type { Component } from 'svelte';
   import { SvelteSet } from 'svelte/reactivity';
+
+  import { Badge } from '#lib/components/ui/badge/index.js';
+  import { Button } from '#lib/components/ui/button/index.js';
+  import * as Command from '#lib/components/ui/command/index.js';
+  import * as Popover from '#lib/components/ui/popover/index.js';
+  import { Separator } from '#lib/components/ui/separator/index.js';
+  import { cn } from '#lib/utils.js';
 
   let {
     column,

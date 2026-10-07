@@ -1,9 +1,4 @@
 <script lang="ts" generics="TData, TValue">
-  import { Button } from '$lib/components/ui/button';
-  import { createSvelteTable, FlexRender } from '$lib/components/ui/data-table';
-  import * as DropdownMenu from '$lib/components/ui/dropdown-menu';
-  import { Input } from '$lib/components/ui/input';
-  import * as Table from '$lib/components/ui/table';
   import {
     type ColumnDef,
     type ColumnFiltersState,
@@ -16,6 +11,12 @@
     getPaginationRowModel,
     getSortedRowModel,
   } from '@tanstack/table-core';
+
+  import { Button } from '#lib/components/ui/button/index.js';
+  import { createSvelteTable, FlexRender } from '#lib/components/ui/data-table/index.js';
+  import * as DropdownMenu from '#lib/components/ui/dropdown-menu/index.js';
+  import { Input } from '#lib/components/ui/input/index.js';
+  import * as Table from '#lib/components/ui/table/index.js';
 
   type DataTableProps<TData, TValue> = {
     data: TData[];

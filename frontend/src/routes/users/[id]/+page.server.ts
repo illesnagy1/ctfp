@@ -1,6 +1,7 @@
-import { ApiError, api } from '$lib/server/api';
-import type { User } from '$lib/types/user';
 import { error, redirect } from '@sveltejs/kit';
+
+import { ApiError, api } from '#lib/server/api.js';
+import type { User } from '#lib/types/user.js';
 
 import type { PageServerLoad } from './$types';
 

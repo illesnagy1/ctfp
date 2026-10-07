@@ -1,6 +1,7 @@
 <script lang="ts">
-  import * as Table from '$lib/components/ui/table';
   import type { Table as TableType } from '@tanstack/table-core';
+
+  import * as Table from '#lib/components/ui/table/index.js';
 
   import { FlexRender } from '.';
 

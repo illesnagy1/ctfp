@@ -1,10 +1,11 @@
 <script lang="ts">
   import { enhance } from '$app/forms';
   import { resolve } from '$app/paths';
-  import { Button } from '$lib/components/ui/button';
-  import * as Card from '$lib/components/ui/card';
-  import { Input } from '$lib/components/ui/input';
-  import { Label } from '$lib/components/ui/label';
+
+  import { Button } from '#lib/components/ui/button/index.js';
+  import * as Card from '#lib/components/ui/card/index.js';
+  import { Input } from '#lib/components/ui/input/index.js';
+  import { Label } from '#lib/components/ui/label/index.js';
 
   let { form } = $props();
 </script>
@@ -31,8 +32,8 @@
       </form>
     </Card.Content>
     <Card.Footer class="text-sm text-muted-foreground">
-      No account?&nbsp;
-      <a href={resolve('/register')} class="underline">Register</a>
+      No account?
+      <a href={resolve('register')} class="underline">Register</a>
     </Card.Footer>
   </Card.Root>
 </div>

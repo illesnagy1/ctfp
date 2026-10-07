@@ -1,7 +1,8 @@
 <script lang="ts">
-  import { Button } from '$lib/components/ui/button';
   import ArrowUpDownIcon from '@lucide/svelte/icons/arrow-up-down';
   import type { ComponentProps } from 'svelte';
+
+  import { Button } from '#lib/components/ui/button/index.js';
 
   type SortHeaderProps = ComponentProps<typeof Button> & { label: string };
 

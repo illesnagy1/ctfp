@@ -1,9 +1,10 @@
 <script lang="ts">
   import { enhance } from '$app/forms';
   import { resolve } from '$app/paths';
-  import { Button } from '$lib/components/ui/button/index.js';
-  import * as DropdownMenu from '$lib/components/ui/dropdown-menu/index.js';
   import EllipsisIcon from '@lucide/svelte/icons/ellipsis';
+
+  import { Button } from '#lib/components/ui/button/index.js';
+  import * as DropdownMenu from '#lib/components/ui/dropdown-menu/index.js';
 
   /** `banned` is only passed for admins; without it the ban action is hidden. */
   let { id, banned }: { id: number; banned?: boolean } = $props();

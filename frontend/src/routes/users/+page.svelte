@@ -1,5 +1,5 @@
 <script lang="ts">
-  import { isAdminUser } from '$lib/types/user';
+  import { isAdminUser } from '#lib/types/user.js';
 
   import { adminColumns, columns } from './columns.js';
   import DataTable from './data-table.svelte';

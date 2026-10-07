@@ -2,11 +2,12 @@
   import { resolve } from '$app/paths';
 
   import './layout.css';
-  import favicon from '$lib/assets/favicon.svg';
-  import { Button } from '$lib/components/ui/button';
-  import { LanguageSwitcher, type Language } from '$lib/components/ui/language-switcher';
-  import { ThemeSelector } from '$lib/components/ui/theme-selector';
   import { Bell, CircleUser, LogIn, LogOut, Menu, UserPlus, Users, Wrench, X } from '@lucide/svelte';
+
+  import favicon from '#lib/assets/favicon.svg';
+  import { Button } from '#lib/components/ui/button/index.js';
+  import { LanguageSwitcher, type Language } from '#lib/components/ui/language-switcher/index.js';
+  import { ThemeSelector } from '#lib/components/ui/theme-selector/index.js';
 
   let { children, data } = $props();
   let menuOpen = $state(false);
@@ -48,46 +49,30 @@
         class="w-full md:flex md:w-auto md:flex-1 md:items-center md:justify-between"
       >
         <div class="flex flex-col gap-2 md:flex-row md:items-center">
-          <Button href={resolve('/users')} variant="ghost">Users</Button>
-          <Button href={resolve('/teams')} variant="ghost">Teams</Button>
-          <Button href={resolve('/scoreboard')} variant="ghost">Scoreboard</Button>
-          <Button href={resolve('/challenges')} variant="ghost">Challenges</Button>
+          <Button href={resolve('users')} variant="ghost">Users</Button>
+          <Button href={resolve('teams')} variant="ghost">Teams</Button>
+          <Button href={resolve('scoreboard')} variant="ghost">Scoreboard</Button>
+          <Button href={resolve('challenges')} variant="ghost">Challenges</Button>
         </div>
         <div class="mt-3 flex flex-col gap-2 md:mt-0 md:flex-row md:items-center">
           {#if loggedIn}
             {#if isAdmin}
-              <Button href={resolve('/admin')} variant="ghost">
-                <Wrench />
-                Admin panel
-              </Button>
+              <Button href={resolve('admin')} variant="ghost"><Wrench />Admin panel</Button>
             {/if}
-            <Button href={resolve('/notifications')} variant="ghost">
-              <Bell />
-              Notifications
-            </Button>
-            <Button href={resolve('/team')} variant="ghost">
-              <Users />
-              Team
-            </Button>
+
+            <Button href={resolve('notifications')} variant="ghost"><Bell />Notifications</Button>
+            <Button href={resolve('team')} variant="ghost"><Users />Team</Button>
+
             <Button href={resolve('/users/[id]', { id: String(data.user?.id) })} variant="ghost">
-              <CircleUser />
-              Profile
+              <CircleUser />Profile
             </Button>
-            <form method="post" action={resolve('/logout')}>
-              <Button type="submit" variant="outline" class="w-full">
-                <LogOut />
-                Logout
-              </Button>
+
+            <form method="post" action={resolve('logout')}>
+              <Button type="submit" variant="outline" class="w-full"><LogOut />Logout</Button>
             </form>
           {:else}
-            <Button href={resolve('/register')}>
-              <UserPlus />
-              Register
-            </Button>
-            <Button href={resolve('/login')} variant="outline">
-              <LogIn />
-              Login
-            </Button>
+            <Button href={resolve('register')}><UserPlus />Register</Button>
+            <Button href={resolve('login')} variant="outline"><LogIn />Login</Button>
           {/if}
           <LanguageSwitcher {languages} />
           <ThemeSelector />

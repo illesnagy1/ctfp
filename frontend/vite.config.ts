@@ -1,13 +1,24 @@
 import { paraglideVitePlugin } from '@inlang/paraglide-js';
+import adapter from '@sveltejs/adapter-node';
 import { sveltekit } from '@sveltejs/kit/vite';
 import tailwindcss from '@tailwindcss/vite';
 import { playwright } from '@vitest/browser-playwright';
+import { mdsvex } from 'mdsvex';
 import { defineConfig } from 'vitest/config';
 
 export default defineConfig({
   plugins: [
     tailwindcss(),
-    sveltekit(),
+    sveltekit({
+      compilerOptions: {
+        // Force runes mode for the project, except for libraries. Can be removed in svelte 6.
+        runes: ({ filename }) => (filename.split(/[/\\]/).includes('node_modules') ? undefined : true),
+      },
+      preprocess: [mdsvex({ extensions: ['.svx', '.md'] })],
+      extensions: ['.svelte', '.svx', '.md'],
+      // Builds a standalone server into build/, run by the Containerfile with `bun index.js`.
+      adapter: adapter(),
+    }),
     paraglideVitePlugin({ project: './project.inlang', outdir: './src/lib/paraglide' }),
   ],
   test: {

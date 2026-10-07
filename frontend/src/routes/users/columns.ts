@@ -1,7 +1,8 @@
-import { Checkbox } from '$lib/components/ui/checkbox';
-import { DataTableColumnHeader, renderComponent } from '$lib/components/ui/data-table';
-import type { AdminUser, User } from '$lib/types/user';
 import type { Column, ColumnDef } from '@tanstack/table-core';
+
+import { Checkbox } from '#lib/components/ui/checkbox/index.js';
+import { DataTableColumnHeader, renderComponent } from '#lib/components/ui/data-table/index.js';
+import type { AdminUser, User } from '#lib/types/user.js';
 
 import DataTableActions from './data-table-actions.svelte';
 

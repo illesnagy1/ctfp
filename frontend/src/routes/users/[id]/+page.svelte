@@ -1,6 +1,6 @@
 <script lang="ts">
-  import * as Card from '$lib/components/ui/card';
-  import { isAdminUser } from '$lib/types/user';
+  import * as Card from '#lib/components/ui/card/index.js';
+  import { isAdminUser } from '#lib/types/user.js';
 
   let { data } = $props();
 

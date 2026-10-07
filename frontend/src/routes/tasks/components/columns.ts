@@ -1,8 +1,9 @@
-import { Checkbox } from '$lib/components/ui/checkbox';
-import { renderComponent, renderSnippet } from '$lib/components/ui/data-table';
-import { DataTableColumnHeader } from '$lib/components/ui/data-table';
 import type { ColumnDef } from '@tanstack/table-core';
 import { createRawSnippet } from 'svelte';
+
+import { Checkbox } from '#lib/components/ui/checkbox/index.js';
+import { renderComponent, renderSnippet } from '#lib/components/ui/data-table/index.js';
+import { DataTableColumnHeader } from '#lib/components/ui/data-table/index.js';
 
 import type { Task } from '../data/schemas';
 import DataTablePriorityCell from './data-table-priority-cell.svelte';

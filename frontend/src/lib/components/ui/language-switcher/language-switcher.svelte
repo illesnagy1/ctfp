@@ -27,10 +27,11 @@
 </script>
 
 <script lang="ts">
-  import { buttonVariants } from '$lib/components/ui/button';
-  import * as DropdownMenu from '$lib/components/ui/dropdown-menu';
-  import { cn } from '$lib/utils.js';
   import GlobeIcon from '@lucide/svelte/icons/globe';
+
+  import { buttonVariants } from '#lib/components/ui/button/index.js';
+  import * as DropdownMenu from '#lib/components/ui/dropdown-menu/index.js';
+  import { cn } from '#lib/utils.js';
 
   let {
     languages = [],

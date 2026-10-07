@@ -1,4 +1,4 @@
-import { env } from '$env/dynamic/private';
+import { API_URL } from '$app/env/private';
 import type { RequestEvent } from '@sveltejs/kit';
 
 import { deleteSession } from './session';
@@ -25,7 +25,7 @@ export async function api<T>(event: RequestEvent, path: string, init: RequestIni
   const token = event.locals.session?.token;
   if (token) headers.set('Authorization', `Bearer ${token}`);
 
-  const response = await fetch(new URL(path, env.API_URL ?? 'http://localhost:8080'), { ...init, headers });
+  const response = await fetch(new URL(path, API_URL), { ...init, headers });
 
   if (!response.ok) {
     if (response.status === 401 && token) {

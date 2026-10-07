@@ -1,10 +1,11 @@
 <script lang="ts" generics="TData, TValue">
-  import { Button } from '$lib/components/ui/button';
   import ArrowDownIcon from '@lucide/svelte/icons/arrow-down';
   import ArrowUpIcon from '@lucide/svelte/icons/arrow-up';
   import ChevronsUpDownIcon from '@lucide/svelte/icons/chevrons-up-down';
   import type { Column } from '@tanstack/table-core';
   import type { HTMLAttributes } from 'svelte/elements';
+
+  import { Button } from '#lib/components/ui/button/index.js';
 
   let {
     column,

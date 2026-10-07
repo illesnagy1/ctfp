@@ -1,5 +1,5 @@
 <script lang="ts" module>
-  import type { ButtonSize } from '$lib/components/ui/button';
+  import type { ButtonSize } from '#lib/components/ui/button/index.js';
 
   export type ThemeSelectorProps = {
     variant?: 'outline' | 'ghost';
@@ -8,11 +8,12 @@
 </script>
 
 <script lang="ts">
-  import { buttonVariants } from '$lib/components/ui/button/index.js';
-  import * as DropdownMenu from '$lib/components/ui/dropdown-menu/index.js';
   import MoonIcon from '@lucide/svelte/icons/moon';
   import SunIcon from '@lucide/svelte/icons/sun';
   import { resetMode, setMode } from 'mode-watcher';
+
+  import { buttonVariants } from '#lib/components/ui/button/index.js';
+  import * as DropdownMenu from '#lib/components/ui/dropdown-menu/index.js';
 
   let { variant = 'outline' }: ThemeSelectorProps = $props();
 </script>

@@ -1,6 +1,7 @@
-import { ApiError, api } from '$lib/server/api';
-import { type AdminUser, type User, toAdminUserUpdate } from '$lib/types/user';
 import { error, fail, redirect } from '@sveltejs/kit';
+
+import { ApiError, api } from '#lib/server/api.js';
+import { type AdminUser, type User, toAdminUserUpdate } from '#lib/types/user.js';
 
 import type { Actions, PageServerLoad } from './$types';
 
