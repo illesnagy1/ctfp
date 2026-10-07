@@ -1,20 +1,23 @@
-<script lang="ts" generics="TData">
+<script lang="ts" generics="TData extends RowData">
   import ChevronLeftIcon from '@lucide/svelte/icons/chevron-left';
   import ChevronRightIcon from '@lucide/svelte/icons/chevron-right';
   import ChevronsLeftIcon from '@lucide/svelte/icons/chevrons-left';
   import ChevronsRightIcon from '@lucide/svelte/icons/chevrons-right';
-  import type { Table } from '@tanstack/table-core';
+  import type { RowData, SvelteTable } from '@tanstack/svelte-table';
 
   import { Button } from '#lib/components/ui/button/index.js';
   import * as Select from '#lib/components/ui/select/index.js';
 
-  let { table }: { table: Table<TData> } = $props();
+  import type { TasksTableFeatures } from './data-table-features.js';
+
+  let { table }: { table: SvelteTable<TasksTableFeatures, TData> } = $props();
 
   const pageCount = $derived(table.getPageCount());
   const selectedRows = $derived(table.getFilteredSelectedRowModel().rows.length);
   const totalRows = $derived(table.getFilteredRowModel().rows.length);
-  const pageSize = $derived(table.getState().pagination.pageSize);
-  const pageIndex = $derived(table.getState().pagination.pageIndex);
+  const pagination = $derived(table.atoms.pagination.get());
+  const pageSize = $derived(pagination.pageSize);
+  const pageIndex = $derived(pagination.pageIndex);
 </script>
 
 <div class="flex items-center justify-between px-2">

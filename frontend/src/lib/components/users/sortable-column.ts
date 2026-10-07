@@ -1,11 +1,15 @@
-import type { Column, ColumnDef } from '@tanstack/table-core';
+import { renderComponent, type ColumnDef, type RowData } from '@tanstack/svelte-table';
 
-import { DataTableColumnHeader, renderComponent } from '#lib/components/ui/data-table/index.js';
+import DataTableColumnHeader from '#lib/components/data-table-column-header.svelte';
+import type { DataTableFeatures } from '#lib/components/data-table-features.js';
 
-export function sortableColumn<T>(key: keyof T & string, title: string): ColumnDef<T> {
+export function sortableColumn<TData extends RowData>(
+  key: keyof TData & string,
+  title: string,
+): ColumnDef<DataTableFeatures, TData> {
   return {
     accessorKey: key,
-    // renderComponent can't infer the header's generics, so it expects Column<unknown>.
-    header: ({ column }) => renderComponent(DataTableColumnHeader, { title, column: column as Column<unknown> }),
+    // renderComponent can't infer the header's generics, so instantiate them explicitly.
+    header: ({ column }) => renderComponent(DataTableColumnHeader<TData, unknown>, { title, column }),
   };
 }

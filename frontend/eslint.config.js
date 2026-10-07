@@ -1,4 +1,4 @@
-// ESLint runs only @shadcn/lint; everything else is linted by oxlint (.oxlintrc.json).
+// ESLint runs @shadcn/lint and markup-aware Svelte rules; everything else is linted by oxlint (.oxlintrc.json).
 // Oxlint can't parse Svelte markup, so the design-system rules need ESLint to see `class="..."`.
 import { plugin as shadcn } from '@shadcn/lint';
 import tsParser from '@typescript-eslint/parser';
@@ -33,7 +33,8 @@ export default defineConfig([
       parserOptions: { parser: tsParser },
     },
     plugins: { shadcn },
-    rules,
+    // Oxlint only sees the <script> block, so it misses reassignments in markup (`bind:`, `onclick`).
+    rules: { ...rules, 'svelte/prefer-const': 'error' },
   },
   {
     // `cn` / `tv` calls outside components, e.g. table column definitions.

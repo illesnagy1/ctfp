@@ -1,110 +1,60 @@
-<script lang="ts" generics="TData, TValue">
-  import {
-    type ColumnDef,
-    type ColumnFiltersState,
-    type PaginationState,
-    type RowSelectionState,
-    type SortingState,
-    type VisibilityState,
-    getCoreRowModel,
-    getFacetedRowModel,
-    getFacetedUniqueValues,
-    getFilteredRowModel,
-    getPaginationRowModel,
-    getSortedRowModel,
-  } from '@tanstack/table-core';
+<script lang="ts">
+  import { createTable, FlexRender } from '@tanstack/svelte-table';
 
-  import {
-    createSvelteTable,
-    FlexRender,
-    DataTablePagination,
-    DataTable,
-  } from '#lib/components/ui/data-table/index.js';
+  import * as Table from '#lib/components/ui/table/index.js';
 
+  import type { Task } from '../data/schemas.js';
+  import { columns } from './columns.js';
+  import { features } from './data-table-features.js';
+  import DataTablePagination from './data-table-pagination.svelte';
   import DataTableToolbar from './data-table-toolbar.svelte';
 
-  type DataTableProps<TData, TValue> = {
-    data: TData[];
-    columns: ColumnDef<TData, TValue>[];
-  };
+  let { data }: { data: Task[] } = $props();
 
-  let { columns, data }: DataTableProps<TData, TValue> = $props();
-
-  let rowSelection = $state<RowSelectionState>({});
-  let columnVisibility = $state<VisibilityState>({});
-  let columnFilters = $state<ColumnFiltersState>([]);
-  let sorting = $state<SortingState>([]);
-  let pagination = $state<PaginationState>({ pageIndex: 0, pageSize: 10 });
-
-  const table = createSvelteTable({
+  // v9 keeps pagination, sorting, filters, visibility and selection internally, and its reads are rune-reactive.
+  const table = createTable({
+    features,
     get data() {
       return data;
     },
-    state: {
-      get sorting() {
-        return sorting;
-      },
-      get columnVisibility() {
-        return columnVisibility;
-      },
-      get rowSelection() {
-        return rowSelection;
-      },
-      get columnFilters() {
-        return columnFilters;
-      },
-      get pagination() {
-        return pagination;
-      },
-    },
     columns,
     enableRowSelection: true,
-    onRowSelectionChange: (updater) => {
-      if (typeof updater === 'function') {
-        rowSelection = updater(rowSelection);
-      } else {
-        rowSelection = updater;
-      }
-    },
-    onSortingChange: (updater) => {
-      if (typeof updater === 'function') {
-        sorting = updater(sorting);
-      } else {
-        sorting = updater;
-      }
-    },
-    onColumnFiltersChange: (updater) => {
-      if (typeof updater === 'function') {
-        columnFilters = updater(columnFilters);
-      } else {
-        columnFilters = updater;
-      }
-    },
-    onColumnVisibilityChange: (updater) => {
-      if (typeof updater === 'function') {
-        columnVisibility = updater(columnVisibility);
-      } else {
-        columnVisibility = updater;
-      }
-    },
-    onPaginationChange: (updater) => {
-      if (typeof updater === 'function') {
-        pagination = updater(pagination);
-      } else {
-        pagination = updater;
-      }
-    },
-    getCoreRowModel: getCoreRowModel(),
-    getFilteredRowModel: getFilteredRowModel(),
-    getPaginationRowModel: getPaginationRowModel(),
-    getSortedRowModel: getSortedRowModel(),
-    getFacetedRowModel: getFacetedRowModel(),
-    getFacetedUniqueValues: getFacetedUniqueValues(),
   });
 </script>
 
 <div class="space-y-4">
   <DataTableToolbar {table} />
-  <DataTable {table} />
+  <div class="rounded-md border">
+    <Table.Root>
+      <Table.Header>
+        {#each table.getHeaderGroups() as headerGroup (headerGroup.id)}
+          <Table.Row>
+            {#each headerGroup.headers as header (header.id)}
+              <Table.Head colspan={header.colSpan}>
+                {#if !header.isPlaceholder}
+                  <FlexRender {header} />
+                {/if}
+              </Table.Head>
+            {/each}
+          </Table.Row>
+        {/each}
+      </Table.Header>
+      <Table.Body>
+        {#each table.getRowModel().rows as row (row.id)}
+          <Table.Row data-state={row.getIsSelected() && 'selected'}>
+            {#each row.getVisibleCells() as cell (cell.id)}
+              <Table.Cell>
+                <FlexRender {cell} />
+              </Table.Cell>
+            {/each}
+          </Table.Row>
+        {:else}
+          <Table.Row>
+            <Table.Cell colspan={columns.length} class="h-24 text-center">No results.</Table.Cell>
+          </Table.Row>
+        {/each}
+      </Table.Body>
+    </Table.Root>
+  </div>
   <DataTablePagination {table} />
 </div>

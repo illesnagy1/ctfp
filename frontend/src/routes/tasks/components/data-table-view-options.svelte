@@ -1,11 +1,13 @@
-<script lang="ts" generics="TData">
+<script lang="ts" generics="TData extends RowData">
   import Settings2Icon from '@lucide/svelte/icons/settings-2';
-  import type { Table } from '@tanstack/table-core';
+  import type { RowData, SvelteTable } from '@tanstack/svelte-table';
 
   import { buttonVariants } from '#lib/components/ui/button/index.js';
   import * as DropdownMenu from '#lib/components/ui/dropdown-menu/index.js';
 
-  let { table }: { table: Table<TData> } = $props();
+  import type { TasksTableFeatures } from './data-table-features.js';
+
+  let { table }: { table: SvelteTable<TasksTableFeatures, TData> } = $props();
 </script>
 
 <DropdownMenu.Root>
@@ -25,7 +27,7 @@
       <DropdownMenu.Separator />
       {#each table
         .getAllColumns()
-        .filter((col) => typeof col.accessorFn !== 'undefined' && col.getCanHide()) as column (column)}
+        .filter((col) => typeof col.accessorFn !== 'undefined' && col.getCanHide()) as column (column.id)}
         <DropdownMenu.CheckboxItem
           bind:checked={() => column.getIsVisible(), (v) => column.toggleVisibility(!!v)}
           class="capitalize"

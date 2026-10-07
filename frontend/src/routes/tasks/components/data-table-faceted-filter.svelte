@@ -1,7 +1,7 @@
-<script lang="ts" generics="TData, TValue">
+<script lang="ts" generics="TData extends RowData, TValue extends CellData">
   import CheckIcon from '@lucide/svelte/icons/check';
   import CirclePlusIcon from '@lucide/svelte/icons/circle-plus';
-  import type { Column } from '@tanstack/table-core';
+  import type { CellData, Column, RowData } from '@tanstack/svelte-table';
   import type { Component } from 'svelte';
   import { SvelteSet } from 'svelte/reactivity';
 
@@ -12,12 +12,14 @@
   import { Separator } from '#lib/components/ui/separator/index.js';
   import { cn } from '#lib/utils.js';
 
+  import type { TasksTableFeatures } from './data-table-features.js';
+
   let {
     column,
     title,
     options,
   }: {
-    column: Column<TData, TValue>;
+    column: Column<TasksTableFeatures, TData, TValue>;
     title: string;
     options: {
       label: string;

@@ -1,22 +1,24 @@
-<script lang="ts" generics="TData, TValue">
+<script lang="ts" generics="TData extends RowData, TValue extends CellData">
   import ArrowDownIcon from '@lucide/svelte/icons/arrow-down';
   import ArrowUpIcon from '@lucide/svelte/icons/arrow-up';
   import ChevronsUpDownIcon from '@lucide/svelte/icons/chevrons-up-down';
-  import type { Column } from '@tanstack/table-core';
+  import type { CellData, Column, RowData } from '@tanstack/svelte-table';
   import type { HTMLAttributes } from 'svelte/elements';
 
   import { Button } from '#lib/components/ui/button/index.js';
+
+  import type { TasksTableFeatures } from './data-table-features.js';
 
   let {
     column,
     title,
     class: className,
     ...restProps
-  }: { column: Column<TData, TValue>; title: string } & HTMLAttributes<HTMLDivElement> = $props();
+  }: { column: Column<TasksTableFeatures, TData, TValue>; title: string } & HTMLAttributes<HTMLDivElement> = $props();
 </script>
 
 <div class={className} {...restProps}>
-  {#if column?.getCanSort()}
+  {#if column.getCanSort()}
     <Button
       variant="ghost"
       size="sm"

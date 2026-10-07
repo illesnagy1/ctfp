@@ -36,5 +36,6 @@ export const actions: Actions = {
       body: { ...toAdminUserUpdate(fetched.data), isBanned: banned },
     });
     if (updated.error) return fail(updated.response.status, { message: updated.error.message });
+    return { success: true };
   },
 };

@@ -1,6 +1,7 @@
 import { fail, redirect } from '@sveltejs/kit';
 
 import { apiClient } from '#lib/server/api.js';
+import { formString } from '#lib/server/form.js';
 import { createSession } from '#lib/server/session.js';
 
 import type { Actions, PageServerLoad } from './$types';
@@ -12,8 +13,8 @@ export const load: PageServerLoad = ({ locals }) => {
 export const actions: Actions = {
   default: async (event) => {
     const form = await event.request.formData();
-    const login = form.get('login')?.toString() ?? '';
-    const password = form.get('password')?.toString() ?? '';
+    const login = formString(form, 'login');
+    const password = formString(form, 'password');
 
     if (!login || !password) return fail(400, { login, message: 'Enter your username or email and password' });
 
@@ -25,6 +26,6 @@ export const actions: Actions = {
     }
 
     await createSession(event.cookies, data);
-    redirect(303, '/');
+    return redirect(303, '/');
   },
 };

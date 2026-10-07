@@ -1,6 +1,7 @@
 import { fail, redirect } from '@sveltejs/kit';
 
 import { apiClient } from '#lib/server/api.js';
+import { formString } from '#lib/server/form.js';
 import { createSession } from '#lib/server/session.js';
 
 import type { Actions, PageServerLoad } from './$types';
@@ -12,11 +13,11 @@ export const load: PageServerLoad = ({ locals }) => {
 export const actions: Actions = {
   default: async (event) => {
     const form = await event.request.formData();
-    const username = form.get('username')?.toString() ?? '';
-    const email = form.get('email')?.toString() ?? '';
-    const password = form.get('password')?.toString() ?? '';
-    const confirmPassword = form.get('confirmPassword')?.toString() ?? '';
-    const registrationCode = form.get('registrationCode')?.toString() || undefined;
+    const username = formString(form, 'username');
+    const email = formString(form, 'email');
+    const password = formString(form, 'password');
+    const confirmPassword = formString(form, 'confirmPassword');
+    const registrationCode = formString(form, 'registrationCode') || undefined;
     const values = { username, email, registrationCode };
 
     if (password !== confirmPassword) return fail(400, { ...values, message: 'Passwords do not match' });
@@ -31,6 +32,6 @@ export const actions: Actions = {
     }
 
     await createSession(event.cookies, data);
-    redirect(303, '/');
+    return redirect(303, '/');
   },
 };

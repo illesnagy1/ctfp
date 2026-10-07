@@ -1,96 +1,28 @@
-<script lang="ts" generics="TData, TValue">
-  import {
-    type ColumnDef,
-    type ColumnFiltersState,
-    type PaginationState,
-    type RowSelectionState,
-    type SortingState,
-    type VisibilityState,
-    getCoreRowModel,
-    getFilteredRowModel,
-    getPaginationRowModel,
-    getSortedRowModel,
-  } from '@tanstack/table-core';
+<script lang="ts" generics="TData extends RowData">
+  import { createTable, FlexRender, type ColumnDef, type RowData } from '@tanstack/svelte-table';
 
   import { Button } from '#lib/components/ui/button/index.js';
-  import { createSvelteTable, FlexRender } from '#lib/components/ui/data-table/index.js';
   import * as DropdownMenu from '#lib/components/ui/dropdown-menu/index.js';
   import { Input } from '#lib/components/ui/input/index.js';
   import * as Table from '#lib/components/ui/table/index.js';
 
-  type DataTableProps<TData, TValue> = {
+  import { features, type DataTableFeatures } from './data-table-features.js';
+
+  type DataTableProps<TData extends RowData> = {
     data: TData[];
-    columns: ColumnDef<TData, TValue>[];
+    columns: ColumnDef<DataTableFeatures, TData>[];
   };
 
-  let { data, columns }: DataTableProps<TData, TValue> = $props();
+  let { data, columns }: DataTableProps<TData> = $props();
 
-  let pagination = $state<PaginationState>({ pageIndex: 0, pageSize: 10 });
-  let sorting = $state<SortingState>([]);
-  let columnFilters = $state<ColumnFiltersState>([]);
-  let columnVisibility = $state<VisibilityState>({});
-  let rowSelection = $state<RowSelectionState>({});
-
-  const table = createSvelteTable({
+  // v9 keeps pagination, sorting, filters, visibility and selection internally, and its reads are rune-reactive.
+  const table = createTable({
+    features,
     get data() {
       return data;
     },
-    columns,
-    getCoreRowModel: getCoreRowModel(),
-    getPaginationRowModel: getPaginationRowModel(),
-    getSortedRowModel: getSortedRowModel(),
-    getFilteredRowModel: getFilteredRowModel(),
-    onPaginationChange: (updater) => {
-      if (typeof updater === 'function') {
-        pagination = updater(pagination);
-      } else {
-        pagination = updater;
-      }
-    },
-    onSortingChange: (updater) => {
-      if (typeof updater === 'function') {
-        sorting = updater(sorting);
-      } else {
-        sorting = updater;
-      }
-    },
-    onColumnFiltersChange: (updater) => {
-      if (typeof updater === 'function') {
-        columnFilters = updater(columnFilters);
-      } else {
-        columnFilters = updater;
-      }
-    },
-    onColumnVisibilityChange: (updater) => {
-      if (typeof updater === 'function') {
-        columnVisibility = updater(columnVisibility);
-      } else {
-        columnVisibility = updater;
-      }
-    },
-    onRowSelectionChange: (updater) => {
-      if (typeof updater === 'function') {
-        rowSelection = updater(rowSelection);
-      } else {
-        rowSelection = updater;
-      }
-    },
-    state: {
-      get pagination() {
-        return pagination;
-      },
-      get sorting() {
-        return sorting;
-      },
-      get columnFilters() {
-        return columnFilters;
-      },
-      get columnVisibility() {
-        return columnVisibility;
-      },
-      get rowSelection() {
-        return rowSelection;
-      },
+    get columns() {
+      return columns;
     },
   });
 </script>
@@ -137,7 +69,7 @@
             {#each headerGroup.headers as header (header.id)}
               <Table.Head colspan={header.colSpan}>
                 {#if !header.isPlaceholder}
-                  <FlexRender content={header.column.columnDef.header} context={header.getContext()} />
+                  <FlexRender {header} />
                 {/if}
               </Table.Head>
             {/each}
@@ -149,7 +81,7 @@
           <Table.Row data-state={row.getIsSelected() && 'selected'}>
             {#each row.getVisibleCells() as cell (cell.id)}
               <Table.Cell>
-                <FlexRender content={cell.column.columnDef.cell} context={cell.getContext()} />
+                <FlexRender {cell} />
               </Table.Cell>
             {/each}
           </Table.Row>

@@ -6,7 +6,7 @@ import Welcome from './Welcome.svelte';
 
 describe('Welcome.svelte', () => {
   it('renders greetings for host and guest', async () => {
-    render(Welcome, { host: 'SvelteKit', guest: 'Vitest' });
+    await render(Welcome, { host: 'SvelteKit', guest: 'Vitest' });
 
     await expect.element(page.getByRole('heading', { level: 1 })).toHaveTextContent('Hello, SvelteKit!');
     await expect.element(page.getByText('Hello, Vitest!')).toBeInTheDocument();

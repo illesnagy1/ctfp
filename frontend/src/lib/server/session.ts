@@ -2,21 +2,23 @@ import { dev } from '$app/env';
 import { REDIS_URL } from '$app/env/private';
 import type { Cookies } from '@sveltejs/kit';
 import { createClient } from 'redis';
+import { z } from 'zod';
 
-export type SessionUser = {
-  id: number;
-  username: string;
-  email: string;
-  role: 'ADMIN' | 'USER';
-};
+const sessionUserSchema = z.object({
+  id: z.number(),
+  username: z.string(),
+  email: z.string(),
+  role: z.enum(['ADMIN', 'USER']),
+});
 
-export type Session = {
-  /** JWT issued by the api; never leaves the server. */
-  token: string;
-  user: SessionUser;
-  /** Unix epoch seconds, same as the JWT's `exp`. */
-  expiresAt: number;
-};
+const sessionSchema = z.object({
+  token: z.jwt(),
+  user: sessionUserSchema,
+  expiresAt: z.number(),
+});
+
+export type SessionUser = z.infer<typeof sessionUserSchema>;
+export type Session = z.infer<typeof sessionSchema>;
 
 interface SessionStore {
   get(key: string): Promise<Session | undefined>;
@@ -67,7 +69,10 @@ class RedisStore implements SessionStore {
   async get(key: string) {
     await this.ready;
     const value = await this.client.get(`session:${key}`);
-    return value ? (JSON.parse(value) as Session) : undefined;
+    if (!value) return undefined;
+    // Treat a stored session that no longer matches the schema as logged out.
+    const parsed = sessionSchema.safeParse(JSON.parse(value));
+    return parsed.success ? parsed.data : undefined;
   }
 
   async set(key: string, session: Session, ttlSeconds: number) {
@@ -82,8 +87,8 @@ class RedisStore implements SessionStore {
 }
 
 // Kept on globalThis so the in-memory store survives Vite hot reloads in dev.
-const globalStore = globalThis as typeof globalThis & { __sessionStore?: SessionStore };
-const store = (globalStore.__sessionStore ??= REDIS_URL ? new RedisStore(REDIS_URL) : new MemoryStore());
+const globalStore = globalThis as typeof globalThis & { ctfpSessionStore?: SessionStore };
+const store = (globalStore.ctfpSessionStore ??= REDIS_URL ? new RedisStore(REDIS_URL) : new MemoryStore());
 
 export const SESSION_COOKIE = 'session';
 
@@ -109,7 +114,7 @@ export async function createSession(cookies: Cookies, session: Session) {
   });
 }
 
-export async function getSession(sessionId: string): Promise<Session | undefined>{
+export async function getSession(sessionId: string): Promise<Session | undefined> {
   return store.get(await storeKey(sessionId));
 }
 

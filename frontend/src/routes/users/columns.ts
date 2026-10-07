@@ -1,12 +1,12 @@
-import type { ColumnDef } from '@tanstack/table-core';
+import { renderComponent, type ColumnDef } from '@tanstack/svelte-table';
 
-import { renderComponent } from '#lib/components/ui/data-table/index.js';
+import type { DataTableFeatures } from '#lib/components/data-table-features.js';
 import { sortableColumn } from '#lib/components/users/sortable-column.js';
 import type { User } from '#lib/types/user.js';
 
 import DataTableActions from './data-table-actions.svelte';
 
-export const columns: ColumnDef<User>[] = [
+export const columns: ColumnDef<DataTableFeatures, User>[] = [
   sortableColumn('username', 'Username'),
   sortableColumn('website', 'Website'),
   sortableColumn('country', 'Country'),

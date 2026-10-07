@@ -1,39 +1,40 @@
-import type { ColumnDef } from '@tanstack/table-core';
+import { createColumnHelper, renderComponent, renderSnippet } from '@tanstack/svelte-table';
 import { createRawSnippet } from 'svelte';
 
 import { Checkbox } from '#lib/components/ui/checkbox/index.js';
-import { renderComponent, renderSnippet } from '#lib/components/ui/data-table/index.js';
-import { DataTableColumnHeader } from '#lib/components/ui/data-table/index.js';
 
 import type { Task } from '../data/schemas';
+import DataTableColumnHeader from './data-table-column-header.svelte';
+import type { TasksTableFeatures } from './data-table-features.js';
 import DataTablePriorityCell from './data-table-priority-cell.svelte';
 import DataTableRowActions from './data-table-row-actions.svelte';
 import DataTableStatusCell from './data-table-status-cell.svelte';
 import DataTableTitleCell from './data-table-title-cell.svelte';
 
-export const columns: ColumnDef<Task>[] = [
-  {
+const columnHelper = createColumnHelper<TasksTableFeatures, Task>();
+
+export const columns = columnHelper.columns([
+  columnHelper.display({
     id: 'select',
     header: ({ table }) =>
       renderComponent(Checkbox, {
         checked: table.getIsAllPageRowsSelected(),
-        onCheckedChange: (value) => table.toggleAllPageRowsSelected(value),
+        onCheckedChange: (value: boolean) => table.toggleAllPageRowsSelected(value),
         indeterminate: table.getIsSomePageRowsSelected() && !table.getIsAllPageRowsSelected(),
         'aria-label': 'Select all',
       }),
     cell: ({ row }) =>
       renderComponent(Checkbox, {
         checked: row.getIsSelected(),
-        onCheckedChange: (value) => row.toggleSelected(value),
+        onCheckedChange: (value: boolean) => row.toggleSelected(value),
         'aria-label': 'Select row',
       }),
     enableSorting: false,
     enableHiding: false,
-  },
-  {
-    accessorKey: 'id',
+  }),
+  columnHelper.accessor('id', {
     header: ({ column }) => {
-      return renderComponent(DataTableColumnHeader, {
+      return renderComponent(DataTableColumnHeader<Task, string>, {
         column,
         title: 'Task',
       });
@@ -52,21 +53,19 @@ export const columns: ColumnDef<Task>[] = [
     },
     enableSorting: false,
     enableHiding: false,
-  },
-  {
-    accessorKey: 'title',
-    header: ({ column }) => renderComponent(DataTableColumnHeader, { column, title: 'Title' }),
+  }),
+  columnHelper.accessor('title', {
+    header: ({ column }) => renderComponent(DataTableColumnHeader<Task, string>, { column, title: 'Title' }),
     cell: ({ row }) => {
       return renderComponent(DataTableTitleCell, {
         labelValue: row.original.label,
         value: row.original.title,
       });
     },
-  },
-  {
-    accessorKey: 'status',
+  }),
+  columnHelper.accessor('status', {
     header: ({ column }) =>
-      renderComponent(DataTableColumnHeader, {
+      renderComponent(DataTableColumnHeader<Task, string>, {
         column,
         title: 'Status',
       }),
@@ -78,11 +77,10 @@ export const columns: ColumnDef<Task>[] = [
     filterFn: (row, id, value) => {
       return value.includes(row.getValue(id));
     },
-  },
-  {
-    accessorKey: 'priority',
+  }),
+  columnHelper.accessor('priority', {
     header: ({ column }) => {
-      return renderComponent(DataTableColumnHeader, {
+      return renderComponent(DataTableColumnHeader<Task, string>, {
         title: 'Priority',
         column,
       });
@@ -95,9 +93,9 @@ export const columns: ColumnDef<Task>[] = [
     filterFn: (row, id, value) => {
       return value.includes(row.getValue(id));
     },
-  },
-  {
+  }),
+  columnHelper.display({
     id: 'actions',
     cell: ({ row }) => renderComponent(DataTableRowActions, { row }),
-  },
-];
+  }),
+]);

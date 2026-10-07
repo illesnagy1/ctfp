@@ -118,7 +118,8 @@
     "svelte/no-useless-mustaches": "error",
     "svelte/prefer-attribute-interpolation": "error",
     "svelte/prefer-class-directive": "error",
-    "svelte/prefer-const": "error",
+    // handled by eslint
+    "svelte/prefer-const": "off",
     "svelte/prefer-derived-over-derived-by": "error",
     "svelte/prefer-style-directive": "error",
     "svelte/prefer-svelte-reactivity": "error",

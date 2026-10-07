@@ -1,26 +1,26 @@
-import type { ColumnDef } from '@tanstack/table-core';
+import { renderComponent, type ColumnDef } from '@tanstack/svelte-table';
 
+import type { DataTableFeatures } from '#lib/components/data-table-features.js';
 import { Checkbox } from '#lib/components/ui/checkbox/index.js';
-import { renderComponent } from '#lib/components/ui/data-table/index.js';
 import { sortableColumn } from '#lib/components/users/sortable-column.js';
 import type { AdminUser } from '#lib/types/user.js';
 
 import DataTableActions from './data-table-actions.svelte';
 
-export const columns: ColumnDef<AdminUser>[] = [
+export const columns: ColumnDef<DataTableFeatures, AdminUser>[] = [
   {
     id: 'select',
     header: ({ table }) =>
       renderComponent(Checkbox, {
         checked: table.getIsAllPageRowsSelected(),
         indeterminate: table.getIsSomePageRowsSelected() && !table.getIsAllPageRowsSelected(),
-        onCheckedChange: (value) => table.toggleAllPageRowsSelected(!!value),
+        onCheckedChange: (value: boolean) => table.toggleAllPageRowsSelected(value),
         'aria-label': 'Select all',
       }),
     cell: ({ row }) =>
       renderComponent(Checkbox, {
         checked: row.getIsSelected(),
-        onCheckedChange: (value) => row.toggleSelected(!!value),
+        onCheckedChange: (value: boolean) => row.toggleSelected(value),
         'aria-label': 'Select row',
       }),
     enableSorting: false,
