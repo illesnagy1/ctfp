@@ -1,15 +1,26 @@
-<script lang="ts">
-  import { createTable, FlexRender } from '@tanstack/svelte-table';
+<script lang="ts" generics="TData extends RowData">
+  import { createTable, FlexRender, type ColumnDef, type RowData } from '@tanstack/svelte-table';
 
   import * as Table from '#lib/components/ui/table/index.js';
 
-  import type { Task } from '../data/schemas.js';
-  import { columns } from './columns.js';
-  import { features } from './data-table-features.js';
   import DataTablePagination from './data-table-pagination.svelte';
   import DataTableToolbar from './data-table-toolbar.svelte';
+  import { features, type DataTableFeatures } from './features.js';
+  import type { DataTableFilter, DataTableSearch } from './types.js';
 
-  let { data }: { data: Task[] } = $props();
+  let {
+    data,
+    columns,
+    search,
+    filters,
+  }: {
+    data: TData[];
+    columns: ColumnDef<DataTableFeatures, TData>[];
+    /** Text search shown in the toolbar. */
+    search?: DataTableSearch;
+    /** Faceted filters shown in the toolbar. */
+    filters?: DataTableFilter[];
+  } = $props();
 
   // v9 keeps pagination, sorting, filters, visibility and selection internally, and its reads are rune-reactive.
   const table = createTable({
@@ -17,13 +28,15 @@
     get data() {
       return data;
     },
-    columns,
+    get columns() {
+      return columns;
+    },
     enableRowSelection: true,
   });
 </script>
 
 <div class="space-y-4">
-  <DataTableToolbar {table} />
+  <DataTableToolbar {table} {search} {filters} />
   <div class="rounded-md border">
     <Table.Root>
       <Table.Header>

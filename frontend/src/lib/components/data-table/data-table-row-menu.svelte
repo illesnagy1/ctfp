@@ -1,11 +1,12 @@
 <script lang="ts">
-  import { resolve } from '$app/paths';
   import EllipsisIcon from '@lucide/svelte/icons/ellipsis';
+  import type { Snippet } from 'svelte';
 
   import { Button } from '#lib/components/ui/button/index.js';
   import * as DropdownMenu from '#lib/components/ui/dropdown-menu/index.js';
 
-  let { id }: { id: number } = $props();
+  /** The "⋯" menu at the end of a row; `children` are the `DropdownMenu` items. */
+  let { children }: { children: Snippet } = $props();
 </script>
 
 <DropdownMenu.Root>
@@ -17,11 +18,7 @@
       </Button>
     {/snippet}
   </DropdownMenu.Trigger>
-  <DropdownMenu.Content>
-    <DropdownMenu.Item>
-      {#snippet child({ props })}
-        <a {...props} href={resolve('/users/[id]', { id: String(id) })}>Details</a>
-      {/snippet}
-    </DropdownMenu.Item>
+  <DropdownMenu.Content class="w-40" align="end">
+    {@render children()}
   </DropdownMenu.Content>
 </DropdownMenu.Root>

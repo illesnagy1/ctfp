@@ -1,6 +1,9 @@
 import {
+  columnFacetingFeature,
   columnFilteringFeature,
   columnVisibilityFeature,
+  createFacetedRowModel,
+  createFacetedUniqueValues,
   createFilteredRowModel,
   createPaginatedRowModel,
   createSortedRowModel,
@@ -13,13 +16,17 @@ import {
   tableFeatures,
 } from '@tanstack/svelte-table';
 
-// TanStack Table v9 only bundles the features registered here, including the filter and sort functions.
+// TanStack Table v9 only bundles the features registered here, including the filter and sort functions. Faceting backs
+// the counts in the faceted filters.
 export const features = tableFeatures({
+  columnFacetingFeature,
   columnFilteringFeature,
   columnVisibilityFeature,
   rowPaginationFeature,
   rowSelectionFeature,
   rowSortingFeature,
+  facetedRowModel: createFacetedRowModel(),
+  facetedUniqueValues: createFacetedUniqueValues(),
   filteredRowModel: createFilteredRowModel(),
   paginatedRowModel: createPaginatedRowModel(),
   sortedRowModel: createSortedRowModel(),

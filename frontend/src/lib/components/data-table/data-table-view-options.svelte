@@ -5,9 +5,9 @@
   import { Button } from '#lib/components/ui/button/index.js';
   import * as DropdownMenu from '#lib/components/ui/dropdown-menu/index.js';
 
-  import type { TasksTableFeatures } from './data-table-features.js';
+  import type { DataTableFeatures } from './features.js';
 
-  let { table }: { table: SvelteTable<TasksTableFeatures, TData> } = $props();
+  let { table }: { table: SvelteTable<DataTableFeatures, TData> } = $props();
 </script>
 
 <DropdownMenu.Root>

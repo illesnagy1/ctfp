@@ -1,7 +1,7 @@
 <script lang="ts">
-  import DataTable from '#lib/components/data-table.svelte';
+  import { DataTable } from '#lib/components/data-table/index.js';
 
-  import { columns } from './columns.js';
+  import { columns, roles } from './columns.js';
 
   let { data, form } = $props();
 </script>
@@ -10,5 +10,10 @@
   {#if form?.message}
     <p class="pb-4 text-sm text-destructive">{form.message}</p>
   {/if}
-  <DataTable data={data.users} {columns} />
+  <DataTable
+    data={data.users}
+    {columns}
+    search={{ column: 'username', placeholder: 'Filter usernames...' }}
+    filters={[{ column: 'role', title: 'Role', options: roles }]}
+  />
 </div>

@@ -7,7 +7,7 @@
 
   import { Button } from '#lib/components/ui/button/index.js';
 
-  import type { DataTableFeatures } from './data-table-features.js';
+  import type { DataTableFeatures } from './features.js';
 
   let {
     column,

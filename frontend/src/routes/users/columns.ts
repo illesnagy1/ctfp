@@ -1,10 +1,9 @@
 import { renderComponent, type ColumnDef } from '@tanstack/svelte-table';
 
-import type { DataTableFeatures } from '#lib/components/data-table-features.js';
-import { sortableColumn } from '#lib/components/users/sortable-column.js';
+import { sortableColumn, type DataTableFeatures } from '#lib/components/data-table/index.js';
 import type { User } from '#lib/types/user.js';
 
-import DataTableActions from './data-table-actions.svelte';
+import RowActions from './row-actions.svelte';
 
 export const columns: ColumnDef<DataTableFeatures, User>[] = [
   sortableColumn('username', 'Username'),
@@ -14,6 +13,6 @@ export const columns: ColumnDef<DataTableFeatures, User>[] = [
     id: 'actions',
     enableSorting: false,
     enableHiding: false,
-    cell: ({ row }) => renderComponent(DataTableActions, { id: row.original.id }),
+    cell: ({ row }) => renderComponent(RowActions, { id: row.original.id }),
   },
 ];

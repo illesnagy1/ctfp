@@ -8,9 +8,9 @@
   import { Button } from '#lib/components/ui/button/index.js';
   import * as Select from '#lib/components/ui/select/index.js';
 
-  import type { TasksTableFeatures } from './data-table-features.js';
+  import type { DataTableFeatures } from './features.js';
 
-  let { table }: { table: SvelteTable<TasksTableFeatures, TData> } = $props();
+  let { table }: { table: SvelteTable<DataTableFeatures, TData> } = $props();
 
   const pageCount = $derived(table.getPageCount());
   const selectedRows = $derived(table.getFilteredSelectedRowModel().rows.length);

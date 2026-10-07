@@ -1,5 +1,8 @@
 <script lang="ts">
-  import DataTable from './components/data-table.svelte';
+  import { DataTable } from '#lib/components/data-table/index.js';
+
+  import { columns } from './components/columns.js';
+  import { priorities, statuses } from './data/data.js';
   import { data } from './data/tasks.js';
 </script>
 
@@ -10,5 +13,13 @@
       <p class="text-muted-foreground">Here&apos;s a list of your tasks for this month.</p>
     </div>
   </div>
-  <DataTable {data} />
+  <DataTable
+    {data}
+    {columns}
+    search={{ column: 'title', placeholder: 'Filter tasks...' }}
+    filters={[
+      { column: 'status', title: 'Status', options: statuses },
+      { column: 'priority', title: 'Priority', options: priorities },
+    ]}
+  />
 </div>

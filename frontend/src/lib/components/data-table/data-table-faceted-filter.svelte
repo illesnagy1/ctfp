@@ -2,7 +2,6 @@
   import CheckIcon from '@lucide/svelte/icons/check';
   import CirclePlusIcon from '@lucide/svelte/icons/circle-plus';
   import type { CellData, Column, RowData } from '@tanstack/svelte-table';
-  import type { Component } from 'svelte';
   import { SvelteSet } from 'svelte/reactivity';
 
   import { Badge } from '#lib/components/ui/badge/index.js';
@@ -12,24 +11,21 @@
   import { Separator } from '#lib/components/ui/separator/index.js';
   import { cn } from '#lib/utils.js';
 
-  import type { TasksTableFeatures } from './data-table-features.js';
+  import type { DataTableFeatures } from './features.js';
+  import type { DataTableOption } from './types.js';
 
   let {
     column,
     title,
     options,
   }: {
-    column: Column<TasksTableFeatures, TData, TValue>;
+    column: Column<DataTableFeatures, TData, TValue>;
     title: string;
-    options: {
-      label: string;
-      value: string;
-      icon?: Component;
-    }[];
+    options: DataTableOption[];
   } = $props();
 
-  const facets = $derived(column?.getFacetedUniqueValues());
-  const selectedValues = $derived(new SvelteSet(column?.getFilterValue() as string[]));
+  const facets = $derived(column.getFacetedUniqueValues());
+  const selectedValues = $derived(new SvelteSet(column.getFilterValue() as string[]));
 </script>
 
 <Popover.Root>
@@ -60,6 +56,8 @@
       </Button>
     {/snippet}
   </Popover.Trigger>
+  <!-- The command list brings its own padding and has to sit flush with the popover edges. -->
+  <!-- eslint-disable-next-line shadcn/no-restyle -->
   <Popover.Content class="w-50 p-0" align="start">
     <Command.Root>
       <Command.Input placeholder={title} />
@@ -76,7 +74,7 @@
                   selectedValues.add(option.value);
                 }
                 const filterValues = Array.from(selectedValues);
-                column?.setFilterValue(filterValues.length ? filterValues : undefined);
+                column.setFilterValue(filterValues.length ? filterValues : undefined);
               }}
             >
               <div
@@ -93,7 +91,7 @@
               {/if}
 
               <span>{option.label}</span>
-              {#if facets?.get(option.value)}
+              {#if facets.get(option.value)}
                 <span class="ms-auto flex size-4 items-center justify-center font-mono text-xs">
                   {facets.get(option.value)}
                 </span>
@@ -104,7 +102,7 @@
         {#if selectedValues.size > 0}
           <Command.Separator />
           <Command.Group>
-            <Command.Item onSelect={() => column?.setFilterValue(undefined)} class="justify-center text-center">
+            <Command.Item onSelect={() => column.setFilterValue(undefined)} class="justify-center text-center">
               Clear filters
             </Command.Item>
           </Command.Group>

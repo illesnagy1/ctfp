@@ -33,8 +33,15 @@ export default defineConfig([
       parserOptions: { parser: tsParser },
     },
     plugins: { shadcn },
-    // Oxlint only sees the <script> block, so it misses reassignments in markup (`bind:`, `onclick`).
-    rules: { ...rules, 'svelte/prefer-const': 'error' },
+    // Applies the markup disable comments that `svelte/comment-directive` collects.
+    processor: 'svelte/svelte',
+    rules: {
+      ...rules,
+      // Oxlint only sees the <script> block, so it misses reassignments in markup (`bind:`, `onclick`).
+      'svelte/prefer-const': 'error',
+      // Makes `<!-- eslint-disable-next-line … -->` comments in markup work.
+      'svelte/comment-directive': 'error',
+    },
   },
   {
     // `cn` / `tv` calls outside components, e.g. table column definitions.

@@ -1,44 +1,25 @@
 import { createColumnHelper, renderComponent, renderSnippet } from '@tanstack/svelte-table';
 import { createRawSnippet } from 'svelte';
 
-import { Checkbox } from '#lib/components/ui/checkbox/index.js';
+import {
+  DataTableBadgeCell,
+  DataTableColumnHeader,
+  DataTableOptionCell,
+  includesValue,
+  selectColumn,
+  type DataTableFeatures,
+} from '#lib/components/data-table/index.js';
 
+import { labels, priorities, statuses } from '../data/data.js';
 import type { Task } from '../data/schemas';
-import DataTableColumnHeader from './data-table-column-header.svelte';
-import type { TasksTableFeatures } from './data-table-features.js';
-import DataTablePriorityCell from './data-table-priority-cell.svelte';
-import DataTableRowActions from './data-table-row-actions.svelte';
-import DataTableStatusCell from './data-table-status-cell.svelte';
-import DataTableTitleCell from './data-table-title-cell.svelte';
+import RowActions from './row-actions.svelte';
 
-const columnHelper = createColumnHelper<TasksTableFeatures, Task>();
+const columnHelper = createColumnHelper<DataTableFeatures, Task>();
 
 export const columns = columnHelper.columns([
-  columnHelper.display({
-    id: 'select',
-    header: ({ table }) =>
-      renderComponent(Checkbox, {
-        checked: table.getIsAllPageRowsSelected(),
-        onCheckedChange: (value: boolean) => table.toggleAllPageRowsSelected(value),
-        indeterminate: table.getIsSomePageRowsSelected() && !table.getIsAllPageRowsSelected(),
-        'aria-label': 'Select all',
-      }),
-    cell: ({ row }) =>
-      renderComponent(Checkbox, {
-        checked: row.getIsSelected(),
-        onCheckedChange: (value: boolean) => row.toggleSelected(value),
-        'aria-label': 'Select row',
-      }),
-    enableSorting: false,
-    enableHiding: false,
-  }),
+  selectColumn<Task>(),
   columnHelper.accessor('id', {
-    header: ({ column }) => {
-      return renderComponent(DataTableColumnHeader<Task, string>, {
-        column,
-        title: 'Task',
-      });
-    },
+    header: ({ column }) => renderComponent(DataTableColumnHeader<Task, string>, { column, title: 'Task' }),
     cell: ({ row }) => {
       const idSnippet = createRawSnippet<[{ id: string }]>((getId) => {
         const { id } = getId();
@@ -56,46 +37,25 @@ export const columns = columnHelper.columns([
   }),
   columnHelper.accessor('title', {
     header: ({ column }) => renderComponent(DataTableColumnHeader<Task, string>, { column, title: 'Title' }),
-    cell: ({ row }) => {
-      return renderComponent(DataTableTitleCell, {
-        labelValue: row.original.label,
+    cell: ({ row }) =>
+      renderComponent(DataTableBadgeCell, {
         value: row.original.title,
-      });
-    },
+        badge: labels.find((l) => l.value === row.original.label)?.label,
+      }),
   }),
   columnHelper.accessor('status', {
-    header: ({ column }) =>
-      renderComponent(DataTableColumnHeader<Task, string>, {
-        column,
-        title: 'Status',
-      }),
-    cell: ({ row }) => {
-      return renderComponent(DataTableStatusCell, {
-        value: row.original.status,
-      });
-    },
-    filterFn: (row, id, value) => {
-      return value.includes(row.getValue(id));
-    },
+    header: ({ column }) => renderComponent(DataTableColumnHeader<Task, string>, { column, title: 'Status' }),
+    cell: ({ row }) =>
+      renderComponent(DataTableOptionCell, { value: row.original.status, options: statuses, class: 'w-25' }),
+    filterFn: includesValue,
   }),
   columnHelper.accessor('priority', {
-    header: ({ column }) => {
-      return renderComponent(DataTableColumnHeader<Task, string>, {
-        title: 'Priority',
-        column,
-      });
-    },
-    cell: ({ row }) => {
-      return renderComponent(DataTablePriorityCell, {
-        value: row.original.priority,
-      });
-    },
-    filterFn: (row, id, value) => {
-      return value.includes(row.getValue(id));
-    },
+    header: ({ column }) => renderComponent(DataTableColumnHeader<Task, string>, { column, title: 'Priority' }),
+    cell: ({ row }) => renderComponent(DataTableOptionCell, { value: row.original.priority, options: priorities }),
+    filterFn: includesValue,
   }),
   columnHelper.display({
     id: 'actions',
-    cell: ({ row }) => renderComponent(DataTableRowActions, { row }),
+    cell: ({ row }) => renderComponent(RowActions, { row }),
   }),
 ]);
