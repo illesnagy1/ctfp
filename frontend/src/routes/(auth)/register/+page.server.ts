@@ -1,7 +1,7 @@
 import { fail, redirect } from '@sveltejs/kit';
 
-import { ApiError, api } from '#lib/server/api.js';
-import { type Session, createSession } from '#lib/server/session.js';
+import { apiClient } from '#lib/server/api.js';
+import { createSession } from '#lib/server/session.js';
 
 import type { Actions, PageServerLoad } from './$types';
 
@@ -21,19 +21,16 @@ export const actions: Actions = {
 
     if (password !== confirmPassword) return fail(400, { ...values, message: 'Passwords do not match' });
 
-    try {
-      const session = await api<Session>(event, '/v1/auth/register', {
-        method: 'POST',
-        body: JSON.stringify({ username, email, password, registrationCode }),
-      });
-      await createSession(event.cookies, session);
-    } catch (error) {
-      if (error instanceof ApiError && error.status < 500)
-        return fail(error.status, { ...values, message: error.message });
-      console.error('Registration failed', error);
+    const { data, error, response } = await apiClient(event).POST('/v1/auth/register', {
+      body: { username, email, password, registrationCode },
+    });
+    if (error) {
+      if (response.status < 500) return fail(response.status, { ...values, message: error.message });
+      console.error('Registration failed', response.status, error);
       return fail(500, { ...values, message: 'Something went wrong, try again later' });
     }
 
+    await createSession(event.cookies, data);
     redirect(303, '/');
   },
 };

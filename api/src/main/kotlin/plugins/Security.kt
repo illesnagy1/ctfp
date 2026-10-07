@@ -2,6 +2,9 @@ package com.ctfp.plugins
 
 import io.ktor.server.application.*
 import com.auth0.jwt.JWT
+import com.ctfp.dto.ErrorResponse
+import io.ktor.http.HttpStatusCode
+import io.ktor.server.response.respond
 import com.auth0.jwt.algorithms.Algorithm
 import io.ktor.server.auth.*
 import io.ktor.server.auth.jwt.*
@@ -41,6 +44,9 @@ fun Application.configureSecurity() {
             )
             validate { credential ->
                 if (credential.payload.subject?.toIntOrNull() != null) JWTPrincipal(credential.payload) else null
+            }
+            challenge { _, _ ->
+                call.respond(HttpStatusCode.Unauthorized, ErrorResponse("Authentication required"))
             }
         }
     }

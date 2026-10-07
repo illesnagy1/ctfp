@@ -811,6 +811,13 @@
     "body" : { }
   }
 };
+            defs["ErrorResponse"] = {
+  "title" : "ErrorResponse",
+  "required" : [ "message" ],
+  "properties" : {
+    "message" : { }
+  }
+};
             defs["FileRequest"] = {
   "title" : "FileRequest",
   "required" : [ "name" ],
@@ -1837,7 +1844,8 @@ except ApiException as e:
                       <article id="api-Default-v1AuthLoginPost-0" data-group="User" data-name="v1AuthLoginPost" data-version="0">
                         <div class="pull-left">
                           <h1>v1AuthLoginPost</h1>
-                          <p></p>
+                          <p>Documents the [ErrorResponse]s this route can return. They are sent by StatusPages (and the auth challenge), so
+OpenAPI inference can&#x27;t see them.</p>
                         </div>
                         <div class="pull-right"></div>
                         <div class="clearfix"></div>
@@ -1923,6 +1931,8 @@ public class DefaultApiExample {
 
 DefaultApi *apiInstance = [[DefaultApi alloc] init];
 
+// Documents the [ErrorResponse]s this route can return. They are sent by StatusPages (and the auth challenge), so
+OpenAPI inference can't see them.
 [apiInstance v1AuthLoginPostWith:body
               completionHandler: ^(AuthResponse output, NSError* error) {
                             if (output) {
@@ -1975,6 +1985,8 @@ namespace Example
 
             try
             {
+                // Documents the [ErrorResponse]s this route can return. They are sent by StatusPages (and the auth challenge), so
+OpenAPI inference can't see them.
                 AuthResponse result = apiInstance.v1AuthLoginPost(body);
                 Debug.WriteLine(result);
             }
@@ -2033,6 +2045,8 @@ api_instance = swagger_client.DefaultApi()
 body =  # LoginRequest |  (optional)
 
 try: 
+    # Documents the [ErrorResponse]s this route can return. They are sent by StatusPages (and the auth challenge), so
+OpenAPI inference can't see them.
     api_response = api_instance.v1_auth_login_post(body=body)
     pprint(api_response)
 except ApiException as e:
@@ -2138,6 +2152,150 @@ except ApiException as e:
                                 </div>
                             </div>
 
+                            <h3> Status: 400 - Bad Request </h3>
+
+                            <ul class="nav nav-tabs nav-tabs-examples" >
+                                <li class="active">
+                                  <a data-toggle="tab" href="#responses-v1AuthLoginPost-400-schema">Schema</a>
+                                </li>
+
+                            </ul>
+
+                            <div class="tab-content" style='margin-bottom: 10px;'>
+                                <div class="tab-pane active" id="responses-v1AuthLoginPost-400-schema">
+                                  <div id='responses-v1AuthLoginPost-400-schema-400' style="padding: 30px; border-left: 1px solid #eee; border-right: 1px solid #eee; border-bottom: 1px solid #eee;">
+                                    <script>
+                                      $(document).ready(function() {
+                                        var schemaWrapper = {
+  "description" : "Bad Request",
+  "content" : {
+    "application/json" : {
+      "schema" : {
+        "$ref" : "#/components/schemas/ErrorResponse"
+      }
+    }
+  }
+};
+                                        var schema = schemaWrapper.content["application/json"].schema;
+                                        if (schema.$ref != null) {
+                                          schema = defsParser.$refs.get(schema.$ref);
+                                        } else {
+                                          schemaWrapper.components = {};
+                                          schemaWrapper.components.schemas = Object.assign({}, defs);
+                                          $RefParser.dereference(schemaWrapper).catch(function(err) {
+                                            console.log(err);
+                                          });
+                                        }
+
+                                        //console.log(JSON.stringify(schema));
+                                        var view = new JSONSchemaView(schema, 3);
+                                        $('#responses-v1AuthLoginPost-400-schema-data').val(stringify(schema));
+                                        var result = $('#responses-v1AuthLoginPost-400-schema-400');
+                                        result.empty();
+                                        result.append(view.render());
+                                      });
+                                    </script>
+                                  </div>
+                                  <input id='responses-v1AuthLoginPost-400-schema-data' type='hidden' value=''></input>
+                                </div>
+                            </div>
+
+                            <h3> Status: 401 - Unauthorized </h3>
+
+                            <ul class="nav nav-tabs nav-tabs-examples" >
+                                <li class="active">
+                                  <a data-toggle="tab" href="#responses-v1AuthLoginPost-401-schema">Schema</a>
+                                </li>
+
+                            </ul>
+
+                            <div class="tab-content" style='margin-bottom: 10px;'>
+                                <div class="tab-pane active" id="responses-v1AuthLoginPost-401-schema">
+                                  <div id='responses-v1AuthLoginPost-401-schema-401' style="padding: 30px; border-left: 1px solid #eee; border-right: 1px solid #eee; border-bottom: 1px solid #eee;">
+                                    <script>
+                                      $(document).ready(function() {
+                                        var schemaWrapper = {
+  "description" : "Unauthorized",
+  "content" : {
+    "application/json" : {
+      "schema" : {
+        "$ref" : "#/components/schemas/ErrorResponse"
+      }
+    }
+  }
+};
+                                        var schema = schemaWrapper.content["application/json"].schema;
+                                        if (schema.$ref != null) {
+                                          schema = defsParser.$refs.get(schema.$ref);
+                                        } else {
+                                          schemaWrapper.components = {};
+                                          schemaWrapper.components.schemas = Object.assign({}, defs);
+                                          $RefParser.dereference(schemaWrapper).catch(function(err) {
+                                            console.log(err);
+                                          });
+                                        }
+
+                                        //console.log(JSON.stringify(schema));
+                                        var view = new JSONSchemaView(schema, 3);
+                                        $('#responses-v1AuthLoginPost-401-schema-data').val(stringify(schema));
+                                        var result = $('#responses-v1AuthLoginPost-401-schema-401');
+                                        result.empty();
+                                        result.append(view.render());
+                                      });
+                                    </script>
+                                  </div>
+                                  <input id='responses-v1AuthLoginPost-401-schema-data' type='hidden' value=''></input>
+                                </div>
+                            </div>
+
+                            <h3> Status: 403 - Forbidden </h3>
+
+                            <ul class="nav nav-tabs nav-tabs-examples" >
+                                <li class="active">
+                                  <a data-toggle="tab" href="#responses-v1AuthLoginPost-403-schema">Schema</a>
+                                </li>
+
+                            </ul>
+
+                            <div class="tab-content" style='margin-bottom: 10px;'>
+                                <div class="tab-pane active" id="responses-v1AuthLoginPost-403-schema">
+                                  <div id='responses-v1AuthLoginPost-403-schema-403' style="padding: 30px; border-left: 1px solid #eee; border-right: 1px solid #eee; border-bottom: 1px solid #eee;">
+                                    <script>
+                                      $(document).ready(function() {
+                                        var schemaWrapper = {
+  "description" : "Forbidden",
+  "content" : {
+    "application/json" : {
+      "schema" : {
+        "$ref" : "#/components/schemas/ErrorResponse"
+      }
+    }
+  }
+};
+                                        var schema = schemaWrapper.content["application/json"].schema;
+                                        if (schema.$ref != null) {
+                                          schema = defsParser.$refs.get(schema.$ref);
+                                        } else {
+                                          schemaWrapper.components = {};
+                                          schemaWrapper.components.schemas = Object.assign({}, defs);
+                                          $RefParser.dereference(schemaWrapper).catch(function(err) {
+                                            console.log(err);
+                                          });
+                                        }
+
+                                        //console.log(JSON.stringify(schema));
+                                        var view = new JSONSchemaView(schema, 3);
+                                        $('#responses-v1AuthLoginPost-403-schema-data').val(stringify(schema));
+                                        var result = $('#responses-v1AuthLoginPost-403-schema-403');
+                                        result.empty();
+                                        result.append(view.render());
+                                      });
+                                    </script>
+                                  </div>
+                                  <input id='responses-v1AuthLoginPost-403-schema-data' type='hidden' value=''></input>
+                                </div>
+                            </div>
+
                         </article>
                       </div>
                       <hr>
@@ -2145,7 +2303,8 @@ except ApiException as e:
                       <article id="api-Default-v1AuthMeGet-0" data-group="User" data-name="v1AuthMeGet" data-version="0">
                         <div class="pull-left">
                           <h1>v1AuthMeGet</h1>
-                          <p></p>
+                          <p>Documents the [ErrorResponse]s this route can return. They are sent by StatusPages (and the auth challenge), so
+OpenAPI inference can&#x27;t see them.</p>
                         </div>
                         <div class="pull-right"></div>
                         <div class="clearfix"></div>
@@ -2231,6 +2390,8 @@ public class DefaultApiExample {
 
 DefaultApi *apiInstance = [[DefaultApi alloc] init];
 
+// Documents the [ErrorResponse]s this route can return. They are sent by StatusPages (and the auth challenge), so
+OpenAPI inference can't see them.
 [apiInstance v1AuthMeGetWithCompletionHandler: 
               ^(AuthUser output, NSError* error) {
                             if (output) {
@@ -2282,6 +2443,8 @@ namespace Example
 
             try
             {
+                // Documents the [ErrorResponse]s this route can return. They are sent by StatusPages (and the auth challenge), so
+OpenAPI inference can't see them.
                 AuthUser result = apiInstance.v1AuthMeGet();
                 Debug.WriteLine(result);
             }
@@ -2340,6 +2503,8 @@ from pprint import pprint
 api_instance = swagger_client.DefaultApi()
 
 try: 
+    # Documents the [ErrorResponse]s this route can return. They are sent by StatusPages (and the auth challenge), so
+OpenAPI inference can't see them.
     api_response = api_instance.v1_auth_me_get()
     pprint(api_response)
 except ApiException as e:
@@ -2403,6 +2568,54 @@ except ApiException as e:
                                 </div>
                             </div>
 
+                            <h3> Status: 401 - Unauthorized </h3>
+
+                            <ul class="nav nav-tabs nav-tabs-examples" >
+                                <li class="active">
+                                  <a data-toggle="tab" href="#responses-v1AuthMeGet-401-schema">Schema</a>
+                                </li>
+
+                            </ul>
+
+                            <div class="tab-content" style='margin-bottom: 10px;'>
+                                <div class="tab-pane active" id="responses-v1AuthMeGet-401-schema">
+                                  <div id='responses-v1AuthMeGet-401-schema-401' style="padding: 30px; border-left: 1px solid #eee; border-right: 1px solid #eee; border-bottom: 1px solid #eee;">
+                                    <script>
+                                      $(document).ready(function() {
+                                        var schemaWrapper = {
+  "description" : "Unauthorized",
+  "content" : {
+    "application/json" : {
+      "schema" : {
+        "$ref" : "#/components/schemas/ErrorResponse"
+      }
+    }
+  }
+};
+                                        var schema = schemaWrapper.content["application/json"].schema;
+                                        if (schema.$ref != null) {
+                                          schema = defsParser.$refs.get(schema.$ref);
+                                        } else {
+                                          schemaWrapper.components = {};
+                                          schemaWrapper.components.schemas = Object.assign({}, defs);
+                                          $RefParser.dereference(schemaWrapper).catch(function(err) {
+                                            console.log(err);
+                                          });
+                                        }
+
+                                        //console.log(JSON.stringify(schema));
+                                        var view = new JSONSchemaView(schema, 3);
+                                        $('#responses-v1AuthMeGet-401-schema-data').val(stringify(schema));
+                                        var result = $('#responses-v1AuthMeGet-401-schema-401');
+                                        result.empty();
+                                        result.append(view.render());
+                                      });
+                                    </script>
+                                  </div>
+                                  <input id='responses-v1AuthMeGet-401-schema-data' type='hidden' value=''></input>
+                                </div>
+                            </div>
+
                         </article>
                       </div>
                       <hr>
@@ -2410,7 +2623,8 @@ except ApiException as e:
                       <article id="api-Default-v1AuthRegisterPost-0" data-group="User" data-name="v1AuthRegisterPost" data-version="0">
                         <div class="pull-left">
                           <h1>v1AuthRegisterPost</h1>
-                          <p></p>
+                          <p>Documents the [ErrorResponse]s this route can return. They are sent by StatusPages (and the auth challenge), so
+OpenAPI inference can&#x27;t see them.</p>
                         </div>
                         <div class="pull-right"></div>
                         <div class="clearfix"></div>
@@ -2496,6 +2710,8 @@ public class DefaultApiExample {
 
 DefaultApi *apiInstance = [[DefaultApi alloc] init];
 
+// Documents the [ErrorResponse]s this route can return. They are sent by StatusPages (and the auth challenge), so
+OpenAPI inference can't see them.
 [apiInstance v1AuthRegisterPostWith:body
               completionHandler: ^(AuthResponse output, NSError* error) {
                             if (output) {
@@ -2548,6 +2764,8 @@ namespace Example
 
             try
             {
+                // Documents the [ErrorResponse]s this route can return. They are sent by StatusPages (and the auth challenge), so
+OpenAPI inference can't see them.
                 AuthResponse result = apiInstance.v1AuthRegisterPost(body);
                 Debug.WriteLine(result);
             }
@@ -2606,6 +2824,8 @@ api_instance = swagger_client.DefaultApi()
 body =  # RegisterRequest |  (optional)
 
 try: 
+    # Documents the [ErrorResponse]s this route can return. They are sent by StatusPages (and the auth challenge), so
+OpenAPI inference can't see them.
     api_response = api_instance.v1_auth_register_post(body=body)
     pprint(api_response)
 except ApiException as e:
@@ -2708,6 +2928,102 @@ except ApiException as e:
                                     </script>
                                   </div>
                                   <input id='responses-v1AuthRegisterPost-201-schema-data' type='hidden' value=''></input>
+                                </div>
+                            </div>
+
+                            <h3> Status: 400 - Bad Request </h3>
+
+                            <ul class="nav nav-tabs nav-tabs-examples" >
+                                <li class="active">
+                                  <a data-toggle="tab" href="#responses-v1AuthRegisterPost-400-schema">Schema</a>
+                                </li>
+
+                            </ul>
+
+                            <div class="tab-content" style='margin-bottom: 10px;'>
+                                <div class="tab-pane active" id="responses-v1AuthRegisterPost-400-schema">
+                                  <div id='responses-v1AuthRegisterPost-400-schema-400' style="padding: 30px; border-left: 1px solid #eee; border-right: 1px solid #eee; border-bottom: 1px solid #eee;">
+                                    <script>
+                                      $(document).ready(function() {
+                                        var schemaWrapper = {
+  "description" : "Bad Request",
+  "content" : {
+    "application/json" : {
+      "schema" : {
+        "$ref" : "#/components/schemas/ErrorResponse"
+      }
+    }
+  }
+};
+                                        var schema = schemaWrapper.content["application/json"].schema;
+                                        if (schema.$ref != null) {
+                                          schema = defsParser.$refs.get(schema.$ref);
+                                        } else {
+                                          schemaWrapper.components = {};
+                                          schemaWrapper.components.schemas = Object.assign({}, defs);
+                                          $RefParser.dereference(schemaWrapper).catch(function(err) {
+                                            console.log(err);
+                                          });
+                                        }
+
+                                        //console.log(JSON.stringify(schema));
+                                        var view = new JSONSchemaView(schema, 3);
+                                        $('#responses-v1AuthRegisterPost-400-schema-data').val(stringify(schema));
+                                        var result = $('#responses-v1AuthRegisterPost-400-schema-400');
+                                        result.empty();
+                                        result.append(view.render());
+                                      });
+                                    </script>
+                                  </div>
+                                  <input id='responses-v1AuthRegisterPost-400-schema-data' type='hidden' value=''></input>
+                                </div>
+                            </div>
+
+                            <h3> Status: 409 - Conflict </h3>
+
+                            <ul class="nav nav-tabs nav-tabs-examples" >
+                                <li class="active">
+                                  <a data-toggle="tab" href="#responses-v1AuthRegisterPost-409-schema">Schema</a>
+                                </li>
+
+                            </ul>
+
+                            <div class="tab-content" style='margin-bottom: 10px;'>
+                                <div class="tab-pane active" id="responses-v1AuthRegisterPost-409-schema">
+                                  <div id='responses-v1AuthRegisterPost-409-schema-409' style="padding: 30px; border-left: 1px solid #eee; border-right: 1px solid #eee; border-bottom: 1px solid #eee;">
+                                    <script>
+                                      $(document).ready(function() {
+                                        var schemaWrapper = {
+  "description" : "Conflict",
+  "content" : {
+    "application/json" : {
+      "schema" : {
+        "$ref" : "#/components/schemas/ErrorResponse"
+      }
+    }
+  }
+};
+                                        var schema = schemaWrapper.content["application/json"].schema;
+                                        if (schema.$ref != null) {
+                                          schema = defsParser.$refs.get(schema.$ref);
+                                        } else {
+                                          schemaWrapper.components = {};
+                                          schemaWrapper.components.schemas = Object.assign({}, defs);
+                                          $RefParser.dereference(schemaWrapper).catch(function(err) {
+                                            console.log(err);
+                                          });
+                                        }
+
+                                        //console.log(JSON.stringify(schema));
+                                        var view = new JSONSchemaView(schema, 3);
+                                        $('#responses-v1AuthRegisterPost-409-schema-data').val(stringify(schema));
+                                        var result = $('#responses-v1AuthRegisterPost-409-schema-409');
+                                        result.empty();
+                                        result.append(view.render());
+                                      });
+                                    </script>
+                                  </div>
+                                  <input id='responses-v1AuthRegisterPost-409-schema-data' type='hidden' value=''></input>
                                 </div>
                             </div>
 
@@ -24938,7 +25254,8 @@ except ApiException as e:
                       <article id="api-Default-v1UsersGet-0" data-group="User" data-name="v1UsersGet" data-version="0">
                         <div class="pull-left">
                           <h1>v1UsersGet</h1>
-                          <p></p>
+                          <p>Documents the [ErrorResponse]s this route can return. They are sent by StatusPages (and the auth challenge), so
+OpenAPI inference can&#x27;t see them.</p>
                         </div>
                         <div class="pull-right"></div>
                         <div class="clearfix"></div>
@@ -25022,6 +25339,8 @@ public class DefaultApiExample {
 
 DefaultApi *apiInstance = [[DefaultApi alloc] init];
 
+// Documents the [ErrorResponse]s this route can return. They are sent by StatusPages (and the auth challenge), so
+OpenAPI inference can't see them.
 [apiInstance v1UsersGetWithCompletionHandler: 
               ^(NSError* error) {
                             if (error) {
@@ -25070,6 +25389,8 @@ namespace Example
 
             try
             {
+                // Documents the [ErrorResponse]s this route can return. They are sent by StatusPages (and the auth challenge), so
+OpenAPI inference can't see them.
                 apiInstance.v1UsersGet();
             }
             catch (Exception e)
@@ -25125,6 +25446,8 @@ from pprint import pprint
 api_instance = swagger_client.DefaultApi()
 
 try: 
+    # Documents the [ErrorResponse]s this route can return. They are sent by StatusPages (and the auth challenge), so
+OpenAPI inference can't see them.
     api_instance.v1_users_get()
 except ApiException as e:
     print("Exception when calling DefaultApi->v1UsersGet: %s\n" % e)</code></pre>
@@ -25190,6 +25513,54 @@ except ApiException as e:
                                 </div>
                             </div>
 
+                            <h3> Status: 401 - Unauthorized </h3>
+
+                            <ul class="nav nav-tabs nav-tabs-examples" >
+                                <li class="active">
+                                  <a data-toggle="tab" href="#responses-v1UsersGet-401-schema">Schema</a>
+                                </li>
+
+                            </ul>
+
+                            <div class="tab-content" style='margin-bottom: 10px;'>
+                                <div class="tab-pane active" id="responses-v1UsersGet-401-schema">
+                                  <div id='responses-v1UsersGet-401-schema-401' style="padding: 30px; border-left: 1px solid #eee; border-right: 1px solid #eee; border-bottom: 1px solid #eee;">
+                                    <script>
+                                      $(document).ready(function() {
+                                        var schemaWrapper = {
+  "description" : "Unauthorized",
+  "content" : {
+    "application/json" : {
+      "schema" : {
+        "$ref" : "#/components/schemas/ErrorResponse"
+      }
+    }
+  }
+};
+                                        var schema = schemaWrapper.content["application/json"].schema;
+                                        if (schema.$ref != null) {
+                                          schema = defsParser.$refs.get(schema.$ref);
+                                        } else {
+                                          schemaWrapper.components = {};
+                                          schemaWrapper.components.schemas = Object.assign({}, defs);
+                                          $RefParser.dereference(schemaWrapper).catch(function(err) {
+                                            console.log(err);
+                                          });
+                                        }
+
+                                        //console.log(JSON.stringify(schema));
+                                        var view = new JSONSchemaView(schema, 3);
+                                        $('#responses-v1UsersGet-401-schema-data').val(stringify(schema));
+                                        var result = $('#responses-v1UsersGet-401-schema-401');
+                                        result.empty();
+                                        result.append(view.render());
+                                      });
+                                    </script>
+                                  </div>
+                                  <input id='responses-v1UsersGet-401-schema-data' type='hidden' value=''></input>
+                                </div>
+                            </div>
+
                         </article>
                       </div>
                       <hr>
@@ -25197,7 +25568,8 @@ except ApiException as e:
                       <article id="api-Default-v1UsersIdDelete-0" data-group="User" data-name="v1UsersIdDelete" data-version="0">
                         <div class="pull-left">
                           <h1>v1UsersIdDelete</h1>
-                          <p></p>
+                          <p>Documents the [ErrorResponse]s this route can return. They are sent by StatusPages (and the auth challenge), so
+OpenAPI inference can&#x27;t see them.</p>
                         </div>
                         <div class="pull-right"></div>
                         <div class="clearfix"></div>
@@ -25227,6 +25599,7 @@ except ApiException as e:
                           <div class="tab-pane active" id="examples-Default-v1UsersIdDelete-0-curl">
                            <pre class="prettyprint"><code class="language-bsh">curl -X DELETE\
  -H "Authorization: Bearer [[accessToken]]"\
+-H "Accept: application/json"\
 "//v1/users/{id}"</code></pre>
                           </div>
                           <div class="tab-pane" id="examples-Default-v1UsersIdDelete-0-java">
@@ -25283,6 +25656,8 @@ public class DefaultApiExample {
 
 DefaultApi *apiInstance = [[DefaultApi alloc] init];
 
+// Documents the [ErrorResponse]s this route can return. They are sent by StatusPages (and the auth challenge), so
+OpenAPI inference can't see them.
 [apiInstance v1UsersIdDeleteWith:id
               completionHandler: ^(NSError* error) {
                             if (error) {
@@ -25334,6 +25709,8 @@ namespace Example
 
             try
             {
+                // Documents the [ErrorResponse]s this route can return. They are sent by StatusPages (and the auth challenge), so
+OpenAPI inference can't see them.
                 apiInstance.v1UsersIdDelete(id);
             }
             catch (Exception e)
@@ -25392,6 +25769,8 @@ api_instance = swagger_client.DefaultApi()
 id =  #  | 
 
 try: 
+    # Documents the [ErrorResponse]s this route can return. They are sent by StatusPages (and the auth challenge), so
+OpenAPI inference can't see them.
     api_instance.v1_users_id_delete(id)
 except ApiException as e:
     print("Exception when calling DefaultApi->v1UsersIdDelete: %s\n" % e)</code></pre>
@@ -25440,6 +25819,198 @@ except ApiException as e:
                             <div class="tab-content" style='margin-bottom: 10px;'>
                             </div>
 
+                            <h3> Status: 400 - Bad Request </h3>
+
+                            <ul class="nav nav-tabs nav-tabs-examples" >
+                                <li class="active">
+                                  <a data-toggle="tab" href="#responses-v1UsersIdDelete-400-schema">Schema</a>
+                                </li>
+
+                            </ul>
+
+                            <div class="tab-content" style='margin-bottom: 10px;'>
+                                <div class="tab-pane active" id="responses-v1UsersIdDelete-400-schema">
+                                  <div id='responses-v1UsersIdDelete-400-schema-400' style="padding: 30px; border-left: 1px solid #eee; border-right: 1px solid #eee; border-bottom: 1px solid #eee;">
+                                    <script>
+                                      $(document).ready(function() {
+                                        var schemaWrapper = {
+  "description" : "Bad Request",
+  "content" : {
+    "application/json" : {
+      "schema" : {
+        "$ref" : "#/components/schemas/ErrorResponse"
+      }
+    }
+  }
+};
+                                        var schema = schemaWrapper.content["application/json"].schema;
+                                        if (schema.$ref != null) {
+                                          schema = defsParser.$refs.get(schema.$ref);
+                                        } else {
+                                          schemaWrapper.components = {};
+                                          schemaWrapper.components.schemas = Object.assign({}, defs);
+                                          $RefParser.dereference(schemaWrapper).catch(function(err) {
+                                            console.log(err);
+                                          });
+                                        }
+
+                                        //console.log(JSON.stringify(schema));
+                                        var view = new JSONSchemaView(schema, 3);
+                                        $('#responses-v1UsersIdDelete-400-schema-data').val(stringify(schema));
+                                        var result = $('#responses-v1UsersIdDelete-400-schema-400');
+                                        result.empty();
+                                        result.append(view.render());
+                                      });
+                                    </script>
+                                  </div>
+                                  <input id='responses-v1UsersIdDelete-400-schema-data' type='hidden' value=''></input>
+                                </div>
+                            </div>
+
+                            <h3> Status: 401 - Unauthorized </h3>
+
+                            <ul class="nav nav-tabs nav-tabs-examples" >
+                                <li class="active">
+                                  <a data-toggle="tab" href="#responses-v1UsersIdDelete-401-schema">Schema</a>
+                                </li>
+
+                            </ul>
+
+                            <div class="tab-content" style='margin-bottom: 10px;'>
+                                <div class="tab-pane active" id="responses-v1UsersIdDelete-401-schema">
+                                  <div id='responses-v1UsersIdDelete-401-schema-401' style="padding: 30px; border-left: 1px solid #eee; border-right: 1px solid #eee; border-bottom: 1px solid #eee;">
+                                    <script>
+                                      $(document).ready(function() {
+                                        var schemaWrapper = {
+  "description" : "Unauthorized",
+  "content" : {
+    "application/json" : {
+      "schema" : {
+        "$ref" : "#/components/schemas/ErrorResponse"
+      }
+    }
+  }
+};
+                                        var schema = schemaWrapper.content["application/json"].schema;
+                                        if (schema.$ref != null) {
+                                          schema = defsParser.$refs.get(schema.$ref);
+                                        } else {
+                                          schemaWrapper.components = {};
+                                          schemaWrapper.components.schemas = Object.assign({}, defs);
+                                          $RefParser.dereference(schemaWrapper).catch(function(err) {
+                                            console.log(err);
+                                          });
+                                        }
+
+                                        //console.log(JSON.stringify(schema));
+                                        var view = new JSONSchemaView(schema, 3);
+                                        $('#responses-v1UsersIdDelete-401-schema-data').val(stringify(schema));
+                                        var result = $('#responses-v1UsersIdDelete-401-schema-401');
+                                        result.empty();
+                                        result.append(view.render());
+                                      });
+                                    </script>
+                                  </div>
+                                  <input id='responses-v1UsersIdDelete-401-schema-data' type='hidden' value=''></input>
+                                </div>
+                            </div>
+
+                            <h3> Status: 403 - Forbidden </h3>
+
+                            <ul class="nav nav-tabs nav-tabs-examples" >
+                                <li class="active">
+                                  <a data-toggle="tab" href="#responses-v1UsersIdDelete-403-schema">Schema</a>
+                                </li>
+
+                            </ul>
+
+                            <div class="tab-content" style='margin-bottom: 10px;'>
+                                <div class="tab-pane active" id="responses-v1UsersIdDelete-403-schema">
+                                  <div id='responses-v1UsersIdDelete-403-schema-403' style="padding: 30px; border-left: 1px solid #eee; border-right: 1px solid #eee; border-bottom: 1px solid #eee;">
+                                    <script>
+                                      $(document).ready(function() {
+                                        var schemaWrapper = {
+  "description" : "Forbidden",
+  "content" : {
+    "application/json" : {
+      "schema" : {
+        "$ref" : "#/components/schemas/ErrorResponse"
+      }
+    }
+  }
+};
+                                        var schema = schemaWrapper.content["application/json"].schema;
+                                        if (schema.$ref != null) {
+                                          schema = defsParser.$refs.get(schema.$ref);
+                                        } else {
+                                          schemaWrapper.components = {};
+                                          schemaWrapper.components.schemas = Object.assign({}, defs);
+                                          $RefParser.dereference(schemaWrapper).catch(function(err) {
+                                            console.log(err);
+                                          });
+                                        }
+
+                                        //console.log(JSON.stringify(schema));
+                                        var view = new JSONSchemaView(schema, 3);
+                                        $('#responses-v1UsersIdDelete-403-schema-data').val(stringify(schema));
+                                        var result = $('#responses-v1UsersIdDelete-403-schema-403');
+                                        result.empty();
+                                        result.append(view.render());
+                                      });
+                                    </script>
+                                  </div>
+                                  <input id='responses-v1UsersIdDelete-403-schema-data' type='hidden' value=''></input>
+                                </div>
+                            </div>
+
+                            <h3> Status: 404 - Not Found </h3>
+
+                            <ul class="nav nav-tabs nav-tabs-examples" >
+                                <li class="active">
+                                  <a data-toggle="tab" href="#responses-v1UsersIdDelete-404-schema">Schema</a>
+                                </li>
+
+                            </ul>
+
+                            <div class="tab-content" style='margin-bottom: 10px;'>
+                                <div class="tab-pane active" id="responses-v1UsersIdDelete-404-schema">
+                                  <div id='responses-v1UsersIdDelete-404-schema-404' style="padding: 30px; border-left: 1px solid #eee; border-right: 1px solid #eee; border-bottom: 1px solid #eee;">
+                                    <script>
+                                      $(document).ready(function() {
+                                        var schemaWrapper = {
+  "description" : "Not Found",
+  "content" : {
+    "application/json" : {
+      "schema" : {
+        "$ref" : "#/components/schemas/ErrorResponse"
+      }
+    }
+  }
+};
+                                        var schema = schemaWrapper.content["application/json"].schema;
+                                        if (schema.$ref != null) {
+                                          schema = defsParser.$refs.get(schema.$ref);
+                                        } else {
+                                          schemaWrapper.components = {};
+                                          schemaWrapper.components.schemas = Object.assign({}, defs);
+                                          $RefParser.dereference(schemaWrapper).catch(function(err) {
+                                            console.log(err);
+                                          });
+                                        }
+
+                                        //console.log(JSON.stringify(schema));
+                                        var view = new JSONSchemaView(schema, 3);
+                                        $('#responses-v1UsersIdDelete-404-schema-data').val(stringify(schema));
+                                        var result = $('#responses-v1UsersIdDelete-404-schema-404');
+                                        result.empty();
+                                        result.append(view.render());
+                                      });
+                                    </script>
+                                  </div>
+                                  <input id='responses-v1UsersIdDelete-404-schema-data' type='hidden' value=''></input>
+                                </div>
+                            </div>
+
                         </article>
                       </div>
                       <hr>
@@ -25447,7 +26018,8 @@ except ApiException as e:
                       <article id="api-Default-v1UsersIdGet-0" data-group="User" data-name="v1UsersIdGet" data-version="0">
                         <div class="pull-left">
                           <h1>v1UsersIdGet</h1>
-                          <p></p>
+                          <p>Documents the [ErrorResponse]s this route can return. They are sent by StatusPages (and the auth challenge), so
+OpenAPI inference can&#x27;t see them.</p>
                         </div>
                         <div class="pull-right"></div>
                         <div class="clearfix"></div>
@@ -25536,6 +26108,8 @@ public class DefaultApiExample {
 
 DefaultApi *apiInstance = [[DefaultApi alloc] init];
 
+// Documents the [ErrorResponse]s this route can return. They are sent by StatusPages (and the auth challenge), so
+OpenAPI inference can't see them.
 [apiInstance v1UsersIdGetWith:id
               completionHandler: ^(UserResponse output, NSError* error) {
                             if (output) {
@@ -25590,6 +26164,8 @@ namespace Example
 
             try
             {
+                // Documents the [ErrorResponse]s this route can return. They are sent by StatusPages (and the auth challenge), so
+OpenAPI inference can't see them.
                 UserResponse result = apiInstance.v1UsersIdGet(id);
                 Debug.WriteLine(result);
             }
@@ -25651,6 +26227,8 @@ api_instance = swagger_client.DefaultApi()
 id =  #  | 
 
 try: 
+    # Documents the [ErrorResponse]s this route can return. They are sent by StatusPages (and the auth challenge), so
+OpenAPI inference can't see them.
     api_response = api_instance.v1_users_id_get(id)
     pprint(api_response)
 except ApiException as e:
@@ -25740,6 +26318,150 @@ except ApiException as e:
                                 </div>
                             </div>
 
+                            <h3> Status: 400 - Bad Request </h3>
+
+                            <ul class="nav nav-tabs nav-tabs-examples" >
+                                <li class="active">
+                                  <a data-toggle="tab" href="#responses-v1UsersIdGet-400-schema">Schema</a>
+                                </li>
+
+                            </ul>
+
+                            <div class="tab-content" style='margin-bottom: 10px;'>
+                                <div class="tab-pane active" id="responses-v1UsersIdGet-400-schema">
+                                  <div id='responses-v1UsersIdGet-400-schema-400' style="padding: 30px; border-left: 1px solid #eee; border-right: 1px solid #eee; border-bottom: 1px solid #eee;">
+                                    <script>
+                                      $(document).ready(function() {
+                                        var schemaWrapper = {
+  "description" : "Bad Request",
+  "content" : {
+    "application/json" : {
+      "schema" : {
+        "$ref" : "#/components/schemas/ErrorResponse"
+      }
+    }
+  }
+};
+                                        var schema = schemaWrapper.content["application/json"].schema;
+                                        if (schema.$ref != null) {
+                                          schema = defsParser.$refs.get(schema.$ref);
+                                        } else {
+                                          schemaWrapper.components = {};
+                                          schemaWrapper.components.schemas = Object.assign({}, defs);
+                                          $RefParser.dereference(schemaWrapper).catch(function(err) {
+                                            console.log(err);
+                                          });
+                                        }
+
+                                        //console.log(JSON.stringify(schema));
+                                        var view = new JSONSchemaView(schema, 3);
+                                        $('#responses-v1UsersIdGet-400-schema-data').val(stringify(schema));
+                                        var result = $('#responses-v1UsersIdGet-400-schema-400');
+                                        result.empty();
+                                        result.append(view.render());
+                                      });
+                                    </script>
+                                  </div>
+                                  <input id='responses-v1UsersIdGet-400-schema-data' type='hidden' value=''></input>
+                                </div>
+                            </div>
+
+                            <h3> Status: 401 - Unauthorized </h3>
+
+                            <ul class="nav nav-tabs nav-tabs-examples" >
+                                <li class="active">
+                                  <a data-toggle="tab" href="#responses-v1UsersIdGet-401-schema">Schema</a>
+                                </li>
+
+                            </ul>
+
+                            <div class="tab-content" style='margin-bottom: 10px;'>
+                                <div class="tab-pane active" id="responses-v1UsersIdGet-401-schema">
+                                  <div id='responses-v1UsersIdGet-401-schema-401' style="padding: 30px; border-left: 1px solid #eee; border-right: 1px solid #eee; border-bottom: 1px solid #eee;">
+                                    <script>
+                                      $(document).ready(function() {
+                                        var schemaWrapper = {
+  "description" : "Unauthorized",
+  "content" : {
+    "application/json" : {
+      "schema" : {
+        "$ref" : "#/components/schemas/ErrorResponse"
+      }
+    }
+  }
+};
+                                        var schema = schemaWrapper.content["application/json"].schema;
+                                        if (schema.$ref != null) {
+                                          schema = defsParser.$refs.get(schema.$ref);
+                                        } else {
+                                          schemaWrapper.components = {};
+                                          schemaWrapper.components.schemas = Object.assign({}, defs);
+                                          $RefParser.dereference(schemaWrapper).catch(function(err) {
+                                            console.log(err);
+                                          });
+                                        }
+
+                                        //console.log(JSON.stringify(schema));
+                                        var view = new JSONSchemaView(schema, 3);
+                                        $('#responses-v1UsersIdGet-401-schema-data').val(stringify(schema));
+                                        var result = $('#responses-v1UsersIdGet-401-schema-401');
+                                        result.empty();
+                                        result.append(view.render());
+                                      });
+                                    </script>
+                                  </div>
+                                  <input id='responses-v1UsersIdGet-401-schema-data' type='hidden' value=''></input>
+                                </div>
+                            </div>
+
+                            <h3> Status: 404 - Not Found </h3>
+
+                            <ul class="nav nav-tabs nav-tabs-examples" >
+                                <li class="active">
+                                  <a data-toggle="tab" href="#responses-v1UsersIdGet-404-schema">Schema</a>
+                                </li>
+
+                            </ul>
+
+                            <div class="tab-content" style='margin-bottom: 10px;'>
+                                <div class="tab-pane active" id="responses-v1UsersIdGet-404-schema">
+                                  <div id='responses-v1UsersIdGet-404-schema-404' style="padding: 30px; border-left: 1px solid #eee; border-right: 1px solid #eee; border-bottom: 1px solid #eee;">
+                                    <script>
+                                      $(document).ready(function() {
+                                        var schemaWrapper = {
+  "description" : "Not Found",
+  "content" : {
+    "application/json" : {
+      "schema" : {
+        "$ref" : "#/components/schemas/ErrorResponse"
+      }
+    }
+  }
+};
+                                        var schema = schemaWrapper.content["application/json"].schema;
+                                        if (schema.$ref != null) {
+                                          schema = defsParser.$refs.get(schema.$ref);
+                                        } else {
+                                          schemaWrapper.components = {};
+                                          schemaWrapper.components.schemas = Object.assign({}, defs);
+                                          $RefParser.dereference(schemaWrapper).catch(function(err) {
+                                            console.log(err);
+                                          });
+                                        }
+
+                                        //console.log(JSON.stringify(schema));
+                                        var view = new JSONSchemaView(schema, 3);
+                                        $('#responses-v1UsersIdGet-404-schema-data').val(stringify(schema));
+                                        var result = $('#responses-v1UsersIdGet-404-schema-404');
+                                        result.empty();
+                                        result.append(view.render());
+                                      });
+                                    </script>
+                                  </div>
+                                  <input id='responses-v1UsersIdGet-404-schema-data' type='hidden' value=''></input>
+                                </div>
+                            </div>
+
                         </article>
                       </div>
                       <hr>
@@ -25747,7 +26469,8 @@ except ApiException as e:
                       <article id="api-Default-v1UsersIdPut-0" data-group="User" data-name="v1UsersIdPut" data-version="0">
                         <div class="pull-left">
                           <h1>v1UsersIdPut</h1>
-                          <p></p>
+                          <p>Documents the [ErrorResponse]s this route can return. They are sent by StatusPages (and the auth challenge), so
+OpenAPI inference can&#x27;t see them.</p>
                         </div>
                         <div class="pull-right"></div>
                         <div class="clearfix"></div>
@@ -25777,6 +26500,7 @@ except ApiException as e:
                           <div class="tab-pane active" id="examples-Default-v1UsersIdPut-0-curl">
                            <pre class="prettyprint"><code class="language-bsh">curl -X PUT\
  -H "Authorization: Bearer [[accessToken]]"\
+-H "Accept: application/json"\
 -H "Content-Type: application/json"\
 "//v1/users/{id}"</code></pre>
                           </div>
@@ -25837,6 +26561,8 @@ UserUpdateRequest *body = ; //  (optional)
 
 DefaultApi *apiInstance = [[DefaultApi alloc] init];
 
+// Documents the [ErrorResponse]s this route can return. They are sent by StatusPages (and the auth challenge), so
+OpenAPI inference can't see them.
 [apiInstance v1UsersIdPutWith:id
     body:body
               completionHandler: ^(NSError* error) {
@@ -25892,6 +26618,8 @@ namespace Example
 
             try
             {
+                // Documents the [ErrorResponse]s this route can return. They are sent by StatusPages (and the auth challenge), so
+OpenAPI inference can't see them.
                 apiInstance.v1UsersIdPut(id, body);
             }
             catch (Exception e)
@@ -25953,6 +26681,8 @@ id =  #  |
 body =  # UserUpdateRequest |  (optional)
 
 try: 
+    # Documents the [ErrorResponse]s this route can return. They are sent by StatusPages (and the auth challenge), so
+OpenAPI inference can't see them.
     api_instance.v1_users_id_put(id, body=body)
 except ApiException as e:
     print("Exception when calling DefaultApi->v1UsersIdPut: %s\n" % e)</code></pre>
@@ -26041,6 +26771,246 @@ except ApiException as e:
                             </ul>
 
                             <div class="tab-content" style='margin-bottom: 10px;'>
+                            </div>
+
+                            <h3> Status: 400 - Bad Request </h3>
+
+                            <ul class="nav nav-tabs nav-tabs-examples" >
+                                <li class="active">
+                                  <a data-toggle="tab" href="#responses-v1UsersIdPut-400-schema">Schema</a>
+                                </li>
+
+                            </ul>
+
+                            <div class="tab-content" style='margin-bottom: 10px;'>
+                                <div class="tab-pane active" id="responses-v1UsersIdPut-400-schema">
+                                  <div id='responses-v1UsersIdPut-400-schema-400' style="padding: 30px; border-left: 1px solid #eee; border-right: 1px solid #eee; border-bottom: 1px solid #eee;">
+                                    <script>
+                                      $(document).ready(function() {
+                                        var schemaWrapper = {
+  "description" : "Bad Request",
+  "content" : {
+    "application/json" : {
+      "schema" : {
+        "$ref" : "#/components/schemas/ErrorResponse"
+      }
+    }
+  }
+};
+                                        var schema = schemaWrapper.content["application/json"].schema;
+                                        if (schema.$ref != null) {
+                                          schema = defsParser.$refs.get(schema.$ref);
+                                        } else {
+                                          schemaWrapper.components = {};
+                                          schemaWrapper.components.schemas = Object.assign({}, defs);
+                                          $RefParser.dereference(schemaWrapper).catch(function(err) {
+                                            console.log(err);
+                                          });
+                                        }
+
+                                        //console.log(JSON.stringify(schema));
+                                        var view = new JSONSchemaView(schema, 3);
+                                        $('#responses-v1UsersIdPut-400-schema-data').val(stringify(schema));
+                                        var result = $('#responses-v1UsersIdPut-400-schema-400');
+                                        result.empty();
+                                        result.append(view.render());
+                                      });
+                                    </script>
+                                  </div>
+                                  <input id='responses-v1UsersIdPut-400-schema-data' type='hidden' value=''></input>
+                                </div>
+                            </div>
+
+                            <h3> Status: 401 - Unauthorized </h3>
+
+                            <ul class="nav nav-tabs nav-tabs-examples" >
+                                <li class="active">
+                                  <a data-toggle="tab" href="#responses-v1UsersIdPut-401-schema">Schema</a>
+                                </li>
+
+                            </ul>
+
+                            <div class="tab-content" style='margin-bottom: 10px;'>
+                                <div class="tab-pane active" id="responses-v1UsersIdPut-401-schema">
+                                  <div id='responses-v1UsersIdPut-401-schema-401' style="padding: 30px; border-left: 1px solid #eee; border-right: 1px solid #eee; border-bottom: 1px solid #eee;">
+                                    <script>
+                                      $(document).ready(function() {
+                                        var schemaWrapper = {
+  "description" : "Unauthorized",
+  "content" : {
+    "application/json" : {
+      "schema" : {
+        "$ref" : "#/components/schemas/ErrorResponse"
+      }
+    }
+  }
+};
+                                        var schema = schemaWrapper.content["application/json"].schema;
+                                        if (schema.$ref != null) {
+                                          schema = defsParser.$refs.get(schema.$ref);
+                                        } else {
+                                          schemaWrapper.components = {};
+                                          schemaWrapper.components.schemas = Object.assign({}, defs);
+                                          $RefParser.dereference(schemaWrapper).catch(function(err) {
+                                            console.log(err);
+                                          });
+                                        }
+
+                                        //console.log(JSON.stringify(schema));
+                                        var view = new JSONSchemaView(schema, 3);
+                                        $('#responses-v1UsersIdPut-401-schema-data').val(stringify(schema));
+                                        var result = $('#responses-v1UsersIdPut-401-schema-401');
+                                        result.empty();
+                                        result.append(view.render());
+                                      });
+                                    </script>
+                                  </div>
+                                  <input id='responses-v1UsersIdPut-401-schema-data' type='hidden' value=''></input>
+                                </div>
+                            </div>
+
+                            <h3> Status: 403 - Forbidden </h3>
+
+                            <ul class="nav nav-tabs nav-tabs-examples" >
+                                <li class="active">
+                                  <a data-toggle="tab" href="#responses-v1UsersIdPut-403-schema">Schema</a>
+                                </li>
+
+                            </ul>
+
+                            <div class="tab-content" style='margin-bottom: 10px;'>
+                                <div class="tab-pane active" id="responses-v1UsersIdPut-403-schema">
+                                  <div id='responses-v1UsersIdPut-403-schema-403' style="padding: 30px; border-left: 1px solid #eee; border-right: 1px solid #eee; border-bottom: 1px solid #eee;">
+                                    <script>
+                                      $(document).ready(function() {
+                                        var schemaWrapper = {
+  "description" : "Forbidden",
+  "content" : {
+    "application/json" : {
+      "schema" : {
+        "$ref" : "#/components/schemas/ErrorResponse"
+      }
+    }
+  }
+};
+                                        var schema = schemaWrapper.content["application/json"].schema;
+                                        if (schema.$ref != null) {
+                                          schema = defsParser.$refs.get(schema.$ref);
+                                        } else {
+                                          schemaWrapper.components = {};
+                                          schemaWrapper.components.schemas = Object.assign({}, defs);
+                                          $RefParser.dereference(schemaWrapper).catch(function(err) {
+                                            console.log(err);
+                                          });
+                                        }
+
+                                        //console.log(JSON.stringify(schema));
+                                        var view = new JSONSchemaView(schema, 3);
+                                        $('#responses-v1UsersIdPut-403-schema-data').val(stringify(schema));
+                                        var result = $('#responses-v1UsersIdPut-403-schema-403');
+                                        result.empty();
+                                        result.append(view.render());
+                                      });
+                                    </script>
+                                  </div>
+                                  <input id='responses-v1UsersIdPut-403-schema-data' type='hidden' value=''></input>
+                                </div>
+                            </div>
+
+                            <h3> Status: 404 - Not Found </h3>
+
+                            <ul class="nav nav-tabs nav-tabs-examples" >
+                                <li class="active">
+                                  <a data-toggle="tab" href="#responses-v1UsersIdPut-404-schema">Schema</a>
+                                </li>
+
+                            </ul>
+
+                            <div class="tab-content" style='margin-bottom: 10px;'>
+                                <div class="tab-pane active" id="responses-v1UsersIdPut-404-schema">
+                                  <div id='responses-v1UsersIdPut-404-schema-404' style="padding: 30px; border-left: 1px solid #eee; border-right: 1px solid #eee; border-bottom: 1px solid #eee;">
+                                    <script>
+                                      $(document).ready(function() {
+                                        var schemaWrapper = {
+  "description" : "Not Found",
+  "content" : {
+    "application/json" : {
+      "schema" : {
+        "$ref" : "#/components/schemas/ErrorResponse"
+      }
+    }
+  }
+};
+                                        var schema = schemaWrapper.content["application/json"].schema;
+                                        if (schema.$ref != null) {
+                                          schema = defsParser.$refs.get(schema.$ref);
+                                        } else {
+                                          schemaWrapper.components = {};
+                                          schemaWrapper.components.schemas = Object.assign({}, defs);
+                                          $RefParser.dereference(schemaWrapper).catch(function(err) {
+                                            console.log(err);
+                                          });
+                                        }
+
+                                        //console.log(JSON.stringify(schema));
+                                        var view = new JSONSchemaView(schema, 3);
+                                        $('#responses-v1UsersIdPut-404-schema-data').val(stringify(schema));
+                                        var result = $('#responses-v1UsersIdPut-404-schema-404');
+                                        result.empty();
+                                        result.append(view.render());
+                                      });
+                                    </script>
+                                  </div>
+                                  <input id='responses-v1UsersIdPut-404-schema-data' type='hidden' value=''></input>
+                                </div>
+                            </div>
+
+                            <h3> Status: 409 - Conflict </h3>
+
+                            <ul class="nav nav-tabs nav-tabs-examples" >
+                                <li class="active">
+                                  <a data-toggle="tab" href="#responses-v1UsersIdPut-409-schema">Schema</a>
+                                </li>
+
+                            </ul>
+
+                            <div class="tab-content" style='margin-bottom: 10px;'>
+                                <div class="tab-pane active" id="responses-v1UsersIdPut-409-schema">
+                                  <div id='responses-v1UsersIdPut-409-schema-409' style="padding: 30px; border-left: 1px solid #eee; border-right: 1px solid #eee; border-bottom: 1px solid #eee;">
+                                    <script>
+                                      $(document).ready(function() {
+                                        var schemaWrapper = {
+  "description" : "Conflict",
+  "content" : {
+    "application/json" : {
+      "schema" : {
+        "$ref" : "#/components/schemas/ErrorResponse"
+      }
+    }
+  }
+};
+                                        var schema = schemaWrapper.content["application/json"].schema;
+                                        if (schema.$ref != null) {
+                                          schema = defsParser.$refs.get(schema.$ref);
+                                        } else {
+                                          schemaWrapper.components = {};
+                                          schemaWrapper.components.schemas = Object.assign({}, defs);
+                                          $RefParser.dereference(schemaWrapper).catch(function(err) {
+                                            console.log(err);
+                                          });
+                                        }
+
+                                        //console.log(JSON.stringify(schema));
+                                        var view = new JSONSchemaView(schema, 3);
+                                        $('#responses-v1UsersIdPut-409-schema-data').val(stringify(schema));
+                                        var result = $('#responses-v1UsersIdPut-409-schema-409');
+                                        result.empty();
+                                        result.append(view.render());
+                                      });
+                                    </script>
+                                  </div>
+                                  <input id='responses-v1UsersIdPut-409-schema-data' type='hidden' value=''></input>
+                                </div>
                             </div>
 
                         </article>
@@ -27018,7 +27988,8 @@ except ApiException as e:
                       <article id="api-Default-v1UsersPost-0" data-group="User" data-name="v1UsersPost" data-version="0">
                         <div class="pull-left">
                           <h1>v1UsersPost</h1>
-                          <p></p>
+                          <p>Documents the [ErrorResponse]s this route can return. They are sent by StatusPages (and the auth challenge), so
+OpenAPI inference can&#x27;t see them.</p>
                         </div>
                         <div class="pull-right"></div>
                         <div class="clearfix"></div>
@@ -27048,6 +28019,7 @@ except ApiException as e:
                           <div class="tab-pane active" id="examples-Default-v1UsersPost-0-curl">
                            <pre class="prettyprint"><code class="language-bsh">curl -X POST\
  -H "Authorization: Bearer [[accessToken]]"\
+-H "Accept: application/json"\
 -H "Content-Type: application/json"\
 "//v1/users"</code></pre>
                           </div>
@@ -27105,6 +28077,8 @@ AdminUserCreateRequest *body = ; //  (optional)
 
 DefaultApi *apiInstance = [[DefaultApi alloc] init];
 
+// Documents the [ErrorResponse]s this route can return. They are sent by StatusPages (and the auth challenge), so
+OpenAPI inference can't see them.
 [apiInstance v1UsersPostWith:body
               completionHandler: ^(NSError* error) {
                             if (error) {
@@ -27157,6 +28131,8 @@ namespace Example
 
             try
             {
+                // Documents the [ErrorResponse]s this route can return. They are sent by StatusPages (and the auth challenge), so
+OpenAPI inference can't see them.
                 apiInstance.v1UsersPost(body);
             }
             catch (Exception e)
@@ -27215,6 +28191,8 @@ api_instance = swagger_client.DefaultApi()
 body =  # AdminUserCreateRequest |  (optional)
 
 try: 
+    # Documents the [ErrorResponse]s this route can return. They are sent by StatusPages (and the auth challenge), so
+OpenAPI inference can't see them.
     api_instance.v1_users_post(body=body)
 except ApiException as e:
     print("Exception when calling DefaultApi->v1UsersPost: %s\n" % e)</code></pre>
@@ -27279,6 +28257,198 @@ except ApiException as e:
                             <div class="tab-content" style='margin-bottom: 10px;'>
                             </div>
 
+                            <h3> Status: 400 - Bad Request </h3>
+
+                            <ul class="nav nav-tabs nav-tabs-examples" >
+                                <li class="active">
+                                  <a data-toggle="tab" href="#responses-v1UsersPost-400-schema">Schema</a>
+                                </li>
+
+                            </ul>
+
+                            <div class="tab-content" style='margin-bottom: 10px;'>
+                                <div class="tab-pane active" id="responses-v1UsersPost-400-schema">
+                                  <div id='responses-v1UsersPost-400-schema-400' style="padding: 30px; border-left: 1px solid #eee; border-right: 1px solid #eee; border-bottom: 1px solid #eee;">
+                                    <script>
+                                      $(document).ready(function() {
+                                        var schemaWrapper = {
+  "description" : "Bad Request",
+  "content" : {
+    "application/json" : {
+      "schema" : {
+        "$ref" : "#/components/schemas/ErrorResponse"
+      }
+    }
+  }
+};
+                                        var schema = schemaWrapper.content["application/json"].schema;
+                                        if (schema.$ref != null) {
+                                          schema = defsParser.$refs.get(schema.$ref);
+                                        } else {
+                                          schemaWrapper.components = {};
+                                          schemaWrapper.components.schemas = Object.assign({}, defs);
+                                          $RefParser.dereference(schemaWrapper).catch(function(err) {
+                                            console.log(err);
+                                          });
+                                        }
+
+                                        //console.log(JSON.stringify(schema));
+                                        var view = new JSONSchemaView(schema, 3);
+                                        $('#responses-v1UsersPost-400-schema-data').val(stringify(schema));
+                                        var result = $('#responses-v1UsersPost-400-schema-400');
+                                        result.empty();
+                                        result.append(view.render());
+                                      });
+                                    </script>
+                                  </div>
+                                  <input id='responses-v1UsersPost-400-schema-data' type='hidden' value=''></input>
+                                </div>
+                            </div>
+
+                            <h3> Status: 401 - Unauthorized </h3>
+
+                            <ul class="nav nav-tabs nav-tabs-examples" >
+                                <li class="active">
+                                  <a data-toggle="tab" href="#responses-v1UsersPost-401-schema">Schema</a>
+                                </li>
+
+                            </ul>
+
+                            <div class="tab-content" style='margin-bottom: 10px;'>
+                                <div class="tab-pane active" id="responses-v1UsersPost-401-schema">
+                                  <div id='responses-v1UsersPost-401-schema-401' style="padding: 30px; border-left: 1px solid #eee; border-right: 1px solid #eee; border-bottom: 1px solid #eee;">
+                                    <script>
+                                      $(document).ready(function() {
+                                        var schemaWrapper = {
+  "description" : "Unauthorized",
+  "content" : {
+    "application/json" : {
+      "schema" : {
+        "$ref" : "#/components/schemas/ErrorResponse"
+      }
+    }
+  }
+};
+                                        var schema = schemaWrapper.content["application/json"].schema;
+                                        if (schema.$ref != null) {
+                                          schema = defsParser.$refs.get(schema.$ref);
+                                        } else {
+                                          schemaWrapper.components = {};
+                                          schemaWrapper.components.schemas = Object.assign({}, defs);
+                                          $RefParser.dereference(schemaWrapper).catch(function(err) {
+                                            console.log(err);
+                                          });
+                                        }
+
+                                        //console.log(JSON.stringify(schema));
+                                        var view = new JSONSchemaView(schema, 3);
+                                        $('#responses-v1UsersPost-401-schema-data').val(stringify(schema));
+                                        var result = $('#responses-v1UsersPost-401-schema-401');
+                                        result.empty();
+                                        result.append(view.render());
+                                      });
+                                    </script>
+                                  </div>
+                                  <input id='responses-v1UsersPost-401-schema-data' type='hidden' value=''></input>
+                                </div>
+                            </div>
+
+                            <h3> Status: 403 - Forbidden </h3>
+
+                            <ul class="nav nav-tabs nav-tabs-examples" >
+                                <li class="active">
+                                  <a data-toggle="tab" href="#responses-v1UsersPost-403-schema">Schema</a>
+                                </li>
+
+                            </ul>
+
+                            <div class="tab-content" style='margin-bottom: 10px;'>
+                                <div class="tab-pane active" id="responses-v1UsersPost-403-schema">
+                                  <div id='responses-v1UsersPost-403-schema-403' style="padding: 30px; border-left: 1px solid #eee; border-right: 1px solid #eee; border-bottom: 1px solid #eee;">
+                                    <script>
+                                      $(document).ready(function() {
+                                        var schemaWrapper = {
+  "description" : "Forbidden",
+  "content" : {
+    "application/json" : {
+      "schema" : {
+        "$ref" : "#/components/schemas/ErrorResponse"
+      }
+    }
+  }
+};
+                                        var schema = schemaWrapper.content["application/json"].schema;
+                                        if (schema.$ref != null) {
+                                          schema = defsParser.$refs.get(schema.$ref);
+                                        } else {
+                                          schemaWrapper.components = {};
+                                          schemaWrapper.components.schemas = Object.assign({}, defs);
+                                          $RefParser.dereference(schemaWrapper).catch(function(err) {
+                                            console.log(err);
+                                          });
+                                        }
+
+                                        //console.log(JSON.stringify(schema));
+                                        var view = new JSONSchemaView(schema, 3);
+                                        $('#responses-v1UsersPost-403-schema-data').val(stringify(schema));
+                                        var result = $('#responses-v1UsersPost-403-schema-403');
+                                        result.empty();
+                                        result.append(view.render());
+                                      });
+                                    </script>
+                                  </div>
+                                  <input id='responses-v1UsersPost-403-schema-data' type='hidden' value=''></input>
+                                </div>
+                            </div>
+
+                            <h3> Status: 409 - Conflict </h3>
+
+                            <ul class="nav nav-tabs nav-tabs-examples" >
+                                <li class="active">
+                                  <a data-toggle="tab" href="#responses-v1UsersPost-409-schema">Schema</a>
+                                </li>
+
+                            </ul>
+
+                            <div class="tab-content" style='margin-bottom: 10px;'>
+                                <div class="tab-pane active" id="responses-v1UsersPost-409-schema">
+                                  <div id='responses-v1UsersPost-409-schema-409' style="padding: 30px; border-left: 1px solid #eee; border-right: 1px solid #eee; border-bottom: 1px solid #eee;">
+                                    <script>
+                                      $(document).ready(function() {
+                                        var schemaWrapper = {
+  "description" : "Conflict",
+  "content" : {
+    "application/json" : {
+      "schema" : {
+        "$ref" : "#/components/schemas/ErrorResponse"
+      }
+    }
+  }
+};
+                                        var schema = schemaWrapper.content["application/json"].schema;
+                                        if (schema.$ref != null) {
+                                          schema = defsParser.$refs.get(schema.$ref);
+                                        } else {
+                                          schemaWrapper.components = {};
+                                          schemaWrapper.components.schemas = Object.assign({}, defs);
+                                          $RefParser.dereference(schemaWrapper).catch(function(err) {
+                                            console.log(err);
+                                          });
+                                        }
+
+                                        //console.log(JSON.stringify(schema));
+                                        var view = new JSONSchemaView(schema, 3);
+                                        $('#responses-v1UsersPost-409-schema-data').val(stringify(schema));
+                                        var result = $('#responses-v1UsersPost-409-schema-409');
+                                        result.empty();
+                                        result.append(view.render());
+                                      });
+                                    </script>
+                                  </div>
+                                  <input id='responses-v1UsersPost-409-schema-data' type='hidden' value=''></input>
+                                </div>
+                            </div>
+
                         </article>
                       </div>
                       <hr>
@@ -27286,7 +28456,8 @@ except ApiException as e:
                       <article id="api-Default-v1UsersPut-0" data-group="User" data-name="v1UsersPut" data-version="0">
                         <div class="pull-left">
                           <h1>v1UsersPut</h1>
-                          <p></p>
+                          <p>Documents the [ErrorResponse]s this route can return. They are sent by StatusPages (and the auth challenge), so
+OpenAPI inference can&#x27;t see them.</p>
                         </div>
                         <div class="pull-right"></div>
                         <div class="clearfix"></div>
@@ -27316,6 +28487,7 @@ except ApiException as e:
                           <div class="tab-pane active" id="examples-Default-v1UsersPut-0-curl">
                            <pre class="prettyprint"><code class="language-bsh">curl -X PUT\
  -H "Authorization: Bearer [[accessToken]]"\
+-H "Accept: application/json"\
 -H "Content-Type: application/json"\
 "//v1/users"</code></pre>
                           </div>
@@ -27373,6 +28545,8 @@ public class DefaultApiExample {
 
 DefaultApi *apiInstance = [[DefaultApi alloc] init];
 
+// Documents the [ErrorResponse]s this route can return. They are sent by StatusPages (and the auth challenge), so
+OpenAPI inference can't see them.
 [apiInstance v1UsersPutWith:body
               completionHandler: ^(NSError* error) {
                             if (error) {
@@ -27425,6 +28599,8 @@ namespace Example
 
             try
             {
+                // Documents the [ErrorResponse]s this route can return. They are sent by StatusPages (and the auth challenge), so
+OpenAPI inference can't see them.
                 apiInstance.v1UsersPut(body);
             }
             catch (Exception e)
@@ -27483,6 +28659,8 @@ api_instance = swagger_client.DefaultApi()
 body =  #  |  (optional)
 
 try: 
+    # Documents the [ErrorResponse]s this route can return. They are sent by StatusPages (and the auth challenge), so
+OpenAPI inference can't see them.
     api_instance.v1_users_put(body=body)
 except ApiException as e:
     print("Exception when calling DefaultApi->v1UsersPut: %s\n" % e)</code></pre>
@@ -27547,6 +28725,246 @@ except ApiException as e:
                             </ul>
 
                             <div class="tab-content" style='margin-bottom: 10px;'>
+                            </div>
+
+                            <h3> Status: 400 - Bad Request </h3>
+
+                            <ul class="nav nav-tabs nav-tabs-examples" >
+                                <li class="active">
+                                  <a data-toggle="tab" href="#responses-v1UsersPut-400-schema">Schema</a>
+                                </li>
+
+                            </ul>
+
+                            <div class="tab-content" style='margin-bottom: 10px;'>
+                                <div class="tab-pane active" id="responses-v1UsersPut-400-schema">
+                                  <div id='responses-v1UsersPut-400-schema-400' style="padding: 30px; border-left: 1px solid #eee; border-right: 1px solid #eee; border-bottom: 1px solid #eee;">
+                                    <script>
+                                      $(document).ready(function() {
+                                        var schemaWrapper = {
+  "description" : "Bad Request",
+  "content" : {
+    "application/json" : {
+      "schema" : {
+        "$ref" : "#/components/schemas/ErrorResponse"
+      }
+    }
+  }
+};
+                                        var schema = schemaWrapper.content["application/json"].schema;
+                                        if (schema.$ref != null) {
+                                          schema = defsParser.$refs.get(schema.$ref);
+                                        } else {
+                                          schemaWrapper.components = {};
+                                          schemaWrapper.components.schemas = Object.assign({}, defs);
+                                          $RefParser.dereference(schemaWrapper).catch(function(err) {
+                                            console.log(err);
+                                          });
+                                        }
+
+                                        //console.log(JSON.stringify(schema));
+                                        var view = new JSONSchemaView(schema, 3);
+                                        $('#responses-v1UsersPut-400-schema-data').val(stringify(schema));
+                                        var result = $('#responses-v1UsersPut-400-schema-400');
+                                        result.empty();
+                                        result.append(view.render());
+                                      });
+                                    </script>
+                                  </div>
+                                  <input id='responses-v1UsersPut-400-schema-data' type='hidden' value=''></input>
+                                </div>
+                            </div>
+
+                            <h3> Status: 401 - Unauthorized </h3>
+
+                            <ul class="nav nav-tabs nav-tabs-examples" >
+                                <li class="active">
+                                  <a data-toggle="tab" href="#responses-v1UsersPut-401-schema">Schema</a>
+                                </li>
+
+                            </ul>
+
+                            <div class="tab-content" style='margin-bottom: 10px;'>
+                                <div class="tab-pane active" id="responses-v1UsersPut-401-schema">
+                                  <div id='responses-v1UsersPut-401-schema-401' style="padding: 30px; border-left: 1px solid #eee; border-right: 1px solid #eee; border-bottom: 1px solid #eee;">
+                                    <script>
+                                      $(document).ready(function() {
+                                        var schemaWrapper = {
+  "description" : "Unauthorized",
+  "content" : {
+    "application/json" : {
+      "schema" : {
+        "$ref" : "#/components/schemas/ErrorResponse"
+      }
+    }
+  }
+};
+                                        var schema = schemaWrapper.content["application/json"].schema;
+                                        if (schema.$ref != null) {
+                                          schema = defsParser.$refs.get(schema.$ref);
+                                        } else {
+                                          schemaWrapper.components = {};
+                                          schemaWrapper.components.schemas = Object.assign({}, defs);
+                                          $RefParser.dereference(schemaWrapper).catch(function(err) {
+                                            console.log(err);
+                                          });
+                                        }
+
+                                        //console.log(JSON.stringify(schema));
+                                        var view = new JSONSchemaView(schema, 3);
+                                        $('#responses-v1UsersPut-401-schema-data').val(stringify(schema));
+                                        var result = $('#responses-v1UsersPut-401-schema-401');
+                                        result.empty();
+                                        result.append(view.render());
+                                      });
+                                    </script>
+                                  </div>
+                                  <input id='responses-v1UsersPut-401-schema-data' type='hidden' value=''></input>
+                                </div>
+                            </div>
+
+                            <h3> Status: 403 - Forbidden </h3>
+
+                            <ul class="nav nav-tabs nav-tabs-examples" >
+                                <li class="active">
+                                  <a data-toggle="tab" href="#responses-v1UsersPut-403-schema">Schema</a>
+                                </li>
+
+                            </ul>
+
+                            <div class="tab-content" style='margin-bottom: 10px;'>
+                                <div class="tab-pane active" id="responses-v1UsersPut-403-schema">
+                                  <div id='responses-v1UsersPut-403-schema-403' style="padding: 30px; border-left: 1px solid #eee; border-right: 1px solid #eee; border-bottom: 1px solid #eee;">
+                                    <script>
+                                      $(document).ready(function() {
+                                        var schemaWrapper = {
+  "description" : "Forbidden",
+  "content" : {
+    "application/json" : {
+      "schema" : {
+        "$ref" : "#/components/schemas/ErrorResponse"
+      }
+    }
+  }
+};
+                                        var schema = schemaWrapper.content["application/json"].schema;
+                                        if (schema.$ref != null) {
+                                          schema = defsParser.$refs.get(schema.$ref);
+                                        } else {
+                                          schemaWrapper.components = {};
+                                          schemaWrapper.components.schemas = Object.assign({}, defs);
+                                          $RefParser.dereference(schemaWrapper).catch(function(err) {
+                                            console.log(err);
+                                          });
+                                        }
+
+                                        //console.log(JSON.stringify(schema));
+                                        var view = new JSONSchemaView(schema, 3);
+                                        $('#responses-v1UsersPut-403-schema-data').val(stringify(schema));
+                                        var result = $('#responses-v1UsersPut-403-schema-403');
+                                        result.empty();
+                                        result.append(view.render());
+                                      });
+                                    </script>
+                                  </div>
+                                  <input id='responses-v1UsersPut-403-schema-data' type='hidden' value=''></input>
+                                </div>
+                            </div>
+
+                            <h3> Status: 404 - Not Found </h3>
+
+                            <ul class="nav nav-tabs nav-tabs-examples" >
+                                <li class="active">
+                                  <a data-toggle="tab" href="#responses-v1UsersPut-404-schema">Schema</a>
+                                </li>
+
+                            </ul>
+
+                            <div class="tab-content" style='margin-bottom: 10px;'>
+                                <div class="tab-pane active" id="responses-v1UsersPut-404-schema">
+                                  <div id='responses-v1UsersPut-404-schema-404' style="padding: 30px; border-left: 1px solid #eee; border-right: 1px solid #eee; border-bottom: 1px solid #eee;">
+                                    <script>
+                                      $(document).ready(function() {
+                                        var schemaWrapper = {
+  "description" : "Not Found",
+  "content" : {
+    "application/json" : {
+      "schema" : {
+        "$ref" : "#/components/schemas/ErrorResponse"
+      }
+    }
+  }
+};
+                                        var schema = schemaWrapper.content["application/json"].schema;
+                                        if (schema.$ref != null) {
+                                          schema = defsParser.$refs.get(schema.$ref);
+                                        } else {
+                                          schemaWrapper.components = {};
+                                          schemaWrapper.components.schemas = Object.assign({}, defs);
+                                          $RefParser.dereference(schemaWrapper).catch(function(err) {
+                                            console.log(err);
+                                          });
+                                        }
+
+                                        //console.log(JSON.stringify(schema));
+                                        var view = new JSONSchemaView(schema, 3);
+                                        $('#responses-v1UsersPut-404-schema-data').val(stringify(schema));
+                                        var result = $('#responses-v1UsersPut-404-schema-404');
+                                        result.empty();
+                                        result.append(view.render());
+                                      });
+                                    </script>
+                                  </div>
+                                  <input id='responses-v1UsersPut-404-schema-data' type='hidden' value=''></input>
+                                </div>
+                            </div>
+
+                            <h3> Status: 409 - Conflict </h3>
+
+                            <ul class="nav nav-tabs nav-tabs-examples" >
+                                <li class="active">
+                                  <a data-toggle="tab" href="#responses-v1UsersPut-409-schema">Schema</a>
+                                </li>
+
+                            </ul>
+
+                            <div class="tab-content" style='margin-bottom: 10px;'>
+                                <div class="tab-pane active" id="responses-v1UsersPut-409-schema">
+                                  <div id='responses-v1UsersPut-409-schema-409' style="padding: 30px; border-left: 1px solid #eee; border-right: 1px solid #eee; border-bottom: 1px solid #eee;">
+                                    <script>
+                                      $(document).ready(function() {
+                                        var schemaWrapper = {
+  "description" : "Conflict",
+  "content" : {
+    "application/json" : {
+      "schema" : {
+        "$ref" : "#/components/schemas/ErrorResponse"
+      }
+    }
+  }
+};
+                                        var schema = schemaWrapper.content["application/json"].schema;
+                                        if (schema.$ref != null) {
+                                          schema = defsParser.$refs.get(schema.$ref);
+                                        } else {
+                                          schemaWrapper.components = {};
+                                          schemaWrapper.components.schemas = Object.assign({}, defs);
+                                          $RefParser.dereference(schemaWrapper).catch(function(err) {
+                                            console.log(err);
+                                          });
+                                        }
+
+                                        //console.log(JSON.stringify(schema));
+                                        var view = new JSONSchemaView(schema, 3);
+                                        $('#responses-v1UsersPut-409-schema-data').val(stringify(schema));
+                                        var result = $('#responses-v1UsersPut-409-schema-409');
+                                        result.empty();
+                                        result.append(view.render());
+                                      });
+                                    </script>
+                                  </div>
+                                  <input id='responses-v1UsersPut-409-schema-data' type='hidden' value=''></input>
+                                </div>
                             </div>
 
                         </article>

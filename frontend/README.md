@@ -45,3 +45,4 @@ You can preview the production build with `npm run preview`.
 
 - global filtering for datatables: https://tanstack.com/table/v8/docs/guide/global-filtering
 - https://app-privacy-policy-generator.nisrulz.com/
+- set `paths.origin` in `sveltekit({...})` in `vite.config.ts` to the public URL when deployed behind a reverse proxy; SvelteKit 3 uses it for CSRF checks on form actions (adapter-node's `ORIGIN` env var is ignored now): https://svelte.dev/docs/kit/migrating-to-sveltekit-3#Adapters-adapter-node

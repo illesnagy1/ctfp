@@ -76,6 +76,14 @@ tasks.register<JavaExec>("generateMigration") {
     mainClass = "GenerateMigrationKt"
 }
 
+tasks.register<JavaExec>("generateOpenApi") {
+    group = "documentation"
+    description = "Generates the OpenAPI documentation to openapi.json"
+    classpath = sourceSets.test.get().runtimeClasspath
+    mainClass = "com.ctfp.GenerateOpenApiKt"
+    args(layout.projectDirectory.file("openapi.json").asFile.path)
+}
+
 ktor {
     openApi {
         enabled = true

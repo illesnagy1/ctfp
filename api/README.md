@@ -64,6 +64,7 @@ To build or run the project, use one of the following tasks:
 | `./gradlew run`                         | Run the server                                                       |
 | `./gradlew runDocker`                   | Run using the local docker image                                     |
 | `./gradlew generateMigration`           | Generates database migration                                         |
+| `./gradlew generateOpenApi`             | Writes the OpenAPI document inferred from the routes to openapi.json |
 
 If the server starts successfully, you'll see the following output:
 
@@ -71,3 +72,10 @@ If the server starts successfully, you'll see the following output:
 2024-12-04 14:32:45.584 [main] INFO  Application - Application started in 0.303 seconds.
 2024-12-04 14:32:45.682 [main] INFO  Application - Responding at http://0.0.0.0:8080
 ```
+
+## TODO
+
+- Split user and admin routes (e.g. `/v1/users/...` and `/v1/admin/users/...`). `GET /v1/users`, `GET /v1/users/{id}`
+  and `PUT /v1/users/{id}` pick `UserResponse`/`AdminUserResponse` and `UserUpdateRequest`/`AdminUserUpdateRequest` at
+  runtime by role, but OpenAPI inference only records one type per route, so `openapi.json` (and the generated frontend
+  types) only show the non-admin DTOs. Separate routes also let the admin ones sit behind a single admin check.
