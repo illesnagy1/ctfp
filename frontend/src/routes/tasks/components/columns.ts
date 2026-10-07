@@ -43,7 +43,7 @@ export const columns = columnHelper.columns([
       const idSnippet = createRawSnippet<[{ id: string }]>((getId) => {
         const { id } = getId();
         return {
-          render: () => `<div class="w-[80px]">${id}</div>`,
+          render: () => `<div class="w-20">${id}</div>`,
         };
       });
 
