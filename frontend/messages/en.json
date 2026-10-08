@@ -56,5 +56,20 @@
   "theme_toggle": "Toggle theme",
   "theme_light": "Light",
   "theme_dark": "Dark",
-  "theme_system": "System"
+  "theme_system": "System",
+  "scoreboard_title": "Scoreboard",
+  "scoreboard_caption": "Current standings",
+  "scoreboard_rank": "Rank",
+  "scoreboard_name": "Name",
+  "scoreboard_country": "Country",
+  "scoreboard_solves": "Solves",
+  "scoreboard_points": "Points",
+  "scoreboard_empty": "No scores yet.",
+  "challenges_title": "Challenges",
+  "challenges_filter_placeholder": "Filter challenges...",
+  "challenges_column_title": "Title",
+  "challenges_column_categories": "Categories",
+  "challenges_column_max_attempts": "Max attempts",
+  "challenges_column_publish_at": "Published",
+  "challenges_action_details": "Details"
 }

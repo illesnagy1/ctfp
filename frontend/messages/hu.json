@@ -56,5 +56,20 @@
   "theme_toggle": "Téma váltása",
   "theme_light": "Világos",
   "theme_dark": "Sötét",
-  "theme_system": "Rendszer"
+  "theme_system": "Rendszer",
+  "scoreboard_title": "Eredménytábla",
+  "scoreboard_caption": "Jelenlegi állás",
+  "scoreboard_rank": "Helyezés",
+  "scoreboard_name": "Név",
+  "scoreboard_country": "Ország",
+  "scoreboard_solves": "Megoldások",
+  "scoreboard_points": "Pontok",
+  "scoreboard_empty": "Még nincsenek eredmények.",
+  "challenges_title": "Feladatok",
+  "challenges_filter_placeholder": "Szűrés feladatokra...",
+  "challenges_column_title": "Cím",
+  "challenges_column_categories": "Kategóriák",
+  "challenges_column_max_attempts": "Max. próbálkozás",
+  "challenges_column_publish_at": "Közzétéve",
+  "challenges_action_details": "Részletek"
 }
