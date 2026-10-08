@@ -64,6 +64,7 @@ dependencies {
     implementation(libs.ucasoft.ktorSimpleRedisCache)
     implementation(libs.flyway.core)
     implementation(libs.flyway.database.postgresql)
+    implementation(libs.kotlinx.serialization.hocon)
 
     testImplementation(kotlin("test"))
     testImplementation(ktorLibs.server.testHost)

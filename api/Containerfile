@@ -21,4 +21,6 @@ FROM amazoncorretto:21-alpine AS runtime
 EXPOSE 8080
 RUN mkdir /app
 COPY --from=build /home/gradle/src/build/libs/*-all.jar /app/api.jar
+ENV SETTINGS_FILE=/data/settings.conf
+VOLUME /data
 ENTRYPOINT ["java","-jar","/app/api.jar"]

@@ -13,7 +13,7 @@ import com.ctfp.dto.AuthUser
 import com.ctfp.dto.LoginRequest
 import com.ctfp.dto.RegisterRequest
 import com.ctfp.dto.toAuthUser
-import com.ctfp.plugins.JwtConfig
+import com.ctfp.config.JwtConfig
 import com.ctfp.service.helper.PasswordHasher
 import com.ctfp.service.helper.ensureAvailable
 import com.ctfp.service.helper.validateEmail

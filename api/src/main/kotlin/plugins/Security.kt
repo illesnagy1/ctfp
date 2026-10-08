@@ -8,25 +8,7 @@ import io.ktor.server.response.respond
 import com.auth0.jwt.algorithms.Algorithm
 import io.ktor.server.auth.*
 import io.ktor.server.auth.jwt.*
-import io.ktor.server.config.ApplicationConfig
-import kotlin.time.Duration
-import kotlin.time.Duration.Companion.hours
-
-data class JwtConfig(
-    val issuer: String,
-    val audience: String,
-    val realm: String,
-    val secret: String,
-    val ttl: Duration,
-)
-
-fun ApplicationConfig.jwtConfig() = JwtConfig(
-    issuer = property("jwt.issuer").getString(),
-    audience = property("jwt.audience").getString(),
-    realm = property("jwt.realm").getString(),
-    secret = property("jwt.secret").getString(),
-    ttl = property("jwt.ttlHours").getString().toLong().hours,
-)
+import com.ctfp.config.jwtConfig
 
 fun Application.configureSecurity() {
     val jwtConfig = environment.config.jwtConfig()
