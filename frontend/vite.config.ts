@@ -18,6 +18,9 @@ export default defineConfig({
       extensions: ['.svelte', '.svx', '.md'],
       // Builds a standalone server into build/, run by the Containerfile with `bun index.js`.
       adapter: adapter(),
+      // Public URL, baked in at build time; trusted origin for CSRF checks on form actions.
+      // Unset: derived from the Host header with https assumed, so plain-http form posts get a 403.
+      paths: { origin: process.env.ORIGIN || undefined },
     }),
     paraglideVitePlugin({ project: './project.inlang', outdir: './src/lib/paraglide' }),
   ],

@@ -11,6 +11,7 @@ COPY package.json bun.lock* /temp/prod/
 RUN bun install --frozen-lockfile --production
 
 FROM base AS prerelease
+ARG ORIGIN
 COPY --from=install /temp/dev/node_modules node_modules
 COPY . .
 RUN bun run build

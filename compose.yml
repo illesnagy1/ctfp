@@ -5,10 +5,11 @@ services:
     build:
       context: ./frontend
       dockerfile: Containerfile
+      args:
+        ORIGIN: ${ORIGIN:-http://localhost:3000}
     ports:
       - "3000:3000"
     environment:
-      ORIGIN: ${ORIGIN:-http://localhost:3000}
       API_URL: http://api:8080
       REDIS_URL: redis://redis:6379
     depends_on:
@@ -42,7 +43,7 @@ services:
       POSTGRES_USER: ctfp
       POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-ctfp}
     volumes:
-      - db-data:/var/lib/postgresql:z
+      - db-data:/var/lib/postgresql
     healthcheck:
       test: ["CMD-SHELL", "pg_isready -U ctfp -d ctfp"]
       interval: 5s
@@ -53,7 +54,7 @@ services:
   redis:
     image: redis:8-alpine
     volumes:
-      - redis-data:/data:z
+      - redis-data:/data
     healthcheck:
       test: ["CMD", "redis-cli", "ping"]
       interval: 5s
