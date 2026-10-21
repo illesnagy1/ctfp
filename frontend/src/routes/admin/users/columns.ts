@@ -35,6 +35,11 @@ export const columns: ColumnDef<DataTableFeatures, AdminUser>[] = [
     id: 'actions',
     enableSorting: false,
     enableHiding: false,
-    cell: ({ row }) => renderComponent(RowActions, { id: row.original.id, banned: row.original.isBanned ?? false }),
+    cell: ({ row }) =>
+      renderComponent(RowActions, {
+        id: row.original.id,
+        username: row.original.username,
+        banned: row.original.isBanned ?? false,
+      }),
   },
 ];

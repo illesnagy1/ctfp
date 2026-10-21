@@ -106,5 +106,22 @@
   "challenges_delete_selected": "{count} törlése",
   "challenges_delete_many_title": "Törlöd a(z) {count} feladatot?",
   "challenges_delete_many_description": "Ez a(z) {count} feladat véglegesen törlődik. Ez nem vonható vissza.",
-  "challenges_delete_many_keyword": "törlés"
+  "challenges_delete_many_keyword": "törlés",
+  "users_title": "Felhasználók",
+  "users_create": "Felhasználó hozzáadása",
+  "users_create_description": "Fiók létrehozása közvetlenül, regisztrációs kód nélkül.",
+  "users_create_submit": "Létrehozás",
+  "users_create_cancel": "Mégse",
+  "users_field_password": "Jelszó",
+  "users_ban_selected": "{count} kitiltása",
+  "users_unban_selected": "{count} kitiltásának feloldása",
+  "users_ban_self": "Saját magadat nem tilthatod ki; vedd ki a jelölést a saját fiókodról.",
+  "challenges_created": "A(z) „{title}” feladat létrehozva",
+  "challenges_deleted": "A(z) „{title}” feladat törölve",
+  "challenges_deleted_many": "{count} feladat törölve",
+  "users_created": "A(z) „{username}” felhasználó létrehozva",
+  "users_banned": "{username} kitiltva",
+  "users_unbanned": "{username} kitiltása feloldva",
+  "users_banned_many": "{count} felhasználó kitiltva",
+  "users_unbanned_many": "{count} felhasználó kitiltása feloldva"
 }

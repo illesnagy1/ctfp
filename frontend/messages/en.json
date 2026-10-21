@@ -106,5 +106,22 @@
   "challenges_delete_selected": "Delete {count}",
   "challenges_delete_many_title": "Delete {count} challenge(s)?",
   "challenges_delete_many_description": "These {count} challenge(s) will be deleted permanently. This can't be undone.",
-  "challenges_delete_many_keyword": "delete"
+  "challenges_delete_many_keyword": "delete",
+  "users_title": "Users",
+  "users_create": "Add user",
+  "users_create_description": "Create an account directly, without a registration code.",
+  "users_create_submit": "Create",
+  "users_create_cancel": "Cancel",
+  "users_field_password": "Password",
+  "users_ban_selected": "Ban {count}",
+  "users_unban_selected": "Unban {count}",
+  "users_ban_self": "You can't ban yourself; deselect your own account.",
+  "challenges_created": "Challenge \"{title}\" created",
+  "challenges_deleted": "Challenge \"{title}\" deleted",
+  "challenges_deleted_many": "{count} challenge(s) deleted",
+  "users_created": "User \"{username}\" created",
+  "users_banned": "{username} banned",
+  "users_unbanned": "{username} unbanned",
+  "users_banned_many": "{count} user(s) banned",
+  "users_unbanned_many": "{count} user(s) unbanned"
 }

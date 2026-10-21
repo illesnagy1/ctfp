@@ -67,22 +67,31 @@ class UserService(
         }
     }
 
-    suspend fun updateUser(id: Int, user: AdminUserUpdateRequest) {
+    /** [actorId] is the admin making the change; they can't ban themselves. */
+    suspend fun updateUser(id: Int, user: AdminUserUpdateRequest, actorId: Int) {
         validate(user)
+        ensureNotSelfBan(id, user, actorId)
         withTransaction {
             ensureAvailable(user.username, user.email, exceptId = id)
             findUser(id).applyAdmin(user)
         }
     }
 
-    suspend fun updateUsers(users: Map<Int, AdminUserUpdateRequest>) {
+    /** [actorId] is the admin making the change; they can't ban themselves. */
+    suspend fun updateUsers(users: Map<Int, AdminUserUpdateRequest>, actorId: Int) {
         users.values.forEach(::validate)
+        users.forEach { (id, user) -> ensureNotSelfBan(id, user, actorId) }
         withTransaction {
             users.forEach { (id, user) ->
                 ensureAvailable(user.username, user.email, exceptId = id)
                 findUser(id).applyAdmin(user)
             }
         }
+    }
+
+    /** Banned users lose admin rights, so a self-ban would lock the admin out. */
+    private fun ensureNotSelfBan(id: Int, user: AdminUserUpdateRequest, actorId: Int) {
+        if (id == actorId && user.isBanned) throw ApiException(HttpStatusCode.BadRequest, "You cannot ban yourself")
     }
 
     suspend fun deleteUser(id: Int) = withTransaction {

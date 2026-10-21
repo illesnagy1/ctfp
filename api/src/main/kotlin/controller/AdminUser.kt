@@ -5,6 +5,7 @@ import com.ctfp.controller.helper.errors
 import com.ctfp.controller.helper.getId
 import com.ctfp.dto.AdminUserCreateRequest
 import com.ctfp.dto.AdminUserUpdateRequest
+import com.ctfp.plugins.userId
 import com.ctfp.service.UserService
 import io.ktor.http.HttpStatusCode
 import io.ktor.http.HttpStatusCode.Companion.BadRequest
@@ -37,7 +38,7 @@ fun Route.adminUser(service: UserService) {
                 call.respond(HttpStatusCode.Created)
             }.errors(BadRequest, Unauthorized, Forbidden, Conflict)
             put {
-                service.updateUsers(call.receive<Map<Int, AdminUserUpdateRequest>>())
+                service.updateUsers(call.receive<Map<Int, AdminUserUpdateRequest>>(), actorId = call.userId())
 
                 call.respond(HttpStatusCode.NoContent)
             }.errors(BadRequest, Unauthorized, Forbidden, NotFound, Conflict)
@@ -50,7 +51,7 @@ fun Route.adminUser(service: UserService) {
                     call.respond(service.getAdminUser(call.getId()))
                 }.errors(BadRequest, Unauthorized, Forbidden, NotFound)
                 put {
-                    service.updateUser(call.getId(), call.receive<AdminUserUpdateRequest>())
+                    service.updateUser(call.getId(), call.receive<AdminUserUpdateRequest>(), actorId = call.userId())
 
                     call.respond(HttpStatusCode.NoContent)
                 }.errors(BadRequest, Unauthorized, Forbidden, NotFound, Conflict)

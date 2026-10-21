@@ -1,5 +1,6 @@
 <script lang="ts">
   import Trash2Icon from '@lucide/svelte/icons/trash-2';
+  import { toast } from 'svelte-sonner';
 
   import { DataTable } from '#lib/components/data-table/index.js';
   import { Button } from '#lib/components/ui/button/index.js';
@@ -30,7 +31,10 @@
       description: m.challenges_delete_many_description({ count: selected.length }),
       details: deleteManyDetails,
       input: { confirmationText: m.challenges_delete_many_keyword() },
-      onConfirm: () => submitAction('?/deleteMany', { ids: selected.map((c) => c.id).join(',') }),
+      onConfirm: async () => {
+        await submitAction('?/deleteMany', { ids: selected.map((c) => c.id).join(',') });
+        toast.success(m.challenges_deleted_many({ count: selected.length }));
+      },
     });
   }
 </script>

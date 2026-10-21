@@ -1,5 +1,6 @@
 <script lang="ts" module>
   import type { Snippet } from 'svelte';
+  import { toast } from 'svelte-sonner';
 
   import { m } from '#lib/paraglide/messages.js';
 
@@ -9,7 +10,6 @@
     // Raw: holds callbacks and snippets, nothing to make deeply reactive.
     options = $state.raw<ConfirmDeleteOptions | null>(null);
     loading = $state(false);
-    error = $state<string>();
 
     constructor() {
       this.confirm = this.confirm.bind(this);
@@ -30,20 +30,18 @@
       this.open = false;
       this.inputText = '';
       this.options = null;
-      this.error = undefined;
     }
 
     async confirm() {
       if (!this.options || !this.matches || this.loading) return;
 
       this.loading = true;
-      this.error = undefined;
       try {
         await this.options.onConfirm();
         this.open = false;
       } catch (error) {
-        // Stay open so the user sees why and can retry.
-        this.error = error instanceof Error ? error.message : m.confirm_delete_failed();
+        // Stay open so the user can retry.
+        toast.error(error instanceof Error ? error.message : m.confirm_delete_failed());
       } finally {
         this.loading = false;
       }
@@ -73,7 +71,7 @@
     cancel?: {
       text?: string;
     };
-    /** Does the delete. Throw to keep the dialog open and show the error's message. */
+    /** Does the delete. Throw to keep the dialog open and toast the error's message; toast success yourself. */
     onConfirm: () => Promise<unknown>;
     onCancel?: () => void;
   };
@@ -135,9 +133,6 @@
             }}
           />
         </div>
-      {/if}
-      {#if dialogState.error}
-        <p role="alert" class="text-sm text-destructive">{dialogState.error}</p>
       {/if}
       <AlertDialog.Footer>
         <AlertDialog.Cancel type="button" onclick={dialogState.cancel} disabled={dialogState.loading}>

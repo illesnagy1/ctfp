@@ -1,6 +1,7 @@
 <script lang="ts">
   import { resolve } from '$app/paths';
   import { page } from '$app/state';
+  import { toast } from 'svelte-sonner';
 
   import { DataTableRowMenu } from '#lib/components/data-table/index.js';
   import { confirmDelete } from '#lib/components/ui/confirm-delete-dialog/index.js';
@@ -22,7 +23,10 @@
       details: cascadeWarning,
       // Deleting also wipes flags and solves, so make it deliberate.
       input: { confirmationText: title },
-      onConfirm: () => submitAction('?/delete', { id: String(id) }),
+      onConfirm: async () => {
+        await submitAction('?/delete', { id: String(id) });
+        toast.success(m.challenges_deleted({ title }));
+      },
     });
   }
 </script>

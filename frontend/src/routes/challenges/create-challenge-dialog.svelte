@@ -1,6 +1,7 @@
 <script lang="ts">
   import { enhance } from '$app/forms';
   import PlusIcon from '@lucide/svelte/icons/plus';
+  import { toast } from 'svelte-sonner';
 
   import { Button } from '#lib/components/ui/button/index.js';
   import { Checkbox } from '#lib/components/ui/checkbox/index.js';
@@ -9,6 +10,7 @@
   import { Label } from '#lib/components/ui/label/index.js';
   import { TagsInput } from '#lib/components/ui/tags-input/index.js';
   import { Textarea } from '#lib/components/ui/textarea/index.js';
+  import { actionError } from '#lib/form-action.js';
   import { m } from '#lib/paraglide/messages.js';
 
   /** Categories already in use, offered as suggestions. */
@@ -16,7 +18,6 @@
 
   let open = $state(false);
   let pending = $state(false);
-  let message = $state<string>();
   let publishAt = $state('');
   let categories = $state<string[]>([]);
 
@@ -28,7 +29,6 @@
 
   function onOpenChange(value: boolean) {
     if (!value) return;
-    message = undefined;
     publishAt = nowLocal();
     categories = [];
   }
@@ -49,18 +49,22 @@
       method="post"
       action="?/create"
       class="flex flex-col gap-4"
-      use:enhance={() => {
+      use:enhance={({ formData }) => {
         pending = true;
+        const title = String(formData.get('title'));
         return async ({ result, update }) => {
           pending = false;
-          if (result.type === 'failure') {
-            message = result.data?.message as string | undefined;
-            // Keep what was typed so it can be fixed.
-            await update({ reset: false });
+          const error = actionError(result);
+          if (error) {
+            // Stays open with what was typed, so it can be fixed.
+            toast.error(error);
             return;
           }
           await update();
-          if (result.type === 'success') open = false;
+          if (result.type === 'success') {
+            toast.success(m.challenges_created({ title }));
+            open = false;
+          }
         };
       }}
     >
@@ -106,9 +110,6 @@
         <Checkbox id="challenge-visible" name="isVisible" checked />
         <Label for="challenge-visible">{m.challenges_field_visible()}</Label>
       </div>
-      {#if message}
-        <p class="text-sm text-destructive">{message}</p>
-      {/if}
       <Dialog.Footer>
         <Dialog.Close>
           {#snippet child({ props })}
