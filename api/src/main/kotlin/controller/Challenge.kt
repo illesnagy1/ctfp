@@ -1,5 +1,6 @@
 package com.ctfp.controller
 
+import com.ctfp.controller.helper.RequireAdmin
 import com.ctfp.controller.helper.getId
 import com.ctfp.dto.ChallengeRequest
 import com.ctfp.plugins.userId
@@ -31,23 +32,28 @@ fun Route.challenge(service: ChallengeService) {
                 call.respond(service.getAll(includeUnreleased = call.isAdmin()))
             }
         }
-        post {
-            val challenge = call.receive<ChallengeRequest>()
-            service.create(challenge)
+        authenticate {
+            install(RequireAdmin)
 
-            call.respond(HttpStatusCode.Created)
-        }
-        put {
-            val challenges = call.receive<Map<Int, ChallengeRequest>>()
-            service.updateMany(challenges)
+            post {
+                val challenge = call.receive<ChallengeRequest>()
+                service.create(challenge)
 
-            call.respond(HttpStatusCode.NoContent)
-        }
-        delete {
-            val ids = call.receive<List<Int>>()
-            service.deleteMany(ids)
+                call.respond(HttpStatusCode.Created)
+            }
+            put {
+                val challenges = call.receive<Map<Int, ChallengeRequest>>()
+                service.updateMany(challenges)
 
-            call.respond(HttpStatusCode.NoContent)
+                call.respond(HttpStatusCode.NoContent)
+            }
+            // Flags, hints, their unlocks and submissions are removed with the challenge (ON DELETE CASCADE).
+            delete {
+                val ids = call.receive<List<Int>>()
+                service.deleteMany(ids)
+
+                call.respond(HttpStatusCode.NoContent)
+            }
         }
         route("/{id}") {
             authenticate(optional = true) {
@@ -58,18 +64,22 @@ fun Route.challenge(service: ChallengeService) {
                     call.respond(challenge)
                 }
             }
-            put {
-                val id = call.getId()
-                val challenge = call.receive<ChallengeRequest>()
-                service.update(id, challenge)
+            authenticate {
+                install(RequireAdmin)
 
-                call.respond(HttpStatusCode.NoContent)
-            }
-            delete {
-                val id = call.getId()
-                service.delete(id)
+                put {
+                    val id = call.getId()
+                    val challenge = call.receive<ChallengeRequest>()
+                    service.update(id, challenge)
 
-                call.respond(HttpStatusCode.NoContent)
+                    call.respond(HttpStatusCode.NoContent)
+                }
+                delete {
+                    val id = call.getId()
+                    service.delete(id)
+
+                    call.respond(HttpStatusCode.NoContent)
+                }
             }
 
             route("flags") {

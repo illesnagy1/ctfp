@@ -30,6 +30,6 @@ export const columns: ColumnDef<DataTableFeatures, Challenge>[] = [
     id: 'actions',
     enableSorting: false,
     enableHiding: false,
-    cell: ({ row }) => renderComponent(RowActions, { id: row.original.id }),
+    cell: ({ row }) => renderComponent(RowActions, { id: row.original.id, title: row.original.title }),
   },
 ];

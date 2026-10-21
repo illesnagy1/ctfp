@@ -90,5 +90,17 @@
   "challenge_details_time_limit": "Időkorlát",
   "challenge_details_no_limit": "Nincs korlát",
   "challenge_details_created": "Létrehozva",
-  "challenge_details_updated": "Módosítva"
+  "challenge_details_updated": "Módosítva",
+  "challenges_action_delete": "Törlés",
+  "challenges_delete_title": "Törlöd a feladatot?",
+  "challenges_delete_description": "A(z) „{title}” feladat véglegesen törlődik. Ez nem vonható vissza.",
+  "challenges_delete_cascade_title": "Ezzel minden hozzá tartozó adat is törlődik:",
+  "challenges_delete_cascade_flags": "az összes flagje",
+  "challenges_delete_cascade_hints": "az összes tippje, és hogy ki oldotta fel őket",
+  "challenges_delete_cascade_submissions": "az összes beküldés, így a megoldásai és pontjai eltűnnek az eredménytábláról",
+  "confirm_delete_confirm": "Törlés",
+  "confirm_delete_cancel": "Mégse",
+  "confirm_delete_type_to_confirm": "A megerősítéshez írd be: „{text}”",
+  "confirm_delete_failed": "Nem sikerült törölni, próbáld újra.",
+  "form_action_failed": "Valami hiba történt, próbáld újra később"
 }

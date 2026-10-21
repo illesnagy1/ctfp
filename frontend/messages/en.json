@@ -90,5 +90,17 @@
   "challenge_details_time_limit": "Time limit",
   "challenge_details_no_limit": "No limit",
   "challenge_details_created": "Created",
-  "challenge_details_updated": "Updated"
+  "challenge_details_updated": "Updated",
+  "challenges_action_delete": "Delete",
+  "challenges_delete_title": "Delete challenge?",
+  "challenges_delete_description": "\"{title}\" will be deleted permanently. This can't be undone.",
+  "challenges_delete_cascade_title": "This also deletes everything that belongs to it:",
+  "challenges_delete_cascade_flags": "all of its flags",
+  "challenges_delete_cascade_hints": "all of its hints, and the record of who unlocked them",
+  "challenges_delete_cascade_submissions": "all submissions to it, so its solves and points disappear from the scoreboard",
+  "confirm_delete_confirm": "Delete",
+  "confirm_delete_cancel": "Cancel",
+  "confirm_delete_type_to_confirm": "Type \"{text}\" to confirm",
+  "confirm_delete_failed": "Couldn't delete, try again.",
+  "form_action_failed": "Something went wrong, try again later"
 }

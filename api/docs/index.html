@@ -6612,7 +6612,7 @@ except ApiException as e:
                       <article id="api-Default-v1ChallengesDelete-0" data-group="User" data-name="v1ChallengesDelete" data-version="0">
                         <div class="pull-left">
                           <h1>v1ChallengesDelete</h1>
-                          <p></p>
+                          <p>Flags, hints, their unlocks and submissions are removed with the challenge (ON DELETE CASCADE).</p>
                         </div>
                         <div class="pull-right"></div>
                         <div class="clearfix"></div>
@@ -6641,6 +6641,7 @@ except ApiException as e:
                         <div class="tab-content">
                           <div class="tab-pane active" id="examples-Default-v1ChallengesDelete-0-curl">
                            <pre class="prettyprint"><code class="language-bsh">curl -X DELETE\
+ -H "Authorization: Bearer [[accessToken]]"\
 -H "Content-Type: application/json"\
 "//v1/challenges"</code></pre>
                           </div>
@@ -6656,7 +6657,9 @@ import java.util.*;
 public class DefaultApiExample {
 
     public static void main(String[] args) {
-        
+        ApiClient defaultClient = Configuration.getDefaultApiClient();
+
+
         DefaultApi apiInstance = new DefaultApi();
          body = ; //  | 
         try {
@@ -6691,10 +6694,12 @@ public class DefaultApiExample {
   <pre class="prettyprint language-json prettyprinted" data-type="json"><code>Coming Soon!</code></pre>
   </div> -->
                             <div class="tab-pane" id="examples-Default-v1ChallengesDelete-0-objc">
-                              <pre class="prettyprint"><code class="language-cpp"> *body = ; //  (optional)
+                              <pre class="prettyprint"><code class="language-cpp">Configuration *apiConfig = [Configuration sharedConfig];
+ *body = ; //  (optional)
 
 DefaultApi *apiInstance = [[DefaultApi alloc] init];
 
+// Flags, hints, their unlocks and submissions are removed with the challenge (ON DELETE CASCADE).
 [apiInstance v1ChallengesDeleteWith:body
               completionHandler: ^(NSError* error) {
                             if (error) {
@@ -6706,6 +6711,8 @@ DefaultApi *apiInstance = [[DefaultApi alloc] init];
 
                             <div class="tab-pane" id="examples-Default-v1ChallengesDelete-0-javascript">
                               <pre class="prettyprint"><code class="language-js">var UntitledApi = require('untitled_api');
+var defaultClient = UntitledApi.ApiClient.instance;
+
 
 var api = new UntitledApi.DefaultApi()
 var opts = { 
@@ -6739,11 +6746,13 @@ namespace Example
         public void main()
         {
 
+
             var apiInstance = new DefaultApi();
             var body = new (); //  |  (optional) 
 
             try
             {
+                // Flags, hints, their unlocks and submissions are removed with the challenge (ON DELETE CASCADE).
                 apiInstance.v1ChallengesDelete(body);
             }
             catch (Exception e)
@@ -6760,6 +6769,7 @@ namespace Example
                               <pre class="prettyprint"><code class="language-php"><&#63;php
 require_once(__DIR__ . '/vendor/autoload.php');
 
+
 $api_instance = new Swagger\Client\ApiDefaultApi();
 $body = ; //  | 
 
@@ -6775,6 +6785,7 @@ try {
                               <pre class="prettyprint"><code class="language-perl">use Data::Dumper;
 use WWW::SwaggerClient::Configuration;
 use WWW::SwaggerClient::DefaultApi;
+
 
 my $api_instance = WWW::SwaggerClient::DefaultApi->new();
 my $body = WWW::SwaggerClient::Object::->new(); #  | 
@@ -6794,11 +6805,13 @@ import swagger_client
 from swagger_client.rest import ApiException
 from pprint import pprint
 
+
 # create an instance of the API class
 api_instance = swagger_client.DefaultApi()
 body =  #  |  (optional)
 
 try: 
+    # Flags, hints, their unlocks and submissions are removed with the challenge (ON DELETE CASCADE).
     api_instance.v1_challenges_delete(body=body)
 except ApiException as e:
     print("Exception when calling DefaultApi->v1ChallengesDelete: %s\n" % e)</code></pre>
@@ -7161,6 +7174,7 @@ except ApiException as e:
                         <div class="tab-content">
                           <div class="tab-pane active" id="examples-Default-v1ChallengesIdDelete-0-curl">
                            <pre class="prettyprint"><code class="language-bsh">curl -X DELETE\
+ -H "Authorization: Bearer [[accessToken]]"\
 "//v1/challenges/{id}"</code></pre>
                           </div>
                           <div class="tab-pane" id="examples-Default-v1ChallengesIdDelete-0-java">
@@ -7175,7 +7189,9 @@ import java.util.*;
 public class DefaultApiExample {
 
     public static void main(String[] args) {
-        
+        ApiClient defaultClient = Configuration.getDefaultApiClient();
+
+
         DefaultApi apiInstance = new DefaultApi();
          id = ; //  | 
         try {
@@ -7210,7 +7226,8 @@ public class DefaultApiExample {
   <pre class="prettyprint language-json prettyprinted" data-type="json"><code>Coming Soon!</code></pre>
   </div> -->
                             <div class="tab-pane" id="examples-Default-v1ChallengesIdDelete-0-objc">
-                              <pre class="prettyprint"><code class="language-cpp"> *id = ; // 
+                              <pre class="prettyprint"><code class="language-cpp">Configuration *apiConfig = [Configuration sharedConfig];
+ *id = ; // 
 
 DefaultApi *apiInstance = [[DefaultApi alloc] init];
 
@@ -7225,6 +7242,8 @@ DefaultApi *apiInstance = [[DefaultApi alloc] init];
 
                             <div class="tab-pane" id="examples-Default-v1ChallengesIdDelete-0-javascript">
                               <pre class="prettyprint"><code class="language-js">var UntitledApi = require('untitled_api');
+var defaultClient = UntitledApi.ApiClient.instance;
+
 
 var api = new UntitledApi.DefaultApi()
 var id = ; // {{}} 
@@ -7257,6 +7276,7 @@ namespace Example
         public void main()
         {
 
+
             var apiInstance = new DefaultApi();
             var id = new (); //  | 
 
@@ -7278,6 +7298,7 @@ namespace Example
                               <pre class="prettyprint"><code class="language-php"><&#63;php
 require_once(__DIR__ . '/vendor/autoload.php');
 
+
 $api_instance = new Swagger\Client\ApiDefaultApi();
 $id = ; //  | 
 
@@ -7293,6 +7314,7 @@ try {
                               <pre class="prettyprint"><code class="language-perl">use Data::Dumper;
 use WWW::SwaggerClient::Configuration;
 use WWW::SwaggerClient::DefaultApi;
+
 
 my $api_instance = WWW::SwaggerClient::DefaultApi->new();
 my $id = ; #  | 
@@ -7311,6 +7333,7 @@ import time
 import swagger_client
 from swagger_client.rest import ApiException
 from pprint import pprint
+
 
 # create an instance of the API class
 api_instance = swagger_client.DefaultApi()
@@ -9557,6 +9580,7 @@ except ApiException as e:
                         <div class="tab-content">
                           <div class="tab-pane active" id="examples-Default-v1ChallengesIdPut-0-curl">
                            <pre class="prettyprint"><code class="language-bsh">curl -X PUT\
+ -H "Authorization: Bearer [[accessToken]]"\
 -H "Content-Type: application/json"\
 "//v1/challenges/{id}"</code></pre>
                           </div>
@@ -9572,7 +9596,9 @@ import java.util.*;
 public class DefaultApiExample {
 
     public static void main(String[] args) {
-        
+        ApiClient defaultClient = Configuration.getDefaultApiClient();
+
+
         DefaultApi apiInstance = new DefaultApi();
          id = ; //  | 
         ChallengeRequest body = ; // ChallengeRequest | 
@@ -9609,7 +9635,8 @@ public class DefaultApiExample {
   <pre class="prettyprint language-json prettyprinted" data-type="json"><code>Coming Soon!</code></pre>
   </div> -->
                             <div class="tab-pane" id="examples-Default-v1ChallengesIdPut-0-objc">
-                              <pre class="prettyprint"><code class="language-cpp"> *id = ; // 
+                              <pre class="prettyprint"><code class="language-cpp">Configuration *apiConfig = [Configuration sharedConfig];
+ *id = ; // 
 ChallengeRequest *body = ; //  (optional)
 
 DefaultApi *apiInstance = [[DefaultApi alloc] init];
@@ -9626,6 +9653,8 @@ DefaultApi *apiInstance = [[DefaultApi alloc] init];
 
                             <div class="tab-pane" id="examples-Default-v1ChallengesIdPut-0-javascript">
                               <pre class="prettyprint"><code class="language-js">var UntitledApi = require('untitled_api');
+var defaultClient = UntitledApi.ApiClient.instance;
+
 
 var api = new UntitledApi.DefaultApi()
 var id = ; // {{}} 
@@ -9660,6 +9689,7 @@ namespace Example
         public void main()
         {
 
+
             var apiInstance = new DefaultApi();
             var id = new (); //  | 
             var body = new ChallengeRequest(); // ChallengeRequest |  (optional) 
@@ -9682,6 +9712,7 @@ namespace Example
                               <pre class="prettyprint"><code class="language-php"><&#63;php
 require_once(__DIR__ . '/vendor/autoload.php');
 
+
 $api_instance = new Swagger\Client\ApiDefaultApi();
 $id = ; //  | 
 $body = ; // ChallengeRequest | 
@@ -9698,6 +9729,7 @@ try {
                               <pre class="prettyprint"><code class="language-perl">use Data::Dumper;
 use WWW::SwaggerClient::Configuration;
 use WWW::SwaggerClient::DefaultApi;
+
 
 my $api_instance = WWW::SwaggerClient::DefaultApi->new();
 my $id = ; #  | 
@@ -9717,6 +9749,7 @@ import time
 import swagger_client
 from swagger_client.rest import ApiException
 from pprint import pprint
+
 
 # create an instance of the API class
 api_instance = swagger_client.DefaultApi()
@@ -10778,6 +10811,7 @@ except ApiException as e:
                         <div class="tab-content">
                           <div class="tab-pane active" id="examples-Default-v1ChallengesPost-0-curl">
                            <pre class="prettyprint"><code class="language-bsh">curl -X POST\
+ -H "Authorization: Bearer [[accessToken]]"\
 -H "Content-Type: application/json"\
 "//v1/challenges"</code></pre>
                           </div>
@@ -10793,7 +10827,9 @@ import java.util.*;
 public class DefaultApiExample {
 
     public static void main(String[] args) {
-        
+        ApiClient defaultClient = Configuration.getDefaultApiClient();
+
+
         DefaultApi apiInstance = new DefaultApi();
         ChallengeRequest body = ; // ChallengeRequest | 
         try {
@@ -10828,7 +10864,8 @@ public class DefaultApiExample {
   <pre class="prettyprint language-json prettyprinted" data-type="json"><code>Coming Soon!</code></pre>
   </div> -->
                             <div class="tab-pane" id="examples-Default-v1ChallengesPost-0-objc">
-                              <pre class="prettyprint"><code class="language-cpp">ChallengeRequest *body = ; //  (optional)
+                              <pre class="prettyprint"><code class="language-cpp">Configuration *apiConfig = [Configuration sharedConfig];
+ChallengeRequest *body = ; //  (optional)
 
 DefaultApi *apiInstance = [[DefaultApi alloc] init];
 
@@ -10843,6 +10880,8 @@ DefaultApi *apiInstance = [[DefaultApi alloc] init];
 
                             <div class="tab-pane" id="examples-Default-v1ChallengesPost-0-javascript">
                               <pre class="prettyprint"><code class="language-js">var UntitledApi = require('untitled_api');
+var defaultClient = UntitledApi.ApiClient.instance;
+
 
 var api = new UntitledApi.DefaultApi()
 var opts = { 
@@ -10876,6 +10915,7 @@ namespace Example
         public void main()
         {
 
+
             var apiInstance = new DefaultApi();
             var body = new ChallengeRequest(); // ChallengeRequest |  (optional) 
 
@@ -10897,6 +10937,7 @@ namespace Example
                               <pre class="prettyprint"><code class="language-php"><&#63;php
 require_once(__DIR__ . '/vendor/autoload.php');
 
+
 $api_instance = new Swagger\Client\ApiDefaultApi();
 $body = ; // ChallengeRequest | 
 
@@ -10912,6 +10953,7 @@ try {
                               <pre class="prettyprint"><code class="language-perl">use Data::Dumper;
 use WWW::SwaggerClient::Configuration;
 use WWW::SwaggerClient::DefaultApi;
+
 
 my $api_instance = WWW::SwaggerClient::DefaultApi->new();
 my $body = WWW::SwaggerClient::Object::ChallengeRequest->new(); # ChallengeRequest | 
@@ -10930,6 +10972,7 @@ import time
 import swagger_client
 from swagger_client.rest import ApiException
 from pprint import pprint
+
 
 # create an instance of the API class
 api_instance = swagger_client.DefaultApi()
@@ -11036,6 +11079,7 @@ except ApiException as e:
                         <div class="tab-content">
                           <div class="tab-pane active" id="examples-Default-v1ChallengesPut-0-curl">
                            <pre class="prettyprint"><code class="language-bsh">curl -X PUT\
+ -H "Authorization: Bearer [[accessToken]]"\
 -H "Content-Type: application/json"\
 "//v1/challenges"</code></pre>
                           </div>
@@ -11051,7 +11095,9 @@ import java.util.*;
 public class DefaultApiExample {
 
     public static void main(String[] args) {
-        
+        ApiClient defaultClient = Configuration.getDefaultApiClient();
+
+
         DefaultApi apiInstance = new DefaultApi();
          body = ; //  | 
         try {
@@ -11086,7 +11132,8 @@ public class DefaultApiExample {
   <pre class="prettyprint language-json prettyprinted" data-type="json"><code>Coming Soon!</code></pre>
   </div> -->
                             <div class="tab-pane" id="examples-Default-v1ChallengesPut-0-objc">
-                              <pre class="prettyprint"><code class="language-cpp"> *body = ; //  (optional)
+                              <pre class="prettyprint"><code class="language-cpp">Configuration *apiConfig = [Configuration sharedConfig];
+ *body = ; //  (optional)
 
 DefaultApi *apiInstance = [[DefaultApi alloc] init];
 
@@ -11101,6 +11148,8 @@ DefaultApi *apiInstance = [[DefaultApi alloc] init];
 
                             <div class="tab-pane" id="examples-Default-v1ChallengesPut-0-javascript">
                               <pre class="prettyprint"><code class="language-js">var UntitledApi = require('untitled_api');
+var defaultClient = UntitledApi.ApiClient.instance;
+
 
 var api = new UntitledApi.DefaultApi()
 var opts = { 
@@ -11134,6 +11183,7 @@ namespace Example
         public void main()
         {
 
+
             var apiInstance = new DefaultApi();
             var body = new (); //  |  (optional) 
 
@@ -11155,6 +11205,7 @@ namespace Example
                               <pre class="prettyprint"><code class="language-php"><&#63;php
 require_once(__DIR__ . '/vendor/autoload.php');
 
+
 $api_instance = new Swagger\Client\ApiDefaultApi();
 $body = ; //  | 
 
@@ -11170,6 +11221,7 @@ try {
                               <pre class="prettyprint"><code class="language-perl">use Data::Dumper;
 use WWW::SwaggerClient::Configuration;
 use WWW::SwaggerClient::DefaultApi;
+
 
 my $api_instance = WWW::SwaggerClient::DefaultApi->new();
 my $body = WWW::SwaggerClient::Object::->new(); #  | 
@@ -11188,6 +11240,7 @@ import time
 import swagger_client
 from swagger_client.rest import ApiException
 from pprint import pprint
+
 
 # create an instance of the API class
 api_instance = swagger_client.DefaultApi()

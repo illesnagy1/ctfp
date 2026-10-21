@@ -7,6 +7,7 @@
 
   import favicon from '#lib/assets/favicon.svg';
   import { Button } from '#lib/components/ui/button/index.js';
+  import { ConfirmDeleteDialog } from '#lib/components/ui/confirm-delete-dialog/index.js';
   import { LanguageSwitcher, type Language } from '#lib/components/ui/language-switcher/index.js';
   import { ThemeSelector } from '#lib/components/ui/theme-selector/index.js';
   import { m } from '#lib/paraglide/messages.js';
@@ -35,6 +36,8 @@
 <svelte:head><link rel="icon" href={favicon} /></svelte:head>
 
 <ModeWatcher />
+<!-- Shared by every `confirmDelete()` call. -->
+<ConfirmDeleteDialog />
 
 <div class="flex min-h-screen flex-col">
   <header class="sticky top-0 z-50 border-b bg-background/95 backdrop-blur">

@@ -61,4 +61,23 @@ export const actions: Actions = {
     }
     return { success: true };
   },
+
+  delete: async (event) => {
+    if (event.locals.user?.role !== 'ADMIN') error(403, 'Admin access required');
+
+    const form = await event.request.formData();
+    const id = Number(formString(form, 'id'));
+    if (!Number.isInteger(id)) return fail(400, { message: 'Invalid challenge id' });
+
+    const { error: apiError, response } = await apiClient(event).DELETE('/v1/challenges/{id}', {
+      params: { path: { id: String(id) } },
+    });
+    if (!response.ok) {
+      const message = (apiError as components['schemas']['ErrorResponse'] | undefined)?.message;
+      if (response.status < 500) return fail(response.status, { message: message ?? response.statusText });
+      console.error('Deleting challenge failed', response.status, apiError);
+      return fail(500, { message: 'Something went wrong, try again later' });
+    }
+    return { success: true };
+  },
 };
