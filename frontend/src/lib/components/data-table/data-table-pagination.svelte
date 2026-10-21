@@ -11,7 +11,14 @@
 
   import type { DataTableFeatures } from './features.js';
 
-  let { table }: { table: SvelteTable<DataTableFeatures, TData> } = $props();
+  let {
+    table,
+    showSelection = true,
+  }: {
+    table: SvelteTable<DataTableFeatures, TData>;
+    /** Shows the "n of m row(s) selected" count; off for tables without selection. */
+    showSelection?: boolean;
+  } = $props();
 
   const pageCount = $derived(table.getPageCount());
   const selectedRows = $derived(table.getFilteredSelectedRowModel().rows.length);
@@ -23,7 +30,9 @@
 
 <div class="flex items-center justify-between px-2">
   <div class="flex-1 text-sm text-muted-foreground">
-    {m.data_table_selected_rows({ count: selectedRows, total: totalRows })}
+    {#if showSelection}
+      {m.data_table_selected_rows({ count: selectedRows, total: totalRows })}
+    {/if}
   </div>
   <div class="flex items-center space-x-6 lg:space-x-8">
     <div class="flex items-center space-x-2">

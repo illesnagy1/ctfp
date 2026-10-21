@@ -102,5 +102,9 @@
   "confirm_delete_cancel": "Mégse",
   "confirm_delete_type_to_confirm": "A megerősítéshez írd be: „{text}”",
   "confirm_delete_failed": "Nem sikerült törölni, próbáld újra.",
-  "form_action_failed": "Valami hiba történt, próbáld újra később"
+  "form_action_failed": "Valami hiba történt, próbáld újra később",
+  "challenges_delete_selected": "{count} törlése",
+  "challenges_delete_many_title": "Törlöd a(z) {count} feladatot?",
+  "challenges_delete_many_description": "Ez a(z) {count} feladat véglegesen törlődik. Ez nem vonható vissza.",
+  "challenges_delete_many_keyword": "törlés"
 }

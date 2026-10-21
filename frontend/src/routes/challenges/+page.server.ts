@@ -80,4 +80,22 @@ export const actions: Actions = {
     }
     return { success: true };
   },
+
+  deleteMany: async (event) => {
+    if (event.locals.user?.role !== 'ADMIN') error(403, 'Admin access required');
+
+    const form = await event.request.formData();
+    // Comma-separated, as sent by submitAction.
+    const ids = formString(form, 'ids').split(',').map(Number);
+    if (ids.length === 0 || !ids.every(Number.isInteger)) return fail(400, { message: 'Invalid challenge ids' });
+
+    const { error: apiError, response } = await apiClient(event).DELETE('/v1/challenges', { body: ids });
+    if (!response.ok) {
+      const message = (apiError as components['schemas']['ErrorResponse'] | undefined)?.message;
+      if (response.status < 500) return fail(response.status, { message: message ?? response.statusText });
+      console.error('Deleting challenges failed', response.status, apiError);
+      return fail(500, { message: 'Something went wrong, try again later' });
+    }
+    return { success: true };
+  },
 };

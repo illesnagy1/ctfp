@@ -1,5 +1,6 @@
 <script lang="ts" generics="TData extends RowData">
   import { createTable, FlexRender, type ColumnDef, type RowData } from '@tanstack/svelte-table';
+  import type { Snippet } from 'svelte';
 
   import * as Table from '#lib/components/ui/table/index.js';
   import { m } from '#lib/paraglide/messages.js';
@@ -14,6 +15,9 @@
     columns,
     search,
     filters,
+    selectable = true,
+    getRowId,
+    actions,
   }: {
     data: TData[];
     columns: ColumnDef<DataTableFeatures, TData>[];
@@ -21,6 +25,15 @@
     search?: DataTableSearch;
     /** Faceted filters shown in the toolbar. */
     filters?: DataTableFilter[];
+    /** Whether rows can be selected; pair it with a `selectColumn()`. */
+    selectable?: boolean;
+    /**
+     * Stable id of a row, e.g. its database id. Without it rows are keyed by index, so after rows are added or removed
+     * the selection points at different rows.
+     */
+    getRowId?: (row: TData) => string;
+    /** Toolbar buttons for the selected rows, e.g. a bulk delete. */
+    actions?: Snippet<[selected: TData[]]>;
   } = $props();
 
   // v9 keeps pagination, sorting, filters, visibility and selection internally, and its reads are rune-reactive.
@@ -32,12 +45,20 @@
     get columns() {
       return columns;
     },
-    enableRowSelection: true,
+    get enableRowSelection() {
+      return selectable;
+    },
+    // Falls back to tanstack's default, the row's index path.
+    getRowId: (row, index, parent) => getRowId?.(row) ?? (parent ? `${parent.id}.${index}` : String(index)),
   });
+
+  const selected = $derived(table.getFilteredSelectedRowModel().rows.map((row) => row.original));
 </script>
 
 <div class="space-y-4">
-  <DataTableToolbar {table} {search} {filters} />
+  <DataTableToolbar {table} {search} {filters}>
+    {#if actions}{@render actions(selected)}{/if}
+  </DataTableToolbar>
   <div class="rounded-md border">
     <Table.Root>
       <Table.Header>
@@ -70,5 +91,5 @@
       </Table.Body>
     </Table.Root>
   </div>
-  <DataTablePagination {table} />
+  <DataTablePagination {table} showSelection={selectable} />
 </div>

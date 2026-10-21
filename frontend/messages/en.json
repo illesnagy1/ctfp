@@ -102,5 +102,9 @@
   "confirm_delete_cancel": "Cancel",
   "confirm_delete_type_to_confirm": "Type \"{text}\" to confirm",
   "confirm_delete_failed": "Couldn't delete, try again.",
-  "form_action_failed": "Something went wrong, try again later"
+  "form_action_failed": "Something went wrong, try again later",
+  "challenges_delete_selected": "Delete {count}",
+  "challenges_delete_many_title": "Delete {count} challenge(s)?",
+  "challenges_delete_many_description": "These {count} challenge(s) will be deleted permanently. This can't be undone.",
+  "challenges_delete_many_keyword": "delete"
 }

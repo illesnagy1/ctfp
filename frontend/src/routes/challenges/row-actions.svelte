@@ -1,13 +1,14 @@
 <script lang="ts">
   import { resolve } from '$app/paths';
   import { page } from '$app/state';
-  import TriangleAlertIcon from '@lucide/svelte/icons/triangle-alert';
 
   import { DataTableRowMenu } from '#lib/components/data-table/index.js';
   import { confirmDelete } from '#lib/components/ui/confirm-delete-dialog/index.js';
   import * as DropdownMenu from '#lib/components/ui/dropdown-menu/index.js';
   import { submitAction } from '#lib/form-action.js';
   import { m } from '#lib/paraglide/messages.js';
+
+  import DeleteCascadeWarning from './delete-cascade-warning.svelte';
 
   let { id, title }: { id: number; title: string } = $props();
 
@@ -27,18 +28,7 @@
 </script>
 
 {#snippet cascadeWarning()}
-  <!-- Mirrors the api's ON DELETE CASCADE on flags, hints (with unlocks) and submissions. -->
-  <div role="note" class="flex gap-3 rounded-md border border-destructive/50 bg-destructive/10 p-3 text-sm">
-    <TriangleAlertIcon class="mt-0.5 size-4 shrink-0 text-destructive" />
-    <div>
-      <p class="font-medium text-destructive">{m.challenges_delete_cascade_title()}</p>
-      <ul class="mt-1 list-disc pl-4">
-        <li>{m.challenges_delete_cascade_flags()}</li>
-        <li>{m.challenges_delete_cascade_hints()}</li>
-        <li>{m.challenges_delete_cascade_submissions()}</li>
-      </ul>
-    </div>
-  </div>
+  <DeleteCascadeWarning />
 {/snippet}
 
 <DataTableRowMenu>

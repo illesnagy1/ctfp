@@ -1,6 +1,6 @@
 import { renderComponent, type ColumnDef } from '@tanstack/svelte-table';
 
-import { sortableColumn, type DataTableFeatures } from '#lib/components/data-table/index.js';
+import { selectColumn, sortableColumn, type DataTableFeatures } from '#lib/components/data-table/index.js';
 import LocalTime from '#lib/components/local-time.svelte';
 import { m } from '#lib/paraglide/messages.js';
 import type { components } from '#lib/types/api.js';
@@ -33,3 +33,6 @@ export const columns: ColumnDef<DataTableFeatures, Challenge>[] = [
     cell: ({ row }) => renderComponent(RowActions, { id: row.original.id, title: row.original.title }),
   },
 ];
+
+/** With row selection, for bulk actions. */
+export const adminColumns: ColumnDef<DataTableFeatures, Challenge>[] = [selectColumn<Challenge>(), ...columns];

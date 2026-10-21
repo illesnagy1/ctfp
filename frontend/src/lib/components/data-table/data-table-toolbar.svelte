@@ -1,6 +1,7 @@
 <script lang="ts" generics="TData extends RowData">
   import XIcon from '@lucide/svelte/icons/x';
   import type { RowData, SvelteTable } from '@tanstack/svelte-table';
+  import type { Snippet } from 'svelte';
 
   import { Button } from '#lib/components/ui/button/index.js';
   import { Input } from '#lib/components/ui/input/index.js';
@@ -15,10 +16,13 @@
     table,
     search,
     filters = [],
+    children,
   }: {
     table: SvelteTable<DataTableFeatures, TData>;
     search?: DataTableSearch;
     filters?: DataTableFilter[];
+    /** Extra buttons, shown before the view options. */
+    children?: Snippet;
   } = $props();
 
   const isFiltered = $derived(table.atoms.columnFilters.get().length > 0);
@@ -50,5 +54,8 @@
       </Button>
     {/if}
   </div>
-  <DataTableViewOptions {table} />
+  <div class="flex items-center gap-2">
+    {@render children?.()}
+    <DataTableViewOptions {table} />
+  </div>
 </div>
