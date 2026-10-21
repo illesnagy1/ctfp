@@ -10,7 +10,10 @@ declare global {
     }
 
     // interface Error {}
-    // interface PageData {}
+    interface PageData {
+      /** The browser's time zone from its cookie, if valid (see src/lib/time.ts). */
+      timeZone?: string;
+    }
     // interface PageState {}
     // interface Platform {}
   }

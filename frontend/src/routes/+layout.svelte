@@ -11,11 +11,20 @@
   import { ThemeSelector } from '#lib/components/ui/theme-selector/index.js';
   import { m } from '#lib/paraglide/messages.js';
   import { getLocale, isLocale, setLocale } from '#lib/paraglide/runtime.js';
+  import { TIME_ZONE_COOKIE, browserTimeZone } from '#lib/time.js';
 
   let { children, data } = $props();
   let menuOpen = $state(false);
   let loggedIn = $derived(!!data.user);
   let isAdmin = $derived(data.user?.role === 'ADMIN');
+
+  // Lets the server render times in the browser's zone from the next request on (see LocalTime).
+  $effect(() => {
+    const timeZone = browserTimeZone();
+    if (timeZone !== data.timeZone) {
+      document.cookie = `${TIME_ZONE_COOKIE}=${encodeURIComponent(timeZone)}; path=/; max-age=31536000; samesite=lax`;
+    }
+  });
 
   const languages: Language[] = [
     { code: 'en', label: 'English' },

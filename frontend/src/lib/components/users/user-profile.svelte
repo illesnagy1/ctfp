@@ -1,7 +1,7 @@
 <script lang="ts">
+  import LocalTime from '#lib/components/local-time.svelte';
   import * as Card from '#lib/components/ui/card/index.js';
   import { m } from '#lib/paraglide/messages.js';
-  import { getLocale } from '#lib/paraglide/runtime.js';
   import { type User, isAdminUser } from '#lib/types/user.js';
 
   import { roleLabel } from './labels.js';
@@ -11,8 +11,6 @@
 
   // User-supplied; only link http(s) so a `javascript:` URL can't run script.
   let safeWebsite = $derived(user.website && /^https?:\/\//i.test(user.website) ? user.website : undefined);
-  // The Paraglide locale, not the browser's or server's, so SSR and hydration agree.
-  let joined = $derived(new Date(user.createdAt).toLocaleDateString(getLocale()));
 
   const yesNo = (value: boolean | undefined) => (value ? m.user_profile_yes() : m.user_profile_no());
 </script>
@@ -20,7 +18,11 @@
 <Card.Root>
   <Card.Header>
     <Card.Title>{user.username}</Card.Title>
-    <Card.Description>{m.user_profile_joined({ date: joined })}</Card.Description>
+    <Card.Description>
+      <LocalTime value={user.createdAt} dateOnly>
+        {#snippet children(date)}{m.user_profile_joined({ date })}{/snippet}
+      </LocalTime>
+    </Card.Description>
   </Card.Header>
   <Card.Content>
     <dl class="grid grid-cols-label-value gap-x-6 gap-y-2 text-sm">

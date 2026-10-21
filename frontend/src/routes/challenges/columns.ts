@@ -1,8 +1,8 @@
 import { renderComponent, type ColumnDef } from '@tanstack/svelte-table';
 
 import { sortableColumn, type DataTableFeatures } from '#lib/components/data-table/index.js';
+import LocalTime from '#lib/components/local-time.svelte';
 import { m } from '#lib/paraglide/messages.js';
-import { getLocale } from '#lib/paraglide/runtime.js';
 import type { components } from '#lib/types/api.js';
 
 import CategoriesCell from './categories-cell.svelte';
@@ -24,7 +24,7 @@ export const columns: ColumnDef<DataTableFeatures, Challenge>[] = [
   sortableColumn('maxAttempts', m.challenges_column_max_attempts),
   {
     ...sortableColumn('publishAt', m.challenges_column_publish_at),
-    cell: ({ row }) => new Date(row.original.publishAt).toLocaleString(getLocale()),
+    cell: ({ row }) => renderComponent(LocalTime, { value: row.original.publishAt }),
   },
   {
     id: 'actions',

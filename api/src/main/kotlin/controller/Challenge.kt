@@ -2,8 +2,14 @@ package com.ctfp.controller
 
 import com.ctfp.controller.helper.getId
 import com.ctfp.dto.ChallengeRequest
+import com.ctfp.plugins.userId
 import com.ctfp.service.ChallengeService
+import com.ctfp.service.helper.isAdmin
 import io.ktor.http.HttpStatusCode
+import io.ktor.server.application.ApplicationCall
+import io.ktor.server.auth.authenticate
+import io.ktor.server.auth.jwt.JWTPrincipal
+import io.ktor.server.auth.principal
 import io.ktor.server.request.receive
 import io.ktor.server.routing.Route
 import io.ktor.server.routing.delete
@@ -14,10 +20,16 @@ import io.ktor.server.routing.route
 import io.ktor.server.response.respond
 
 
+/** Whether the caller is a logged-in admin; only call inside `authenticate(optional = true) { }`. */
+private suspend fun ApplicationCall.isAdmin() = principal<JWTPrincipal>() != null && isAdmin(userId())
+
 fun Route.challenge(service: ChallengeService) {
     route("/challenges") {
-        get {
-            call.respond(service.getAll())
+        // Login is optional for reading; admins also get hidden and not yet published challenges.
+        authenticate(optional = true) {
+            get {
+                call.respond(service.getAll(includeUnreleased = call.isAdmin()))
+            }
         }
         post {
             val challenge = call.receive<ChallengeRequest>()
@@ -38,11 +50,13 @@ fun Route.challenge(service: ChallengeService) {
             call.respond(HttpStatusCode.NoContent)
         }
         route("/{id}") {
-            get {
-                val id = call.getId()
-                val challenge = service.get(id)
+            authenticate(optional = true) {
+                get {
+                    val id = call.getId()
+                    val challenge = service.get(id, includeUnreleased = call.isAdmin())
 
-                call.respond(challenge)
+                    call.respond(challenge)
+                }
             }
             put {
                 val id = call.getId()

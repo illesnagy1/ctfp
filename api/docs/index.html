@@ -6870,7 +6870,7 @@ except ApiException as e:
                       <article id="api-Default-v1ChallengesGet-0" data-group="User" data-name="v1ChallengesGet" data-version="0">
                         <div class="pull-left">
                           <h1>v1ChallengesGet</h1>
-                          <p></p>
+                          <p>Login is optional for reading; admins also get hidden and not yet published challenges.</p>
                         </div>
                         <div class="pull-right"></div>
                         <div class="clearfix"></div>
@@ -6899,6 +6899,7 @@ except ApiException as e:
                         <div class="tab-content">
                           <div class="tab-pane active" id="examples-Default-v1ChallengesGet-0-curl">
                            <pre class="prettyprint"><code class="language-bsh">curl -X GET\
+ -H "Authorization: Bearer [[accessToken]]"\
 -H "Accept: application/json"\
 "//v1/challenges"</code></pre>
                           </div>
@@ -6914,7 +6915,9 @@ import java.util.*;
 public class DefaultApiExample {
 
     public static void main(String[] args) {
-        
+        ApiClient defaultClient = Configuration.getDefaultApiClient();
+
+
         DefaultApi apiInstance = new DefaultApi();
         try {
             apiInstance.v1ChallengesGet();
@@ -6947,9 +6950,11 @@ public class DefaultApiExample {
   <pre class="prettyprint language-json prettyprinted" data-type="json"><code>Coming Soon!</code></pre>
   </div> -->
                             <div class="tab-pane" id="examples-Default-v1ChallengesGet-0-objc">
-                              <pre class="prettyprint"><code class="language-cpp">
+                              <pre class="prettyprint"><code class="language-cpp">Configuration *apiConfig = [Configuration sharedConfig];
+
 DefaultApi *apiInstance = [[DefaultApi alloc] init];
 
+// Login is optional for reading; admins also get hidden and not yet published challenges.
 [apiInstance v1ChallengesGetWithCompletionHandler: 
               ^(NSError* error) {
                             if (error) {
@@ -6961,6 +6966,8 @@ DefaultApi *apiInstance = [[DefaultApi alloc] init];
 
                             <div class="tab-pane" id="examples-Default-v1ChallengesGet-0-javascript">
                               <pre class="prettyprint"><code class="language-js">var UntitledApi = require('untitled_api');
+var defaultClient = UntitledApi.ApiClient.instance;
+
 
 var api = new UntitledApi.DefaultApi()
 var callback = function(error, data, response) {
@@ -6991,10 +6998,12 @@ namespace Example
         public void main()
         {
 
+
             var apiInstance = new DefaultApi();
 
             try
             {
+                // Login is optional for reading; admins also get hidden and not yet published challenges.
                 apiInstance.v1ChallengesGet();
             }
             catch (Exception e)
@@ -7011,6 +7020,7 @@ namespace Example
                               <pre class="prettyprint"><code class="language-php"><&#63;php
 require_once(__DIR__ . '/vendor/autoload.php');
 
+
 $api_instance = new Swagger\Client\ApiDefaultApi();
 
 try {
@@ -7025,6 +7035,7 @@ try {
                               <pre class="prettyprint"><code class="language-perl">use Data::Dumper;
 use WWW::SwaggerClient::Configuration;
 use WWW::SwaggerClient::DefaultApi;
+
 
 my $api_instance = WWW::SwaggerClient::DefaultApi->new();
 
@@ -7043,10 +7054,12 @@ import swagger_client
 from swagger_client.rest import ApiException
 from pprint import pprint
 
+
 # create an instance of the API class
 api_instance = swagger_client.DefaultApi()
 
 try: 
+    # Login is optional for reading; admins also get hidden and not yet published challenges.
     api_instance.v1_challenges_get()
 except ApiException as e:
     print("Exception when calling DefaultApi->v1ChallengesGet: %s\n" % e)</code></pre>
@@ -8316,6 +8329,7 @@ except ApiException as e:
                         <div class="tab-content">
                           <div class="tab-pane active" id="examples-Default-v1ChallengesIdGet-0-curl">
                            <pre class="prettyprint"><code class="language-bsh">curl -X GET\
+ -H "Authorization: Bearer [[accessToken]]"\
 -H "Accept: application/json"\
 "//v1/challenges/{id}"</code></pre>
                           </div>
@@ -8331,7 +8345,9 @@ import java.util.*;
 public class DefaultApiExample {
 
     public static void main(String[] args) {
-        
+        ApiClient defaultClient = Configuration.getDefaultApiClient();
+
+
         DefaultApi apiInstance = new DefaultApi();
          id = ; //  | 
         try {
@@ -8368,7 +8384,8 @@ public class DefaultApiExample {
   <pre class="prettyprint language-json prettyprinted" data-type="json"><code>Coming Soon!</code></pre>
   </div> -->
                             <div class="tab-pane" id="examples-Default-v1ChallengesIdGet-0-objc">
-                              <pre class="prettyprint"><code class="language-cpp"> *id = ; // 
+                              <pre class="prettyprint"><code class="language-cpp">Configuration *apiConfig = [Configuration sharedConfig];
+ *id = ; // 
 
 DefaultApi *apiInstance = [[DefaultApi alloc] init];
 
@@ -8386,6 +8403,8 @@ DefaultApi *apiInstance = [[DefaultApi alloc] init];
 
                             <div class="tab-pane" id="examples-Default-v1ChallengesIdGet-0-javascript">
                               <pre class="prettyprint"><code class="language-js">var UntitledApi = require('untitled_api');
+var defaultClient = UntitledApi.ApiClient.instance;
+
 
 var api = new UntitledApi.DefaultApi()
 var id = ; // {{}} 
@@ -8418,6 +8437,7 @@ namespace Example
         public void main()
         {
 
+
             var apiInstance = new DefaultApi();
             var id = new (); //  | 
 
@@ -8440,6 +8460,7 @@ namespace Example
                               <pre class="prettyprint"><code class="language-php"><&#63;php
 require_once(__DIR__ . '/vendor/autoload.php');
 
+
 $api_instance = new Swagger\Client\ApiDefaultApi();
 $id = ; //  | 
 
@@ -8456,6 +8477,7 @@ try {
                               <pre class="prettyprint"><code class="language-perl">use Data::Dumper;
 use WWW::SwaggerClient::Configuration;
 use WWW::SwaggerClient::DefaultApi;
+
 
 my $api_instance = WWW::SwaggerClient::DefaultApi->new();
 my $id = ; #  | 
@@ -8475,6 +8497,7 @@ import time
 import swagger_client
 from swagger_client.rest import ApiException
 from pprint import pprint
+
 
 # create an instance of the API class
 api_instance = swagger_client.DefaultApi()
