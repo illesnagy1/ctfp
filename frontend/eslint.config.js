@@ -2,6 +2,7 @@
 // Oxlint can't parse Svelte markup, so the design-system rules need ESLint to see `class="..."`.
 import { plugin as shadcn } from '@shadcn/lint';
 import tsParser from '@typescript-eslint/parser';
+import betterTailwindcss from 'eslint-plugin-better-tailwindcss';
 import svelte from 'eslint-plugin-svelte';
 import { defineConfig, globalIgnores } from 'eslint/config';
 import svelteParser from 'svelte-eslint-parser';
@@ -16,7 +17,11 @@ const rules = {
   'shadcn/no-inline-styles': 'error',
   'shadcn/no-unknown-classes': 'error',
   'shadcn/require-static-classes': 'error',
+  'better-tailwindcss/enforce-canonical-classes': 'warn',
 };
+
+/** Resolves classes against the project's theme, not Tailwind's defaults. */
+const tailwindSettings = { 'better-tailwindcss': { entryPoint: 'src/routes/layout.css' } };
 
 export default defineConfig([
   globalIgnores(['.svelte-kit/', 'build/', 'node_modules/', 'src/lib/paraglide/', 'project.inlang/cache/']),
@@ -32,7 +37,8 @@ export default defineConfig([
       parser: svelteParser,
       parserOptions: { parser: tsParser },
     },
-    plugins: { shadcn },
+    plugins: { shadcn, 'better-tailwindcss': betterTailwindcss },
+    settings: tailwindSettings,
     // Applies the markup disable comments that `svelte/comment-directive` collects.
     processor: 'svelte/svelte',
     rules: {
@@ -47,7 +53,8 @@ export default defineConfig([
     // `cn` / `tv` calls outside components, e.g. table column definitions.
     files: ['**/*.{js,ts}'],
     languageOptions: { parser: tsParser },
-    plugins: { shadcn },
+    plugins: { shadcn, 'better-tailwindcss': betterTailwindcss },
+    settings: tailwindSettings,
     rules,
   },
   {
