@@ -2,6 +2,8 @@ package com.ctfp.plugins
 
 import com.ctfp.config.jwtConfig
 import com.ctfp.config.settingsFileConfig
+import com.ctfp.config.uploadsConfig
+import com.ctfp.storage.LocalFileStorage
 import com.ctfp.controller.adminUser
 import com.ctfp.controller.auth
 import com.ctfp.controller.challenge
@@ -44,12 +46,15 @@ fun Application.configureRouting() {
 
         val hasher = PasswordHasher()
         val userService = UserService(hasher)
+        val uploads = environment.config.uploadsConfig()
+        val storage = LocalFileStorage(Path(uploads.dir))
+        val challengeService = ChallengeService(storage)
 
         route("v1") {
-            challenge(ChallengeService())
+            challenge(challengeService)
             auth(AuthService(environment.config.jwtConfig(), hasher))
             emailTemplate(EmailTemplateService())
-            file(FileService())
+            file(FileService(storage, challengeService, uploads.maxBytes))
             flag(FlagService())
             hint(HintService())
             notification(NotificationService())

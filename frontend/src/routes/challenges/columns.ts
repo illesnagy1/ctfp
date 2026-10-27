@@ -7,12 +7,16 @@ import type { components } from '#lib/types/api.js';
 
 import CategoriesCell from './categories-cell.svelte';
 import RowActions from './row-actions.svelte';
+import TitleCell from './title-cell.svelte';
 
 export type Challenge = components['schemas']['ChallengeResponse'];
 
 // Titles are message functions, not strings, so they're translated on each render (see `Text`).
 export const columns: ColumnDef<DataTableFeatures, Challenge>[] = [
-  sortableColumn('title', m.challenges_column_title),
+  {
+    ...sortableColumn('title', m.challenges_column_title),
+    cell: ({ row }) => renderComponent(TitleCell, { id: row.original.id, title: row.original.title }),
+  },
   {
     ...sortableColumn('categories', m.challenges_column_categories),
     enableSorting: false,
@@ -26,6 +30,12 @@ export const columns: ColumnDef<DataTableFeatures, Challenge>[] = [
     ...sortableColumn('publishAt', m.challenges_column_publish_at),
     cell: ({ row }) => renderComponent(LocalTime, { value: row.original.publishAt }),
   },
+];
+
+/** With row selection for bulk actions, and the row menu (delete); players have no row actions. */
+export const adminColumns: ColumnDef<DataTableFeatures, Challenge>[] = [
+  selectColumn<Challenge>(),
+  ...columns,
   {
     id: 'actions',
     enableSorting: false,
@@ -33,6 +43,3 @@ export const columns: ColumnDef<DataTableFeatures, Challenge>[] = [
     cell: ({ row }) => renderComponent(RowActions, { id: row.original.id, title: row.original.title }),
   },
 ];
-
-/** With row selection, for bulk actions. */
-export const adminColumns: ColumnDef<DataTableFeatures, Challenge>[] = [selectColumn<Challenge>(), ...columns];

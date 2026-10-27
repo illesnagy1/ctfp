@@ -8,6 +8,7 @@
   import { getLocale } from '#lib/paraglide/runtime.js';
 
   import CategoriesCell from '../categories-cell.svelte';
+  import ChallengeFiles from './challenge-files.svelte';
 
   let { data } = $props();
 
@@ -73,6 +74,7 @@
             <dd><LocalTime value={challenge.updatedAt} /></dd>
           {/if}
         </dl>
+        <ChallengeFiles challengeId={challenge.id} files={data.files} {isAdmin} />
       </div>
     </Card.Content>
   </Card.Root>

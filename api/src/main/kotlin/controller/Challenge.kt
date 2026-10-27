@@ -2,15 +2,11 @@ package com.ctfp.controller
 
 import com.ctfp.controller.helper.RequireAdmin
 import com.ctfp.controller.helper.getId
+import com.ctfp.controller.helper.isAdmin
 import com.ctfp.dto.ChallengeRequest
-import com.ctfp.plugins.userId
 import com.ctfp.service.ChallengeService
-import com.ctfp.service.helper.isAdmin
 import io.ktor.http.HttpStatusCode
-import io.ktor.server.application.ApplicationCall
 import io.ktor.server.auth.authenticate
-import io.ktor.server.auth.jwt.JWTPrincipal
-import io.ktor.server.auth.principal
 import io.ktor.server.request.receive
 import io.ktor.server.routing.Route
 import io.ktor.server.routing.delete
@@ -20,9 +16,6 @@ import io.ktor.server.routing.put
 import io.ktor.server.routing.route
 import io.ktor.server.response.respond
 
-
-/** Whether the caller is a logged-in admin; only call inside `authenticate(optional = true) { }`. */
-private suspend fun ApplicationCall.isAdmin() = principal<JWTPrincipal>() != null && isAdmin(userId())
 
 fun Route.challenge(service: ChallengeService) {
     route("/challenges") {

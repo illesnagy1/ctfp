@@ -71,7 +71,6 @@
   "challenges_column_categories": "Categories",
   "challenges_column_max_attempts": "Max attempts",
   "challenges_column_publish_at": "Published",
-  "challenges_action_details": "Details",
   "challenges_create": "Add challenge",
   "challenges_create_description": "Create a new challenge. It shows up for players once visible and published.",
   "challenges_create_submit": "Create",
@@ -123,5 +122,18 @@
   "users_banned": "{username} banned",
   "users_unbanned": "{username} unbanned",
   "users_banned_many": "{count} user(s) banned",
-  "users_unbanned_many": "{count} user(s) unbanned"
+  "users_unbanned_many": "{count} user(s) unbanned",
+  "challenge_files_title": "Attachments",
+  "challenge_files_empty": "No attachments yet.",
+  "challenge_files_uploading": "Uploading {filename}… {percent}%",
+  "challenge_files_uploaded": "\"{filename}\" uploaded",
+  "challenge_files_upload_failed": "Couldn't upload \"{filename}\": {reason}",
+  "challenge_files_copy_hash": "Copy SHA-256",
+  "challenge_files_hash_copied": "SHA-256 copied",
+  "challenge_files_hash_copy_failed": "Couldn't copy the SHA-256",
+  "challenge_files_delete": "Delete {filename}",
+  "challenge_files_delete_title": "Delete attachment?",
+  "challenge_files_delete_description": "\"{filename}\" will be deleted permanently. This can't be undone.",
+  "challenge_files_deleted": "\"{filename}\" deleted",
+  "challenge_files_drop": "Drop files here, or click to choose"
 }

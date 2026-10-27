@@ -24,7 +24,13 @@ fun main(args: Array<String>) {
 
     testApplication {
         environment {
-            config = HoconApplicationConfig(ConfigFactory.load().withOnlyPath("jwt"))
+            // Only what security and routing read while being set up; nothing here connects to a database.
+            val loaded = ConfigFactory.load()
+            config = HoconApplicationConfig(
+                listOf("jwt", "settings", "uploads")
+                    .map(loaded::withOnlyPath)
+                    .reduce { merged, path -> merged.withFallback(path) }
+            )
         }
         application {
             configureSecurity()

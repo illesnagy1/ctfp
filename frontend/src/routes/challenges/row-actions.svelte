@@ -1,6 +1,4 @@
 <script lang="ts">
-  import { resolve } from '$app/paths';
-  import { page } from '$app/state';
   import { toast } from 'svelte-sonner';
 
   import { DataTableRowMenu } from '#lib/components/data-table/index.js';
@@ -12,9 +10,6 @@
   import DeleteCascadeWarning from './delete-cascade-warning.svelte';
 
   let { id, title }: { id: number; title: string } = $props();
-
-  // Only hides the option; the delete action and the api check the role again.
-  const isAdmin = $derived(page.data.user?.role === 'ADMIN');
 
   function askToDelete() {
     confirmDelete({
@@ -35,16 +30,9 @@
   <DeleteCascadeWarning />
 {/snippet}
 
+<!-- Admins only (see adminColumns); the delete action and the api check the role again. -->
 <DataTableRowMenu>
-  <DropdownMenu.Item>
-    {#snippet child({ props })}
-      <a {...props} href={resolve('/challenges/[id]', { id: String(id) })}>{m.challenges_action_details()}</a>
-    {/snippet}
+  <DropdownMenu.Item variant="destructive" onSelect={askToDelete}>
+    {m.challenges_action_delete()}
   </DropdownMenu.Item>
-  {#if isAdmin}
-    <DropdownMenu.Separator />
-    <DropdownMenu.Item variant="destructive" onSelect={askToDelete}>
-      {m.challenges_action_delete()}
-    </DropdownMenu.Item>
-  {/if}
 </DataTableRowMenu>

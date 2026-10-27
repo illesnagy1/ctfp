@@ -31,10 +31,19 @@ data class SettingsFileConfig(
 )
 
 @Serializable
+data class UploadsConfig(
+    /** Directory the uploaded files are stored in, under random names. */
+    val dir: String,
+    /** Largest accepted upload. */
+    val maxBytes: Long,
+)
+
+@Serializable
 data class AppConfig(
     val jwt: JwtConfig,
     val postgres: PostgresConfig,
     val settings: SettingsFileConfig,
+    val uploads: UploadsConfig,
 )
 
 fun ApplicationConfig.jwtConfig(): JwtConfig = property("jwt").getAs()
@@ -43,8 +52,11 @@ fun ApplicationConfig.postgresConfig(): PostgresConfig = property("postgres").ge
 
 fun ApplicationConfig.settingsFileConfig(): SettingsFileConfig = property("settings").getAs()
 
+fun ApplicationConfig.uploadsConfig(): UploadsConfig = property("uploads").getAs()
+
 fun ApplicationConfig.appConfig() = AppConfig(
     jwt = jwtConfig(),
     postgres = postgresConfig(),
     settings = settingsFileConfig(),
+    uploads = uploadsConfig(),
 )

@@ -846,19 +846,18 @@
     "message" : { }
   }
 };
-            defs["FileRequest"] = {
-  "title" : "FileRequest",
-  "required" : [ "name" ],
-  "properties" : {
-    "name" : { }
-  }
-};
             defs["FileResponse"] = {
   "title" : "FileResponse",
-  "required" : [ "id", "name" ],
+  "required" : [ "createdAt", "filename", "id", "sha256", "size" ],
   "properties" : {
     "id" : { },
-    "name" : { }
+    "filename" : { },
+    "size" : { },
+    "mimeType" : { },
+    "sha256" : { },
+    "createdAt" : {
+      "format" : "date-time"
+    }
   }
 };
             defs["FlagRequest"] = {
@@ -1182,6 +1181,12 @@
                     <li data-group="Default" data-name="v1ChallengesIdDelete" class="">
                       <a href="#api-Default-v1ChallengesIdDelete">v1ChallengesIdDelete</a>
                     </li>
+                    <li data-group="Default" data-name="v1ChallengesIdFilesGet" class="">
+                      <a href="#api-Default-v1ChallengesIdFilesGet">v1ChallengesIdFilesGet</a>
+                    </li>
+                    <li data-group="Default" data-name="v1ChallengesIdFilesPost" class="">
+                      <a href="#api-Default-v1ChallengesIdFilesPost">v1ChallengesIdFilesPost</a>
+                    </li>
                     <li data-group="Default" data-name="v1ChallengesIdFlagsDelete" class="">
                       <a href="#api-Default-v1ChallengesIdFlagsDelete">v1ChallengesIdFlagsDelete</a>
                     </li>
@@ -1251,26 +1256,11 @@
                     <li data-group="Default" data-name="v1EmailTemplatesPut" class="">
                       <a href="#api-Default-v1EmailTemplatesPut">v1EmailTemplatesPut</a>
                     </li>
-                    <li data-group="Default" data-name="v1FilesDelete" class="">
-                      <a href="#api-Default-v1FilesDelete">v1FilesDelete</a>
-                    </li>
-                    <li data-group="Default" data-name="v1FilesGet" class="">
-                      <a href="#api-Default-v1FilesGet">v1FilesGet</a>
-                    </li>
                     <li data-group="Default" data-name="v1FilesIdDelete" class="">
                       <a href="#api-Default-v1FilesIdDelete">v1FilesIdDelete</a>
                     </li>
-                    <li data-group="Default" data-name="v1FilesIdGet" class="">
-                      <a href="#api-Default-v1FilesIdGet">v1FilesIdGet</a>
-                    </li>
-                    <li data-group="Default" data-name="v1FilesIdPut" class="">
-                      <a href="#api-Default-v1FilesIdPut">v1FilesIdPut</a>
-                    </li>
-                    <li data-group="Default" data-name="v1FilesPost" class="">
-                      <a href="#api-Default-v1FilesPost">v1FilesPost</a>
-                    </li>
-                    <li data-group="Default" data-name="v1FilesPut" class="">
-                      <a href="#api-Default-v1FilesPut">v1FilesPut</a>
+                    <li data-group="Default" data-name="v1FilesIdDownloadGet" class="">
+                      <a href="#api-Default-v1FilesIdDownloadGet">v1FilesIdDownloadGet</a>
                     </li>
                     <li data-group="Default" data-name="v1FlagsDelete" class="">
                       <a href="#api-Default-v1FlagsDelete">v1FlagsDelete</a>
@@ -7391,6 +7381,950 @@ except ApiException as e:
                         </article>
                       </div>
                       <hr>
+                    <div id="api-Default-v1ChallengesIdFilesGet">
+                      <article id="api-Default-v1ChallengesIdFilesGet-0" data-group="User" data-name="v1ChallengesIdFilesGet" data-version="0">
+                        <div class="pull-left">
+                          <h1>v1ChallengesIdFilesGet</h1>
+                          <p>Documents the [ErrorResponse]s this route can return. They are sent by StatusPages (and the auth challenge), so
+OpenAPI inference can&#x27;t see them.</p>
+                        </div>
+                        <div class="pull-right"></div>
+                        <div class="clearfix"></div>
+                        <p></p>
+                        <p class="marked"></p>
+                        <p></p>
+                        <br />
+                        <pre class="prettyprint language-html prettyprinted" data-type="get"><code><span class="pln">/v1/challenges/{id}/files</span></code></pre>
+                        <p>
+                          <h3>Usage and SDK Samples</h3>
+                        </p>
+                        <ul class="nav nav-tabs nav-tabs-examples">
+                          <li class="active"><a href="#examples-Default-v1ChallengesIdFilesGet-0-curl">Curl</a></li>
+                          <li class=""><a href="#examples-Default-v1ChallengesIdFilesGet-0-java">Java</a></li>
+                          <li class=""><a href="#examples-Default-v1ChallengesIdFilesGet-0-android">Android</a></li>
+                          <!--<li class=""><a href="#examples-Default-v1ChallengesIdFilesGet-0-groovy">Groovy</a></li>-->
+                          <li class=""><a href="#examples-Default-v1ChallengesIdFilesGet-0-objc">Obj-C</a></li>
+                          <li class=""><a href="#examples-Default-v1ChallengesIdFilesGet-0-javascript">JavaScript</a></li>
+                          <!--<li class=""><a href="#examples-Default-v1ChallengesIdFilesGet-0-angular">Angular</a></li>-->
+                          <li class=""><a href="#examples-Default-v1ChallengesIdFilesGet-0-csharp">C#</a></li>
+                          <li class=""><a href="#examples-Default-v1ChallengesIdFilesGet-0-php">PHP</a></li>
+                          <li class=""><a href="#examples-Default-v1ChallengesIdFilesGet-0-perl">Perl</a></li>
+                          <li class=""><a href="#examples-Default-v1ChallengesIdFilesGet-0-python">Python</a></li>
+                        </ul>
+
+                        <div class="tab-content">
+                          <div class="tab-pane active" id="examples-Default-v1ChallengesIdFilesGet-0-curl">
+                           <pre class="prettyprint"><code class="language-bsh">curl -X GET\
+ -H "Authorization: Bearer [[accessToken]]"\
+-H "Accept: application/json"\
+"//v1/challenges/{id}/files"</code></pre>
+                          </div>
+                          <div class="tab-pane" id="examples-Default-v1ChallengesIdFilesGet-0-java">
+                            <pre class="prettyprint"><code class="language-java">import io.swagger.client.*;
+import io.swagger.client.auth.*;
+import io.swagger.client.model.*;
+import io.swagger.client.api.DefaultApi;
+
+import java.io.File;
+import java.util.*;
+
+public class DefaultApiExample {
+
+    public static void main(String[] args) {
+        ApiClient defaultClient = Configuration.getDefaultApiClient();
+
+
+        DefaultApi apiInstance = new DefaultApi();
+         id = ; //  | 
+        try {
+            apiInstance.v1ChallengesIdFilesGet(id);
+        } catch (ApiException e) {
+            System.err.println("Exception when calling DefaultApi#v1ChallengesIdFilesGet");
+            e.printStackTrace();
+        }
+    }
+}</code></pre>
+                          </div>
+
+                          <div class="tab-pane" id="examples-Default-v1ChallengesIdFilesGet-0-android">
+                            <pre class="prettyprint"><code class="language-java">import io.swagger.client.api.DefaultApi;
+
+public class DefaultApiExample {
+
+    public static void main(String[] args) {
+        DefaultApi apiInstance = new DefaultApi();
+         id = ; //  | 
+        try {
+            apiInstance.v1ChallengesIdFilesGet(id);
+        } catch (ApiException e) {
+            System.err.println("Exception when calling DefaultApi#v1ChallengesIdFilesGet");
+            e.printStackTrace();
+        }
+    }
+}</code></pre>
+                          </div>
+  <!--
+  <div class="tab-pane" id="examples-Default-v1ChallengesIdFilesGet-0-groovy">
+  <pre class="prettyprint language-json prettyprinted" data-type="json"><code>Coming Soon!</code></pre>
+  </div> -->
+                            <div class="tab-pane" id="examples-Default-v1ChallengesIdFilesGet-0-objc">
+                              <pre class="prettyprint"><code class="language-cpp">Configuration *apiConfig = [Configuration sharedConfig];
+ *id = ; // 
+
+DefaultApi *apiInstance = [[DefaultApi alloc] init];
+
+// Documents the [ErrorResponse]s this route can return. They are sent by StatusPages (and the auth challenge), so
+OpenAPI inference can't see them.
+[apiInstance v1ChallengesIdFilesGetWith:id
+              completionHandler: ^(NSError* error) {
+                            if (error) {
+                                NSLog(@"Error: %@", error);
+                            }
+                        }];
+</code></pre>
+                            </div>
+
+                            <div class="tab-pane" id="examples-Default-v1ChallengesIdFilesGet-0-javascript">
+                              <pre class="prettyprint"><code class="language-js">var UntitledApi = require('untitled_api');
+var defaultClient = UntitledApi.ApiClient.instance;
+
+
+var api = new UntitledApi.DefaultApi()
+var id = ; // {{}} 
+
+var callback = function(error, data, response) {
+  if (error) {
+    console.error(error);
+  } else {
+    console.log('API called successfully.');
+  }
+};
+api.v1ChallengesIdFilesGet(id, callback);
+</code></pre>
+                            </div>
+
+                            <!--<div class="tab-pane" id="examples-Default-v1ChallengesIdFilesGet-0-angular">
+              <pre class="prettyprint language-json prettyprinted" data-type="json"><code>Coming Soon!</code></pre>
+            </div>-->
+                            <div class="tab-pane" id="examples-Default-v1ChallengesIdFilesGet-0-csharp">
+                              <pre class="prettyprint"><code class="language-cs">using System;
+using System.Diagnostics;
+using IO.Swagger.Api;
+using IO.Swagger.Client;
+using IO.Swagger.Model;
+
+namespace Example
+{
+    public class v1ChallengesIdFilesGetExample
+    {
+        public void main()
+        {
+
+
+            var apiInstance = new DefaultApi();
+            var id = new (); //  | 
+
+            try
+            {
+                // Documents the [ErrorResponse]s this route can return. They are sent by StatusPages (and the auth challenge), so
+OpenAPI inference can't see them.
+                apiInstance.v1ChallengesIdFilesGet(id);
+            }
+            catch (Exception e)
+            {
+                Debug.Print("Exception when calling DefaultApi.v1ChallengesIdFilesGet: " + e.Message );
+            }
+        }
+    }
+}
+</code></pre>
+                            </div>
+
+                            <div class="tab-pane" id="examples-Default-v1ChallengesIdFilesGet-0-php">
+                              <pre class="prettyprint"><code class="language-php"><&#63;php
+require_once(__DIR__ . '/vendor/autoload.php');
+
+
+$api_instance = new Swagger\Client\ApiDefaultApi();
+$id = ; //  | 
+
+try {
+    $api_instance->v1ChallengesIdFilesGet($id);
+} catch (Exception $e) {
+    echo 'Exception when calling DefaultApi->v1ChallengesIdFilesGet: ', $e->getMessage(), PHP_EOL;
+}
+?></code></pre>
+                            </div>
+
+                            <div class="tab-pane" id="examples-Default-v1ChallengesIdFilesGet-0-perl">
+                              <pre class="prettyprint"><code class="language-perl">use Data::Dumper;
+use WWW::SwaggerClient::Configuration;
+use WWW::SwaggerClient::DefaultApi;
+
+
+my $api_instance = WWW::SwaggerClient::DefaultApi->new();
+my $id = ; #  | 
+
+eval { 
+    $api_instance->v1ChallengesIdFilesGet(id => $id);
+};
+if ($@) {
+    warn "Exception when calling DefaultApi->v1ChallengesIdFilesGet: $@\n";
+}</code></pre>
+                            </div>
+
+                            <div class="tab-pane" id="examples-Default-v1ChallengesIdFilesGet-0-python">
+                              <pre class="prettyprint"><code class="language-python">from __future__ import print_statement
+import time
+import swagger_client
+from swagger_client.rest import ApiException
+from pprint import pprint
+
+
+# create an instance of the API class
+api_instance = swagger_client.DefaultApi()
+id =  #  | 
+
+try: 
+    # Documents the [ErrorResponse]s this route can return. They are sent by StatusPages (and the auth challenge), so
+OpenAPI inference can't see them.
+    api_instance.v1_challenges_id_files_get(id)
+except ApiException as e:
+    print("Exception when calling DefaultApi->v1ChallengesIdFilesGet: %s\n" % e)</code></pre>
+                            </div>
+                          </div>
+
+                          <h2>Parameters</h2>
+
+                            <div class="methodsubtabletitle">Path parameters</div>
+                            <table id="methodsubtable">
+                                <tr>
+                                  <th width="150px">Name</th>
+                                  <th>Description</th>
+                                </tr>
+                                  <tr><td style="width:150px;">id*</td>
+                                  <td>
+                                  
+                                  
+                                      <div id="d2e199_v1ChallengesIdFilesGet_id">
+                                          <div class="json-schema-view">
+                                              <div class="primitive">
+                                                  <span class="type">
+                                                      
+                                                  </span>
+                                  
+                                              </div>
+                                                  <div class="inner required">
+                                                      Required
+                                                  </div>
+                                          </div>
+                                      </div>
+                                  </td>
+                                  </tr>
+                            </table>
+
+
+
+
+
+                          <h2>Responses</h2>
+                            <h3> Status: 200 -  </h3>
+
+                            <ul class="nav nav-tabs nav-tabs-examples" >
+                                <li class="active">
+                                  <a data-toggle="tab" href="#responses-v1ChallengesIdFilesGet-200-schema">Schema</a>
+                                </li>
+
+                            </ul>
+
+                            <div class="tab-content" style='margin-bottom: 10px;'>
+                                <div class="tab-pane active" id="responses-v1ChallengesIdFilesGet-200-schema">
+                                  <div id='responses-v1ChallengesIdFilesGet-200-schema-200' style="padding: 30px; border-left: 1px solid #eee; border-right: 1px solid #eee; border-bottom: 1px solid #eee;">
+                                    <script>
+                                      $(document).ready(function() {
+                                        var schemaWrapper = {
+  "description" : "",
+  "content" : {
+    "application/json" : {
+      "schema" : {
+        "items" : {
+          "$ref" : "#/components/schemas/FileResponse"
+        },
+        "x-content-type" : "application/json"
+      }
+    }
+  }
+};
+                                        var schema = schemaWrapper.content["application/json"].schema;
+                                        if (schema.$ref != null) {
+                                          schema = defsParser.$refs.get(schema.$ref);
+                                        } else {
+                                          schemaWrapper.components = {};
+                                          schemaWrapper.components.schemas = Object.assign({}, defs);
+                                          $RefParser.dereference(schemaWrapper).catch(function(err) {
+                                            console.log(err);
+                                          });
+                                        }
+
+                                        //console.log(JSON.stringify(schema));
+                                        var view = new JSONSchemaView(schema, 3);
+                                        $('#responses-v1ChallengesIdFilesGet-200-schema-data').val(stringify(schema));
+                                        var result = $('#responses-v1ChallengesIdFilesGet-200-schema-200');
+                                        result.empty();
+                                        result.append(view.render());
+                                      });
+                                    </script>
+                                  </div>
+                                  <input id='responses-v1ChallengesIdFilesGet-200-schema-data' type='hidden' value=''></input>
+                                </div>
+                            </div>
+
+                            <h3> Status: 400 - Bad Request </h3>
+
+                            <ul class="nav nav-tabs nav-tabs-examples" >
+                                <li class="active">
+                                  <a data-toggle="tab" href="#responses-v1ChallengesIdFilesGet-400-schema">Schema</a>
+                                </li>
+
+                            </ul>
+
+                            <div class="tab-content" style='margin-bottom: 10px;'>
+                                <div class="tab-pane active" id="responses-v1ChallengesIdFilesGet-400-schema">
+                                  <div id='responses-v1ChallengesIdFilesGet-400-schema-400' style="padding: 30px; border-left: 1px solid #eee; border-right: 1px solid #eee; border-bottom: 1px solid #eee;">
+                                    <script>
+                                      $(document).ready(function() {
+                                        var schemaWrapper = {
+  "description" : "Bad Request",
+  "content" : {
+    "application/json" : {
+      "schema" : {
+        "$ref" : "#/components/schemas/ErrorResponse"
+      }
+    }
+  }
+};
+                                        var schema = schemaWrapper.content["application/json"].schema;
+                                        if (schema.$ref != null) {
+                                          schema = defsParser.$refs.get(schema.$ref);
+                                        } else {
+                                          schemaWrapper.components = {};
+                                          schemaWrapper.components.schemas = Object.assign({}, defs);
+                                          $RefParser.dereference(schemaWrapper).catch(function(err) {
+                                            console.log(err);
+                                          });
+                                        }
+
+                                        //console.log(JSON.stringify(schema));
+                                        var view = new JSONSchemaView(schema, 3);
+                                        $('#responses-v1ChallengesIdFilesGet-400-schema-data').val(stringify(schema));
+                                        var result = $('#responses-v1ChallengesIdFilesGet-400-schema-400');
+                                        result.empty();
+                                        result.append(view.render());
+                                      });
+                                    </script>
+                                  </div>
+                                  <input id='responses-v1ChallengesIdFilesGet-400-schema-data' type='hidden' value=''></input>
+                                </div>
+                            </div>
+
+                            <h3> Status: 404 - Not Found </h3>
+
+                            <ul class="nav nav-tabs nav-tabs-examples" >
+                                <li class="active">
+                                  <a data-toggle="tab" href="#responses-v1ChallengesIdFilesGet-404-schema">Schema</a>
+                                </li>
+
+                            </ul>
+
+                            <div class="tab-content" style='margin-bottom: 10px;'>
+                                <div class="tab-pane active" id="responses-v1ChallengesIdFilesGet-404-schema">
+                                  <div id='responses-v1ChallengesIdFilesGet-404-schema-404' style="padding: 30px; border-left: 1px solid #eee; border-right: 1px solid #eee; border-bottom: 1px solid #eee;">
+                                    <script>
+                                      $(document).ready(function() {
+                                        var schemaWrapper = {
+  "description" : "Not Found",
+  "content" : {
+    "application/json" : {
+      "schema" : {
+        "$ref" : "#/components/schemas/ErrorResponse"
+      }
+    }
+  }
+};
+                                        var schema = schemaWrapper.content["application/json"].schema;
+                                        if (schema.$ref != null) {
+                                          schema = defsParser.$refs.get(schema.$ref);
+                                        } else {
+                                          schemaWrapper.components = {};
+                                          schemaWrapper.components.schemas = Object.assign({}, defs);
+                                          $RefParser.dereference(schemaWrapper).catch(function(err) {
+                                            console.log(err);
+                                          });
+                                        }
+
+                                        //console.log(JSON.stringify(schema));
+                                        var view = new JSONSchemaView(schema, 3);
+                                        $('#responses-v1ChallengesIdFilesGet-404-schema-data').val(stringify(schema));
+                                        var result = $('#responses-v1ChallengesIdFilesGet-404-schema-404');
+                                        result.empty();
+                                        result.append(view.render());
+                                      });
+                                    </script>
+                                  </div>
+                                  <input id='responses-v1ChallengesIdFilesGet-404-schema-data' type='hidden' value=''></input>
+                                </div>
+                            </div>
+
+                        </article>
+                      </div>
+                      <hr>
+                    <div id="api-Default-v1ChallengesIdFilesPost">
+                      <article id="api-Default-v1ChallengesIdFilesPost-0" data-group="User" data-name="v1ChallengesIdFilesPost" data-version="0">
+                        <div class="pull-left">
+                          <h1>v1ChallengesIdFilesPost</h1>
+                          <p>Documents the [ErrorResponse]s this route can return. They are sent by StatusPages (and the auth challenge), so
+OpenAPI inference can&#x27;t see them.</p>
+                        </div>
+                        <div class="pull-right"></div>
+                        <div class="clearfix"></div>
+                        <p></p>
+                        <p class="marked"></p>
+                        <p></p>
+                        <br />
+                        <pre class="prettyprint language-html prettyprinted" data-type="post"><code><span class="pln">/v1/challenges/{id}/files</span></code></pre>
+                        <p>
+                          <h3>Usage and SDK Samples</h3>
+                        </p>
+                        <ul class="nav nav-tabs nav-tabs-examples">
+                          <li class="active"><a href="#examples-Default-v1ChallengesIdFilesPost-0-curl">Curl</a></li>
+                          <li class=""><a href="#examples-Default-v1ChallengesIdFilesPost-0-java">Java</a></li>
+                          <li class=""><a href="#examples-Default-v1ChallengesIdFilesPost-0-android">Android</a></li>
+                          <!--<li class=""><a href="#examples-Default-v1ChallengesIdFilesPost-0-groovy">Groovy</a></li>-->
+                          <li class=""><a href="#examples-Default-v1ChallengesIdFilesPost-0-objc">Obj-C</a></li>
+                          <li class=""><a href="#examples-Default-v1ChallengesIdFilesPost-0-javascript">JavaScript</a></li>
+                          <!--<li class=""><a href="#examples-Default-v1ChallengesIdFilesPost-0-angular">Angular</a></li>-->
+                          <li class=""><a href="#examples-Default-v1ChallengesIdFilesPost-0-csharp">C#</a></li>
+                          <li class=""><a href="#examples-Default-v1ChallengesIdFilesPost-0-php">PHP</a></li>
+                          <li class=""><a href="#examples-Default-v1ChallengesIdFilesPost-0-perl">Perl</a></li>
+                          <li class=""><a href="#examples-Default-v1ChallengesIdFilesPost-0-python">Python</a></li>
+                        </ul>
+
+                        <div class="tab-content">
+                          <div class="tab-pane active" id="examples-Default-v1ChallengesIdFilesPost-0-curl">
+                           <pre class="prettyprint"><code class="language-bsh">curl -X POST\
+ -H "Authorization: Bearer [[accessToken]]"\
+-H "Accept: application/json"\
+"//v1/challenges/{id}/files"</code></pre>
+                          </div>
+                          <div class="tab-pane" id="examples-Default-v1ChallengesIdFilesPost-0-java">
+                            <pre class="prettyprint"><code class="language-java">import io.swagger.client.*;
+import io.swagger.client.auth.*;
+import io.swagger.client.model.*;
+import io.swagger.client.api.DefaultApi;
+
+import java.io.File;
+import java.util.*;
+
+public class DefaultApiExample {
+
+    public static void main(String[] args) {
+        ApiClient defaultClient = Configuration.getDefaultApiClient();
+
+
+        DefaultApi apiInstance = new DefaultApi();
+         id = ; //  | 
+        try {
+            FileResponse result = apiInstance.v1ChallengesIdFilesPost(id);
+            System.out.println(result);
+        } catch (ApiException e) {
+            System.err.println("Exception when calling DefaultApi#v1ChallengesIdFilesPost");
+            e.printStackTrace();
+        }
+    }
+}</code></pre>
+                          </div>
+
+                          <div class="tab-pane" id="examples-Default-v1ChallengesIdFilesPost-0-android">
+                            <pre class="prettyprint"><code class="language-java">import io.swagger.client.api.DefaultApi;
+
+public class DefaultApiExample {
+
+    public static void main(String[] args) {
+        DefaultApi apiInstance = new DefaultApi();
+         id = ; //  | 
+        try {
+            FileResponse result = apiInstance.v1ChallengesIdFilesPost(id);
+            System.out.println(result);
+        } catch (ApiException e) {
+            System.err.println("Exception when calling DefaultApi#v1ChallengesIdFilesPost");
+            e.printStackTrace();
+        }
+    }
+}</code></pre>
+                          </div>
+  <!--
+  <div class="tab-pane" id="examples-Default-v1ChallengesIdFilesPost-0-groovy">
+  <pre class="prettyprint language-json prettyprinted" data-type="json"><code>Coming Soon!</code></pre>
+  </div> -->
+                            <div class="tab-pane" id="examples-Default-v1ChallengesIdFilesPost-0-objc">
+                              <pre class="prettyprint"><code class="language-cpp">Configuration *apiConfig = [Configuration sharedConfig];
+ *id = ; // 
+
+DefaultApi *apiInstance = [[DefaultApi alloc] init];
+
+// Documents the [ErrorResponse]s this route can return. They are sent by StatusPages (and the auth challenge), so
+OpenAPI inference can't see them.
+[apiInstance v1ChallengesIdFilesPostWith:id
+              completionHandler: ^(FileResponse output, NSError* error) {
+                            if (output) {
+                                NSLog(@"%@", output);
+                            }
+                            if (error) {
+                                NSLog(@"Error: %@", error);
+                            }
+                        }];
+</code></pre>
+                            </div>
+
+                            <div class="tab-pane" id="examples-Default-v1ChallengesIdFilesPost-0-javascript">
+                              <pre class="prettyprint"><code class="language-js">var UntitledApi = require('untitled_api');
+var defaultClient = UntitledApi.ApiClient.instance;
+
+
+var api = new UntitledApi.DefaultApi()
+var id = ; // {{}} 
+
+var callback = function(error, data, response) {
+  if (error) {
+    console.error(error);
+  } else {
+    console.log('API called successfully. Returned data: ' + data);
+  }
+};
+api.v1ChallengesIdFilesPost(id, callback);
+</code></pre>
+                            </div>
+
+                            <!--<div class="tab-pane" id="examples-Default-v1ChallengesIdFilesPost-0-angular">
+              <pre class="prettyprint language-json prettyprinted" data-type="json"><code>Coming Soon!</code></pre>
+            </div>-->
+                            <div class="tab-pane" id="examples-Default-v1ChallengesIdFilesPost-0-csharp">
+                              <pre class="prettyprint"><code class="language-cs">using System;
+using System.Diagnostics;
+using IO.Swagger.Api;
+using IO.Swagger.Client;
+using IO.Swagger.Model;
+
+namespace Example
+{
+    public class v1ChallengesIdFilesPostExample
+    {
+        public void main()
+        {
+
+
+            var apiInstance = new DefaultApi();
+            var id = new (); //  | 
+
+            try
+            {
+                // Documents the [ErrorResponse]s this route can return. They are sent by StatusPages (and the auth challenge), so
+OpenAPI inference can't see them.
+                FileResponse result = apiInstance.v1ChallengesIdFilesPost(id);
+                Debug.WriteLine(result);
+            }
+            catch (Exception e)
+            {
+                Debug.Print("Exception when calling DefaultApi.v1ChallengesIdFilesPost: " + e.Message );
+            }
+        }
+    }
+}
+</code></pre>
+                            </div>
+
+                            <div class="tab-pane" id="examples-Default-v1ChallengesIdFilesPost-0-php">
+                              <pre class="prettyprint"><code class="language-php"><&#63;php
+require_once(__DIR__ . '/vendor/autoload.php');
+
+
+$api_instance = new Swagger\Client\ApiDefaultApi();
+$id = ; //  | 
+
+try {
+    $result = $api_instance->v1ChallengesIdFilesPost($id);
+    print_r($result);
+} catch (Exception $e) {
+    echo 'Exception when calling DefaultApi->v1ChallengesIdFilesPost: ', $e->getMessage(), PHP_EOL;
+}
+?></code></pre>
+                            </div>
+
+                            <div class="tab-pane" id="examples-Default-v1ChallengesIdFilesPost-0-perl">
+                              <pre class="prettyprint"><code class="language-perl">use Data::Dumper;
+use WWW::SwaggerClient::Configuration;
+use WWW::SwaggerClient::DefaultApi;
+
+
+my $api_instance = WWW::SwaggerClient::DefaultApi->new();
+my $id = ; #  | 
+
+eval { 
+    my $result = $api_instance->v1ChallengesIdFilesPost(id => $id);
+    print Dumper($result);
+};
+if ($@) {
+    warn "Exception when calling DefaultApi->v1ChallengesIdFilesPost: $@\n";
+}</code></pre>
+                            </div>
+
+                            <div class="tab-pane" id="examples-Default-v1ChallengesIdFilesPost-0-python">
+                              <pre class="prettyprint"><code class="language-python">from __future__ import print_statement
+import time
+import swagger_client
+from swagger_client.rest import ApiException
+from pprint import pprint
+
+
+# create an instance of the API class
+api_instance = swagger_client.DefaultApi()
+id =  #  | 
+
+try: 
+    # Documents the [ErrorResponse]s this route can return. They are sent by StatusPages (and the auth challenge), so
+OpenAPI inference can't see them.
+    api_response = api_instance.v1_challenges_id_files_post(id)
+    pprint(api_response)
+except ApiException as e:
+    print("Exception when calling DefaultApi->v1ChallengesIdFilesPost: %s\n" % e)</code></pre>
+                            </div>
+                          </div>
+
+                          <h2>Parameters</h2>
+
+                            <div class="methodsubtabletitle">Path parameters</div>
+                            <table id="methodsubtable">
+                                <tr>
+                                  <th width="150px">Name</th>
+                                  <th>Description</th>
+                                </tr>
+                                  <tr><td style="width:150px;">id*</td>
+                                  <td>
+                                  
+                                  
+                                      <div id="d2e199_v1ChallengesIdFilesPost_id">
+                                          <div class="json-schema-view">
+                                              <div class="primitive">
+                                                  <span class="type">
+                                                      
+                                                  </span>
+                                  
+                                              </div>
+                                                  <div class="inner required">
+                                                      Required
+                                                  </div>
+                                          </div>
+                                      </div>
+                                  </td>
+                                  </tr>
+                            </table>
+
+
+
+
+
+                          <h2>Responses</h2>
+                            <h3> Status: 201 -  </h3>
+
+                            <ul class="nav nav-tabs nav-tabs-examples" >
+                                <li class="active">
+                                  <a data-toggle="tab" href="#responses-v1ChallengesIdFilesPost-201-schema">Schema</a>
+                                </li>
+
+                            </ul>
+
+                            <div class="tab-content" style='margin-bottom: 10px;'>
+                                <div class="tab-pane active" id="responses-v1ChallengesIdFilesPost-201-schema">
+                                  <div id='responses-v1ChallengesIdFilesPost-201-schema-201' style="padding: 30px; border-left: 1px solid #eee; border-right: 1px solid #eee; border-bottom: 1px solid #eee;">
+                                    <script>
+                                      $(document).ready(function() {
+                                        var schemaWrapper = {
+  "description" : "",
+  "content" : {
+    "application/json" : {
+      "schema" : {
+        "$ref" : "#/components/schemas/FileResponse"
+      }
+    }
+  }
+};
+                                        var schema = schemaWrapper.content["application/json"].schema;
+                                        if (schema.$ref != null) {
+                                          schema = defsParser.$refs.get(schema.$ref);
+                                        } else {
+                                          schemaWrapper.components = {};
+                                          schemaWrapper.components.schemas = Object.assign({}, defs);
+                                          $RefParser.dereference(schemaWrapper).catch(function(err) {
+                                            console.log(err);
+                                          });
+                                        }
+
+                                        //console.log(JSON.stringify(schema));
+                                        var view = new JSONSchemaView(schema, 3);
+                                        $('#responses-v1ChallengesIdFilesPost-201-schema-data').val(stringify(schema));
+                                        var result = $('#responses-v1ChallengesIdFilesPost-201-schema-201');
+                                        result.empty();
+                                        result.append(view.render());
+                                      });
+                                    </script>
+                                  </div>
+                                  <input id='responses-v1ChallengesIdFilesPost-201-schema-data' type='hidden' value=''></input>
+                                </div>
+                            </div>
+
+                            <h3> Status: 400 - Bad Request </h3>
+
+                            <ul class="nav nav-tabs nav-tabs-examples" >
+                                <li class="active">
+                                  <a data-toggle="tab" href="#responses-v1ChallengesIdFilesPost-400-schema">Schema</a>
+                                </li>
+
+                            </ul>
+
+                            <div class="tab-content" style='margin-bottom: 10px;'>
+                                <div class="tab-pane active" id="responses-v1ChallengesIdFilesPost-400-schema">
+                                  <div id='responses-v1ChallengesIdFilesPost-400-schema-400' style="padding: 30px; border-left: 1px solid #eee; border-right: 1px solid #eee; border-bottom: 1px solid #eee;">
+                                    <script>
+                                      $(document).ready(function() {
+                                        var schemaWrapper = {
+  "description" : "Bad Request",
+  "content" : {
+    "application/json" : {
+      "schema" : {
+        "$ref" : "#/components/schemas/ErrorResponse"
+      }
+    }
+  }
+};
+                                        var schema = schemaWrapper.content["application/json"].schema;
+                                        if (schema.$ref != null) {
+                                          schema = defsParser.$refs.get(schema.$ref);
+                                        } else {
+                                          schemaWrapper.components = {};
+                                          schemaWrapper.components.schemas = Object.assign({}, defs);
+                                          $RefParser.dereference(schemaWrapper).catch(function(err) {
+                                            console.log(err);
+                                          });
+                                        }
+
+                                        //console.log(JSON.stringify(schema));
+                                        var view = new JSONSchemaView(schema, 3);
+                                        $('#responses-v1ChallengesIdFilesPost-400-schema-data').val(stringify(schema));
+                                        var result = $('#responses-v1ChallengesIdFilesPost-400-schema-400');
+                                        result.empty();
+                                        result.append(view.render());
+                                      });
+                                    </script>
+                                  </div>
+                                  <input id='responses-v1ChallengesIdFilesPost-400-schema-data' type='hidden' value=''></input>
+                                </div>
+                            </div>
+
+                            <h3> Status: 401 - Unauthorized </h3>
+
+                            <ul class="nav nav-tabs nav-tabs-examples" >
+                                <li class="active">
+                                  <a data-toggle="tab" href="#responses-v1ChallengesIdFilesPost-401-schema">Schema</a>
+                                </li>
+
+                            </ul>
+
+                            <div class="tab-content" style='margin-bottom: 10px;'>
+                                <div class="tab-pane active" id="responses-v1ChallengesIdFilesPost-401-schema">
+                                  <div id='responses-v1ChallengesIdFilesPost-401-schema-401' style="padding: 30px; border-left: 1px solid #eee; border-right: 1px solid #eee; border-bottom: 1px solid #eee;">
+                                    <script>
+                                      $(document).ready(function() {
+                                        var schemaWrapper = {
+  "description" : "Unauthorized",
+  "content" : {
+    "application/json" : {
+      "schema" : {
+        "$ref" : "#/components/schemas/ErrorResponse"
+      }
+    }
+  }
+};
+                                        var schema = schemaWrapper.content["application/json"].schema;
+                                        if (schema.$ref != null) {
+                                          schema = defsParser.$refs.get(schema.$ref);
+                                        } else {
+                                          schemaWrapper.components = {};
+                                          schemaWrapper.components.schemas = Object.assign({}, defs);
+                                          $RefParser.dereference(schemaWrapper).catch(function(err) {
+                                            console.log(err);
+                                          });
+                                        }
+
+                                        //console.log(JSON.stringify(schema));
+                                        var view = new JSONSchemaView(schema, 3);
+                                        $('#responses-v1ChallengesIdFilesPost-401-schema-data').val(stringify(schema));
+                                        var result = $('#responses-v1ChallengesIdFilesPost-401-schema-401');
+                                        result.empty();
+                                        result.append(view.render());
+                                      });
+                                    </script>
+                                  </div>
+                                  <input id='responses-v1ChallengesIdFilesPost-401-schema-data' type='hidden' value=''></input>
+                                </div>
+                            </div>
+
+                            <h3> Status: 403 - Forbidden </h3>
+
+                            <ul class="nav nav-tabs nav-tabs-examples" >
+                                <li class="active">
+                                  <a data-toggle="tab" href="#responses-v1ChallengesIdFilesPost-403-schema">Schema</a>
+                                </li>
+
+                            </ul>
+
+                            <div class="tab-content" style='margin-bottom: 10px;'>
+                                <div class="tab-pane active" id="responses-v1ChallengesIdFilesPost-403-schema">
+                                  <div id='responses-v1ChallengesIdFilesPost-403-schema-403' style="padding: 30px; border-left: 1px solid #eee; border-right: 1px solid #eee; border-bottom: 1px solid #eee;">
+                                    <script>
+                                      $(document).ready(function() {
+                                        var schemaWrapper = {
+  "description" : "Forbidden",
+  "content" : {
+    "application/json" : {
+      "schema" : {
+        "$ref" : "#/components/schemas/ErrorResponse"
+      }
+    }
+  }
+};
+                                        var schema = schemaWrapper.content["application/json"].schema;
+                                        if (schema.$ref != null) {
+                                          schema = defsParser.$refs.get(schema.$ref);
+                                        } else {
+                                          schemaWrapper.components = {};
+                                          schemaWrapper.components.schemas = Object.assign({}, defs);
+                                          $RefParser.dereference(schemaWrapper).catch(function(err) {
+                                            console.log(err);
+                                          });
+                                        }
+
+                                        //console.log(JSON.stringify(schema));
+                                        var view = new JSONSchemaView(schema, 3);
+                                        $('#responses-v1ChallengesIdFilesPost-403-schema-data').val(stringify(schema));
+                                        var result = $('#responses-v1ChallengesIdFilesPost-403-schema-403');
+                                        result.empty();
+                                        result.append(view.render());
+                                      });
+                                    </script>
+                                  </div>
+                                  <input id='responses-v1ChallengesIdFilesPost-403-schema-data' type='hidden' value=''></input>
+                                </div>
+                            </div>
+
+                            <h3> Status: 404 - Not Found </h3>
+
+                            <ul class="nav nav-tabs nav-tabs-examples" >
+                                <li class="active">
+                                  <a data-toggle="tab" href="#responses-v1ChallengesIdFilesPost-404-schema">Schema</a>
+                                </li>
+
+                            </ul>
+
+                            <div class="tab-content" style='margin-bottom: 10px;'>
+                                <div class="tab-pane active" id="responses-v1ChallengesIdFilesPost-404-schema">
+                                  <div id='responses-v1ChallengesIdFilesPost-404-schema-404' style="padding: 30px; border-left: 1px solid #eee; border-right: 1px solid #eee; border-bottom: 1px solid #eee;">
+                                    <script>
+                                      $(document).ready(function() {
+                                        var schemaWrapper = {
+  "description" : "Not Found",
+  "content" : {
+    "application/json" : {
+      "schema" : {
+        "$ref" : "#/components/schemas/ErrorResponse"
+      }
+    }
+  }
+};
+                                        var schema = schemaWrapper.content["application/json"].schema;
+                                        if (schema.$ref != null) {
+                                          schema = defsParser.$refs.get(schema.$ref);
+                                        } else {
+                                          schemaWrapper.components = {};
+                                          schemaWrapper.components.schemas = Object.assign({}, defs);
+                                          $RefParser.dereference(schemaWrapper).catch(function(err) {
+                                            console.log(err);
+                                          });
+                                        }
+
+                                        //console.log(JSON.stringify(schema));
+                                        var view = new JSONSchemaView(schema, 3);
+                                        $('#responses-v1ChallengesIdFilesPost-404-schema-data').val(stringify(schema));
+                                        var result = $('#responses-v1ChallengesIdFilesPost-404-schema-404');
+                                        result.empty();
+                                        result.append(view.render());
+                                      });
+                                    </script>
+                                  </div>
+                                  <input id='responses-v1ChallengesIdFilesPost-404-schema-data' type='hidden' value=''></input>
+                                </div>
+                            </div>
+
+                            <h3> Status: 413 - Payload Too Large </h3>
+
+                            <ul class="nav nav-tabs nav-tabs-examples" >
+                                <li class="active">
+                                  <a data-toggle="tab" href="#responses-v1ChallengesIdFilesPost-413-schema">Schema</a>
+                                </li>
+
+                            </ul>
+
+                            <div class="tab-content" style='margin-bottom: 10px;'>
+                                <div class="tab-pane active" id="responses-v1ChallengesIdFilesPost-413-schema">
+                                  <div id='responses-v1ChallengesIdFilesPost-413-schema-413' style="padding: 30px; border-left: 1px solid #eee; border-right: 1px solid #eee; border-bottom: 1px solid #eee;">
+                                    <script>
+                                      $(document).ready(function() {
+                                        var schemaWrapper = {
+  "description" : "Payload Too Large",
+  "content" : {
+    "application/json" : {
+      "schema" : {
+        "$ref" : "#/components/schemas/ErrorResponse"
+      }
+    }
+  }
+};
+                                        var schema = schemaWrapper.content["application/json"].schema;
+                                        if (schema.$ref != null) {
+                                          schema = defsParser.$refs.get(schema.$ref);
+                                        } else {
+                                          schemaWrapper.components = {};
+                                          schemaWrapper.components.schemas = Object.assign({}, defs);
+                                          $RefParser.dereference(schemaWrapper).catch(function(err) {
+                                            console.log(err);
+                                          });
+                                        }
+
+                                        //console.log(JSON.stringify(schema));
+                                        var view = new JSONSchemaView(schema, 3);
+                                        $('#responses-v1ChallengesIdFilesPost-413-schema-data').val(stringify(schema));
+                                        var result = $('#responses-v1ChallengesIdFilesPost-413-schema-413');
+                                        result.empty();
+                                        result.append(view.render());
+                                      });
+                                    </script>
+                                  </div>
+                                  <input id='responses-v1ChallengesIdFilesPost-413-schema-data' type='hidden' value=''></input>
+                                </div>
+                            </div>
+
+                        </article>
+                      </div>
+                      <hr>
                     <div id="api-Default-v1ChallengesIdFlagsDelete">
                       <article id="api-Default-v1ChallengesIdFlagsDelete-0" data-group="User" data-name="v1ChallengesIdFlagsDelete" data-version="0">
                         <div class="pull-left">
@@ -13040,457 +13974,12 @@ except ApiException as e:
                         </article>
                       </div>
                       <hr>
-                    <div id="api-Default-v1FilesDelete">
-                      <article id="api-Default-v1FilesDelete-0" data-group="User" data-name="v1FilesDelete" data-version="0">
-                        <div class="pull-left">
-                          <h1>v1FilesDelete</h1>
-                          <p></p>
-                        </div>
-                        <div class="pull-right"></div>
-                        <div class="clearfix"></div>
-                        <p></p>
-                        <p class="marked"></p>
-                        <p></p>
-                        <br />
-                        <pre class="prettyprint language-html prettyprinted" data-type="delete"><code><span class="pln">/v1/files</span></code></pre>
-                        <p>
-                          <h3>Usage and SDK Samples</h3>
-                        </p>
-                        <ul class="nav nav-tabs nav-tabs-examples">
-                          <li class="active"><a href="#examples-Default-v1FilesDelete-0-curl">Curl</a></li>
-                          <li class=""><a href="#examples-Default-v1FilesDelete-0-java">Java</a></li>
-                          <li class=""><a href="#examples-Default-v1FilesDelete-0-android">Android</a></li>
-                          <!--<li class=""><a href="#examples-Default-v1FilesDelete-0-groovy">Groovy</a></li>-->
-                          <li class=""><a href="#examples-Default-v1FilesDelete-0-objc">Obj-C</a></li>
-                          <li class=""><a href="#examples-Default-v1FilesDelete-0-javascript">JavaScript</a></li>
-                          <!--<li class=""><a href="#examples-Default-v1FilesDelete-0-angular">Angular</a></li>-->
-                          <li class=""><a href="#examples-Default-v1FilesDelete-0-csharp">C#</a></li>
-                          <li class=""><a href="#examples-Default-v1FilesDelete-0-php">PHP</a></li>
-                          <li class=""><a href="#examples-Default-v1FilesDelete-0-perl">Perl</a></li>
-                          <li class=""><a href="#examples-Default-v1FilesDelete-0-python">Python</a></li>
-                        </ul>
-
-                        <div class="tab-content">
-                          <div class="tab-pane active" id="examples-Default-v1FilesDelete-0-curl">
-                           <pre class="prettyprint"><code class="language-bsh">curl -X DELETE\
-"//v1/files"</code></pre>
-                          </div>
-                          <div class="tab-pane" id="examples-Default-v1FilesDelete-0-java">
-                            <pre class="prettyprint"><code class="language-java">import io.swagger.client.*;
-import io.swagger.client.auth.*;
-import io.swagger.client.model.*;
-import io.swagger.client.api.DefaultApi;
-
-import java.io.File;
-import java.util.*;
-
-public class DefaultApiExample {
-
-    public static void main(String[] args) {
-        
-        DefaultApi apiInstance = new DefaultApi();
-        try {
-            apiInstance.v1FilesDelete();
-        } catch (ApiException e) {
-            System.err.println("Exception when calling DefaultApi#v1FilesDelete");
-            e.printStackTrace();
-        }
-    }
-}</code></pre>
-                          </div>
-
-                          <div class="tab-pane" id="examples-Default-v1FilesDelete-0-android">
-                            <pre class="prettyprint"><code class="language-java">import io.swagger.client.api.DefaultApi;
-
-public class DefaultApiExample {
-
-    public static void main(String[] args) {
-        DefaultApi apiInstance = new DefaultApi();
-        try {
-            apiInstance.v1FilesDelete();
-        } catch (ApiException e) {
-            System.err.println("Exception when calling DefaultApi#v1FilesDelete");
-            e.printStackTrace();
-        }
-    }
-}</code></pre>
-                          </div>
-  <!--
-  <div class="tab-pane" id="examples-Default-v1FilesDelete-0-groovy">
-  <pre class="prettyprint language-json prettyprinted" data-type="json"><code>Coming Soon!</code></pre>
-  </div> -->
-                            <div class="tab-pane" id="examples-Default-v1FilesDelete-0-objc">
-                              <pre class="prettyprint"><code class="language-cpp">
-DefaultApi *apiInstance = [[DefaultApi alloc] init];
-
-[apiInstance v1FilesDeleteWithCompletionHandler: 
-              ^(NSError* error) {
-                            if (error) {
-                                NSLog(@"Error: %@", error);
-                            }
-                        }];
-</code></pre>
-                            </div>
-
-                            <div class="tab-pane" id="examples-Default-v1FilesDelete-0-javascript">
-                              <pre class="prettyprint"><code class="language-js">var UntitledApi = require('untitled_api');
-
-var api = new UntitledApi.DefaultApi()
-var callback = function(error, data, response) {
-  if (error) {
-    console.error(error);
-  } else {
-    console.log('API called successfully.');
-  }
-};
-api.v1FilesDelete(callback);
-</code></pre>
-                            </div>
-
-                            <!--<div class="tab-pane" id="examples-Default-v1FilesDelete-0-angular">
-              <pre class="prettyprint language-json prettyprinted" data-type="json"><code>Coming Soon!</code></pre>
-            </div>-->
-                            <div class="tab-pane" id="examples-Default-v1FilesDelete-0-csharp">
-                              <pre class="prettyprint"><code class="language-cs">using System;
-using System.Diagnostics;
-using IO.Swagger.Api;
-using IO.Swagger.Client;
-using IO.Swagger.Model;
-
-namespace Example
-{
-    public class v1FilesDeleteExample
-    {
-        public void main()
-        {
-
-            var apiInstance = new DefaultApi();
-
-            try
-            {
-                apiInstance.v1FilesDelete();
-            }
-            catch (Exception e)
-            {
-                Debug.Print("Exception when calling DefaultApi.v1FilesDelete: " + e.Message );
-            }
-        }
-    }
-}
-</code></pre>
-                            </div>
-
-                            <div class="tab-pane" id="examples-Default-v1FilesDelete-0-php">
-                              <pre class="prettyprint"><code class="language-php"><&#63;php
-require_once(__DIR__ . '/vendor/autoload.php');
-
-$api_instance = new Swagger\Client\ApiDefaultApi();
-
-try {
-    $api_instance->v1FilesDelete();
-} catch (Exception $e) {
-    echo 'Exception when calling DefaultApi->v1FilesDelete: ', $e->getMessage(), PHP_EOL;
-}
-?></code></pre>
-                            </div>
-
-                            <div class="tab-pane" id="examples-Default-v1FilesDelete-0-perl">
-                              <pre class="prettyprint"><code class="language-perl">use Data::Dumper;
-use WWW::SwaggerClient::Configuration;
-use WWW::SwaggerClient::DefaultApi;
-
-my $api_instance = WWW::SwaggerClient::DefaultApi->new();
-
-eval { 
-    $api_instance->v1FilesDelete();
-};
-if ($@) {
-    warn "Exception when calling DefaultApi->v1FilesDelete: $@\n";
-}</code></pre>
-                            </div>
-
-                            <div class="tab-pane" id="examples-Default-v1FilesDelete-0-python">
-                              <pre class="prettyprint"><code class="language-python">from __future__ import print_statement
-import time
-import swagger_client
-from swagger_client.rest import ApiException
-from pprint import pprint
-
-# create an instance of the API class
-api_instance = swagger_client.DefaultApi()
-
-try: 
-    api_instance.v1_files_delete()
-except ApiException as e:
-    print("Exception when calling DefaultApi->v1FilesDelete: %s\n" % e)</code></pre>
-                            </div>
-                          </div>
-
-                          <h2>Parameters</h2>
-
-
-
-
-
-
-                          <h2>Responses</h2>
-                        </article>
-                      </div>
-                      <hr>
-                    <div id="api-Default-v1FilesGet">
-                      <article id="api-Default-v1FilesGet-0" data-group="User" data-name="v1FilesGet" data-version="0">
-                        <div class="pull-left">
-                          <h1>v1FilesGet</h1>
-                          <p></p>
-                        </div>
-                        <div class="pull-right"></div>
-                        <div class="clearfix"></div>
-                        <p></p>
-                        <p class="marked"></p>
-                        <p></p>
-                        <br />
-                        <pre class="prettyprint language-html prettyprinted" data-type="get"><code><span class="pln">/v1/files</span></code></pre>
-                        <p>
-                          <h3>Usage and SDK Samples</h3>
-                        </p>
-                        <ul class="nav nav-tabs nav-tabs-examples">
-                          <li class="active"><a href="#examples-Default-v1FilesGet-0-curl">Curl</a></li>
-                          <li class=""><a href="#examples-Default-v1FilesGet-0-java">Java</a></li>
-                          <li class=""><a href="#examples-Default-v1FilesGet-0-android">Android</a></li>
-                          <!--<li class=""><a href="#examples-Default-v1FilesGet-0-groovy">Groovy</a></li>-->
-                          <li class=""><a href="#examples-Default-v1FilesGet-0-objc">Obj-C</a></li>
-                          <li class=""><a href="#examples-Default-v1FilesGet-0-javascript">JavaScript</a></li>
-                          <!--<li class=""><a href="#examples-Default-v1FilesGet-0-angular">Angular</a></li>-->
-                          <li class=""><a href="#examples-Default-v1FilesGet-0-csharp">C#</a></li>
-                          <li class=""><a href="#examples-Default-v1FilesGet-0-php">PHP</a></li>
-                          <li class=""><a href="#examples-Default-v1FilesGet-0-perl">Perl</a></li>
-                          <li class=""><a href="#examples-Default-v1FilesGet-0-python">Python</a></li>
-                        </ul>
-
-                        <div class="tab-content">
-                          <div class="tab-pane active" id="examples-Default-v1FilesGet-0-curl">
-                           <pre class="prettyprint"><code class="language-bsh">curl -X GET\
--H "Accept: application/json"\
-"//v1/files"</code></pre>
-                          </div>
-                          <div class="tab-pane" id="examples-Default-v1FilesGet-0-java">
-                            <pre class="prettyprint"><code class="language-java">import io.swagger.client.*;
-import io.swagger.client.auth.*;
-import io.swagger.client.model.*;
-import io.swagger.client.api.DefaultApi;
-
-import java.io.File;
-import java.util.*;
-
-public class DefaultApiExample {
-
-    public static void main(String[] args) {
-        
-        DefaultApi apiInstance = new DefaultApi();
-        try {
-            apiInstance.v1FilesGet();
-        } catch (ApiException e) {
-            System.err.println("Exception when calling DefaultApi#v1FilesGet");
-            e.printStackTrace();
-        }
-    }
-}</code></pre>
-                          </div>
-
-                          <div class="tab-pane" id="examples-Default-v1FilesGet-0-android">
-                            <pre class="prettyprint"><code class="language-java">import io.swagger.client.api.DefaultApi;
-
-public class DefaultApiExample {
-
-    public static void main(String[] args) {
-        DefaultApi apiInstance = new DefaultApi();
-        try {
-            apiInstance.v1FilesGet();
-        } catch (ApiException e) {
-            System.err.println("Exception when calling DefaultApi#v1FilesGet");
-            e.printStackTrace();
-        }
-    }
-}</code></pre>
-                          </div>
-  <!--
-  <div class="tab-pane" id="examples-Default-v1FilesGet-0-groovy">
-  <pre class="prettyprint language-json prettyprinted" data-type="json"><code>Coming Soon!</code></pre>
-  </div> -->
-                            <div class="tab-pane" id="examples-Default-v1FilesGet-0-objc">
-                              <pre class="prettyprint"><code class="language-cpp">
-DefaultApi *apiInstance = [[DefaultApi alloc] init];
-
-[apiInstance v1FilesGetWithCompletionHandler: 
-              ^(NSError* error) {
-                            if (error) {
-                                NSLog(@"Error: %@", error);
-                            }
-                        }];
-</code></pre>
-                            </div>
-
-                            <div class="tab-pane" id="examples-Default-v1FilesGet-0-javascript">
-                              <pre class="prettyprint"><code class="language-js">var UntitledApi = require('untitled_api');
-
-var api = new UntitledApi.DefaultApi()
-var callback = function(error, data, response) {
-  if (error) {
-    console.error(error);
-  } else {
-    console.log('API called successfully.');
-  }
-};
-api.v1FilesGet(callback);
-</code></pre>
-                            </div>
-
-                            <!--<div class="tab-pane" id="examples-Default-v1FilesGet-0-angular">
-              <pre class="prettyprint language-json prettyprinted" data-type="json"><code>Coming Soon!</code></pre>
-            </div>-->
-                            <div class="tab-pane" id="examples-Default-v1FilesGet-0-csharp">
-                              <pre class="prettyprint"><code class="language-cs">using System;
-using System.Diagnostics;
-using IO.Swagger.Api;
-using IO.Swagger.Client;
-using IO.Swagger.Model;
-
-namespace Example
-{
-    public class v1FilesGetExample
-    {
-        public void main()
-        {
-
-            var apiInstance = new DefaultApi();
-
-            try
-            {
-                apiInstance.v1FilesGet();
-            }
-            catch (Exception e)
-            {
-                Debug.Print("Exception when calling DefaultApi.v1FilesGet: " + e.Message );
-            }
-        }
-    }
-}
-</code></pre>
-                            </div>
-
-                            <div class="tab-pane" id="examples-Default-v1FilesGet-0-php">
-                              <pre class="prettyprint"><code class="language-php"><&#63;php
-require_once(__DIR__ . '/vendor/autoload.php');
-
-$api_instance = new Swagger\Client\ApiDefaultApi();
-
-try {
-    $api_instance->v1FilesGet();
-} catch (Exception $e) {
-    echo 'Exception when calling DefaultApi->v1FilesGet: ', $e->getMessage(), PHP_EOL;
-}
-?></code></pre>
-                            </div>
-
-                            <div class="tab-pane" id="examples-Default-v1FilesGet-0-perl">
-                              <pre class="prettyprint"><code class="language-perl">use Data::Dumper;
-use WWW::SwaggerClient::Configuration;
-use WWW::SwaggerClient::DefaultApi;
-
-my $api_instance = WWW::SwaggerClient::DefaultApi->new();
-
-eval { 
-    $api_instance->v1FilesGet();
-};
-if ($@) {
-    warn "Exception when calling DefaultApi->v1FilesGet: $@\n";
-}</code></pre>
-                            </div>
-
-                            <div class="tab-pane" id="examples-Default-v1FilesGet-0-python">
-                              <pre class="prettyprint"><code class="language-python">from __future__ import print_statement
-import time
-import swagger_client
-from swagger_client.rest import ApiException
-from pprint import pprint
-
-# create an instance of the API class
-api_instance = swagger_client.DefaultApi()
-
-try: 
-    api_instance.v1_files_get()
-except ApiException as e:
-    print("Exception when calling DefaultApi->v1FilesGet: %s\n" % e)</code></pre>
-                            </div>
-                          </div>
-
-                          <h2>Parameters</h2>
-
-
-
-
-
-
-                          <h2>Responses</h2>
-                            <h3> Status: 200 -  </h3>
-
-                            <ul class="nav nav-tabs nav-tabs-examples" >
-                                <li class="active">
-                                  <a data-toggle="tab" href="#responses-v1FilesGet-200-schema">Schema</a>
-                                </li>
-
-                            </ul>
-
-                            <div class="tab-content" style='margin-bottom: 10px;'>
-                                <div class="tab-pane active" id="responses-v1FilesGet-200-schema">
-                                  <div id='responses-v1FilesGet-200-schema-200' style="padding: 30px; border-left: 1px solid #eee; border-right: 1px solid #eee; border-bottom: 1px solid #eee;">
-                                    <script>
-                                      $(document).ready(function() {
-                                        var schemaWrapper = {
-  "description" : "",
-  "content" : {
-    "application/json" : {
-      "schema" : {
-        "items" : {
-          "$ref" : "#/components/schemas/FileResponse"
-        },
-        "x-content-type" : "application/json"
-      }
-    }
-  }
-};
-                                        var schema = schemaWrapper.content["application/json"].schema;
-                                        if (schema.$ref != null) {
-                                          schema = defsParser.$refs.get(schema.$ref);
-                                        } else {
-                                          schemaWrapper.components = {};
-                                          schemaWrapper.components.schemas = Object.assign({}, defs);
-                                          $RefParser.dereference(schemaWrapper).catch(function(err) {
-                                            console.log(err);
-                                          });
-                                        }
-
-                                        //console.log(JSON.stringify(schema));
-                                        var view = new JSONSchemaView(schema, 3);
-                                        $('#responses-v1FilesGet-200-schema-data').val(stringify(schema));
-                                        var result = $('#responses-v1FilesGet-200-schema-200');
-                                        result.empty();
-                                        result.append(view.render());
-                                      });
-                                    </script>
-                                  </div>
-                                  <input id='responses-v1FilesGet-200-schema-data' type='hidden' value=''></input>
-                                </div>
-                            </div>
-
-                        </article>
-                      </div>
-                      <hr>
                     <div id="api-Default-v1FilesIdDelete">
                       <article id="api-Default-v1FilesIdDelete-0" data-group="User" data-name="v1FilesIdDelete" data-version="0">
                         <div class="pull-left">
                           <h1>v1FilesIdDelete</h1>
-                          <p></p>
+                          <p>Documents the [ErrorResponse]s this route can return. They are sent by StatusPages (and the auth challenge), so
+OpenAPI inference can&#x27;t see them.</p>
                         </div>
                         <div class="pull-right"></div>
                         <div class="clearfix"></div>
@@ -13519,6 +14008,8 @@ except ApiException as e:
                         <div class="tab-content">
                           <div class="tab-pane active" id="examples-Default-v1FilesIdDelete-0-curl">
                            <pre class="prettyprint"><code class="language-bsh">curl -X DELETE\
+ -H "Authorization: Bearer [[accessToken]]"\
+-H "Accept: application/json"\
 "//v1/files/{id}"</code></pre>
                           </div>
                           <div class="tab-pane" id="examples-Default-v1FilesIdDelete-0-java">
@@ -13533,7 +14024,9 @@ import java.util.*;
 public class DefaultApiExample {
 
     public static void main(String[] args) {
-        
+        ApiClient defaultClient = Configuration.getDefaultApiClient();
+
+
         DefaultApi apiInstance = new DefaultApi();
          id = ; //  | 
         try {
@@ -13568,10 +14061,13 @@ public class DefaultApiExample {
   <pre class="prettyprint language-json prettyprinted" data-type="json"><code>Coming Soon!</code></pre>
   </div> -->
                             <div class="tab-pane" id="examples-Default-v1FilesIdDelete-0-objc">
-                              <pre class="prettyprint"><code class="language-cpp"> *id = ; // 
+                              <pre class="prettyprint"><code class="language-cpp">Configuration *apiConfig = [Configuration sharedConfig];
+ *id = ; // 
 
 DefaultApi *apiInstance = [[DefaultApi alloc] init];
 
+// Documents the [ErrorResponse]s this route can return. They are sent by StatusPages (and the auth challenge), so
+OpenAPI inference can't see them.
 [apiInstance v1FilesIdDeleteWith:id
               completionHandler: ^(NSError* error) {
                             if (error) {
@@ -13583,6 +14079,8 @@ DefaultApi *apiInstance = [[DefaultApi alloc] init];
 
                             <div class="tab-pane" id="examples-Default-v1FilesIdDelete-0-javascript">
                               <pre class="prettyprint"><code class="language-js">var UntitledApi = require('untitled_api');
+var defaultClient = UntitledApi.ApiClient.instance;
+
 
 var api = new UntitledApi.DefaultApi()
 var id = ; // {{}} 
@@ -13615,11 +14113,14 @@ namespace Example
         public void main()
         {
 
+
             var apiInstance = new DefaultApi();
             var id = new (); //  | 
 
             try
             {
+                // Documents the [ErrorResponse]s this route can return. They are sent by StatusPages (and the auth challenge), so
+OpenAPI inference can't see them.
                 apiInstance.v1FilesIdDelete(id);
             }
             catch (Exception e)
@@ -13636,6 +14137,7 @@ namespace Example
                               <pre class="prettyprint"><code class="language-php"><&#63;php
 require_once(__DIR__ . '/vendor/autoload.php');
 
+
 $api_instance = new Swagger\Client\ApiDefaultApi();
 $id = ; //  | 
 
@@ -13651,6 +14153,7 @@ try {
                               <pre class="prettyprint"><code class="language-perl">use Data::Dumper;
 use WWW::SwaggerClient::Configuration;
 use WWW::SwaggerClient::DefaultApi;
+
 
 my $api_instance = WWW::SwaggerClient::DefaultApi->new();
 my $id = ; #  | 
@@ -13670,11 +14173,14 @@ import swagger_client
 from swagger_client.rest import ApiException
 from pprint import pprint
 
+
 # create an instance of the API class
 api_instance = swagger_client.DefaultApi()
 id =  #  | 
 
 try: 
+    # Documents the [ErrorResponse]s this route can return. They are sent by StatusPages (and the auth challenge), so
+OpenAPI inference can't see them.
     api_instance.v1_files_id_delete(id)
 except ApiException as e:
     print("Exception when calling DefaultApi->v1FilesIdDelete: %s\n" % e)</code></pre>
@@ -13723,14 +14229,207 @@ except ApiException as e:
                             <div class="tab-content" style='margin-bottom: 10px;'>
                             </div>
 
+                            <h3> Status: 400 - Bad Request </h3>
+
+                            <ul class="nav nav-tabs nav-tabs-examples" >
+                                <li class="active">
+                                  <a data-toggle="tab" href="#responses-v1FilesIdDelete-400-schema">Schema</a>
+                                </li>
+
+                            </ul>
+
+                            <div class="tab-content" style='margin-bottom: 10px;'>
+                                <div class="tab-pane active" id="responses-v1FilesIdDelete-400-schema">
+                                  <div id='responses-v1FilesIdDelete-400-schema-400' style="padding: 30px; border-left: 1px solid #eee; border-right: 1px solid #eee; border-bottom: 1px solid #eee;">
+                                    <script>
+                                      $(document).ready(function() {
+                                        var schemaWrapper = {
+  "description" : "Bad Request",
+  "content" : {
+    "application/json" : {
+      "schema" : {
+        "$ref" : "#/components/schemas/ErrorResponse"
+      }
+    }
+  }
+};
+                                        var schema = schemaWrapper.content["application/json"].schema;
+                                        if (schema.$ref != null) {
+                                          schema = defsParser.$refs.get(schema.$ref);
+                                        } else {
+                                          schemaWrapper.components = {};
+                                          schemaWrapper.components.schemas = Object.assign({}, defs);
+                                          $RefParser.dereference(schemaWrapper).catch(function(err) {
+                                            console.log(err);
+                                          });
+                                        }
+
+                                        //console.log(JSON.stringify(schema));
+                                        var view = new JSONSchemaView(schema, 3);
+                                        $('#responses-v1FilesIdDelete-400-schema-data').val(stringify(schema));
+                                        var result = $('#responses-v1FilesIdDelete-400-schema-400');
+                                        result.empty();
+                                        result.append(view.render());
+                                      });
+                                    </script>
+                                  </div>
+                                  <input id='responses-v1FilesIdDelete-400-schema-data' type='hidden' value=''></input>
+                                </div>
+                            </div>
+
+                            <h3> Status: 401 - Unauthorized </h3>
+
+                            <ul class="nav nav-tabs nav-tabs-examples" >
+                                <li class="active">
+                                  <a data-toggle="tab" href="#responses-v1FilesIdDelete-401-schema">Schema</a>
+                                </li>
+
+                            </ul>
+
+                            <div class="tab-content" style='margin-bottom: 10px;'>
+                                <div class="tab-pane active" id="responses-v1FilesIdDelete-401-schema">
+                                  <div id='responses-v1FilesIdDelete-401-schema-401' style="padding: 30px; border-left: 1px solid #eee; border-right: 1px solid #eee; border-bottom: 1px solid #eee;">
+                                    <script>
+                                      $(document).ready(function() {
+                                        var schemaWrapper = {
+  "description" : "Unauthorized",
+  "content" : {
+    "application/json" : {
+      "schema" : {
+        "$ref" : "#/components/schemas/ErrorResponse"
+      }
+    }
+  }
+};
+                                        var schema = schemaWrapper.content["application/json"].schema;
+                                        if (schema.$ref != null) {
+                                          schema = defsParser.$refs.get(schema.$ref);
+                                        } else {
+                                          schemaWrapper.components = {};
+                                          schemaWrapper.components.schemas = Object.assign({}, defs);
+                                          $RefParser.dereference(schemaWrapper).catch(function(err) {
+                                            console.log(err);
+                                          });
+                                        }
+
+                                        //console.log(JSON.stringify(schema));
+                                        var view = new JSONSchemaView(schema, 3);
+                                        $('#responses-v1FilesIdDelete-401-schema-data').val(stringify(schema));
+                                        var result = $('#responses-v1FilesIdDelete-401-schema-401');
+                                        result.empty();
+                                        result.append(view.render());
+                                      });
+                                    </script>
+                                  </div>
+                                  <input id='responses-v1FilesIdDelete-401-schema-data' type='hidden' value=''></input>
+                                </div>
+                            </div>
+
+                            <h3> Status: 403 - Forbidden </h3>
+
+                            <ul class="nav nav-tabs nav-tabs-examples" >
+                                <li class="active">
+                                  <a data-toggle="tab" href="#responses-v1FilesIdDelete-403-schema">Schema</a>
+                                </li>
+
+                            </ul>
+
+                            <div class="tab-content" style='margin-bottom: 10px;'>
+                                <div class="tab-pane active" id="responses-v1FilesIdDelete-403-schema">
+                                  <div id='responses-v1FilesIdDelete-403-schema-403' style="padding: 30px; border-left: 1px solid #eee; border-right: 1px solid #eee; border-bottom: 1px solid #eee;">
+                                    <script>
+                                      $(document).ready(function() {
+                                        var schemaWrapper = {
+  "description" : "Forbidden",
+  "content" : {
+    "application/json" : {
+      "schema" : {
+        "$ref" : "#/components/schemas/ErrorResponse"
+      }
+    }
+  }
+};
+                                        var schema = schemaWrapper.content["application/json"].schema;
+                                        if (schema.$ref != null) {
+                                          schema = defsParser.$refs.get(schema.$ref);
+                                        } else {
+                                          schemaWrapper.components = {};
+                                          schemaWrapper.components.schemas = Object.assign({}, defs);
+                                          $RefParser.dereference(schemaWrapper).catch(function(err) {
+                                            console.log(err);
+                                          });
+                                        }
+
+                                        //console.log(JSON.stringify(schema));
+                                        var view = new JSONSchemaView(schema, 3);
+                                        $('#responses-v1FilesIdDelete-403-schema-data').val(stringify(schema));
+                                        var result = $('#responses-v1FilesIdDelete-403-schema-403');
+                                        result.empty();
+                                        result.append(view.render());
+                                      });
+                                    </script>
+                                  </div>
+                                  <input id='responses-v1FilesIdDelete-403-schema-data' type='hidden' value=''></input>
+                                </div>
+                            </div>
+
+                            <h3> Status: 404 - Not Found </h3>
+
+                            <ul class="nav nav-tabs nav-tabs-examples" >
+                                <li class="active">
+                                  <a data-toggle="tab" href="#responses-v1FilesIdDelete-404-schema">Schema</a>
+                                </li>
+
+                            </ul>
+
+                            <div class="tab-content" style='margin-bottom: 10px;'>
+                                <div class="tab-pane active" id="responses-v1FilesIdDelete-404-schema">
+                                  <div id='responses-v1FilesIdDelete-404-schema-404' style="padding: 30px; border-left: 1px solid #eee; border-right: 1px solid #eee; border-bottom: 1px solid #eee;">
+                                    <script>
+                                      $(document).ready(function() {
+                                        var schemaWrapper = {
+  "description" : "Not Found",
+  "content" : {
+    "application/json" : {
+      "schema" : {
+        "$ref" : "#/components/schemas/ErrorResponse"
+      }
+    }
+  }
+};
+                                        var schema = schemaWrapper.content["application/json"].schema;
+                                        if (schema.$ref != null) {
+                                          schema = defsParser.$refs.get(schema.$ref);
+                                        } else {
+                                          schemaWrapper.components = {};
+                                          schemaWrapper.components.schemas = Object.assign({}, defs);
+                                          $RefParser.dereference(schemaWrapper).catch(function(err) {
+                                            console.log(err);
+                                          });
+                                        }
+
+                                        //console.log(JSON.stringify(schema));
+                                        var view = new JSONSchemaView(schema, 3);
+                                        $('#responses-v1FilesIdDelete-404-schema-data').val(stringify(schema));
+                                        var result = $('#responses-v1FilesIdDelete-404-schema-404');
+                                        result.empty();
+                                        result.append(view.render());
+                                      });
+                                    </script>
+                                  </div>
+                                  <input id='responses-v1FilesIdDelete-404-schema-data' type='hidden' value=''></input>
+                                </div>
+                            </div>
+
                         </article>
                       </div>
                       <hr>
-                    <div id="api-Default-v1FilesIdGet">
-                      <article id="api-Default-v1FilesIdGet-0" data-group="User" data-name="v1FilesIdGet" data-version="0">
+                    <div id="api-Default-v1FilesIdDownloadGet">
+                      <article id="api-Default-v1FilesIdDownloadGet-0" data-group="User" data-name="v1FilesIdDownloadGet" data-version="0">
                         <div class="pull-left">
-                          <h1>v1FilesIdGet</h1>
-                          <p></p>
+                          <h1>v1FilesIdDownloadGet</h1>
+                          <p>Documents the [ErrorResponse]s this route can return. They are sent by StatusPages (and the auth challenge), so
+OpenAPI inference can&#x27;t see them.</p>
                         </div>
                         <div class="pull-right"></div>
                         <div class="clearfix"></div>
@@ -13738,31 +14437,32 @@ except ApiException as e:
                         <p class="marked"></p>
                         <p></p>
                         <br />
-                        <pre class="prettyprint language-html prettyprinted" data-type="get"><code><span class="pln">/v1/files/{id}</span></code></pre>
+                        <pre class="prettyprint language-html prettyprinted" data-type="get"><code><span class="pln">/v1/files/{id}/download</span></code></pre>
                         <p>
                           <h3>Usage and SDK Samples</h3>
                         </p>
                         <ul class="nav nav-tabs nav-tabs-examples">
-                          <li class="active"><a href="#examples-Default-v1FilesIdGet-0-curl">Curl</a></li>
-                          <li class=""><a href="#examples-Default-v1FilesIdGet-0-java">Java</a></li>
-                          <li class=""><a href="#examples-Default-v1FilesIdGet-0-android">Android</a></li>
-                          <!--<li class=""><a href="#examples-Default-v1FilesIdGet-0-groovy">Groovy</a></li>-->
-                          <li class=""><a href="#examples-Default-v1FilesIdGet-0-objc">Obj-C</a></li>
-                          <li class=""><a href="#examples-Default-v1FilesIdGet-0-javascript">JavaScript</a></li>
-                          <!--<li class=""><a href="#examples-Default-v1FilesIdGet-0-angular">Angular</a></li>-->
-                          <li class=""><a href="#examples-Default-v1FilesIdGet-0-csharp">C#</a></li>
-                          <li class=""><a href="#examples-Default-v1FilesIdGet-0-php">PHP</a></li>
-                          <li class=""><a href="#examples-Default-v1FilesIdGet-0-perl">Perl</a></li>
-                          <li class=""><a href="#examples-Default-v1FilesIdGet-0-python">Python</a></li>
+                          <li class="active"><a href="#examples-Default-v1FilesIdDownloadGet-0-curl">Curl</a></li>
+                          <li class=""><a href="#examples-Default-v1FilesIdDownloadGet-0-java">Java</a></li>
+                          <li class=""><a href="#examples-Default-v1FilesIdDownloadGet-0-android">Android</a></li>
+                          <!--<li class=""><a href="#examples-Default-v1FilesIdDownloadGet-0-groovy">Groovy</a></li>-->
+                          <li class=""><a href="#examples-Default-v1FilesIdDownloadGet-0-objc">Obj-C</a></li>
+                          <li class=""><a href="#examples-Default-v1FilesIdDownloadGet-0-javascript">JavaScript</a></li>
+                          <!--<li class=""><a href="#examples-Default-v1FilesIdDownloadGet-0-angular">Angular</a></li>-->
+                          <li class=""><a href="#examples-Default-v1FilesIdDownloadGet-0-csharp">C#</a></li>
+                          <li class=""><a href="#examples-Default-v1FilesIdDownloadGet-0-php">PHP</a></li>
+                          <li class=""><a href="#examples-Default-v1FilesIdDownloadGet-0-perl">Perl</a></li>
+                          <li class=""><a href="#examples-Default-v1FilesIdDownloadGet-0-python">Python</a></li>
                         </ul>
 
                         <div class="tab-content">
-                          <div class="tab-pane active" id="examples-Default-v1FilesIdGet-0-curl">
+                          <div class="tab-pane active" id="examples-Default-v1FilesIdDownloadGet-0-curl">
                            <pre class="prettyprint"><code class="language-bsh">curl -X GET\
+ -H "Authorization: Bearer [[accessToken]]"\
 -H "Accept: application/json"\
-"//v1/files/{id}"</code></pre>
+"//v1/files/{id}/download"</code></pre>
                           </div>
-                          <div class="tab-pane" id="examples-Default-v1FilesIdGet-0-java">
+                          <div class="tab-pane" id="examples-Default-v1FilesIdDownloadGet-0-java">
                             <pre class="prettyprint"><code class="language-java">import io.swagger.client.*;
 import io.swagger.client.auth.*;
 import io.swagger.client.model.*;
@@ -13774,21 +14474,22 @@ import java.util.*;
 public class DefaultApiExample {
 
     public static void main(String[] args) {
-        
+        ApiClient defaultClient = Configuration.getDefaultApiClient();
+
+
         DefaultApi apiInstance = new DefaultApi();
          id = ; //  | 
         try {
-            FileResponse result = apiInstance.v1FilesIdGet(id);
-            System.out.println(result);
+            apiInstance.v1FilesIdDownloadGet(id);
         } catch (ApiException e) {
-            System.err.println("Exception when calling DefaultApi#v1FilesIdGet");
+            System.err.println("Exception when calling DefaultApi#v1FilesIdDownloadGet");
             e.printStackTrace();
         }
     }
 }</code></pre>
                           </div>
 
-                          <div class="tab-pane" id="examples-Default-v1FilesIdGet-0-android">
+                          <div class="tab-pane" id="examples-Default-v1FilesIdDownloadGet-0-android">
                             <pre class="prettyprint"><code class="language-java">import io.swagger.client.api.DefaultApi;
 
 public class DefaultApiExample {
@@ -13797,29 +14498,28 @@ public class DefaultApiExample {
         DefaultApi apiInstance = new DefaultApi();
          id = ; //  | 
         try {
-            FileResponse result = apiInstance.v1FilesIdGet(id);
-            System.out.println(result);
+            apiInstance.v1FilesIdDownloadGet(id);
         } catch (ApiException e) {
-            System.err.println("Exception when calling DefaultApi#v1FilesIdGet");
+            System.err.println("Exception when calling DefaultApi#v1FilesIdDownloadGet");
             e.printStackTrace();
         }
     }
 }</code></pre>
                           </div>
   <!--
-  <div class="tab-pane" id="examples-Default-v1FilesIdGet-0-groovy">
+  <div class="tab-pane" id="examples-Default-v1FilesIdDownloadGet-0-groovy">
   <pre class="prettyprint language-json prettyprinted" data-type="json"><code>Coming Soon!</code></pre>
   </div> -->
-                            <div class="tab-pane" id="examples-Default-v1FilesIdGet-0-objc">
-                              <pre class="prettyprint"><code class="language-cpp"> *id = ; // 
+                            <div class="tab-pane" id="examples-Default-v1FilesIdDownloadGet-0-objc">
+                              <pre class="prettyprint"><code class="language-cpp">Configuration *apiConfig = [Configuration sharedConfig];
+ *id = ; // 
 
 DefaultApi *apiInstance = [[DefaultApi alloc] init];
 
-[apiInstance v1FilesIdGetWith:id
-              completionHandler: ^(FileResponse output, NSError* error) {
-                            if (output) {
-                                NSLog(@"%@", output);
-                            }
+// Documents the [ErrorResponse]s this route can return. They are sent by StatusPages (and the auth challenge), so
+OpenAPI inference can't see them.
+[apiInstance v1FilesIdDownloadGetWith:id
+              completionHandler: ^(NSError* error) {
                             if (error) {
                                 NSLog(@"Error: %@", error);
                             }
@@ -13827,8 +14527,10 @@ DefaultApi *apiInstance = [[DefaultApi alloc] init];
 </code></pre>
                             </div>
 
-                            <div class="tab-pane" id="examples-Default-v1FilesIdGet-0-javascript">
+                            <div class="tab-pane" id="examples-Default-v1FilesIdDownloadGet-0-javascript">
                               <pre class="prettyprint"><code class="language-js">var UntitledApi = require('untitled_api');
+var defaultClient = UntitledApi.ApiClient.instance;
+
 
 var api = new UntitledApi.DefaultApi()
 var id = ; // {{}} 
@@ -13837,17 +14539,17 @@ var callback = function(error, data, response) {
   if (error) {
     console.error(error);
   } else {
-    console.log('API called successfully. Returned data: ' + data);
+    console.log('API called successfully.');
   }
 };
-api.v1FilesIdGet(id, callback);
+api.v1FilesIdDownloadGet(id, callback);
 </code></pre>
                             </div>
 
-                            <!--<div class="tab-pane" id="examples-Default-v1FilesIdGet-0-angular">
+                            <!--<div class="tab-pane" id="examples-Default-v1FilesIdDownloadGet-0-angular">
               <pre class="prettyprint language-json prettyprinted" data-type="json"><code>Coming Soon!</code></pre>
             </div>-->
-                            <div class="tab-pane" id="examples-Default-v1FilesIdGet-0-csharp">
+                            <div class="tab-pane" id="examples-Default-v1FilesIdDownloadGet-0-csharp">
                               <pre class="prettyprint"><code class="language-cs">using System;
 using System.Diagnostics;
 using IO.Swagger.Api;
@@ -13856,22 +14558,24 @@ using IO.Swagger.Model;
 
 namespace Example
 {
-    public class v1FilesIdGetExample
+    public class v1FilesIdDownloadGetExample
     {
         public void main()
         {
+
 
             var apiInstance = new DefaultApi();
             var id = new (); //  | 
 
             try
             {
-                FileResponse result = apiInstance.v1FilesIdGet(id);
-                Debug.WriteLine(result);
+                // Documents the [ErrorResponse]s this route can return. They are sent by StatusPages (and the auth challenge), so
+OpenAPI inference can't see them.
+                apiInstance.v1FilesIdDownloadGet(id);
             }
             catch (Exception e)
             {
-                Debug.Print("Exception when calling DefaultApi.v1FilesIdGet: " + e.Message );
+                Debug.Print("Exception when calling DefaultApi.v1FilesIdDownloadGet: " + e.Message );
             }
         }
     }
@@ -13879,55 +14583,57 @@ namespace Example
 </code></pre>
                             </div>
 
-                            <div class="tab-pane" id="examples-Default-v1FilesIdGet-0-php">
+                            <div class="tab-pane" id="examples-Default-v1FilesIdDownloadGet-0-php">
                               <pre class="prettyprint"><code class="language-php"><&#63;php
 require_once(__DIR__ . '/vendor/autoload.php');
+
 
 $api_instance = new Swagger\Client\ApiDefaultApi();
 $id = ; //  | 
 
 try {
-    $result = $api_instance->v1FilesIdGet($id);
-    print_r($result);
+    $api_instance->v1FilesIdDownloadGet($id);
 } catch (Exception $e) {
-    echo 'Exception when calling DefaultApi->v1FilesIdGet: ', $e->getMessage(), PHP_EOL;
+    echo 'Exception when calling DefaultApi->v1FilesIdDownloadGet: ', $e->getMessage(), PHP_EOL;
 }
 ?></code></pre>
                             </div>
 
-                            <div class="tab-pane" id="examples-Default-v1FilesIdGet-0-perl">
+                            <div class="tab-pane" id="examples-Default-v1FilesIdDownloadGet-0-perl">
                               <pre class="prettyprint"><code class="language-perl">use Data::Dumper;
 use WWW::SwaggerClient::Configuration;
 use WWW::SwaggerClient::DefaultApi;
+
 
 my $api_instance = WWW::SwaggerClient::DefaultApi->new();
 my $id = ; #  | 
 
 eval { 
-    my $result = $api_instance->v1FilesIdGet(id => $id);
-    print Dumper($result);
+    $api_instance->v1FilesIdDownloadGet(id => $id);
 };
 if ($@) {
-    warn "Exception when calling DefaultApi->v1FilesIdGet: $@\n";
+    warn "Exception when calling DefaultApi->v1FilesIdDownloadGet: $@\n";
 }</code></pre>
                             </div>
 
-                            <div class="tab-pane" id="examples-Default-v1FilesIdGet-0-python">
+                            <div class="tab-pane" id="examples-Default-v1FilesIdDownloadGet-0-python">
                               <pre class="prettyprint"><code class="language-python">from __future__ import print_statement
 import time
 import swagger_client
 from swagger_client.rest import ApiException
 from pprint import pprint
 
+
 # create an instance of the API class
 api_instance = swagger_client.DefaultApi()
 id =  #  | 
 
 try: 
-    api_response = api_instance.v1_files_id_get(id)
-    pprint(api_response)
+    # Documents the [ErrorResponse]s this route can return. They are sent by StatusPages (and the auth challenge), so
+OpenAPI inference can't see them.
+    api_instance.v1_files_id_download_get(id)
 except ApiException as e:
-    print("Exception when calling DefaultApi->v1FilesIdGet: %s\n" % e)</code></pre>
+    print("Exception when calling DefaultApi->v1FilesIdDownloadGet: %s\n" % e)</code></pre>
                             </div>
                           </div>
 
@@ -13943,7 +14649,7 @@ except ApiException as e:
                                   <td>
                                   
                                   
-                                      <div id="d2e199_v1FilesIdGet_id">
+                                      <div id="d2e199_v1FilesIdDownloadGet_id">
                                           <div class="json-schema-view">
                                               <div class="primitive">
                                                   <span class="type">
@@ -13969,22 +14675,64 @@ except ApiException as e:
 
                             <ul class="nav nav-tabs nav-tabs-examples" >
                                 <li class="active">
-                                  <a data-toggle="tab" href="#responses-v1FilesIdGet-200-schema">Schema</a>
+                                  <a data-toggle="tab" href="#responses-v1FilesIdDownloadGet-200-schema">Schema</a>
                                 </li>
 
+                                <li class="">
+                                  <a data-toggle="tab" href="#responses-v1FilesIdDownloadGet-200-headers">Headers</a>
+                                </li>
                             </ul>
 
                             <div class="tab-content" style='margin-bottom: 10px;'>
-                                <div class="tab-pane active" id="responses-v1FilesIdGet-200-schema">
-                                  <div id='responses-v1FilesIdGet-200-schema-200' style="padding: 30px; border-left: 1px solid #eee; border-right: 1px solid #eee; border-bottom: 1px solid #eee;">
+                                <div class="tab-pane active" id="responses-v1FilesIdDownloadGet-200-schema">
+                                  <div id='responses-v1FilesIdDownloadGet-200-schema-200' style="padding: 30px; border-left: 1px solid #eee; border-right: 1px solid #eee; border-bottom: 1px solid #eee;">
                                     <script>
                                       $(document).ready(function() {
                                         var schemaWrapper = {
   "description" : "",
+  "headers" : {
+    "Content-Disposition" : {
+      "required" : false,
+      "deprecated" : false,
+      "style" : "simple",
+      "explode" : false,
+      "content" : {
+        "text/plain" : { }
+      }
+    },
+    "X-Content-Type-Options" : {
+      "required" : false,
+      "deprecated" : false,
+      "style" : "simple",
+      "explode" : false,
+      "content" : {
+        "text/plain" : { }
+      }
+    },
+    "Content-Security-Policy" : {
+      "required" : false,
+      "deprecated" : false,
+      "style" : "simple",
+      "explode" : false,
+      "content" : {
+        "text/plain" : { }
+      }
+    },
+    "Cache-Control" : {
+      "required" : false,
+      "deprecated" : false,
+      "style" : "simple",
+      "explode" : false,
+      "content" : {
+        "text/plain" : { }
+      }
+    }
+  },
   "content" : {
     "application/json" : {
       "schema" : {
-        "$ref" : "#/components/schemas/FileResponse"
+        "description" : "Failed to resolve schema for OutgoingContent. SerializationException: Serializer for class 'OutgoingContent' is not found.\nPlease ensure that class is marked as '@Serializable' and that the serialization compiler plugin is applied.\n",
+        "x-content-type" : "application/json"
       }
     }
   }
@@ -14002,704 +14750,147 @@ except ApiException as e:
 
                                         //console.log(JSON.stringify(schema));
                                         var view = new JSONSchemaView(schema, 3);
-                                        $('#responses-v1FilesIdGet-200-schema-data').val(stringify(schema));
-                                        var result = $('#responses-v1FilesIdGet-200-schema-200');
+                                        $('#responses-v1FilesIdDownloadGet-200-schema-data').val(stringify(schema));
+                                        var result = $('#responses-v1FilesIdDownloadGet-200-schema-200');
                                         result.empty();
                                         result.append(view.render());
                                       });
                                     </script>
                                   </div>
-                                  <input id='responses-v1FilesIdGet-200-schema-data' type='hidden' value=''></input>
+                                  <input id='responses-v1FilesIdDownloadGet-200-schema-data' type='hidden' value=''></input>
+                                </div>
+                                <div class="tab-pane" id="responses-v1FilesIdDownloadGet-200-headers">
+                                    <table>
+                                        <tr>
+                                            <th width="150px">Name</th>
+                                            <th width="100px">Type</th>
+                                            <th width="100px">Format</th>
+                                            <th>Description</th>
+                                        </tr>
+                                        <tr>
+                                            <td></td>
+                                            <td></td>
+                                            <td></td>
+                                            <td></td>
+                                        </tr>
+                                        <tr>
+                                            <td></td>
+                                            <td></td>
+                                            <td></td>
+                                            <td></td>
+                                        </tr>
+                                        <tr>
+                                            <td></td>
+                                            <td></td>
+                                            <td></td>
+                                            <td></td>
+                                        </tr>
+                                        <tr>
+                                            <td></td>
+                                            <td></td>
+                                            <td></td>
+                                            <td></td>
+                                        </tr>
+                                    </table>
                                 </div>
                             </div>
 
-                        </article>
-                      </div>
-                      <hr>
-                    <div id="api-Default-v1FilesIdPut">
-                      <article id="api-Default-v1FilesIdPut-0" data-group="User" data-name="v1FilesIdPut" data-version="0">
-                        <div class="pull-left">
-                          <h1>v1FilesIdPut</h1>
-                          <p></p>
-                        </div>
-                        <div class="pull-right"></div>
-                        <div class="clearfix"></div>
-                        <p></p>
-                        <p class="marked"></p>
-                        <p></p>
-                        <br />
-                        <pre class="prettyprint language-html prettyprinted" data-type="put"><code><span class="pln">/v1/files/{id}</span></code></pre>
-                        <p>
-                          <h3>Usage and SDK Samples</h3>
-                        </p>
-                        <ul class="nav nav-tabs nav-tabs-examples">
-                          <li class="active"><a href="#examples-Default-v1FilesIdPut-0-curl">Curl</a></li>
-                          <li class=""><a href="#examples-Default-v1FilesIdPut-0-java">Java</a></li>
-                          <li class=""><a href="#examples-Default-v1FilesIdPut-0-android">Android</a></li>
-                          <!--<li class=""><a href="#examples-Default-v1FilesIdPut-0-groovy">Groovy</a></li>-->
-                          <li class=""><a href="#examples-Default-v1FilesIdPut-0-objc">Obj-C</a></li>
-                          <li class=""><a href="#examples-Default-v1FilesIdPut-0-javascript">JavaScript</a></li>
-                          <!--<li class=""><a href="#examples-Default-v1FilesIdPut-0-angular">Angular</a></li>-->
-                          <li class=""><a href="#examples-Default-v1FilesIdPut-0-csharp">C#</a></li>
-                          <li class=""><a href="#examples-Default-v1FilesIdPut-0-php">PHP</a></li>
-                          <li class=""><a href="#examples-Default-v1FilesIdPut-0-perl">Perl</a></li>
-                          <li class=""><a href="#examples-Default-v1FilesIdPut-0-python">Python</a></li>
-                        </ul>
+                            <h3> Status: 400 - Bad Request </h3>
 
-                        <div class="tab-content">
-                          <div class="tab-pane active" id="examples-Default-v1FilesIdPut-0-curl">
-                           <pre class="prettyprint"><code class="language-bsh">curl -X PUT\
-"//v1/files/{id}"</code></pre>
-                          </div>
-                          <div class="tab-pane" id="examples-Default-v1FilesIdPut-0-java">
-                            <pre class="prettyprint"><code class="language-java">import io.swagger.client.*;
-import io.swagger.client.auth.*;
-import io.swagger.client.model.*;
-import io.swagger.client.api.DefaultApi;
+                            <ul class="nav nav-tabs nav-tabs-examples" >
+                                <li class="active">
+                                  <a data-toggle="tab" href="#responses-v1FilesIdDownloadGet-400-schema">Schema</a>
+                                </li>
 
-import java.io.File;
-import java.util.*;
+                            </ul>
 
-public class DefaultApiExample {
-
-    public static void main(String[] args) {
-        
-        DefaultApi apiInstance = new DefaultApi();
-         id = ; //  | 
-        try {
-            apiInstance.v1FilesIdPut(id);
-        } catch (ApiException e) {
-            System.err.println("Exception when calling DefaultApi#v1FilesIdPut");
-            e.printStackTrace();
-        }
-    }
-}</code></pre>
-                          </div>
-
-                          <div class="tab-pane" id="examples-Default-v1FilesIdPut-0-android">
-                            <pre class="prettyprint"><code class="language-java">import io.swagger.client.api.DefaultApi;
-
-public class DefaultApiExample {
-
-    public static void main(String[] args) {
-        DefaultApi apiInstance = new DefaultApi();
-         id = ; //  | 
-        try {
-            apiInstance.v1FilesIdPut(id);
-        } catch (ApiException e) {
-            System.err.println("Exception when calling DefaultApi#v1FilesIdPut");
-            e.printStackTrace();
-        }
-    }
-}</code></pre>
-                          </div>
-  <!--
-  <div class="tab-pane" id="examples-Default-v1FilesIdPut-0-groovy">
-  <pre class="prettyprint language-json prettyprinted" data-type="json"><code>Coming Soon!</code></pre>
-  </div> -->
-                            <div class="tab-pane" id="examples-Default-v1FilesIdPut-0-objc">
-                              <pre class="prettyprint"><code class="language-cpp"> *id = ; // 
-
-DefaultApi *apiInstance = [[DefaultApi alloc] init];
-
-[apiInstance v1FilesIdPutWith:id
-              completionHandler: ^(NSError* error) {
-                            if (error) {
-                                NSLog(@"Error: %@", error);
-                            }
-                        }];
-</code></pre>
-                            </div>
-
-                            <div class="tab-pane" id="examples-Default-v1FilesIdPut-0-javascript">
-                              <pre class="prettyprint"><code class="language-js">var UntitledApi = require('untitled_api');
-
-var api = new UntitledApi.DefaultApi()
-var id = ; // {{}} 
-
-var callback = function(error, data, response) {
-  if (error) {
-    console.error(error);
-  } else {
-    console.log('API called successfully.');
-  }
-};
-api.v1FilesIdPut(id, callback);
-</code></pre>
-                            </div>
-
-                            <!--<div class="tab-pane" id="examples-Default-v1FilesIdPut-0-angular">
-              <pre class="prettyprint language-json prettyprinted" data-type="json"><code>Coming Soon!</code></pre>
-            </div>-->
-                            <div class="tab-pane" id="examples-Default-v1FilesIdPut-0-csharp">
-                              <pre class="prettyprint"><code class="language-cs">using System;
-using System.Diagnostics;
-using IO.Swagger.Api;
-using IO.Swagger.Client;
-using IO.Swagger.Model;
-
-namespace Example
-{
-    public class v1FilesIdPutExample
-    {
-        public void main()
-        {
-
-            var apiInstance = new DefaultApi();
-            var id = new (); //  | 
-
-            try
-            {
-                apiInstance.v1FilesIdPut(id);
-            }
-            catch (Exception e)
-            {
-                Debug.Print("Exception when calling DefaultApi.v1FilesIdPut: " + e.Message );
-            }
-        }
-    }
-}
-</code></pre>
-                            </div>
-
-                            <div class="tab-pane" id="examples-Default-v1FilesIdPut-0-php">
-                              <pre class="prettyprint"><code class="language-php"><&#63;php
-require_once(__DIR__ . '/vendor/autoload.php');
-
-$api_instance = new Swagger\Client\ApiDefaultApi();
-$id = ; //  | 
-
-try {
-    $api_instance->v1FilesIdPut($id);
-} catch (Exception $e) {
-    echo 'Exception when calling DefaultApi->v1FilesIdPut: ', $e->getMessage(), PHP_EOL;
-}
-?></code></pre>
-                            </div>
-
-                            <div class="tab-pane" id="examples-Default-v1FilesIdPut-0-perl">
-                              <pre class="prettyprint"><code class="language-perl">use Data::Dumper;
-use WWW::SwaggerClient::Configuration;
-use WWW::SwaggerClient::DefaultApi;
-
-my $api_instance = WWW::SwaggerClient::DefaultApi->new();
-my $id = ; #  | 
-
-eval { 
-    $api_instance->v1FilesIdPut(id => $id);
-};
-if ($@) {
-    warn "Exception when calling DefaultApi->v1FilesIdPut: $@\n";
-}</code></pre>
-                            </div>
-
-                            <div class="tab-pane" id="examples-Default-v1FilesIdPut-0-python">
-                              <pre class="prettyprint"><code class="language-python">from __future__ import print_statement
-import time
-import swagger_client
-from swagger_client.rest import ApiException
-from pprint import pprint
-
-# create an instance of the API class
-api_instance = swagger_client.DefaultApi()
-id =  #  | 
-
-try: 
-    api_instance.v1_files_id_put(id)
-except ApiException as e:
-    print("Exception when calling DefaultApi->v1FilesIdPut: %s\n" % e)</code></pre>
-                            </div>
-                          </div>
-
-                          <h2>Parameters</h2>
-
-                            <div class="methodsubtabletitle">Path parameters</div>
-                            <table id="methodsubtable">
-                                <tr>
-                                  <th width="150px">Name</th>
-                                  <th>Description</th>
-                                </tr>
-                                  <tr><td style="width:150px;">id*</td>
-                                  <td>
-                                  
-                                  
-                                      <div id="d2e199_v1FilesIdPut_id">
-                                          <div class="json-schema-view">
-                                              <div class="primitive">
-                                                  <span class="type">
-                                                      
-                                                  </span>
-                                  
-                                              </div>
-                                                  <div class="inner required">
-                                                      Required
-                                                  </div>
-                                          </div>
-                                      </div>
-                                  </td>
-                                  </tr>
-                            </table>
-
-
-
-
-
-                          <h2>Responses</h2>
-                        </article>
-                      </div>
-                      <hr>
-                    <div id="api-Default-v1FilesPost">
-                      <article id="api-Default-v1FilesPost-0" data-group="User" data-name="v1FilesPost" data-version="0">
-                        <div class="pull-left">
-                          <h1>v1FilesPost</h1>
-                          <p></p>
-                        </div>
-                        <div class="pull-right"></div>
-                        <div class="clearfix"></div>
-                        <p></p>
-                        <p class="marked"></p>
-                        <p></p>
-                        <br />
-                        <pre class="prettyprint language-html prettyprinted" data-type="post"><code><span class="pln">/v1/files</span></code></pre>
-                        <p>
-                          <h3>Usage and SDK Samples</h3>
-                        </p>
-                        <ul class="nav nav-tabs nav-tabs-examples">
-                          <li class="active"><a href="#examples-Default-v1FilesPost-0-curl">Curl</a></li>
-                          <li class=""><a href="#examples-Default-v1FilesPost-0-java">Java</a></li>
-                          <li class=""><a href="#examples-Default-v1FilesPost-0-android">Android</a></li>
-                          <!--<li class=""><a href="#examples-Default-v1FilesPost-0-groovy">Groovy</a></li>-->
-                          <li class=""><a href="#examples-Default-v1FilesPost-0-objc">Obj-C</a></li>
-                          <li class=""><a href="#examples-Default-v1FilesPost-0-javascript">JavaScript</a></li>
-                          <!--<li class=""><a href="#examples-Default-v1FilesPost-0-angular">Angular</a></li>-->
-                          <li class=""><a href="#examples-Default-v1FilesPost-0-csharp">C#</a></li>
-                          <li class=""><a href="#examples-Default-v1FilesPost-0-php">PHP</a></li>
-                          <li class=""><a href="#examples-Default-v1FilesPost-0-perl">Perl</a></li>
-                          <li class=""><a href="#examples-Default-v1FilesPost-0-python">Python</a></li>
-                        </ul>
-
-                        <div class="tab-content">
-                          <div class="tab-pane active" id="examples-Default-v1FilesPost-0-curl">
-                           <pre class="prettyprint"><code class="language-bsh">curl -X POST\
--H "Content-Type: application/json"\
-"//v1/files"</code></pre>
-                          </div>
-                          <div class="tab-pane" id="examples-Default-v1FilesPost-0-java">
-                            <pre class="prettyprint"><code class="language-java">import io.swagger.client.*;
-import io.swagger.client.auth.*;
-import io.swagger.client.model.*;
-import io.swagger.client.api.DefaultApi;
-
-import java.io.File;
-import java.util.*;
-
-public class DefaultApiExample {
-
-    public static void main(String[] args) {
-        
-        DefaultApi apiInstance = new DefaultApi();
-        FileRequest body = ; // FileRequest | 
-        try {
-            apiInstance.v1FilesPost(body);
-        } catch (ApiException e) {
-            System.err.println("Exception when calling DefaultApi#v1FilesPost");
-            e.printStackTrace();
-        }
-    }
-}</code></pre>
-                          </div>
-
-                          <div class="tab-pane" id="examples-Default-v1FilesPost-0-android">
-                            <pre class="prettyprint"><code class="language-java">import io.swagger.client.api.DefaultApi;
-
-public class DefaultApiExample {
-
-    public static void main(String[] args) {
-        DefaultApi apiInstance = new DefaultApi();
-        FileRequest body = ; // FileRequest | 
-        try {
-            apiInstance.v1FilesPost(body);
-        } catch (ApiException e) {
-            System.err.println("Exception when calling DefaultApi#v1FilesPost");
-            e.printStackTrace();
-        }
-    }
-}</code></pre>
-                          </div>
-  <!--
-  <div class="tab-pane" id="examples-Default-v1FilesPost-0-groovy">
-  <pre class="prettyprint language-json prettyprinted" data-type="json"><code>Coming Soon!</code></pre>
-  </div> -->
-                            <div class="tab-pane" id="examples-Default-v1FilesPost-0-objc">
-                              <pre class="prettyprint"><code class="language-cpp">FileRequest *body = ; //  (optional)
-
-DefaultApi *apiInstance = [[DefaultApi alloc] init];
-
-[apiInstance v1FilesPostWith:body
-              completionHandler: ^(NSError* error) {
-                            if (error) {
-                                NSLog(@"Error: %@", error);
-                            }
-                        }];
-</code></pre>
-                            </div>
-
-                            <div class="tab-pane" id="examples-Default-v1FilesPost-0-javascript">
-                              <pre class="prettyprint"><code class="language-js">var UntitledApi = require('untitled_api');
-
-var api = new UntitledApi.DefaultApi()
-var opts = { 
-  'body':  // {{FileRequest}} 
-};
-var callback = function(error, data, response) {
-  if (error) {
-    console.error(error);
-  } else {
-    console.log('API called successfully.');
-  }
-};
-api.v1FilesPost(opts, callback);
-</code></pre>
-                            </div>
-
-                            <!--<div class="tab-pane" id="examples-Default-v1FilesPost-0-angular">
-              <pre class="prettyprint language-json prettyprinted" data-type="json"><code>Coming Soon!</code></pre>
-            </div>-->
-                            <div class="tab-pane" id="examples-Default-v1FilesPost-0-csharp">
-                              <pre class="prettyprint"><code class="language-cs">using System;
-using System.Diagnostics;
-using IO.Swagger.Api;
-using IO.Swagger.Client;
-using IO.Swagger.Model;
-
-namespace Example
-{
-    public class v1FilesPostExample
-    {
-        public void main()
-        {
-
-            var apiInstance = new DefaultApi();
-            var body = new FileRequest(); // FileRequest |  (optional) 
-
-            try
-            {
-                apiInstance.v1FilesPost(body);
-            }
-            catch (Exception e)
-            {
-                Debug.Print("Exception when calling DefaultApi.v1FilesPost: " + e.Message );
-            }
-        }
-    }
-}
-</code></pre>
-                            </div>
-
-                            <div class="tab-pane" id="examples-Default-v1FilesPost-0-php">
-                              <pre class="prettyprint"><code class="language-php"><&#63;php
-require_once(__DIR__ . '/vendor/autoload.php');
-
-$api_instance = new Swagger\Client\ApiDefaultApi();
-$body = ; // FileRequest | 
-
-try {
-    $api_instance->v1FilesPost($body);
-} catch (Exception $e) {
-    echo 'Exception when calling DefaultApi->v1FilesPost: ', $e->getMessage(), PHP_EOL;
-}
-?></code></pre>
-                            </div>
-
-                            <div class="tab-pane" id="examples-Default-v1FilesPost-0-perl">
-                              <pre class="prettyprint"><code class="language-perl">use Data::Dumper;
-use WWW::SwaggerClient::Configuration;
-use WWW::SwaggerClient::DefaultApi;
-
-my $api_instance = WWW::SwaggerClient::DefaultApi->new();
-my $body = WWW::SwaggerClient::Object::FileRequest->new(); # FileRequest | 
-
-eval { 
-    $api_instance->v1FilesPost(body => $body);
-};
-if ($@) {
-    warn "Exception when calling DefaultApi->v1FilesPost: $@\n";
-}</code></pre>
-                            </div>
-
-                            <div class="tab-pane" id="examples-Default-v1FilesPost-0-python">
-                              <pre class="prettyprint"><code class="language-python">from __future__ import print_statement
-import time
-import swagger_client
-from swagger_client.rest import ApiException
-from pprint import pprint
-
-# create an instance of the API class
-api_instance = swagger_client.DefaultApi()
-body =  # FileRequest |  (optional)
-
-try: 
-    api_instance.v1_files_post(body=body)
-except ApiException as e:
-    print("Exception when calling DefaultApi->v1FilesPost: %s\n" % e)</code></pre>
-                            </div>
-                          </div>
-
-                          <h2>Parameters</h2>
-
-
-
-                            <div class="methodsubtabletitle">Body parameters</div>
-                            <table id="methodsubtable">
-                              <tr>
-                                <th width="150px">Name</th>
-                                <th>Description</th>
-                              </tr>
-                                <tr><td style="width:150px;">body </td>
-                                <td>
-                                
-                                
-                                <script>
-                                $(document).ready(function() {
-                                  var schemaWrapper = {
+                            <div class="tab-content" style='margin-bottom: 10px;'>
+                                <div class="tab-pane active" id="responses-v1FilesIdDownloadGet-400-schema">
+                                  <div id='responses-v1FilesIdDownloadGet-400-schema-400' style="padding: 30px; border-left: 1px solid #eee; border-right: 1px solid #eee; border-bottom: 1px solid #eee;">
+                                    <script>
+                                      $(document).ready(function() {
+                                        var schemaWrapper = {
+  "description" : "Bad Request",
   "content" : {
     "application/json" : {
       "schema" : {
-        "$ref" : "#/components/schemas/FileRequest"
+        "$ref" : "#/components/schemas/ErrorResponse"
       }
     }
   }
 };
-                                  var schema = schemaWrapper.content["application/json"].schema;
-                                  if (schema.$ref != null) {
-                                    schema = defsParser.$refs.get(schema.$ref);
-                                  } else {
-                                    schemaWrapper.components = {};
-                                    schemaWrapper.components.schemas = Object.assign({}, defs);
-                                    $RefParser.dereference(schemaWrapper).catch(function(err) {
-                                      console.log(err);
-                                    });
-                                  }
-                                
-                                  var view = new JSONSchemaView(schema,2,{isBodyParam: true});
-                                  var result = $('#d2e199_v1FilesPost_body');
-                                  result.empty();
-                                  result.append(view.render());
-                                });
-                                </script>
-                                <div id="d2e199_v1FilesPost_body"></div>
-                                </td>
-                                </tr>
-                            </table>
+                                        var schema = schemaWrapper.content["application/json"].schema;
+                                        if (schema.$ref != null) {
+                                          schema = defsParser.$refs.get(schema.$ref);
+                                        } else {
+                                          schemaWrapper.components = {};
+                                          schemaWrapper.components.schemas = Object.assign({}, defs);
+                                          $RefParser.dereference(schemaWrapper).catch(function(err) {
+                                            console.log(err);
+                                          });
+                                        }
 
+                                        //console.log(JSON.stringify(schema));
+                                        var view = new JSONSchemaView(schema, 3);
+                                        $('#responses-v1FilesIdDownloadGet-400-schema-data').val(stringify(schema));
+                                        var result = $('#responses-v1FilesIdDownloadGet-400-schema-400');
+                                        result.empty();
+                                        result.append(view.render());
+                                      });
+                                    </script>
+                                  </div>
+                                  <input id='responses-v1FilesIdDownloadGet-400-schema-data' type='hidden' value=''></input>
+                                </div>
+                            </div>
 
-
-                          <h2>Responses</h2>
-                            <h3> Status: 201 -  </h3>
+                            <h3> Status: 404 - Not Found </h3>
 
                             <ul class="nav nav-tabs nav-tabs-examples" >
+                                <li class="active">
+                                  <a data-toggle="tab" href="#responses-v1FilesIdDownloadGet-404-schema">Schema</a>
+                                </li>
+
                             </ul>
 
                             <div class="tab-content" style='margin-bottom: 10px;'>
-                            </div>
-
-                        </article>
-                      </div>
-                      <hr>
-                    <div id="api-Default-v1FilesPut">
-                      <article id="api-Default-v1FilesPut-0" data-group="User" data-name="v1FilesPut" data-version="0">
-                        <div class="pull-left">
-                          <h1>v1FilesPut</h1>
-                          <p></p>
-                        </div>
-                        <div class="pull-right"></div>
-                        <div class="clearfix"></div>
-                        <p></p>
-                        <p class="marked"></p>
-                        <p></p>
-                        <br />
-                        <pre class="prettyprint language-html prettyprinted" data-type="put"><code><span class="pln">/v1/files</span></code></pre>
-                        <p>
-                          <h3>Usage and SDK Samples</h3>
-                        </p>
-                        <ul class="nav nav-tabs nav-tabs-examples">
-                          <li class="active"><a href="#examples-Default-v1FilesPut-0-curl">Curl</a></li>
-                          <li class=""><a href="#examples-Default-v1FilesPut-0-java">Java</a></li>
-                          <li class=""><a href="#examples-Default-v1FilesPut-0-android">Android</a></li>
-                          <!--<li class=""><a href="#examples-Default-v1FilesPut-0-groovy">Groovy</a></li>-->
-                          <li class=""><a href="#examples-Default-v1FilesPut-0-objc">Obj-C</a></li>
-                          <li class=""><a href="#examples-Default-v1FilesPut-0-javascript">JavaScript</a></li>
-                          <!--<li class=""><a href="#examples-Default-v1FilesPut-0-angular">Angular</a></li>-->
-                          <li class=""><a href="#examples-Default-v1FilesPut-0-csharp">C#</a></li>
-                          <li class=""><a href="#examples-Default-v1FilesPut-0-php">PHP</a></li>
-                          <li class=""><a href="#examples-Default-v1FilesPut-0-perl">Perl</a></li>
-                          <li class=""><a href="#examples-Default-v1FilesPut-0-python">Python</a></li>
-                        </ul>
-
-                        <div class="tab-content">
-                          <div class="tab-pane active" id="examples-Default-v1FilesPut-0-curl">
-                           <pre class="prettyprint"><code class="language-bsh">curl -X PUT\
-"//v1/files"</code></pre>
-                          </div>
-                          <div class="tab-pane" id="examples-Default-v1FilesPut-0-java">
-                            <pre class="prettyprint"><code class="language-java">import io.swagger.client.*;
-import io.swagger.client.auth.*;
-import io.swagger.client.model.*;
-import io.swagger.client.api.DefaultApi;
-
-import java.io.File;
-import java.util.*;
-
-public class DefaultApiExample {
-
-    public static void main(String[] args) {
-        
-        DefaultApi apiInstance = new DefaultApi();
-        try {
-            apiInstance.v1FilesPut();
-        } catch (ApiException e) {
-            System.err.println("Exception when calling DefaultApi#v1FilesPut");
-            e.printStackTrace();
-        }
+                                <div class="tab-pane active" id="responses-v1FilesIdDownloadGet-404-schema">
+                                  <div id='responses-v1FilesIdDownloadGet-404-schema-404' style="padding: 30px; border-left: 1px solid #eee; border-right: 1px solid #eee; border-bottom: 1px solid #eee;">
+                                    <script>
+                                      $(document).ready(function() {
+                                        var schemaWrapper = {
+  "description" : "Not Found",
+  "content" : {
+    "application/json" : {
+      "schema" : {
+        "$ref" : "#/components/schemas/ErrorResponse"
+      }
     }
-}</code></pre>
-                          </div>
-
-                          <div class="tab-pane" id="examples-Default-v1FilesPut-0-android">
-                            <pre class="prettyprint"><code class="language-java">import io.swagger.client.api.DefaultApi;
-
-public class DefaultApiExample {
-
-    public static void main(String[] args) {
-        DefaultApi apiInstance = new DefaultApi();
-        try {
-            apiInstance.v1FilesPut();
-        } catch (ApiException e) {
-            System.err.println("Exception when calling DefaultApi#v1FilesPut");
-            e.printStackTrace();
-        }
-    }
-}</code></pre>
-                          </div>
-  <!--
-  <div class="tab-pane" id="examples-Default-v1FilesPut-0-groovy">
-  <pre class="prettyprint language-json prettyprinted" data-type="json"><code>Coming Soon!</code></pre>
-  </div> -->
-                            <div class="tab-pane" id="examples-Default-v1FilesPut-0-objc">
-                              <pre class="prettyprint"><code class="language-cpp">
-DefaultApi *apiInstance = [[DefaultApi alloc] init];
-
-[apiInstance v1FilesPutWithCompletionHandler: 
-              ^(NSError* error) {
-                            if (error) {
-                                NSLog(@"Error: %@", error);
-                            }
-                        }];
-</code></pre>
-                            </div>
-
-                            <div class="tab-pane" id="examples-Default-v1FilesPut-0-javascript">
-                              <pre class="prettyprint"><code class="language-js">var UntitledApi = require('untitled_api');
-
-var api = new UntitledApi.DefaultApi()
-var callback = function(error, data, response) {
-  if (error) {
-    console.error(error);
-  } else {
-    console.log('API called successfully.');
   }
 };
-api.v1FilesPut(callback);
-</code></pre>
+                                        var schema = schemaWrapper.content["application/json"].schema;
+                                        if (schema.$ref != null) {
+                                          schema = defsParser.$refs.get(schema.$ref);
+                                        } else {
+                                          schemaWrapper.components = {};
+                                          schemaWrapper.components.schemas = Object.assign({}, defs);
+                                          $RefParser.dereference(schemaWrapper).catch(function(err) {
+                                            console.log(err);
+                                          });
+                                        }
+
+                                        //console.log(JSON.stringify(schema));
+                                        var view = new JSONSchemaView(schema, 3);
+                                        $('#responses-v1FilesIdDownloadGet-404-schema-data').val(stringify(schema));
+                                        var result = $('#responses-v1FilesIdDownloadGet-404-schema-404');
+                                        result.empty();
+                                        result.append(view.render());
+                                      });
+                                    </script>
+                                  </div>
+                                  <input id='responses-v1FilesIdDownloadGet-404-schema-data' type='hidden' value=''></input>
+                                </div>
                             </div>
 
-                            <!--<div class="tab-pane" id="examples-Default-v1FilesPut-0-angular">
-              <pre class="prettyprint language-json prettyprinted" data-type="json"><code>Coming Soon!</code></pre>
-            </div>-->
-                            <div class="tab-pane" id="examples-Default-v1FilesPut-0-csharp">
-                              <pre class="prettyprint"><code class="language-cs">using System;
-using System.Diagnostics;
-using IO.Swagger.Api;
-using IO.Swagger.Client;
-using IO.Swagger.Model;
-
-namespace Example
-{
-    public class v1FilesPutExample
-    {
-        public void main()
-        {
-
-            var apiInstance = new DefaultApi();
-
-            try
-            {
-                apiInstance.v1FilesPut();
-            }
-            catch (Exception e)
-            {
-                Debug.Print("Exception when calling DefaultApi.v1FilesPut: " + e.Message );
-            }
-        }
-    }
-}
-</code></pre>
-                            </div>
-
-                            <div class="tab-pane" id="examples-Default-v1FilesPut-0-php">
-                              <pre class="prettyprint"><code class="language-php"><&#63;php
-require_once(__DIR__ . '/vendor/autoload.php');
-
-$api_instance = new Swagger\Client\ApiDefaultApi();
-
-try {
-    $api_instance->v1FilesPut();
-} catch (Exception $e) {
-    echo 'Exception when calling DefaultApi->v1FilesPut: ', $e->getMessage(), PHP_EOL;
-}
-?></code></pre>
-                            </div>
-
-                            <div class="tab-pane" id="examples-Default-v1FilesPut-0-perl">
-                              <pre class="prettyprint"><code class="language-perl">use Data::Dumper;
-use WWW::SwaggerClient::Configuration;
-use WWW::SwaggerClient::DefaultApi;
-
-my $api_instance = WWW::SwaggerClient::DefaultApi->new();
-
-eval { 
-    $api_instance->v1FilesPut();
-};
-if ($@) {
-    warn "Exception when calling DefaultApi->v1FilesPut: $@\n";
-}</code></pre>
-                            </div>
-
-                            <div class="tab-pane" id="examples-Default-v1FilesPut-0-python">
-                              <pre class="prettyprint"><code class="language-python">from __future__ import print_statement
-import time
-import swagger_client
-from swagger_client.rest import ApiException
-from pprint import pprint
-
-# create an instance of the API class
-api_instance = swagger_client.DefaultApi()
-
-try: 
-    api_instance.v1_files_put()
-except ApiException as e:
-    print("Exception when calling DefaultApi->v1FilesPut: %s\n" % e)</code></pre>
-                            </div>
-                          </div>
-
-                          <h2>Parameters</h2>
-
-
-
-
-
-
-                          <h2>Responses</h2>
                         </article>
                       </div>
                       <hr>

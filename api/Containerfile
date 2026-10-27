@@ -22,5 +22,6 @@ EXPOSE 8080
 RUN mkdir /app
 COPY --from=build /home/gradle/src/build/libs/*-all.jar /app/api.jar
 ENV SETTINGS_FILE=/data/settings.conf
+ENV UPLOADS_DIR=/data/uploads
 VOLUME /data
 ENTRYPOINT ["java","-jar","/app/api.jar"]

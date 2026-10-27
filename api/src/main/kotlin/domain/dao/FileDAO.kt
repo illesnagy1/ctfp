@@ -8,5 +8,12 @@ import org.jetbrains.exposed.v1.dao.IntEntityClass
 class FileDAO(id: EntityID<Int>) : IntEntity(id) {
     companion object : IntEntityClass<FileDAO>(FileTable)
 
-    var name by FileTable.name
+    var ownerType by FileTable.ownerType
+    var ownerId by FileTable.ownerId
+    var filename by FileTable.filename
+    var storageKey by FileTable.storageKey
+    var size by FileTable.size
+    var mimeType by FileTable.mimeType
+    var sha256 by FileTable.sha256
+    val createdAt by FileTable.createdAt
 }

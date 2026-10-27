@@ -11,6 +11,8 @@ services:
       - "3000:3000"
     environment:
       API_URL: http://api:8080
+      # Uploads stream through the frontend; keep this a bit above the api's UPLOADS_MAX_BYTES (500 MiB).
+      BODY_SIZE_LIMIT: 501M
       REDIS_URL: redis://redis:6379
     depends_on:
       api:
@@ -31,6 +33,9 @@ services:
       POSTGRES_USER: ctfp
       POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-ctfp}
       JWT_SECRET: ${JWT_SECRET:?set JWT_SECRET to 32+ random characters}
+    volumes:
+      # settings.conf and uploads/ (see api/Containerfile)
+      - api-data:/data
     depends_on:
       db:
         condition: service_healthy
@@ -63,5 +68,6 @@ services:
     restart: unless-stopped
 
 volumes:
+  api-data:
   db-data:
   redis-data:

@@ -37,7 +37,12 @@
                     "204": {
                         "description": ""
                     }
-                }
+                },
+                "security": [
+                    {
+                        "default": []
+                    }
+                ]
             },
             "post": {
                 "summary": "",
@@ -54,10 +59,15 @@
                     "201": {
                         "description": ""
                     }
-                }
+                },
+                "security": [
+                    {
+                        "default": []
+                    }
+                ]
             },
             "delete": {
-                "summary": "",
+                "summary": "Flags, hints, their unlocks and submissions are removed with the challenge (ON DELETE CASCADE).",
                 "requestBody": {
                     "content": {
                         "application/json": {
@@ -74,10 +84,15 @@
                     "204": {
                         "description": ""
                     }
-                }
+                },
+                "security": [
+                    {
+                        "default": []
+                    }
+                ]
             },
             "get": {
-                "summary": "",
+                "summary": "Login is optional for reading; admins also get hidden and not yet published challenges.",
                 "responses": {
                     "200": {
                         "description": "",
@@ -92,7 +107,13 @@
                             }
                         }
                     }
-                }
+                },
+                "security": [
+                    {
+                        "default": []
+                    },
+                    {}
+                ]
             }
         },
         "/v1/challenges/{id}": {
@@ -121,7 +142,12 @@
                     "204": {
                         "description": ""
                     }
-                }
+                },
+                "security": [
+                    {
+                        "default": []
+                    }
+                ]
             },
             "delete": {
                 "summary": "",
@@ -139,7 +165,12 @@
                     "204": {
                         "description": ""
                     }
-                }
+                },
+                "security": [
+                    {
+                        "default": []
+                    }
+                ]
             },
             "get": {
                 "summary": "",
@@ -164,7 +195,13 @@
                             }
                         }
                     }
-                }
+                },
+                "security": [
+                    {
+                        "default": []
+                    },
+                    {}
+                ]
             }
         },
         "/v1/challenges/{id}/flags": {
@@ -326,6 +363,142 @@
                             "type": "string"
                         }
                     }
+                ]
+            }
+        },
+        "/v1/challenges/{id}/files": {
+            "post": {
+                "summary": "Documents the [ErrorResponse]s this route can return. They are sent by StatusPages (and the auth challenge), so\nOpenAPI inference can't see them.",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                ],
+                "responses": {
+                    "201": {
+                        "description": "",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/FileResponse"
+                                }
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/ErrorResponse"
+                                }
+                            }
+                        }
+                    },
+                    "401": {
+                        "description": "Unauthorized",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/ErrorResponse"
+                                }
+                            }
+                        }
+                    },
+                    "403": {
+                        "description": "Forbidden",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/ErrorResponse"
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "Not Found",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/ErrorResponse"
+                                }
+                            }
+                        }
+                    },
+                    "413": {
+                        "description": "Payload Too Large",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/ErrorResponse"
+                                }
+                            }
+                        }
+                    }
+                },
+                "security": [
+                    {
+                        "default": []
+                    }
+                ]
+            },
+            "get": {
+                "summary": "Documents the [ErrorResponse]s this route can return. They are sent by StatusPages (and the auth challenge), so\nOpenAPI inference can't see them.",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "array",
+                                    "items": {
+                                        "$ref": "#/components/schemas/FileResponse"
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/ErrorResponse"
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "Not Found",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/ErrorResponse"
+                                }
+                            }
+                        }
+                    }
+                },
+                "security": [
+                    {
+                        "default": []
+                    },
+                    {}
                 ]
             }
         },
@@ -574,48 +747,9 @@
                 }
             }
         },
-        "/v1/files": {
-            "put": {},
-            "post": {
-                "summary": "",
-                "requestBody": {
-                    "content": {
-                        "application/json": {
-                            "schema": {
-                                "$ref": "#/components/schemas/FileRequest"
-                            }
-                        }
-                    }
-                },
-                "responses": {
-                    "201": {
-                        "description": ""
-                    }
-                }
-            },
-            "delete": {},
+        "/v1/files/{id}/download": {
             "get": {
-                "summary": "",
-                "responses": {
-                    "200": {
-                        "description": "",
-                        "content": {
-                            "application/json": {
-                                "schema": {
-                                    "type": "array",
-                                    "items": {
-                                        "$ref": "#/components/schemas/FileResponse"
-                                    }
-                                }
-                            }
-                        }
-                    }
-                }
-            }
-        },
-        "/v1/files/{id}": {
-            "put": {
-                "summary": "",
+                "summary": "Documents the [ErrorResponse]s this route can return. They are sent by StatusPages (and the auth challenge), so\nOpenAPI inference can't see them.",
                 "parameters": [
                     {
                         "name": "id",
@@ -625,10 +759,73 @@
                             "type": "string"
                         }
                     }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "",
+                        "headers": {
+                            "Content-Disposition": {
+                                "content": {
+                                    "text/plain": {}
+                                }
+                            },
+                            "X-Content-Type-Options": {
+                                "content": {
+                                    "text/plain": {}
+                                }
+                            },
+                            "Content-Security-Policy": {
+                                "content": {
+                                    "text/plain": {}
+                                }
+                            },
+                            "Cache-Control": {
+                                "content": {
+                                    "text/plain": {}
+                                }
+                            }
+                        },
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "object",
+                                    "description": "Failed to resolve schema for OutgoingContent. SerializationException: Serializer for class 'OutgoingContent' is not found.\nPlease ensure that class is marked as '@Serializable' and that the serialization compiler plugin is applied.\n"
+                                }
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/ErrorResponse"
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "Not Found",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/ErrorResponse"
+                                }
+                            }
+                        }
+                    }
+                },
+                "security": [
+                    {
+                        "default": []
+                    },
+                    {}
                 ]
-            },
+            }
+        },
+        "/v1/files/{id}": {
             "delete": {
-                "summary": "",
+                "summary": "Documents the [ErrorResponse]s this route can return. They are sent by StatusPages (and the auth challenge), so\nOpenAPI inference can't see them.",
                 "parameters": [
                     {
                         "name": "id",
@@ -642,33 +839,53 @@
                 "responses": {
                     "204": {
                         "description": ""
-                    }
-                }
-            },
-            "get": {
-                "summary": "",
-                "parameters": [
-                    {
-                        "name": "id",
-                        "in": "path",
-                        "required": true,
-                        "schema": {
-                            "type": "string"
-                        }
-                    }
-                ],
-                "responses": {
-                    "200": {
-                        "description": "",
+                    },
+                    "400": {
+                        "description": "Bad Request",
                         "content": {
                             "application/json": {
                                 "schema": {
-                                    "$ref": "#/components/schemas/FileResponse"
+                                    "$ref": "#/components/schemas/ErrorResponse"
+                                }
+                            }
+                        }
+                    },
+                    "401": {
+                        "description": "Unauthorized",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/ErrorResponse"
+                                }
+                            }
+                        }
+                    },
+                    "403": {
+                        "description": "Forbidden",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/ErrorResponse"
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "Not Found",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/ErrorResponse"
                                 }
                             }
                         }
                     }
-                }
+                },
+                "security": [
+                    {
+                        "default": []
+                    }
+                ]
             }
         },
         "/v1/flags": {
@@ -2436,6 +2653,53 @@
                     }
                 }
             },
+            "FileResponse": {
+                "type": "object",
+                "title": "FileResponse",
+                "required": [
+                    "id",
+                    "filename",
+                    "size",
+                    "sha256",
+                    "createdAt"
+                ],
+                "properties": {
+                    "id": {
+                        "type": "integer"
+                    },
+                    "filename": {
+                        "type": "string"
+                    },
+                    "size": {
+                        "type": "integer"
+                    },
+                    "mimeType": {
+                        "type": [
+                            "string",
+                            "null"
+                        ]
+                    },
+                    "sha256": {
+                        "type": "string"
+                    },
+                    "createdAt": {
+                        "type": "string",
+                        "format": "date-time"
+                    }
+                }
+            },
+            "ErrorResponse": {
+                "type": "object",
+                "title": "ErrorResponse",
+                "required": [
+                    "message"
+                ],
+                "properties": {
+                    "message": {
+                        "type": "string"
+                    }
+                }
+            },
             "LoginRequest": {
                 "type": "object",
                 "title": "LoginRequest",
@@ -2500,18 +2764,6 @@
                     }
                 }
             },
-            "ErrorResponse": {
-                "type": "object",
-                "title": "ErrorResponse",
-                "required": [
-                    "message"
-                ],
-                "properties": {
-                    "message": {
-                        "type": "string"
-                    }
-                }
-            },
             "RegisterRequest": {
                 "type": "object",
                 "title": "RegisterRequest",
@@ -2570,34 +2822,6 @@
                         "type": "string"
                     },
                     "body": {
-                        "type": "string"
-                    }
-                }
-            },
-            "FileResponse": {
-                "type": "object",
-                "title": "FileResponse",
-                "required": [
-                    "id",
-                    "name"
-                ],
-                "properties": {
-                    "id": {
-                        "type": "integer"
-                    },
-                    "name": {
-                        "type": "string"
-                    }
-                }
-            },
-            "FileRequest": {
-                "type": "object",
-                "title": "FileRequest",
-                "required": [
-                    "name"
-                ],
-                "properties": {
-                    "name": {
                         "type": "string"
                     }
                 }

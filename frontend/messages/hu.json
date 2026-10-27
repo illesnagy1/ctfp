@@ -71,7 +71,6 @@
   "challenges_column_categories": "Kategóriák",
   "challenges_column_max_attempts": "Max. próbálkozás",
   "challenges_column_publish_at": "Közzétéve",
-  "challenges_action_details": "Részletek",
   "challenges_create": "Feladat hozzáadása",
   "challenges_create_description": "Új feladat létrehozása. A játékosok akkor látják, ha látható és már közzé lett téve.",
   "challenges_create_submit": "Létrehozás",
@@ -123,5 +122,18 @@
   "users_banned": "{username} kitiltva",
   "users_unbanned": "{username} kitiltása feloldva",
   "users_banned_many": "{count} felhasználó kitiltva",
-  "users_unbanned_many": "{count} felhasználó kitiltása feloldva"
+  "users_unbanned_many": "{count} felhasználó kitiltása feloldva",
+  "challenge_files_title": "Mellékletek",
+  "challenge_files_empty": "Még nincsenek mellékletek.",
+  "challenge_files_uploading": "{filename} feltöltése… {percent}%",
+  "challenge_files_uploaded": "„{filename}” feltöltve",
+  "challenge_files_upload_failed": "Nem sikerült feltölteni: „{filename}”: {reason}",
+  "challenge_files_copy_hash": "SHA-256 másolása",
+  "challenge_files_hash_copied": "SHA-256 kimásolva",
+  "challenge_files_hash_copy_failed": "Nem sikerült kimásolni a SHA-256-ot",
+  "challenge_files_delete": "{filename} törlése",
+  "challenge_files_delete_title": "Törlöd a mellékletet?",
+  "challenge_files_delete_description": "A(z) „{filename}” véglegesen törlődik. Ez nem vonható vissza.",
+  "challenge_files_deleted": "„{filename}” törölve",
+  "challenge_files_drop": "Húzd ide a fájlokat, vagy kattints a kiválasztáshoz"
 }
