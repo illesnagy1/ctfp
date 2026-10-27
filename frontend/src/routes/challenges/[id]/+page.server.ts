@@ -1,7 +1,8 @@
 import { error, fail } from '@sveltejs/kit';
 
+import { idSchema } from '#lib/schemas/ids.js';
 import { apiClient } from '#lib/server/api.js';
-import { formString } from '#lib/server/form.js';
+import { parseForm } from '#lib/server/form.js';
 import { renderMarkdown } from '#lib/server/markdown.js';
 
 import type { Actions, PageServerLoad } from './$types';
@@ -32,12 +33,11 @@ export const actions: Actions = {
   deleteFile: async (event) => {
     if (event.locals.user?.role !== 'ADMIN') error(403, 'Admin access required');
 
-    const form = await event.request.formData();
-    const id = Number(formString(form, 'id'));
-    if (!Number.isInteger(id)) return fail(400, { message: 'Invalid file id' });
+    const { data, failure } = await parseForm(event.request, idSchema);
+    if (failure) return failure;
 
     const { error: apiError, response } = await apiClient(event).DELETE('/v1/files/{id}', {
-      params: { path: { id: String(id) } },
+      params: { path: { id: String(data.id) } },
     });
     if (apiError) return fail(response.status, { message: apiError.message });
     return { success: true };

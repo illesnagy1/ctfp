@@ -135,5 +135,16 @@
   "challenge_files_delete_title": "Delete attachment?",
   "challenge_files_delete_description": "\"{filename}\" will be deleted permanently. This can't be undone.",
   "challenge_files_deleted": "\"{filename}\" deleted",
-  "challenge_files_drop": "Drop files here, or click to choose"
+  "challenge_files_drop": "Drop files here, or click to choose",
+  "validation_required": "Required",
+  "validation_username": "3–64 characters: letters, numbers, \".\", \"_\" or \"-\"",
+  "validation_email": "Enter a valid email address",
+  "validation_password_length": "Password must be 8–128 characters",
+  "validation_passwords_match": "Passwords do not match",
+  "validation_too_long": "At most {max} characters",
+  "validation_whole_number": "Enter a whole number, 0 or more",
+  "validation_date": "Enter a valid date and time",
+  "validation_title_taken": "A challenge with this title already exists",
+  "date_time_picker_pick_date": "Pick a date",
+  "date_time_picker_time": "Time"
 }

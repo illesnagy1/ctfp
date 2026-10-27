@@ -310,7 +310,7 @@
 
 <div
   class={cn(
-    'relative flex min-h-9 w-full flex-wrap place-items-center gap-1 rounded-md border border-input bg-background py-0.5 px-1  selection:bg-primary disabled:opacity-50 aria-disabled:cursor-not-allowed dark:bg-input/30',
+    'relative flex min-h-9 w-full flex-wrap place-items-center gap-1 rounded-md border border-input bg-background px-1 py-0.5  selection:bg-primary disabled:opacity-50 aria-disabled:cursor-not-allowed dark:bg-input/30',
     className,
   )}
   aria-disabled={disabled}
@@ -341,7 +341,7 @@
       bind:this={listboxEl}
       id={listboxId}
       role="listbox"
-      class="absolute top-full inset-x-0  z-50 mt-1 max-h-50 overflow-y-auto rounded-md border bg-popover p-1 text-popover-foreground shadow-md"
+      class="absolute inset-x-0 top-full z-50 mt-1 max-h-50 overflow-y-auto rounded-md border bg-popover p-1 text-popover-foreground shadow-md"
     >
       {#each filteredSuggestions as suggestion, i (suggestion)}
         <TagsInputSuggestion

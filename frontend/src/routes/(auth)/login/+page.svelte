@@ -1,13 +1,19 @@
 <script lang="ts">
-  import { enhance } from '$app/forms';
   import { resolve } from '$app/paths';
+  import { superForm } from 'sveltekit-superforms';
+  import { zod4Client } from 'sveltekit-superforms/adapters';
 
-  import { Button } from '#lib/components/ui/button/index.js';
   import * as Card from '#lib/components/ui/card/index.js';
+  import * as Form from '#lib/components/ui/form/index.js';
   import { Input } from '#lib/components/ui/input/index.js';
-  import { Label } from '#lib/components/ui/label/index.js';
+  import { loginSchema } from '#lib/schemas/auth.js';
 
-  let { form } = $props();
+  let { data } = $props();
+
+  // Created once from the initial data; superForm keeps it up to date itself.
+  // svelte-ignore state_referenced_locally
+  const form = superForm(data.form, { validators: zod4Client(loginSchema) });
+  const { form: formData, enhance, message, submitting } = form;
 </script>
 
 <div class="mx-auto max-w-sm px-4 py-12">
@@ -17,18 +23,28 @@
     </Card.Header>
     <Card.Content>
       <form method="post" use:enhance class="flex flex-col gap-4">
-        <div class="flex flex-col gap-2">
-          <Label for="login">Username or email</Label>
-          <Input id="login" name="login" autocomplete="username" value={form?.login ?? ''} required />
-        </div>
-        <div class="flex flex-col gap-2">
-          <Label for="password">Password</Label>
-          <Input id="password" name="password" type="password" autocomplete="current-password" required />
-        </div>
-        {#if form?.message}
-          <p class="text-sm text-destructive">{form.message}</p>
+        <Form.Field {form} name="login">
+          <Form.Control>
+            {#snippet children({ props })}
+              <Form.Label>Username or email</Form.Label>
+              <Input {...props} autocomplete="username" bind:value={$formData.login} />
+            {/snippet}
+          </Form.Control>
+          <Form.FieldErrors />
+        </Form.Field>
+        <Form.Field {form} name="password">
+          <Form.Control>
+            {#snippet children({ props })}
+              <Form.Label>Password</Form.Label>
+              <Input {...props} type="password" autocomplete="current-password" bind:value={$formData.password} />
+            {/snippet}
+          </Form.Control>
+          <Form.FieldErrors />
+        </Form.Field>
+        {#if $message}
+          <p role="alert" class="text-sm text-destructive">{$message}</p>
         {/if}
-        <Button type="submit">Login</Button>
+        <Form.Button disabled={$submitting}>Login</Form.Button>
       </form>
     </Card.Content>
     <Card.Footer>

@@ -135,5 +135,16 @@
   "challenge_files_delete_title": "Törlöd a mellékletet?",
   "challenge_files_delete_description": "A(z) „{filename}” véglegesen törlődik. Ez nem vonható vissza.",
   "challenge_files_deleted": "„{filename}” törölve",
-  "challenge_files_drop": "Húzd ide a fájlokat, vagy kattints a kiválasztáshoz"
+  "challenge_files_drop": "Húzd ide a fájlokat, vagy kattints a kiválasztáshoz",
+  "validation_required": "Kötelező",
+  "validation_username": "3–64 karakter: betűk, számok, „.”, „_” vagy „-”",
+  "validation_email": "Adj meg egy érvényes e-mail-címet",
+  "validation_password_length": "A jelszó 8–128 karakter hosszú legyen",
+  "validation_passwords_match": "A jelszavak nem egyeznek",
+  "validation_too_long": "Legfeljebb {max} karakter",
+  "validation_whole_number": "Adj meg egy egész számot (0 vagy több)",
+  "validation_date": "Adj meg egy érvényes dátumot és időpontot",
+  "validation_title_taken": "Már van ilyen című feladat",
+  "date_time_picker_pick_date": "Válassz dátumot",
+  "date_time_picker_time": "Időpont"
 }

@@ -61,7 +61,7 @@
   <div class="flex items-center justify-between gap-4 pb-4">
     <h1 class="text-2xl font-semibold tracking-tight">{m.challenges_title()}</h1>
     {#if isAdmin}
-      <CreateChallengeDialog knownCategories={categories.map((c) => c.value)} />
+      <CreateChallengeDialog data={data.createForm} knownCategories={categories.map((c) => c.value)} />
     {/if}
   </div>
   <DataTable

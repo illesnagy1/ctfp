@@ -1,8 +1,12 @@
 import { error, fail } from '@sveltejs/kit';
+import { setError, superValidate } from 'sveltekit-superforms';
+import { zod4 } from 'sveltekit-superforms/adapters';
 
+import { m } from '#lib/paraglide/messages.js';
+import { createChallengeSchema } from '#lib/schemas/challenge.js';
+import { idSchema, idsSchema } from '#lib/schemas/ids.js';
 import { apiClient } from '#lib/server/api.js';
-import { formString } from '#lib/server/form.js';
-import type { components } from '#lib/types/api.js';
+import { apiFormError, parseForm } from '#lib/server/form.js';
 
 import type { Actions, PageServerLoad } from './$types';
 
@@ -11,91 +15,54 @@ export const load: PageServerLoad = async (event) => {
   const { data, response } = await apiClient(event).GET('/v1/challenges');
   if (!data) error(response.status, response.statusText);
 
-  return { challenges: data };
+  return { challenges: data, createForm: await superValidate(zod4(createChallengeSchema)) };
 };
 
-/** Parses a non-negative whole number field; empty means 0 (no limit). */
-function formCount(form: FormData, name: string) {
-  const value = Number(formString(form, name) || '0');
-  return Number.isInteger(value) && value >= 0 ? value : undefined;
+/** For the id-only actions, which report failures as `{ message }` for `submitAction`. */
+function apiFailure(response: Response, apiError: { message?: string } | undefined, what: string) {
+  if (response.status < 500) return fail(response.status, { message: apiError?.message ?? response.statusText });
+  console.error(`${what} failed`, response.status, apiError);
+  return fail(500, { message: 'Something went wrong, try again later' });
 }
 
 export const actions: Actions = {
   create: async (event) => {
     if (event.locals.user?.role !== 'ADMIN') error(403, 'Admin access required');
 
-    const form = await event.request.formData();
-    const title = formString(form, 'title').trim();
-    const description = formString(form, 'description').trim() || null;
-    // One field per tag.
-    const categories = [
-      ...new Set(
-        form
-          .getAll('categories')
-          .filter((c) => typeof c === 'string')
-          .map((c) => c.trim())
-          .filter(Boolean),
-      ),
-    ];
-    // Sent as ISO by the dialog, converted from the browser's local time.
-    const publishAt = new Date(formString(form, 'publishAt'));
-    const maxAttempts = formCount(form, 'maxAttempts');
-    const timeLimit = formCount(form, 'timeLimit');
-    const isVisible = form.has('isVisible');
+    const form = await superValidate(event, zod4(createChallengeSchema));
+    if (!form.valid) return fail(400, { form });
 
-    if (!title) return fail(400, { message: 'Title is required' });
-    if (Number.isNaN(publishAt.getTime())) return fail(400, { message: 'Invalid publish date' });
-    if (maxAttempts === undefined || timeLimit === undefined) {
-      return fail(400, { message: 'Limits must be whole numbers, 0 or more' });
-    }
-
-    // The route documents no error responses yet, so read the api's ErrorResponse body untyped.
+    const { description, ...challenge } = form.data;
     const { error: apiError, response } = await apiClient(event).POST('/v1/challenges', {
-      body: { title, description, categories, publishAt: publishAt.toISOString(), maxAttempts, timeLimit, isVisible },
+      body: { ...challenge, description: description || null },
     });
-    if (!response.ok) {
-      const message = (apiError as components['schemas']['ErrorResponse'] | undefined)?.message;
-      if (response.status < 500) return fail(response.status, { message: message ?? response.statusText });
-      console.error('Creating challenge failed', response.status, apiError);
-      return fail(500, { message: 'Something went wrong, try again later' });
-    }
-    return { success: true };
+    // Titles are unique, so a conflict can only be the title.
+    if (response.status === 409) return setError(form, 'title', m.validation_title_taken());
+    if (!response.ok) return apiFormError(form, response, apiError, 'Creating challenge');
+    return { form };
   },
 
   delete: async (event) => {
     if (event.locals.user?.role !== 'ADMIN') error(403, 'Admin access required');
 
-    const form = await event.request.formData();
-    const id = Number(formString(form, 'id'));
-    if (!Number.isInteger(id)) return fail(400, { message: 'Invalid challenge id' });
+    const { data, failure } = await parseForm(event.request, idSchema);
+    if (failure) return failure;
 
     const { error: apiError, response } = await apiClient(event).DELETE('/v1/challenges/{id}', {
-      params: { path: { id: String(id) } },
+      params: { path: { id: String(data.id) } },
     });
-    if (!response.ok) {
-      const message = (apiError as components['schemas']['ErrorResponse'] | undefined)?.message;
-      if (response.status < 500) return fail(response.status, { message: message ?? response.statusText });
-      console.error('Deleting challenge failed', response.status, apiError);
-      return fail(500, { message: 'Something went wrong, try again later' });
-    }
+    if (!response.ok) return apiFailure(response, apiError, 'Deleting challenge');
     return { success: true };
   },
 
   deleteMany: async (event) => {
     if (event.locals.user?.role !== 'ADMIN') error(403, 'Admin access required');
 
-    const form = await event.request.formData();
-    // Comma-separated, as sent by submitAction.
-    const ids = formString(form, 'ids').split(',').map(Number);
-    if (ids.length === 0 || !ids.every(Number.isInteger)) return fail(400, { message: 'Invalid challenge ids' });
+    const { data, failure } = await parseForm(event.request, idsSchema);
+    if (failure) return failure;
 
-    const { error: apiError, response } = await apiClient(event).DELETE('/v1/challenges', { body: ids });
-    if (!response.ok) {
-      const message = (apiError as components['schemas']['ErrorResponse'] | undefined)?.message;
-      if (response.status < 500) return fail(response.status, { message: message ?? response.statusText });
-      console.error('Deleting challenges failed', response.status, apiError);
-      return fail(500, { message: 'Something went wrong, try again later' });
-    }
+    const { error: apiError, response } = await apiClient(event).DELETE('/v1/challenges', { body: data.ids });
+    if (!response.ok) return apiFailure(response, apiError, 'Deleting challenges');
     return { success: true };
   },
 };

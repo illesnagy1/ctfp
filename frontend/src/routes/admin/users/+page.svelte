@@ -56,7 +56,7 @@
 <div class="mx-auto w-full max-w-6xl px-4 py-6">
   <div class="flex items-center justify-between gap-4 pb-4">
     <h1 class="text-2xl font-semibold tracking-tight">{m.users_title()}</h1>
-    <CreateUserDialog />
+    <CreateUserDialog data={data.createForm} />
   </div>
   <DataTable
     data={data.users}

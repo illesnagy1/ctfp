@@ -1,7 +1,11 @@
 import { error, fail, redirect, type RequestEvent } from '@sveltejs/kit';
+import { superValidate } from 'sveltekit-superforms';
+import { zod4 } from 'sveltekit-superforms/adapters';
 
+import { idSchema, idsSchema } from '#lib/schemas/ids.js';
+import { createUserSchema, setBannedSchema } from '#lib/schemas/user.js';
 import { apiClient } from '#lib/server/api.js';
-import { formString } from '#lib/server/form.js';
+import { apiFormError, parseForm } from '#lib/server/form.js';
 import { toAdminUserUpdate } from '#lib/types/user.js';
 
 import type { Actions, PageServerLoad } from './$types';
@@ -13,7 +17,7 @@ export const load: PageServerLoad = async (event) => {
     error(response.status, apiError.message);
   }
 
-  return { users: data };
+  return { users: data, createForm: await superValidate(zod4(createUserSchema)) };
 };
 
 /** Form actions don't run the /admin layout guard, so each action checks the role itself. */
@@ -29,31 +33,23 @@ export const actions: Actions = {
   create: async (event) => {
     requireAdmin(event);
 
-    const form = await event.request.formData();
-    const role = formString(form, 'role');
-    if (role !== 'ADMIN' && role !== 'USER') return fail(400, { message: 'Invalid role' });
+    const form = await superValidate(event, zod4(createUserSchema));
+    const body = form.data;
+    // The form is sent back to the browser; never echo the password.
+    form.data = { ...form.data, password: '' };
+    if (!form.valid) return fail(400, { form });
 
-    const { error: apiError, response } = await apiClient(event).POST('/v1/admin/users', {
-      body: {
-        username: formString(form, 'username').trim(),
-        email: formString(form, 'email').trim(),
-        password: formString(form, 'password'),
-        role,
-        isVerified: form.has('isVerified'),
-        isHidden: form.has('isHidden'),
-      },
-    });
-    if (apiError) return fail(response.status, { message: apiError.message });
-    return { success: true };
+    const { error: apiError, response } = await apiClient(event).POST('/v1/admin/users', { body });
+    if (apiError) return apiFormError(form, response, apiError, 'Creating user');
+    return { form };
   },
 
   setBanned: async (event) => {
     const self = requireAdmin(event);
 
-    const form = await event.request.formData();
-    const id = Number(form.get('id'));
-    const banned = form.get('banned') === 'true';
-    if (!Number.isInteger(id)) return fail(400, { message: 'Invalid user id' });
+    const { data, failure } = await parseForm(event.request, idSchema.extend(setBannedSchema.shape));
+    if (failure) return failure;
+    const { id, banned } = data;
     // Banned users lose admin rights, so this would lock the admin out.
     if (banned && id === self.id) return fail(400, { message: SELF_BAN });
 
@@ -75,11 +71,10 @@ export const actions: Actions = {
   setBannedMany: async (event) => {
     const self = requireAdmin(event);
 
-    const form = await event.request.formData();
-    // Comma-separated, as sent by submitAction.
-    const ids = new Set(formString(form, 'ids').split(',').map(Number));
-    const banned = form.get('banned') === 'true';
-    if (ids.size === 0 || ![...ids].every(Number.isInteger)) return fail(400, { message: 'Invalid user ids' });
+    const { data, failure } = await parseForm(event.request, idsSchema.extend(setBannedSchema.shape));
+    if (failure) return failure;
+    const ids = new Set(data.ids);
+    const { banned } = data;
     if (banned && ids.has(self.id)) return fail(400, { message: SELF_BAN });
 
     const client = apiClient(event);
