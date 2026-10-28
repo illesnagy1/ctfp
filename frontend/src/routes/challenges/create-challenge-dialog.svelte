@@ -4,15 +4,16 @@
   import { superForm, type Infer, type SuperValidated } from 'sveltekit-superforms';
   import { zod4Client } from 'sveltekit-superforms/adapters';
 
-  import DateTimePicker from '#lib/components/date-time-picker.svelte';
   import { Button } from '#lib/components/ui/button/index.js';
   import { Checkbox } from '#lib/components/ui/checkbox/index.js';
+  import { DateTimePicker } from '#lib/components/ui/date-time-picker/index.js';
   import * as Dialog from '#lib/components/ui/dialog/index.js';
   import * as Form from '#lib/components/ui/form/index.js';
   import { Input } from '#lib/components/ui/input/index.js';
   import { TagsInput } from '#lib/components/ui/tags-input/index.js';
   import { Textarea } from '#lib/components/ui/textarea/index.js';
   import { m } from '#lib/paraglide/messages.js';
+  import { getLocale } from '#lib/paraglide/runtime.js';
   import { createChallengeSchema } from '#lib/schemas/challenge.js';
 
   let {
@@ -100,7 +101,13 @@
         <Form.Control>
           {#snippet children({ props })}
             <Form.Label>{m.challenges_field_publish_at()}</Form.Label>
-            <DateTimePicker bind:value={$formData.publishAt} triggerProps={props} />
+            <DateTimePicker
+              {...props}
+              bind:value={$formData.publishAt}
+              locale={getLocale()}
+              triggerLabel={m.date_time_picker_pick_date()}
+              timeLabel={m.date_time_picker_time()}
+            />
           {/snippet}
         </Form.Control>
         <Form.FieldErrors />

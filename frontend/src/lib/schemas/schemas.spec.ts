@@ -1,3 +1,5 @@
+import { superValidate } from 'sveltekit-superforms';
+import { zod4 } from 'sveltekit-superforms/adapters';
 import { describe, expect, it } from 'vitest';
 
 import { registerSchema } from './auth';
@@ -49,6 +51,13 @@ describe('createChallengeSchema', () => {
     timeLimit: 3600,
     isVisible: true,
   };
+
+  // Bound form fields need real defaults; a `.transform()` leaves them undefined.
+  it('has superforms defaults for every field', async () => {
+    const { data } = await superValidate(zod4(createChallengeSchema));
+    expect(Object.values(data)).not.toContain(undefined);
+    expect(data.categories).toEqual([]);
+  });
 
   it('trims the title and drops duplicate categories', () => {
     const result = createChallengeSchema.parse(valid);

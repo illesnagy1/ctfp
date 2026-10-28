@@ -12,7 +12,7 @@ export const createChallengeSchema = z.object({
     .min(1, { error: () => m.validation_required() })
     .max(255, { error: () => m.validation_too_long({ max: 255 }) }),
   description: z.string().trim(),
-  categories: z.array(z.string().trim().min(1)).transform((categories) => [...new Set(categories)]),
+  categories: z.array(z.string().trim().min(1)).overwrite((categories) => [...new Set(categories)]),
   // An absolute time: the dialog converts from the browser's local time, since the server can't know its zone.
   publishAt: z.iso.datetime({ error: () => m.validation_date() }),
   maxAttempts: count(),
