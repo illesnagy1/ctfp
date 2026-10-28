@@ -18,6 +18,7 @@
     selectable = true,
     getRowId,
     actions,
+    isHighlighted,
   }: {
     data: TData[];
     columns: ColumnDef<DataTableFeatures, TData>[];
@@ -34,6 +35,8 @@
     getRowId?: (row: TData) => string;
     /** Toolbar buttons for the selected rows, e.g. a bulk delete. */
     actions?: Snippet<[selected: TData[]]>;
+    /** Rows to show with a success background, e.g. solved challenges. */
+    isHighlighted?: (row: TData) => boolean;
   } = $props();
 
   // v9 keeps pagination, sorting, filters, visibility and selection internally, and its reads are rune-reactive.
@@ -76,7 +79,10 @@
       </Table.Header>
       <Table.Body>
         {#each table.getRowModel().rows as row (row.id)}
-          <Table.Row data-state={row.getIsSelected() && 'selected'}>
+          <Table.Row
+            data-state={row.getIsSelected() && 'selected'}
+            data-highlighted={isHighlighted?.(row.original) || undefined}
+          >
             {#each row.getVisibleCells() as cell (cell.id)}
               <Table.Cell>
                 <FlexRender {cell} />

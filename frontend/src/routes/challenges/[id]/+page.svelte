@@ -1,6 +1,7 @@
 <script lang="ts">
   import { resolve } from '$app/paths';
   import ArrowLeftIcon from '@lucide/svelte/icons/arrow-left';
+  import FlagIcon from '@lucide/svelte/icons/flag';
 
   import { DataTableBadgesCell } from '#lib/components/data-table/index.js';
   import LocalTime from '#lib/components/local-time.svelte';
@@ -9,6 +10,8 @@
   import { getLocale } from '#lib/paraglide/runtime.js';
 
   import ChallengeFiles from './challenge-files.svelte';
+  import ChallengeFlags from './challenge-flags.svelte';
+  import FlagSubmission from './flag-submission.svelte';
 
   let { data } = $props();
 
@@ -74,7 +77,21 @@
             <dd><LocalTime value={challenge.updatedAt} /></dd>
           {/if}
         </dl>
+        <section class="flex flex-col gap-3" aria-labelledby="flag-submission-title">
+          <h2 id="flag-submission-title" class="flex items-center gap-2 text-sm font-medium">
+            <FlagIcon class="size-4" />
+            {m.flag_submission_title()}
+          </h2>
+          {#if data.submitFlagForm}
+            <FlagSubmission data={data.submitFlagForm} />
+          {:else}
+            <a href={resolve('/(auth)/login')} class="text-sm underline">{m.flag_submission_login()}</a>
+          {/if}
+        </section>
         <ChallengeFiles challengeId={challenge.id} files={data.files} {isAdmin} />
+        {#if data.flags && data.createFlagForm}
+          <ChallengeFlags flags={data.flags} createForm={data.createFlagForm} />
+        {/if}
       </div>
     </Card.Content>
   </Card.Root>

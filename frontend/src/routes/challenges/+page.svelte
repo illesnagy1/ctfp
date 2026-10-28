@@ -15,6 +15,7 @@
   let { data } = $props();
 
   const isAdmin = $derived(data.user?.role === 'ADMIN');
+  const solved = $derived(new Set(data.solvedIds));
 
   // Filter options are whatever categories the challenges actually use.
   const categories = $derived(
@@ -69,6 +70,7 @@
     columns={isAdmin ? adminColumns : columns}
     selectable={isAdmin}
     getRowId={(challenge) => String(challenge.id)}
+    isHighlighted={(challenge) => solved.has(challenge.id)}
     actions={isAdmin ? bulkActions : undefined}
     search={{ column: 'title', placeholder: m.challenges_filter_placeholder() }}
     filters={[{ column: 'categories', title: m.challenges_column_categories(), options: categories }]}

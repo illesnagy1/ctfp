@@ -75,37 +75,7 @@ fun Route.challenge(service: ChallengeService) {
                 }
             }
 
-            route("flags") {
-                get {
-
-                }
-                post {
-
-                }
-                put {
-
-                }
-                delete {
-
-                }
-            }
-
             route("hints") {
-                get {
-
-                }
-                post {
-
-                }
-                put {
-
-                }
-                delete {
-
-                }
-            }
-
-            route("submissions") {
                 get {
 
                 }

@@ -204,115 +204,7 @@
                 ]
             }
         },
-        "/v1/challenges/{id}/flags": {
-            "put": {
-                "summary": "",
-                "parameters": [
-                    {
-                        "name": "id",
-                        "in": "path",
-                        "required": true,
-                        "schema": {
-                            "type": "string"
-                        }
-                    }
-                ]
-            },
-            "post": {
-                "summary": "",
-                "parameters": [
-                    {
-                        "name": "id",
-                        "in": "path",
-                        "required": true,
-                        "schema": {
-                            "type": "string"
-                        }
-                    }
-                ]
-            },
-            "delete": {
-                "summary": "",
-                "parameters": [
-                    {
-                        "name": "id",
-                        "in": "path",
-                        "required": true,
-                        "schema": {
-                            "type": "string"
-                        }
-                    }
-                ]
-            },
-            "get": {
-                "summary": "",
-                "parameters": [
-                    {
-                        "name": "id",
-                        "in": "path",
-                        "required": true,
-                        "schema": {
-                            "type": "string"
-                        }
-                    }
-                ]
-            }
-        },
         "/v1/challenges/{id}/hints": {
-            "put": {
-                "summary": "",
-                "parameters": [
-                    {
-                        "name": "id",
-                        "in": "path",
-                        "required": true,
-                        "schema": {
-                            "type": "string"
-                        }
-                    }
-                ]
-            },
-            "post": {
-                "summary": "",
-                "parameters": [
-                    {
-                        "name": "id",
-                        "in": "path",
-                        "required": true,
-                        "schema": {
-                            "type": "string"
-                        }
-                    }
-                ]
-            },
-            "delete": {
-                "summary": "",
-                "parameters": [
-                    {
-                        "name": "id",
-                        "in": "path",
-                        "required": true,
-                        "schema": {
-                            "type": "string"
-                        }
-                    }
-                ]
-            },
-            "get": {
-                "summary": "",
-                "parameters": [
-                    {
-                        "name": "id",
-                        "in": "path",
-                        "required": true,
-                        "schema": {
-                            "type": "string"
-                        }
-                    }
-                ]
-            }
-        },
-        "/v1/challenges/{id}/submissions": {
             "put": {
                 "summary": "",
                 "parameters": [
@@ -888,10 +780,19 @@
                 ]
             }
         },
-        "/v1/flags": {
-            "put": {},
+        "/v1/challenges/{id}/flags": {
             "post": {
-                "summary": "",
+                "summary": "Documents the [ErrorResponse]s this route can return. They are sent by StatusPages (and the auth challenge), so\nOpenAPI inference can't see them.",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                ],
                 "requestBody": {
                     "content": {
                         "application/json": {
@@ -903,17 +804,79 @@
                 },
                 "responses": {
                     "201": {
-                        "description": ""
+                        "description": "",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/FlagResponse"
+                                }
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/ErrorResponse"
+                                }
+                            }
+                        }
+                    },
+                    "401": {
+                        "description": "Unauthorized",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/ErrorResponse"
+                                }
+                            }
+                        }
+                    },
+                    "403": {
+                        "description": "Forbidden",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/ErrorResponse"
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "Not Found",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/ErrorResponse"
+                                }
+                            }
+                        }
+                    },
+                    "409": {
+                        "description": "Conflict",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/ErrorResponse"
+                                }
+                            }
+                        }
                     }
-                }
+                },
+                "security": [
+                    {
+                        "default": []
+                    }
+                ]
             },
-            "delete": {},
             "get": {
-                "summary": "",
+                "summary": "Documents the [ErrorResponse]s this route can return. They are sent by StatusPages (and the auth challenge), so\nOpenAPI inference can't see them.",
                 "parameters": [
                     {
-                        "name": "challengeId",
-                        "in": "query",
+                        "name": "id",
+                        "in": "path",
+                        "required": true,
                         "schema": {
                             "type": "string"
                         }
@@ -932,25 +895,63 @@
                                 }
                             }
                         }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/ErrorResponse"
+                                }
+                            }
+                        }
+                    },
+                    "401": {
+                        "description": "Unauthorized",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/ErrorResponse"
+                                }
+                            }
+                        }
+                    },
+                    "403": {
+                        "description": "Forbidden",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/ErrorResponse"
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "Not Found",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/ErrorResponse"
+                                }
+                            }
+                        }
                     }
-                }
+                },
+                "security": [
+                    {
+                        "default": []
+                    }
+                ]
             }
         },
         "/v1/flags/{id}": {
             "put": {
-                "summary": "",
+                "summary": "Documents the [ErrorResponse]s this route can return. They are sent by StatusPages (and the auth challenge), so\nOpenAPI inference can't see them.",
                 "parameters": [
                     {
                         "name": "id",
                         "in": "path",
                         "required": true,
-                        "schema": {
-                            "type": "string"
-                        }
-                    },
-                    {
-                        "name": "challengeId",
-                        "in": "query",
                         "schema": {
                             "type": "string"
                         }
@@ -968,11 +969,66 @@
                 "responses": {
                     "204": {
                         "description": ""
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/ErrorResponse"
+                                }
+                            }
+                        }
+                    },
+                    "401": {
+                        "description": "Unauthorized",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/ErrorResponse"
+                                }
+                            }
+                        }
+                    },
+                    "403": {
+                        "description": "Forbidden",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/ErrorResponse"
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "Not Found",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/ErrorResponse"
+                                }
+                            }
+                        }
+                    },
+                    "409": {
+                        "description": "Conflict",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/ErrorResponse"
+                                }
+                            }
+                        }
                     }
-                }
+                },
+                "security": [
+                    {
+                        "default": []
+                    }
+                ]
             },
             "delete": {
-                "summary": "",
+                "summary": "Documents the [ErrorResponse]s this route can return. They are sent by StatusPages (and the auth challenge), so\nOpenAPI inference can't see them.",
                 "parameters": [
                     {
                         "name": "id",
@@ -986,40 +1042,53 @@
                 "responses": {
                     "204": {
                         "description": ""
-                    }
-                }
-            },
-            "get": {
-                "summary": "",
-                "parameters": [
-                    {
-                        "name": "id",
-                        "in": "path",
-                        "required": true,
-                        "schema": {
-                            "type": "string"
-                        }
                     },
-                    {
-                        "name": "challengeId",
-                        "in": "query",
-                        "schema": {
-                            "type": "string"
-                        }
-                    }
-                ],
-                "responses": {
-                    "200": {
-                        "description": "",
+                    "400": {
+                        "description": "Bad Request",
                         "content": {
                             "application/json": {
                                 "schema": {
-                                    "$ref": "#/components/schemas/FlagResponse"
+                                    "$ref": "#/components/schemas/ErrorResponse"
+                                }
+                            }
+                        }
+                    },
+                    "401": {
+                        "description": "Unauthorized",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/ErrorResponse"
+                                }
+                            }
+                        }
+                    },
+                    "403": {
+                        "description": "Forbidden",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/ErrorResponse"
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "Not Found",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/ErrorResponse"
                                 }
                             }
                         }
                     }
-                }
+                },
+                "security": [
+                    {
+                        "default": []
+                    }
+                ]
             }
         },
         "/v1/hints": {
@@ -1553,28 +1622,90 @@
                 ]
             }
         },
-        "/v1/submissions": {
-            "put": {},
+        "/v1/challenges/{id}/submissions": {
             "post": {
-                "summary": "",
+                "summary": "Documents the [ErrorResponse]s this route can return. They are sent by StatusPages (and the auth challenge), so\nOpenAPI inference can't see them.",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                ],
                 "requestBody": {
                     "content": {
                         "application/json": {
                             "schema": {
-                                "$ref": "#/components/schemas/SubmissionRequest"
+                                "$ref": "#/components/schemas/SubmitFlagRequest"
                             }
                         }
                     }
                 },
                 "responses": {
-                    "201": {
-                        "description": ""
+                    "200": {
+                        "description": "",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/SubmissionResult"
+                                }
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/ErrorResponse"
+                                }
+                            }
+                        }
+                    },
+                    "401": {
+                        "description": "Unauthorized",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/ErrorResponse"
+                                }
+                            }
+                        }
+                    },
+                    "403": {
+                        "description": "Forbidden",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/ErrorResponse"
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "Not Found",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/ErrorResponse"
+                                }
+                            }
+                        }
                     }
-                }
-            },
-            "delete": {},
+                },
+                "security": [
+                    {
+                        "default": []
+                    }
+                ]
+            }
+        },
+        "/v1/users/me/solves": {
             "get": {
-                "summary": "",
+                "summary": "Documents the [ErrorResponse]s this route can return. They are sent by StatusPages (and the auth challenge), so\nOpenAPI inference can't see them.",
                 "responses": {
                     "200": {
                         "description": "",
@@ -1583,66 +1714,43 @@
                                 "schema": {
                                     "type": "array",
                                     "items": {
-                                        "$ref": "#/components/schemas/SubmissionResponse"
+                                        "type": "integer"
                                     }
                                 }
                             }
                         }
-                    }
-                }
-            }
-        },
-        "/v1/submissions/{id}": {
-            "put": {
-                "summary": "",
-                "parameters": [
-                    {
-                        "name": "id",
-                        "in": "path",
-                        "required": true,
-                        "schema": {
-                            "type": "string"
+                    },
+                    "401": {
+                        "description": "Unauthorized",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/ErrorResponse"
+                                }
+                            }
                         }
+                    }
+                },
+                "security": [
+                    {
+                        "default": []
                     }
                 ]
-            },
-            "delete": {
-                "summary": "",
-                "parameters": [
-                    {
-                        "name": "id",
-                        "in": "path",
-                        "required": true,
-                        "schema": {
-                            "type": "string"
-                        }
-                    }
-                ],
-                "responses": {
-                    "204": {
-                        "description": ""
-                    }
-                }
-            },
+            }
+        },
+        "/v1/scoreboard": {
             "get": {
-                "summary": "",
-                "parameters": [
-                    {
-                        "name": "id",
-                        "in": "path",
-                        "required": true,
-                        "schema": {
-                            "type": "string"
-                        }
-                    }
-                ],
+                "summary": "Public, like the challenge list.",
                 "responses": {
                     "200": {
                         "description": "",
                         "content": {
                             "application/json": {
                                 "schema": {
-                                    "$ref": "#/components/schemas/SubmissionResponse"
+                                    "type": "array",
+                                    "items": {
+                                        "$ref": "#/components/schemas/ScoreboardEntry"
+                                    }
                                 }
                             }
                         }
@@ -2835,6 +2943,8 @@
                     "pattern",
                     "isCaseSensitive",
                     "baseValue",
+                    "decayFun",
+                    "sortOrder",
                     "createdAt"
                 ],
                 "properties": {
@@ -2866,7 +2976,13 @@
                         ]
                     },
                     "decayFun": {
-                        "type": "string"
+                        "type": "string",
+                        "enum": [
+                            "static",
+                            "linear",
+                            "logarithmic",
+                            "parabolic"
+                        ]
                     },
                     "sortOrder": {
                         "type": "integer"
@@ -2881,15 +2997,10 @@
                 "type": "object",
                 "title": "FlagRequest",
                 "required": [
-                    "challengeId",
                     "pattern",
-                    "isCaseSensitive",
                     "baseValue"
                 ],
                 "properties": {
-                    "challengeId": {
-                        "type": "integer"
-                    },
                     "pattern": {
                         "type": "string"
                     },
@@ -2912,7 +3023,13 @@
                         ]
                     },
                     "decayFun": {
-                        "type": "string"
+                        "type": "string",
+                        "enum": [
+                            "static",
+                            "linear",
+                            "logarithmic",
+                            "parabolic"
+                        ]
                     },
                     "sortOrder": {
                         "type": "integer"
@@ -3195,68 +3312,73 @@
                     }
                 }
             },
-            "SubmissionResponse": {
+            "SubmitFlagRequest": {
                 "type": "object",
-                "title": "SubmissionResponse",
+                "title": "SubmitFlagRequest",
                 "required": [
-                    "id",
-                    "userId",
-                    "challengeId",
-                    "submittedAt"
+                    "flag"
                 ],
                 "properties": {
-                    "id": {
-                        "type": "integer"
-                    },
-                    "userId": {
-                        "type": "integer"
-                    },
-                    "teamId": {
-                        "type": [
-                            "integer",
-                            "null"
-                        ]
-                    },
-                    "challengeId": {
-                        "type": "integer"
-                    },
-                    "flagId": {
-                        "type": [
-                            "integer",
-                            "null"
-                        ]
-                    },
-                    "submittedAt": {
-                        "type": "string",
-                        "format": "date-time"
+                    "flag": {
+                        "type": "string"
                     }
                 }
             },
-            "SubmissionRequest": {
+            "SubmissionResult": {
                 "type": "object",
-                "title": "SubmissionRequest",
+                "title": "SubmissionResult",
+                "required": [
+                    "correct"
+                ],
+                "properties": {
+                    "correct": {
+                        "type": "boolean"
+                    },
+                    "alreadySolved": {
+                        "type": "boolean"
+                    },
+                    "attemptsLeft": {
+                        "type": [
+                            "integer",
+                            "null"
+                        ]
+                    }
+                }
+            },
+            "ScoreboardEntry": {
+                "type": "object",
+                "title": "ScoreboardEntry",
                 "required": [
                     "userId",
-                    "challengeId"
+                    "username",
+                    "solves",
+                    "points"
                 ],
                 "properties": {
                     "userId": {
                         "type": "integer"
                     },
-                    "teamId": {
+                    "username": {
+                        "type": "string"
+                    },
+                    "country": {
                         "type": [
-                            "integer",
+                            "string",
                             "null"
                         ]
                     },
-                    "challengeId": {
+                    "solves": {
                         "type": "integer"
                     },
-                    "flagId": {
+                    "points": {
+                        "type": "integer"
+                    },
+                    "lastSolveAt": {
                         "type": [
-                            "integer",
+                            "string",
                             "null"
-                        ]
+                        ],
+                        "format": "date-time"
                     }
                 }
             },

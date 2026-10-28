@@ -5,6 +5,9 @@ import com.ctfp.config.postgresConfig
 import com.ctfp.domain.db.withTransaction
 import com.ctfp.domain.model.ChallengeTable
 import com.ctfp.domain.model.FileTable
+import com.ctfp.domain.model.FlagTable
+import com.ctfp.domain.model.SubmissionTable
+import com.ctfp.domain.model.TeamTable
 import com.ctfp.domain.model.RegistrationCodeTable
 import com.ctfp.domain.model.UserTable
 import io.ktor.server.application.*
@@ -21,6 +24,9 @@ suspend fun createSchemas() = withTransaction {
     SchemaUtils.create(
         ChallengeTable,
         FileTable,
+        FlagTable,
+        TeamTable,
+        SubmissionTable,
         RegistrationCodeTable,
         UserTable,
     )

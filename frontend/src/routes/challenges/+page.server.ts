@@ -11,11 +11,20 @@ import { apiFormError, parseForm } from '#lib/server/form.js';
 import type { Actions, PageServerLoad } from './$types';
 
 export const load: PageServerLoad = async (event) => {
+  const client = apiClient(event);
   // The route documents no error responses yet, so check the response itself.
-  const { data, response } = await apiClient(event).GET('/v1/challenges');
+  const [{ data, response }, solves] = await Promise.all([
+    client.GET('/v1/challenges'),
+    // Only logged-in users have solves; without them nothing is highlighted, so a failure isn't fatal.
+    event.locals.user ? client.GET('/v1/users/me/solves') : undefined,
+  ]);
   if (!data) error(response.status, response.statusText);
 
-  return { challenges: data, createForm: await superValidate(zod4(createChallengeSchema)) };
+  return {
+    challenges: data,
+    solvedIds: solves?.data ?? [],
+    createForm: await superValidate(zod4(createChallengeSchema)),
+  };
 };
 
 /** For the id-only actions, which report failures as `{ message }` for `submitAction`. */

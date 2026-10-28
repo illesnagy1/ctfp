@@ -4,22 +4,14 @@
   import * as Table from '#lib/components/ui/table/index.js';
   import { m } from '#lib/paraglide/messages.js';
 
-  type Entry = { userId: number; name: string; country: string | null; solves: number; points: number };
+  let { data } = $props();
 
-  // Placeholder until the api has a scoreboard endpoint; replace with data from a load function.
-  const entries: Entry[] = [
-    { userId: 1, name: 'pwnies', country: 'HU', solves: 14, points: 2350 },
-    { userId: 2, name: 'null_pointers', country: 'DE', solves: 12, points: 1980 },
-    { userId: 3, name: 'rootkit_rangers', country: null, solves: 12, points: 1980 },
-    { userId: 4, name: 'byte_bandits', country: 'US', solves: 9, points: 1420 },
-    { userId: 5, name: 'stack_smashers', country: 'PL', solves: 4, points: 600 },
-  ];
-
-  // Highest points first; equal points share a rank (1, 2, 2, 4, …).
+  // Comes ranked: most points first, then whoever reached them first. Only exact ties share a rank (1, 2, 2, 4, …).
   const ranked = $derived(
-    entries
-      .toSorted((a, b) => b.points - a.points)
-      .map((entry, _, sorted) => ({ entry, rank: sorted.findIndex((e) => e.points === entry.points) + 1 })),
+    data.entries.map((entry, _, all) => {
+      const first = all.findIndex((e) => e.points === entry.points && e.lastSolveAt === entry.lastSolveAt);
+      return { entry, rank: first + 1 };
+    }),
   );
 </script>
 
@@ -43,7 +35,7 @@
           <Table.Cell><span class="font-medium">{rank}</span></Table.Cell>
           <Table.Cell>
             <a href={resolve('/users/[id]', { id: String(entry.userId) })} class="underline-offset-4 hover:underline">
-              {entry.name}
+              {entry.username}
             </a>
           </Table.Cell>
           <Table.Cell>{entry.country ?? '-'}</Table.Cell>

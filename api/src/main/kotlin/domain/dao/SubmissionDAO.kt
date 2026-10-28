@@ -12,5 +12,7 @@ class SubmissionDAO(id: EntityID<Int>) : IntEntity(id) {
     var team by TeamDAO optionalReferencedOn SubmissionTable.teamId
     var challenge by ChallengeDAO referencedOn SubmissionTable.challengeId
     var flag by FlagDAO optionalReferencedOn SubmissionTable.flagId
+    var submittedFlag by SubmissionTable.submittedFlag
+    var isCorrect by SubmissionTable.isCorrect
     var submittedAt by SubmissionTable.submittedAt
 }

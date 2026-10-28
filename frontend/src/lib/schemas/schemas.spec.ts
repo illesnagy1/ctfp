@@ -4,6 +4,7 @@ import { describe, expect, it } from 'vitest';
 
 import { registerSchema } from './auth';
 import { createChallengeSchema } from './challenge';
+import { createFlagSchema } from './flag';
 import { idsSchema } from './ids';
 import { createUserSchema, setBannedSchema } from './user';
 
@@ -89,5 +90,18 @@ describe('action payloads', () => {
   it('defaults new users to verified, visible players', () => {
     const user = createUserSchema.parse({ username: 'player', email: 'p@example.com', password: 'correct-horse' });
     expect(user).toMatchObject({ role: 'USER', isVerified: true, isHidden: false });
+  });
+});
+
+describe('createFlagSchema', () => {
+  it('has superforms defaults for every field', async () => {
+    const { data } = await superValidate(zod4(createFlagSchema));
+    expect(data).toMatchObject({ pattern: '', isCaseSensitive: true, baseValue: 100, decayFun: 'static' });
+  });
+
+  it('only checks the minimum against the value when the value decays', () => {
+    const flag = { pattern: 'x', isCaseSensitive: true, baseValue: 50, decayValue: 5, minValue: 80 };
+    expect(createFlagSchema.safeParse({ ...flag, decayFun: 'static' }).success).toBe(true);
+    expect(issuePaths(createFlagSchema.safeParse({ ...flag, decayFun: 'linear' }))).toEqual(['minValue']);
   });
 });

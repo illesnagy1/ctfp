@@ -212,127 +212,7 @@ export interface paths {
     patch?: never;
     trace?: never;
   };
-  '/v1/challenges/{id}/flags': {
-    parameters: {
-      query?: never;
-      header?: never;
-      path?: never;
-      cookie?: never;
-    };
-    get: {
-      parameters: {
-        query?: never;
-        header?: never;
-        path: {
-          id: string;
-        };
-        cookie?: never;
-      };
-      requestBody?: never;
-      responses: never;
-    };
-    put: {
-      parameters: {
-        query?: never;
-        header?: never;
-        path: {
-          id: string;
-        };
-        cookie?: never;
-      };
-      requestBody?: never;
-      responses: never;
-    };
-    post: {
-      parameters: {
-        query?: never;
-        header?: never;
-        path: {
-          id: string;
-        };
-        cookie?: never;
-      };
-      requestBody?: never;
-      responses: never;
-    };
-    delete: {
-      parameters: {
-        query?: never;
-        header?: never;
-        path: {
-          id: string;
-        };
-        cookie?: never;
-      };
-      requestBody?: never;
-      responses: never;
-    };
-    options?: never;
-    head?: never;
-    patch?: never;
-    trace?: never;
-  };
   '/v1/challenges/{id}/hints': {
-    parameters: {
-      query?: never;
-      header?: never;
-      path?: never;
-      cookie?: never;
-    };
-    get: {
-      parameters: {
-        query?: never;
-        header?: never;
-        path: {
-          id: string;
-        };
-        cookie?: never;
-      };
-      requestBody?: never;
-      responses: never;
-    };
-    put: {
-      parameters: {
-        query?: never;
-        header?: never;
-        path: {
-          id: string;
-        };
-        cookie?: never;
-      };
-      requestBody?: never;
-      responses: never;
-    };
-    post: {
-      parameters: {
-        query?: never;
-        header?: never;
-        path: {
-          id: string;
-        };
-        cookie?: never;
-      };
-      requestBody?: never;
-      responses: never;
-    };
-    delete: {
-      parameters: {
-        query?: never;
-        header?: never;
-        path: {
-          id: string;
-        };
-        cookie?: never;
-      };
-      requestBody?: never;
-      responses: never;
-    };
-    options?: never;
-    head?: never;
-    patch?: never;
-    trace?: never;
-  };
-  '/v1/challenges/{id}/submissions': {
     parameters: {
       query?: never;
       header?: never;
@@ -987,20 +867,24 @@ export interface paths {
     patch?: never;
     trace?: never;
   };
-  '/v1/flags': {
+  '/v1/challenges/{id}/flags': {
     parameters: {
       query?: never;
       header?: never;
       path?: never;
       cookie?: never;
     };
+    /**
+     * Documents the [ErrorResponse]s this route can return. They are sent by StatusPages (and the auth challenge), so
+     *     OpenAPI inference can't see them.
+     */
     get: {
       parameters: {
-        query?: {
-          challengeId?: string;
-        };
+        query?: never;
         header?: never;
-        path?: never;
+        path: {
+          id: string;
+        };
         cookie?: never;
       };
       requestBody?: never;
@@ -1013,23 +897,56 @@ export interface paths {
             'application/json': components['schemas']['FlagResponse'][];
           };
         };
+        /** @description Bad Request */
+        400: {
+          headers: {
+            [name: string]: unknown;
+          };
+          content: {
+            'application/json': components['schemas']['ErrorResponse'];
+          };
+        };
+        /** @description Unauthorized */
+        401: {
+          headers: {
+            [name: string]: unknown;
+          };
+          content: {
+            'application/json': components['schemas']['ErrorResponse'];
+          };
+        };
+        /** @description Forbidden */
+        403: {
+          headers: {
+            [name: string]: unknown;
+          };
+          content: {
+            'application/json': components['schemas']['ErrorResponse'];
+          };
+        };
+        /** @description Not Found */
+        404: {
+          headers: {
+            [name: string]: unknown;
+          };
+          content: {
+            'application/json': components['schemas']['ErrorResponse'];
+          };
+        };
       };
     };
-    put: {
-      parameters: {
-        query?: never;
-        header?: never;
-        path?: never;
-        cookie?: never;
-      };
-      requestBody?: never;
-      responses: never;
-    };
+    put?: never;
+    /**
+     * Documents the [ErrorResponse]s this route can return. They are sent by StatusPages (and the auth challenge), so
+     *     OpenAPI inference can't see them.
+     */
     post: {
       parameters: {
         query?: never;
         header?: never;
-        path?: never;
+        path: {
+          id: string;
+        };
         cookie?: never;
       };
       requestBody?: {
@@ -1042,20 +959,58 @@ export interface paths {
           headers: {
             [name: string]: unknown;
           };
-          content?: never;
+          content: {
+            'application/json': components['schemas']['FlagResponse'];
+          };
+        };
+        /** @description Bad Request */
+        400: {
+          headers: {
+            [name: string]: unknown;
+          };
+          content: {
+            'application/json': components['schemas']['ErrorResponse'];
+          };
+        };
+        /** @description Unauthorized */
+        401: {
+          headers: {
+            [name: string]: unknown;
+          };
+          content: {
+            'application/json': components['schemas']['ErrorResponse'];
+          };
+        };
+        /** @description Forbidden */
+        403: {
+          headers: {
+            [name: string]: unknown;
+          };
+          content: {
+            'application/json': components['schemas']['ErrorResponse'];
+          };
+        };
+        /** @description Not Found */
+        404: {
+          headers: {
+            [name: string]: unknown;
+          };
+          content: {
+            'application/json': components['schemas']['ErrorResponse'];
+          };
+        };
+        /** @description Conflict */
+        409: {
+          headers: {
+            [name: string]: unknown;
+          };
+          content: {
+            'application/json': components['schemas']['ErrorResponse'];
+          };
         };
       };
     };
-    delete: {
-      parameters: {
-        query?: never;
-        header?: never;
-        path?: never;
-        cookie?: never;
-      };
-      requestBody?: never;
-      responses: never;
-    };
+    delete?: never;
     options?: never;
     head?: never;
     patch?: never;
@@ -1068,34 +1023,14 @@ export interface paths {
       path?: never;
       cookie?: never;
     };
-    get: {
-      parameters: {
-        query?: {
-          challengeId?: string;
-        };
-        header?: never;
-        path: {
-          id: string;
-        };
-        cookie?: never;
-      };
-      requestBody?: never;
-      responses: {
-        200: {
-          headers: {
-            [name: string]: unknown;
-          };
-          content: {
-            'application/json': components['schemas']['FlagResponse'];
-          };
-        };
-      };
-    };
+    get?: never;
+    /**
+     * Documents the [ErrorResponse]s this route can return. They are sent by StatusPages (and the auth challenge), so
+     *     OpenAPI inference can't see them.
+     */
     put: {
       parameters: {
-        query?: {
-          challengeId?: string;
-        };
+        query?: never;
         header?: never;
         path: {
           id: string;
@@ -1114,9 +1049,58 @@ export interface paths {
           };
           content?: never;
         };
+        /** @description Bad Request */
+        400: {
+          headers: {
+            [name: string]: unknown;
+          };
+          content: {
+            'application/json': components['schemas']['ErrorResponse'];
+          };
+        };
+        /** @description Unauthorized */
+        401: {
+          headers: {
+            [name: string]: unknown;
+          };
+          content: {
+            'application/json': components['schemas']['ErrorResponse'];
+          };
+        };
+        /** @description Forbidden */
+        403: {
+          headers: {
+            [name: string]: unknown;
+          };
+          content: {
+            'application/json': components['schemas']['ErrorResponse'];
+          };
+        };
+        /** @description Not Found */
+        404: {
+          headers: {
+            [name: string]: unknown;
+          };
+          content: {
+            'application/json': components['schemas']['ErrorResponse'];
+          };
+        };
+        /** @description Conflict */
+        409: {
+          headers: {
+            [name: string]: unknown;
+          };
+          content: {
+            'application/json': components['schemas']['ErrorResponse'];
+          };
+        };
       };
     };
     post?: never;
+    /**
+     * Documents the [ErrorResponse]s this route can return. They are sent by StatusPages (and the auth challenge), so
+     *     OpenAPI inference can't see them.
+     */
     delete: {
       parameters: {
         query?: never;
@@ -1133,6 +1117,42 @@ export interface paths {
             [name: string]: unknown;
           };
           content?: never;
+        };
+        /** @description Bad Request */
+        400: {
+          headers: {
+            [name: string]: unknown;
+          };
+          content: {
+            'application/json': components['schemas']['ErrorResponse'];
+          };
+        };
+        /** @description Unauthorized */
+        401: {
+          headers: {
+            [name: string]: unknown;
+          };
+          content: {
+            'application/json': components['schemas']['ErrorResponse'];
+          };
+        };
+        /** @description Forbidden */
+        403: {
+          headers: {
+            [name: string]: unknown;
+          };
+          content: {
+            'application/json': components['schemas']['ErrorResponse'];
+          };
+        };
+        /** @description Not Found */
+        404: {
+          headers: {
+            [name: string]: unknown;
+          };
+          content: {
+            'application/json': components['schemas']['ErrorResponse'];
+          };
         };
       };
     };
@@ -1838,92 +1858,102 @@ export interface paths {
     patch?: never;
     trace?: never;
   };
-  '/v1/submissions': {
+  '/v1/challenges/{id}/submissions': {
     parameters: {
       query?: never;
       header?: never;
       path?: never;
       cookie?: never;
     };
-    get: {
+    get?: never;
+    put?: never;
+    /**
+     * Documents the [ErrorResponse]s this route can return. They are sent by StatusPages (and the auth challenge), so
+     *     OpenAPI inference can't see them.
+     */
+    post: {
       parameters: {
         query?: never;
         header?: never;
-        path?: never;
+        path: {
+          id: string;
+        };
         cookie?: never;
       };
-      requestBody?: never;
+      requestBody?: {
+        content: {
+          'application/json': components['schemas']['SubmitFlagRequest'];
+        };
+      };
       responses: {
         200: {
           headers: {
             [name: string]: unknown;
           };
           content: {
-            'application/json': components['schemas']['SubmissionResponse'][];
+            'application/json': components['schemas']['SubmissionResult'];
           };
         };
-      };
-    };
-    put: {
-      parameters: {
-        query?: never;
-        header?: never;
-        path?: never;
-        cookie?: never;
-      };
-      requestBody?: never;
-      responses: never;
-    };
-    post: {
-      parameters: {
-        query?: never;
-        header?: never;
-        path?: never;
-        cookie?: never;
-      };
-      requestBody?: {
-        content: {
-          'application/json': components['schemas']['SubmissionRequest'];
-        };
-      };
-      responses: {
-        201: {
+        /** @description Bad Request */
+        400: {
           headers: {
             [name: string]: unknown;
           };
-          content?: never;
+          content: {
+            'application/json': components['schemas']['ErrorResponse'];
+          };
+        };
+        /** @description Unauthorized */
+        401: {
+          headers: {
+            [name: string]: unknown;
+          };
+          content: {
+            'application/json': components['schemas']['ErrorResponse'];
+          };
+        };
+        /** @description Forbidden */
+        403: {
+          headers: {
+            [name: string]: unknown;
+          };
+          content: {
+            'application/json': components['schemas']['ErrorResponse'];
+          };
+        };
+        /** @description Not Found */
+        404: {
+          headers: {
+            [name: string]: unknown;
+          };
+          content: {
+            'application/json': components['schemas']['ErrorResponse'];
+          };
         };
       };
     };
-    delete: {
-      parameters: {
-        query?: never;
-        header?: never;
-        path?: never;
-        cookie?: never;
-      };
-      requestBody?: never;
-      responses: never;
-    };
+    delete?: never;
     options?: never;
     head?: never;
     patch?: never;
     trace?: never;
   };
-  '/v1/submissions/{id}': {
+  '/v1/users/me/solves': {
     parameters: {
       query?: never;
       header?: never;
       path?: never;
       cookie?: never;
     };
+    /**
+     * Documents the [ErrorResponse]s this route can return. They are sent by StatusPages (and the auth challenge), so
+     *     OpenAPI inference can't see them.
+     */
     get: {
       parameters: {
         query?: never;
         header?: never;
-        path: {
-          id: string;
-        };
+        path?: never;
         cookie?: never;
       };
       requestBody?: never;
@@ -1933,43 +1963,58 @@ export interface paths {
             [name: string]: unknown;
           };
           content: {
-            'application/json': components['schemas']['SubmissionResponse'];
+            'application/json': number[];
+          };
+        };
+        /** @description Unauthorized */
+        401: {
+          headers: {
+            [name: string]: unknown;
+          };
+          content: {
+            'application/json': components['schemas']['ErrorResponse'];
           };
         };
       };
     };
-    put: {
-      parameters: {
-        query?: never;
-        header?: never;
-        path: {
-          id: string;
-        };
-        cookie?: never;
-      };
-      requestBody?: never;
-      responses: never;
-    };
+    put?: never;
     post?: never;
-    delete: {
+    delete?: never;
+    options?: never;
+    head?: never;
+    patch?: never;
+    trace?: never;
+  };
+  '/v1/scoreboard': {
+    parameters: {
+      query?: never;
+      header?: never;
+      path?: never;
+      cookie?: never;
+    };
+    /** Public, like the challenge list. */
+    get: {
       parameters: {
         query?: never;
         header?: never;
-        path: {
-          id: string;
-        };
+        path?: never;
         cookie?: never;
       };
       requestBody?: never;
       responses: {
-        204: {
+        200: {
           headers: {
             [name: string]: unknown;
           };
-          content?: never;
+          content: {
+            'application/json': components['schemas']['ScoreboardEntry'][];
+          };
         };
       };
     };
+    put?: never;
+    post?: never;
+    delete?: never;
     options?: never;
     head?: never;
     patch?: never;
@@ -3050,20 +3095,21 @@ export interface components {
       baseValue: number;
       decayValue?: number | null;
       minValue?: number | null;
-      decayFun?: string;
-      sortOrder?: number;
+      /** @enum {string} */
+      decayFun: 'static' | 'linear' | 'logarithmic' | 'parabolic';
+      sortOrder: number;
       /** Format: date-time */
       createdAt: string;
     };
     /** FlagRequest */
     FlagRequest: {
-      challengeId: number;
       pattern: string;
-      isCaseSensitive: boolean;
+      isCaseSensitive?: boolean;
       baseValue: number;
       decayValue?: number | null;
       minValue?: number | null;
-      decayFun?: string;
+      /** @enum {string} */
+      decayFun?: 'static' | 'linear' | 'logarithmic' | 'parabolic';
       sortOrder?: number;
     };
     /** HintResponse */
@@ -3154,22 +3200,25 @@ export interface components {
       registrationOpen?: boolean;
       maxTeamSize?: number;
     };
-    /** SubmissionResponse */
-    SubmissionResponse: {
-      id: number;
-      userId: number;
-      teamId?: number | null;
-      challengeId: number;
-      flagId?: number | null;
-      /** Format: date-time */
-      submittedAt: string;
+    /** SubmitFlagRequest */
+    SubmitFlagRequest: {
+      flag: string;
     };
-    /** SubmissionRequest */
-    SubmissionRequest: {
+    /** SubmissionResult */
+    SubmissionResult: {
+      correct: boolean;
+      alreadySolved?: boolean;
+      attemptsLeft?: number | null;
+    };
+    /** ScoreboardEntry */
+    ScoreboardEntry: {
       userId: number;
-      teamId?: number | null;
-      challengeId: number;
-      flagId?: number | null;
+      username: string;
+      country?: string | null;
+      solves: number;
+      points: number;
+      /** Format: date-time */
+      lastSolveAt?: string | null;
     };
     /** TeamResponse */
     TeamResponse: {

@@ -7,6 +7,7 @@ import com.ctfp.storage.LocalFileStorage
 import com.ctfp.controller.adminUser
 import com.ctfp.controller.auth
 import com.ctfp.controller.challenge
+import com.ctfp.controller.scoreboard
 import com.ctfp.controller.emailTemplate
 import com.ctfp.controller.file
 import com.ctfp.controller.flag
@@ -29,6 +30,7 @@ import com.ctfp.service.PageService
 import com.ctfp.service.helper.PasswordHasher
 import com.ctfp.service.RegistrationCodeService
 import com.ctfp.service.SettingsService
+import com.ctfp.service.ScoreboardService
 import com.ctfp.service.SubmissionService
 import com.ctfp.service.TeamService
 import com.ctfp.service.UserService
@@ -61,7 +63,8 @@ fun Application.configureRouting() {
             page(PageService())
             registrationCode(RegistrationCodeService())
             settings(SettingsService(Path(environment.config.settingsFileConfig().file)))
-            submission(SubmissionService())
+            submission(SubmissionService(challengeService))
+            scoreboard(ScoreboardService())
             team(TeamService())
             user(userService)
             adminUser(userService)
