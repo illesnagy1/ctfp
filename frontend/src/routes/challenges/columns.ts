@@ -1,13 +1,18 @@
+import { resolve } from '$app/paths';
 import { renderComponent, type ColumnDef } from '@tanstack/svelte-table';
 
-import { selectColumn, sortableColumn, type DataTableFeatures } from '#lib/components/data-table/index.js';
+import {
+  DataTableBadgesCell,
+  DataTableLinkCell,
+  selectColumn,
+  sortableColumn,
+  type DataTableFeatures,
+} from '#lib/components/data-table/index.js';
 import LocalTime from '#lib/components/local-time.svelte';
 import { m } from '#lib/paraglide/messages.js';
 import type { components } from '#lib/types/api.js';
 
-import CategoriesCell from './categories-cell.svelte';
 import RowActions from './row-actions.svelte';
-import TitleCell from './title-cell.svelte';
 
 export type Challenge = components['schemas']['ChallengeResponse'];
 
@@ -15,12 +20,16 @@ export type Challenge = components['schemas']['ChallengeResponse'];
 export const columns: ColumnDef<DataTableFeatures, Challenge>[] = [
   {
     ...sortableColumn('title', m.challenges_column_title),
-    cell: ({ row }) => renderComponent(TitleCell, { id: row.original.id, title: row.original.title }),
+    cell: ({ row }) =>
+      renderComponent(DataTableLinkCell, {
+        href: resolve('/challenges/[id]', { id: String(row.original.id) }),
+        text: row.original.title,
+      }),
   },
   {
     ...sortableColumn('categories', m.challenges_column_categories),
     enableSorting: false,
-    cell: ({ row }) => renderComponent(CategoriesCell, { categories: row.original.categories }),
+    cell: ({ row }) => renderComponent(DataTableBadgesCell, { badges: row.original.categories }),
     // One challenge can have several categories: facet on each, and match if any is selected.
     getUniqueValues: (challenge) => challenge.categories,
     filterFn: (row, _id, selected: string[]) => row.original.categories.some((c) => selected.includes(c)),

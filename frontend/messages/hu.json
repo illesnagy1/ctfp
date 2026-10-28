@@ -30,7 +30,6 @@
   "users_status_unverified": "Nincs megerősítve",
   "users_role_admin": "Adminisztrátor",
   "users_role_user": "Felhasználó",
-  "users_action_details": "Részletek",
   "users_action_ban": "Kitiltás",
   "users_action_unban": "Kitiltás feloldása",
   "user_profile_joined": "Csatlakozott: {date}",

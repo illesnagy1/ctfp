@@ -30,7 +30,6 @@
   "users_status_unverified": "Unverified",
   "users_role_admin": "Admin",
   "users_role_user": "User",
-  "users_action_details": "Details",
   "users_action_ban": "Ban",
   "users_action_unban": "Unban",
   "user_profile_joined": "Joined {date}",

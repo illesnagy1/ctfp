@@ -1,7 +1,9 @@
 export { default as DataTable } from './data-table.svelte';
 export { default as DataTableBadgeCell } from './data-table-badge-cell.svelte';
+export { default as DataTableBadgesCell } from './data-table-badges-cell.svelte';
 export { default as DataTableColumnHeader } from './data-table-column-header.svelte';
 export { default as DataTableFacetedFilter } from './data-table-faceted-filter.svelte';
+export { default as DataTableLinkCell } from './data-table-link-cell.svelte';
 export { default as DataTableOptionCell } from './data-table-option-cell.svelte';
 export { default as DataTablePagination } from './data-table-pagination.svelte';
 export { default as DataTableRowMenu } from './data-table-row-menu.svelte';

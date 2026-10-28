@@ -2,12 +2,12 @@
   import { resolve } from '$app/paths';
   import ArrowLeftIcon from '@lucide/svelte/icons/arrow-left';
 
+  import { DataTableBadgesCell } from '#lib/components/data-table/index.js';
   import LocalTime from '#lib/components/local-time.svelte';
   import * as Card from '#lib/components/ui/card/index.js';
   import { m } from '#lib/paraglide/messages.js';
   import { getLocale } from '#lib/paraglide/runtime.js';
 
-  import CategoriesCell from '../categories-cell.svelte';
   import ChallengeFiles from './challenge-files.svelte';
 
   let { data } = $props();
@@ -45,7 +45,7 @@
     <Card.Header>
       <Card.Title>{challenge.title}</Card.Title>
       {#if challenge.categories.length > 0}
-        <CategoriesCell categories={challenge.categories} />
+        <DataTableBadgesCell badges={challenge.categories} />
       {/if}
     </Card.Header>
     <Card.Content>

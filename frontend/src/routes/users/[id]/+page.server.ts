@@ -11,15 +11,19 @@ export const load: PageServerLoad = async (event) => {
   const id = Number(event.params.id);
   if (!Number.isInteger(id)) error(404, 'User not found');
 
-  // Your own account comes with its full details; anyone else's is the public view.
+  // Admins see everyone's full details (banned and hidden users too), others their own; anyone else's is the public
+  // view, which hides banned and hidden users.
   const client = apiClient(event);
+  const params = { path: { id: String(id) } };
   const {
     data,
     error: apiError,
     response,
-  } = id === user.id
-    ? await client.GET('/v1/users/me')
-    : await client.GET('/v1/users/{id}', { params: { path: { id: String(id) } } });
+  } = user.role === 'ADMIN'
+    ? await client.GET('/v1/admin/users/{id}', { params })
+    : id === user.id
+      ? await client.GET('/v1/users/me')
+      : await client.GET('/v1/users/{id}', { params });
   if (apiError) {
     if (response.status === 401) redirect(303, '/login');
     error(response.status, apiError.message);
