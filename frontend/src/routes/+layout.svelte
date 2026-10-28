@@ -1,10 +1,9 @@
 <script lang="ts">
   import { resolve } from '$app/paths';
-
-  import './layout.css';
   import { Bell, CircleUser, LogIn, LogOut, Menu, UserPlus, Users, Wrench, X } from '@lucide/svelte';
   import { ModeWatcher } from 'mode-watcher';
 
+  import './layout.css';
   import favicon from '#lib/assets/favicon.svg';
   import { Button } from '#lib/components/ui/button/index.js';
   import { ConfirmDeleteDialog } from '#lib/components/ui/confirm-delete-dialog/index.js';
@@ -13,6 +12,7 @@
   import { ThemeSelector } from '#lib/components/ui/theme-selector/index.js';
   import { m } from '#lib/paraglide/messages.js';
   import { getLocale, isLocale, setLocale } from '#lib/paraglide/runtime.js';
+  import { setShadcnThemeContext } from '#lib/sjsf/shadcn.js';
   import { TIME_ZONE_COOKIE, browserTimeZone } from '#lib/time.js';
 
   let { children, data } = $props();
@@ -32,6 +32,8 @@
     { code: 'en', label: 'English' },
     { code: 'hu', label: 'Magyar' },
   ];
+
+  setShadcnThemeContext();
 </script>
 
 <svelte:head><link rel="icon" href={favicon} /></svelte:head>

@@ -6,6 +6,7 @@ import { registerSchema } from './auth';
 import { createChallengeSchema } from './challenge';
 import { createFlagSchema } from './flag';
 import { idsSchema } from './ids';
+import { settingsSchema, settingsUiSchema } from './settings';
 import { createUserSchema, setBannedSchema } from './user';
 
 const issuePaths = (result: { success: boolean; error?: { issues: { path: PropertyKey[] }[] } }) =>
@@ -103,5 +104,23 @@ describe('createFlagSchema', () => {
     const flag = { pattern: 'x', isCaseSensitive: true, baseValue: 50, decayValue: 5, minValue: 80 };
     expect(createFlagSchema.safeParse({ ...flag, decayFun: 'static' }).success).toBe(true);
     expect(issuePaths(createFlagSchema.safeParse({ ...flag, decayFun: 'linear' }))).toEqual(['minValue']);
+  });
+});
+
+describe('settingsSchema', () => {
+  const valid = { ctfName: 'CTFP', registrationOpen: true, maxTeamSize: 4 };
+
+  it("keeps the api's limits from the generated JSON Schema", () => {
+    expect(settingsSchema.safeParse(valid).success).toBe(true);
+    expect(issuePaths(settingsSchema.safeParse({ ...valid, ctfName: '' }))).toEqual(['ctfName']);
+    expect(issuePaths(settingsSchema.safeParse({ ...valid, ctfName: 'x'.repeat(65) }))).toEqual(['ctfName']);
+    expect(issuePaths(settingsSchema.safeParse({ ...valid, maxTeamSize: 0 }))).toEqual(['maxTeamSize']);
+    expect(issuePaths(settingsSchema.safeParse({ ...valid, maxTeamSize: 1.5 }))).toEqual(['maxTeamSize']);
+  });
+
+  it('labels every setting', () => {
+    const ui = settingsUiSchema();
+    expect(Object.keys(ui)).toEqual(Object.keys(valid));
+    expect(ui).toMatchObject({ maxTeamSize: { 'ui:options': { title: 'Max team size' } } });
   });
 });

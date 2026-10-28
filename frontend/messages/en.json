@@ -176,5 +176,14 @@
   "flag_submission_correct": "Correct! Challenge solved.",
   "flag_submission_wrong": "Wrong flag",
   "flag_submission_attempts_left": "{count} attempt(s) left",
-  "flag_submission_already_solved": "You have already solved this challenge"
+  "flag_submission_already_solved": "You have already solved this challenge",
+  "settings_title": "Settings",
+  "settings_saved": "Settings saved",
+  "settings_save_failed": "Settings weren't saved, check the highlighted fields",
+  "settings_ctfName": "CTF name",
+  "settings_ctfName_description": "Shown in the page title and the header.",
+  "settings_registrationOpen": "Registration open",
+  "settings_registrationOpen_description": "Whether new players can create accounts.",
+  "settings_maxTeamSize": "Max team size",
+  "settings_maxTeamSize_description": "The most players a team can have."
 }

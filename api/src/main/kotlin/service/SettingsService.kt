@@ -56,12 +56,16 @@ class SettingsService(private val file: Path) {
         Files.move(tmp, file, StandardCopyOption.REPLACE_EXISTING, StandardCopyOption.ATOMIC_MOVE)
     }
 
+    /** The limits documented on [Settings] by its `@JsonSchema` annotations. */
     private fun validate(settings: Settings) {
         if (settings.ctfName.isBlank()) {
             throw ApiException(HttpStatusCode.BadRequest, "ctfName must not be blank")
         }
-        if (settings.maxTeamSize < 1) {
-            throw ApiException(HttpStatusCode.BadRequest, "maxTeamSize must be at least 1")
+        if (settings.ctfName.length > Settings.MAX_CTF_NAME_LENGTH) {
+            throw ApiException(HttpStatusCode.BadRequest, "ctfName must be at most ${Settings.MAX_CTF_NAME_LENGTH} characters")
+        }
+        if (settings.maxTeamSize !in 1..Settings.MAX_TEAM_SIZE) {
+            throw ApiException(HttpStatusCode.BadRequest, "maxTeamSize must be between 1 and ${Settings.MAX_TEAM_SIZE}")
         }
     }
 }

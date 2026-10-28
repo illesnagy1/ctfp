@@ -176,5 +176,14 @@
   "flag_submission_correct": "Helyes! A feladat megoldva.",
   "flag_submission_wrong": "Hibás flag",
   "flag_submission_attempts_left": "Még {count} próbálkozás maradt",
-  "flag_submission_already_solved": "Ezt a feladatot már megoldottad"
+  "flag_submission_already_solved": "Ezt a feladatot már megoldottad",
+  "settings_title": "Beállítások",
+  "settings_saved": "Beállítások mentve",
+  "settings_save_failed": "A beállítások nem lettek mentve, ellenőrizd a kiemelt mezőket",
+  "settings_ctfName": "CTF neve",
+  "settings_ctfName_description": "Megjelenik az oldal címében és a fejlécben.",
+  "settings_registrationOpen": "Regisztráció nyitva",
+  "settings_registrationOpen_description": "Regisztrálhatnak-e új játékosok.",
+  "settings_maxTeamSize": "Maximális csapatméret",
+  "settings_maxTeamSize_description": "Legfeljebb hány játékos lehet egy csapatban."
 }

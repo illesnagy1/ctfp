@@ -3302,13 +3302,20 @@
                 "title": "Settings",
                 "properties": {
                     "ctfName": {
-                        "type": "string"
+                        "type": "string",
+                        "description": "Shown in the page title and the header.",
+                        "maxLength": 64,
+                        "minLength": 1
                     },
                     "registrationOpen": {
-                        "type": "boolean"
+                        "type": "boolean",
+                        "description": "Whether new players can create accounts."
                     },
                     "maxTeamSize": {
-                        "type": "integer"
+                        "type": "integer",
+                        "description": "The most players a team can have.",
+                        "maximum": 100.0,
+                        "minimum": 1.0
                     }
                 }
             },

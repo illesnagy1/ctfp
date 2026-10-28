@@ -3196,8 +3196,11 @@ export interface components {
     };
     /** Settings */
     Settings: {
+      /** @description Shown in the page title and the header. */
       ctfName?: string;
+      /** @description Whether new players can create accounts. */
       registrationOpen?: boolean;
+      /** @description The most players a team can have. */
       maxTeamSize?: number;
     };
     /** SubmitFlagRequest */

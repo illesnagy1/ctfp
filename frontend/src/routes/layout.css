@@ -8,7 +8,6 @@
 @plugin '@tailwindcss/typography';
 
 :root {
-  /* Background for positive states, e.g. solved challenges. */
   --success: oklch(0.962 0.044 156.743);
   --background: oklch(1 0 0);
   --foreground: oklch(0.145 0 0);
@@ -133,13 +132,11 @@
     @apply font-sans;
   }
 }
-
-/* Mirrors directional icons (chevrons) in right-to-left layouts. Used by shadcn components. */
 @utility cn-rtl-flip {
   @apply rtl:rotate-180;
 }
-
-/* Label/value grid: labels take their natural width, values fill the rest. */
 @utility grid-cols-label-value {
   grid-template-columns: max-content 1fr;
 }
+@source "../../node_modules/@sjsf/shadcn4-theme/dist";
+@source "../../node_modules/@sjsf-lab/shadcn-extras-theme/dist";

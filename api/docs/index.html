@@ -1047,9 +1047,19 @@
             defs["Settings"] = {
   "title" : "Settings",
   "properties" : {
-    "ctfName" : { },
-    "registrationOpen" : { },
-    "maxTeamSize" : { }
+    "ctfName" : {
+      "maxLength" : 64,
+      "minLength" : 1,
+      "description" : "Shown in the page title and the header."
+    },
+    "registrationOpen" : {
+      "description" : "Whether new players can create accounts."
+    },
+    "maxTeamSize" : {
+      "maximum" : 100.0,
+      "minimum" : 1.0,
+      "description" : "The most players a team can have."
+    }
   }
 };
             defs["SubmissionResult"] = {

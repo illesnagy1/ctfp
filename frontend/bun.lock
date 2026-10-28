@@ -5,7 +5,17 @@
     "": {
       "name": "frontend",
       "dependencies": {
+        "@lucide/svelte": "^1.0.0",
+        "@sjsf-lab/shadcn-extras-theme": "^3.4.3",
+        "@sjsf/form": "^3.9.0",
+        "@sjsf/lucide-icons": "^3.9.0",
+        "@sjsf/shadcn4-theme": "^3.5.0",
+        "@sjsf/sveltekit3": "^3.9.0",
+        "@sjsf/zod4-validator": "^3.9.0",
+        "@sveltejs/kit": "^3.0.0",
         "@tanstack/svelte-table": "^9.2.6",
+        "bits-ui": "^2.16.5",
+        "clsx": "^2.1.1",
         "pretty-bytes": "^7.2.0",
         "redis": "^6.2.1",
         "rehype-raw": "^7.0.0",
@@ -14,7 +24,10 @@
         "remark-gfm": "^4.0.1",
         "remark-parse": "^11.0.0",
         "remark-rehype": "^11.1.2",
+        "svelte": "^5.57.1",
+        "tailwind-merge": "^3.5.0",
         "unified": "^11.0.5",
+        "zod": "^4.1.0",
       },
       "devDependencies": {
         "@fontsource-variable/inter": "^5.3.0",
@@ -478,6 +491,20 @@
     "@sideway/pinpoint": ["@sideway/pinpoint@2.0.0", "", {}, "sha512-RNiOoTPkptFtSVzQevY/yWtZwf/RxyVnPy/OcA9HBM3MlGDnBEYL5B41H0MTn0Uec8Hi+2qUtTfG2WWZBmMejQ=="],
 
     "@sinclair/typebox": ["@sinclair/typebox@0.31.28", "", {}, "sha512-/s55Jujywdw/Jpan+vsy6JZs1z2ZTGxTmbZTPiuSL2wz9mfzA2gN1zzaqmvfi4pq+uOt7Du85fkiwv5ymW84aQ=="],
+
+    "@sjsf-lab/shadcn-extras-theme": ["@sjsf-lab/shadcn-extras-theme@3.4.3", "", { "peerDependencies": { "@lucide/svelte": "^1.7.0", "@sjsf/form": "^3.5.0", "@sjsf/shadcn4-theme": "^3.5.0", "@zxcvbn-ts/core": "^4.1.2", "@zxcvbn-ts/language-common": "^4.1.3", "@zxcvbn-ts/language-en": "^4.1.1", "bits-ui": "^2.16.5", "clsx": "^2.1.1", "country-flag-icons": "^1.6.15", "runed": "^0.37.1", "svelte": "^5.34.8", "svelte-tel-input": "^4.0.2", "svelte-toolbelt": "^0.10.6", "tailwind-merge": "^3.5.0", "tailwind-variants": "^3.2.2", "yeezy-dates": "^1.1.0" }, "optionalPeers": ["@lucide/svelte", "@zxcvbn-ts/core", "@zxcvbn-ts/language-common", "@zxcvbn-ts/language-en", "country-flag-icons", "runed", "svelte-tel-input", "svelte-toolbelt", "tailwind-variants", "yeezy-dates"] }, "sha512-vKfTV5ySiXp33KpcpAOjZlU/82Qz+B4R6EehcAvKtoHq8DMXR1zmSnsqsW/8QebedueIc2EV3zZh0aIhUVe5pA=="],
+
+    "@sjsf/basic-theme": ["@sjsf/basic-theme@3.9.1", "", { "peerDependencies": { "@sjsf/form": "^3.5.0", "svelte": "^5.34.8" } }, "sha512-Mi+96oMq88Wb2TJrp/1VM00Xlb7QtumbHVjootCtw7G1m73XWW0kjD6K6aXzm8IYqBuhAMiQ7aI7rwF8JC8dMQ=="],
+
+    "@sjsf/form": ["@sjsf/form@3.9.1", "", { "dependencies": { "@types/json-schema": "^7.0.15" }, "peerDependencies": { "@standard-schema/spec": "^1.1.0", "@types/json-schema-merge-allof": "^0.6.0", "esm-env": "^1.2.0", "json-schema-merge-allof": "^0.8.0", "json-schema-typed": "^8.0.0", "svelte": "^5.34.8" }, "optionalPeers": ["@standard-schema/spec", "@types/json-schema-merge-allof", "json-schema-merge-allof", "json-schema-typed"] }, "sha512-am1pvYzhbpExxEaeTNx4mB4T661smnF9/Zt45I+LgdsKn764lX5Gp5S12WJoRZnQKOa3YKzkxTKycFp+5St4DA=="],
+
+    "@sjsf/lucide-icons": ["@sjsf/lucide-icons@3.9.1", "", { "peerDependencies": { "@lucide/svelte": ">=0.479.0 <1.0.0 || ^1.0.0", "@sjsf/form": "^3.5.0", "svelte": "^5.34.8" } }, "sha512-bKgPwxgY33JnrOKny2STQRvNRxkrlHJUx6/c63128/zFcva8dRv17jkJGgclgW4NGHX3d9BHRaM372ATFK3FJw=="],
+
+    "@sjsf/shadcn4-theme": ["@sjsf/shadcn4-theme@3.9.1", "", { "dependencies": { "@sjsf/basic-theme": "^3.9.1" }, "peerDependencies": { "@internationalized/date": "^3.10.0", "@lucide/svelte": ">=0.479.0 <1.0.0 || ^1.0.0", "@sjsf/form": "^3.5.0", "bits-ui": "^2.14.0", "clsx": "^2.1.0", "shadcn-svelte": "^1.2.0", "svelte": "^5.34.8", "tailwind-merge": "^3.3.0", "tailwind-variants": "^1.0.0 || ^2.0.0 || ^3.0.0" }, "optionalPeers": ["@internationalized/date"] }, "sha512-WaZBxfO5khQy+5XGyj6746Bmrj7oe20HegR262PYDlLAXITwBDDyDEnv5mM057sQhJQv9vVK37ugWIMHDsxu6Q=="],
+
+    "@sjsf/sveltekit3": ["@sjsf/sveltekit3@3.9.1", "", { "dependencies": { "@standard-schema/spec": "^1.1.0" }, "peerDependencies": { "@sjsf/form": "^3.5.0", "@sveltejs/kit": "^3.0.0", "svelte": "^5.57.1" } }, "sha512-rLrwbqTZ2qIQZR3OwCcfXZcVVmop4l92hVjYdEN9cNodYBpJaBTxETK8cR3E/YYaDGbz7YD9ttKO38HL8jsbDw=="],
+
+    "@sjsf/zod4-validator": ["@sjsf/zod4-validator@3.9.1", "", { "peerDependencies": { "@sjsf/form": "^3.5.0", "zod": "^4.1.0" } }, "sha512-cRv/JTzQeiDZtBEzgp3w4OWNQqwrrurWrLXyhNaUj9p0CUUSXFYm6g/lHQ38LqObZ3td8qGWgtmAKETJfSDc5g=="],
 
     "@standard-schema/spec": ["@standard-schema/spec@1.1.0", "", {}, "sha512-l2aFy5jALhniG5HgqrD6jXLi/rUWrKvqN/qJx6yoJsgKhblVd+iqqU4RCXavm/jPityDo5TCvKMnpjKnOriy0w=="],
 
