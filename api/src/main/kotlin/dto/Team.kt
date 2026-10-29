@@ -1,5 +1,6 @@
 package com.ctfp.dto
 
+import io.ktor.openapi.JsonSchema
 import com.ctfp.domain.dao.TeamDAO
 import com.ctfp.domain.dao.UserDAO
 import kotlin.time.Instant
@@ -7,9 +8,15 @@ import kotlinx.serialization.Serializable
 
 @Serializable
 data class TeamRequest(
+    @JsonSchema.MinLength(1)
+    @JsonSchema.MaxLength(Limits.TEAM_NAME_MAX)
     val name: String,
     val ownerId: Int,
+    @JsonSchema.MinLength(Limits.COUNTRY_LENGTH)
+    @JsonSchema.MaxLength(Limits.COUNTRY_LENGTH)
+    @JsonSchema.Description("ISO 3166-1 alpha-2 code, e.g.: HU")
     val country: String?,
+    @JsonSchema.MaxLength(Limits.SHORT_TEXT_MAX)
     val website: String?,
     val isHidden: Boolean = false,
     val isBanned: Boolean = false

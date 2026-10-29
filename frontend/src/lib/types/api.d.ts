@@ -3027,12 +3027,15 @@ export interface components {
     /** ChallengeRequest */
     ChallengeRequest: {
       title: string;
+      /** @description Markdown; inline HTML is sanitized when shown. */
       description?: string | null;
       isVisible?: boolean;
       /** Format: date-time */
       publishAt: string;
+      /** @description Wrong guesses allowed per player; 0 means no limit. */
       maxAttempts: number;
       categories: string[];
+      /** @description Seconds to solve after starting; 0 means no limit. */
       timeLimit: number;
     };
     /** FileResponse */
@@ -3051,6 +3054,7 @@ export interface components {
     };
     /** LoginRequest */
     LoginRequest: {
+      /** @description Username or email. */
       login: string;
       password: string;
     };
@@ -3071,6 +3075,7 @@ export interface components {
     /** RegisterRequest */
     RegisterRequest: {
       username: string;
+      /** Format: email */
       email: string;
       password: string;
       registrationCode?: string | null;
@@ -3103,10 +3108,13 @@ export interface components {
     };
     /** FlagRequest */
     FlagRequest: {
+      /** @description Regular expression (Java syntax) a whole submission must match. */
       pattern: string;
       isCaseSensitive?: boolean;
       baseValue: number;
+      /** @description How fast the value drops with solves; required unless decayFun is static. */
       decayValue?: number | null;
+      /** @description The value never drops below this; at most baseValue. Required unless decayFun is static. */
       minValue?: number | null;
       /** @enum {string} */
       decayFun?: 'static' | 'linear' | 'logarithmic' | 'parabolic';
@@ -3241,6 +3249,7 @@ export interface components {
     TeamRequest: {
       name: string;
       ownerId: number;
+      /** @description ISO 3166-1 alpha-2 code, e.g. HU. */
       country?: string | null;
       website?: string | null;
       isHidden?: boolean;
@@ -3280,8 +3289,10 @@ export interface components {
     /** UserUpdateRequest */
     UserUpdateRequest: {
       username: string;
+      /** Format: email */
       email: string;
       language?: string | null;
+      /** @description ISO 3166-1 alpha-2 code, e.g. HU. */
       country?: string | null;
       website?: string | null;
       soundEnabled?: boolean;
@@ -3291,9 +3302,11 @@ export interface components {
     AdminUserCreateRequest: {
       codeId?: number | null;
       username: string;
+      /** Format: email */
       email: string;
       password: string;
       language?: string | null;
+      /** @description ISO 3166-1 alpha-2 code, e.g. HU. */
       country?: string | null;
       website?: string | null;
       /** @enum {string} */
@@ -3308,8 +3321,10 @@ export interface components {
     AdminUserUpdateRequest: {
       codeId?: number | null;
       username: string;
+      /** Format: email */
       email: string;
       language?: string | null;
+      /** @description ISO 3166-1 alpha-2 code, e.g. HU. */
       country?: string | null;
       website?: string | null;
       /** @enum {string} */

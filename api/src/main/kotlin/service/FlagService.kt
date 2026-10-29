@@ -6,6 +6,7 @@ import com.ctfp.domain.db.withTransaction
 import com.ctfp.domain.model.FlagTable
 import com.ctfp.dto.DecayFunction
 import com.ctfp.dto.FlagRequest
+import com.ctfp.dto.Limits
 import com.ctfp.dto.FlagResponse
 import com.ctfp.dto.apply
 import com.ctfp.dto.toDto
@@ -52,7 +53,7 @@ class FlagService {
         fun invalid(message: String): Nothing = throw ApiException(HttpStatusCode.BadRequest, message)
 
         if (flag.pattern.isBlank()) invalid("Pattern is required")
-        if (flag.pattern.length > 255) invalid("Pattern must be at most 255 characters")
+        if (flag.pattern.length > Limits.FLAG_PATTERN_MAX) invalid("Pattern must be at most ${Limits.FLAG_PATTERN_MAX} characters")
         try {
             Regex(flag.pattern)
         } catch (e: PatternSyntaxException) {

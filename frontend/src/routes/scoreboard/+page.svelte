@@ -1,6 +1,7 @@
 <script lang="ts">
   import { resolve } from '$app/paths';
 
+  import CountryFlag from '#lib/components/country-flag.svelte';
   import * as Table from '#lib/components/ui/table/index.js';
   import { m } from '#lib/paraglide/messages.js';
 
@@ -38,7 +39,7 @@
               {entry.username}
             </a>
           </Table.Cell>
-          <Table.Cell>{entry.country ?? '-'}</Table.Cell>
+          <Table.Cell><CountryFlag code={entry.country} /></Table.Cell>
           <Table.Cell class="text-right">{entry.solves}</Table.Cell>
           <Table.Cell class="text-right">{entry.points}</Table.Cell>
         </Table.Row>

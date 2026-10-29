@@ -32,6 +32,7 @@
     "@tanstack/svelte-table": "^9.2.6",
     "bits-ui": "^2.16.5",
     "clsx": "^2.1.1",
+    "country-flag-icons": "^1.6.20",
     "pretty-bytes": "^7.2.0",
     "redis": "^6.2.1",
     "rehype-raw": "^7.0.0",

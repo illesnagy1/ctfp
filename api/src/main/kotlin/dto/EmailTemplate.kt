@@ -1,11 +1,15 @@
 package com.ctfp.dto
 
+import io.ktor.openapi.JsonSchema
 import com.ctfp.domain.dao.EmailTemplateDAO
 import kotlinx.serialization.Serializable
 
 @Serializable
 data class EmailTemplateRequest(
+    @JsonSchema.MinLength(1)
+    @JsonSchema.MaxLength(Limits.TITLE_MAX)
     val subject: String,
+    @JsonSchema.MinLength(1)
     val body: String
 )
 

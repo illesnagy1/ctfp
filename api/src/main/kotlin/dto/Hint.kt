@@ -1,5 +1,6 @@
 package com.ctfp.dto
 
+import io.ktor.openapi.JsonSchema
 import com.ctfp.domain.dao.HintDAO
 import com.ctfp.domain.dao.ChallengeDAO
 import kotlin.time.Instant
@@ -8,7 +9,9 @@ import kotlinx.serialization.Serializable
 @Serializable
 data class HintRequest(
     val challengeId: Int,
+    @JsonSchema.MinLength(1)
     val body: String,
+    @JsonSchema.Minimum(0.0)
     val cost: Int = 0
 )
 

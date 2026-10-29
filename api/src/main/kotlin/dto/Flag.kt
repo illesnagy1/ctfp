@@ -1,5 +1,6 @@
 package com.ctfp.dto
 
+import io.ktor.openapi.JsonSchema
 import com.ctfp.domain.dao.FlagDAO
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
@@ -17,11 +18,19 @@ enum class DecayFunction {
 /** A flag of the challenge in the path. */
 @Serializable
 data class FlagRequest(
+    @JsonSchema.Description("Regular expression (Java syntax) a whole submission must match.")
+    @JsonSchema.MinLength(1)
+    @JsonSchema.MaxLength(Limits.FLAG_PATTERN_MAX)
     val pattern: String,
     val isCaseSensitive: Boolean = true,
-    /** Points before any decay. */
+    @JsonSchema.Description("Points before any decay")
+    @JsonSchema.Minimum(0.0)
     val baseValue: Int,
+    @JsonSchema.Description("How fast the value drops with solves; required unless decayFun is static.")
+    @JsonSchema.Minimum(0.0)
     val decayValue: Int? = null,
+    @JsonSchema.Description("The value never drops below this; at most baseValue. Required unless decayFun is static.")
+    @JsonSchema.Minimum(0.0)
     val minValue: Int? = null,
     val decayFun: DecayFunction = DecayFunction.STATIC,
     val sortOrder: Int = 1,

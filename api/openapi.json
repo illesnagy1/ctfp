@@ -2732,13 +2732,16 @@
                 ],
                 "properties": {
                     "title": {
-                        "type": "string"
+                        "type": "string",
+                        "maxLength": 255,
+                        "minLength": 1
                     },
                     "description": {
                         "type": [
                             "string",
                             "null"
-                        ]
+                        ],
+                        "description": "Markdown; inline HTML is sanitized when shown."
                     },
                     "isVisible": {
                         "type": "boolean"
@@ -2748,7 +2751,9 @@
                         "format": "date-time"
                     },
                     "maxAttempts": {
-                        "type": "integer"
+                        "type": "integer",
+                        "description": "Wrong guesses allowed per player; 0 means no limit.",
+                        "minimum": 0.0
                     },
                     "categories": {
                         "type": "array",
@@ -2757,7 +2762,9 @@
                         }
                     },
                     "timeLimit": {
-                        "type": "integer"
+                        "type": "integer",
+                        "description": "Seconds to solve after starting; 0 means no limit.",
+                        "minimum": 0.0
                     }
                 }
             },
@@ -2817,10 +2824,14 @@
                 ],
                 "properties": {
                     "login": {
-                        "type": "string"
+                        "type": "string",
+                        "description": "Username or email.",
+                        "maxLength": 255,
+                        "minLength": 1
                     },
                     "password": {
-                        "type": "string"
+                        "type": "string",
+                        "minLength": 1
                     }
                 }
             },
@@ -2882,19 +2893,27 @@
                 ],
                 "properties": {
                     "username": {
-                        "type": "string"
+                        "type": "string",
+                        "maxLength": 64,
+                        "minLength": 3,
+                        "pattern": "^[A-Za-z0-9._-]{3,64}$"
                     },
                     "email": {
-                        "type": "string"
+                        "type": "string",
+                        "format": "email",
+                        "maxLength": 255
                     },
                     "password": {
-                        "type": "string"
+                        "type": "string",
+                        "maxLength": 128,
+                        "minLength": 8
                     },
                     "registrationCode": {
                         "type": [
                             "string",
                             "null"
-                        ]
+                        ],
+                        "maxLength": 255
                     }
                 }
             },
@@ -2927,10 +2946,13 @@
                 ],
                 "properties": {
                     "subject": {
-                        "type": "string"
+                        "type": "string",
+                        "maxLength": 255,
+                        "minLength": 1
                     },
                     "body": {
-                        "type": "string"
+                        "type": "string",
+                        "minLength": 1
                     }
                 }
             },
@@ -3002,25 +3024,33 @@
                 ],
                 "properties": {
                     "pattern": {
-                        "type": "string"
+                        "type": "string",
+                        "description": "Regular expression (Java syntax) a whole submission must match.",
+                        "maxLength": 255,
+                        "minLength": 1
                     },
                     "isCaseSensitive": {
                         "type": "boolean"
                     },
                     "baseValue": {
-                        "type": "integer"
+                        "type": "integer",
+                        "minimum": 0.0
                     },
                     "decayValue": {
                         "type": [
                             "integer",
                             "null"
-                        ]
+                        ],
+                        "description": "How fast the value drops with solves; required unless decayFun is static.",
+                        "minimum": 0.0
                     },
                     "minValue": {
                         "type": [
                             "integer",
                             "null"
-                        ]
+                        ],
+                        "description": "The value never drops below this; at most baseValue. Required unless decayFun is static.",
+                        "minimum": 0.0
                     },
                     "decayFun": {
                         "type": "string",
@@ -3076,10 +3106,12 @@
                         "type": "integer"
                     },
                     "body": {
-                        "type": "string"
+                        "type": "string",
+                        "minLength": 1
                     },
                     "cost": {
-                        "type": "integer"
+                        "type": "integer",
+                        "minimum": 0.0
                     }
                 }
             },
@@ -3137,10 +3169,13 @@
                 ],
                 "properties": {
                     "title": {
-                        "type": "string"
+                        "type": "string",
+                        "maxLength": 255,
+                        "minLength": 1
                     },
                     "message": {
-                        "type": "string"
+                        "type": "string",
+                        "minLength": 1
                     },
                     "type": {
                         "type": "string",
@@ -3221,16 +3256,24 @@
                 ],
                 "properties": {
                     "title": {
-                        "type": "string"
+                        "type": "string",
+                        "maxLength": 255,
+                        "minLength": 1
                     },
                     "route": {
-                        "type": "string"
+                        "type": "string",
+                        "maxLength": 255,
+                        "minLength": 1
                     },
                     "language": {
-                        "type": "string"
+                        "type": "string",
+                        "maxLength": 2,
+                        "minLength": 2
                     },
                     "format": {
-                        "type": "string"
+                        "type": "string",
+                        "maxLength": 255,
+                        "minLength": 1
                     },
                     "targetBlank": {
                         "type": "boolean"
@@ -3286,10 +3329,13 @@
                 ],
                 "properties": {
                     "code": {
-                        "type": "string"
+                        "type": "string",
+                        "maxLength": 255,
+                        "minLength": 1
                     },
                     "maxUses": {
-                        "type": "integer"
+                        "type": "integer",
+                        "minimum": 0.0
                     },
                     "expiresAt": {
                         "type": "string",
@@ -3327,7 +3373,9 @@
                 ],
                 "properties": {
                     "flag": {
-                        "type": "string"
+                        "type": "string",
+                        "maxLength": 1024,
+                        "minLength": 1
                     }
                 }
             },
@@ -3446,7 +3494,9 @@
                 ],
                 "properties": {
                     "name": {
-                        "type": "string"
+                        "type": "string",
+                        "maxLength": 64,
+                        "minLength": 1
                     },
                     "ownerId": {
                         "type": "integer"
@@ -3455,13 +3505,17 @@
                         "type": [
                             "string",
                             "null"
-                        ]
+                        ],
+                        "description": "ISO 3166-1 alpha-2 code, e.g. HU.",
+                        "maxLength": 2,
+                        "minLength": 2
                     },
                     "website": {
                         "type": [
                             "string",
                             "null"
-                        ]
+                        ],
+                        "maxLength": 255
                     },
                     "isHidden": {
                         "type": "boolean"
@@ -3596,28 +3650,38 @@
                 ],
                 "properties": {
                     "username": {
-                        "type": "string"
+                        "type": "string",
+                        "maxLength": 64,
+                        "minLength": 3,
+                        "pattern": "^[A-Za-z0-9._-]{3,64}$"
                     },
                     "email": {
-                        "type": "string"
+                        "type": "string",
+                        "format": "email",
+                        "maxLength": 255
                     },
                     "language": {
                         "type": [
                             "string",
                             "null"
-                        ]
+                        ],
+                        "maxLength": 5
                     },
                     "country": {
                         "type": [
                             "string",
                             "null"
-                        ]
+                        ],
+                        "description": "ISO 3166-1 alpha-2 code, e.g. HU.",
+                        "maxLength": 2,
+                        "minLength": 2
                     },
                     "website": {
                         "type": [
                             "string",
                             "null"
-                        ]
+                        ],
+                        "maxLength": 255
                     },
                     "soundEnabled": {
                         "type": "boolean"
@@ -3647,31 +3711,43 @@
                         ]
                     },
                     "username": {
-                        "type": "string"
+                        "type": "string",
+                        "maxLength": 64,
+                        "minLength": 3,
+                        "pattern": "^[A-Za-z0-9._-]{3,64}$"
                     },
                     "email": {
-                        "type": "string"
+                        "type": "string",
+                        "format": "email",
+                        "maxLength": 255
                     },
                     "password": {
-                        "type": "string"
+                        "type": "string",
+                        "maxLength": 128,
+                        "minLength": 8
                     },
                     "language": {
                         "type": [
                             "string",
                             "null"
-                        ]
+                        ],
+                        "maxLength": 5
                     },
                     "country": {
                         "type": [
                             "string",
                             "null"
-                        ]
+                        ],
+                        "description": "ISO 3166-1 alpha-2 code, e.g. HU.",
+                        "maxLength": 2,
+                        "minLength": 2
                     },
                     "website": {
                         "type": [
                             "string",
                             "null"
-                        ]
+                        ],
+                        "maxLength": 255
                     },
                     "role": {
                         "type": "string",
@@ -3716,28 +3792,38 @@
                         ]
                     },
                     "username": {
-                        "type": "string"
+                        "type": "string",
+                        "maxLength": 64,
+                        "minLength": 3,
+                        "pattern": "^[A-Za-z0-9._-]{3,64}$"
                     },
                     "email": {
-                        "type": "string"
+                        "type": "string",
+                        "format": "email",
+                        "maxLength": 255
                     },
                     "language": {
                         "type": [
                             "string",
                             "null"
-                        ]
+                        ],
+                        "maxLength": 5
                     },
                     "country": {
                         "type": [
                             "string",
                             "null"
-                        ]
+                        ],
+                        "description": "ISO 3166-1 alpha-2 code, e.g. HU.",
+                        "maxLength": 2,
+                        "minLength": 2
                     },
                     "website": {
                         "type": [
                             "string",
                             "null"
-                        ]
+                        ],
+                        "maxLength": 255
                     },
                     "role": {
                         "type": "string",

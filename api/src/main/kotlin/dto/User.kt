@@ -1,5 +1,6 @@
 package com.ctfp.dto
 
+import io.ktor.openapi.JsonSchema
 import com.ctfp.config.enum.UserRole
 import com.ctfp.domain.dao.UserDAO
 import com.ctfp.domain.dao.RegistrationCodeDAO
@@ -31,10 +32,20 @@ interface AdminUserFields : UserProfileFields {
 
 @Serializable
 data class UserUpdateRequest(
+    @JsonSchema.Pattern(Limits.USERNAME_PATTERN)
+    @JsonSchema.MinLength(Limits.USERNAME_MIN)
+    @JsonSchema.MaxLength(Limits.USERNAME_MAX)
     override val username: String,
+    @JsonSchema.Format("email")
+    @JsonSchema.MaxLength(Limits.EMAIL_MAX)
     override val email: String,
+    @JsonSchema.MaxLength(Limits.USER_LANGUAGE_MAX)
     override val language: String?,
+    @JsonSchema.MinLength(Limits.COUNTRY_LENGTH)
+    @JsonSchema.MaxLength(Limits.COUNTRY_LENGTH)
+    @JsonSchema.Description("ISO 3166-1 alpha-2 code, e.g.: HU")
     override val country: String?,
+    @JsonSchema.MaxLength(Limits.SHORT_TEXT_MAX)
     override val website: String?,
     override val soundEnabled: Boolean = true,
     override val visibilitySettings: String?
@@ -43,10 +54,20 @@ data class UserUpdateRequest(
 @Serializable
 data class AdminUserUpdateRequest(
     override val codeId: Int?,
+    @JsonSchema.Pattern(Limits.USERNAME_PATTERN)
+    @JsonSchema.MinLength(Limits.USERNAME_MIN)
+    @JsonSchema.MaxLength(Limits.USERNAME_MAX)
     override val username: String,
+    @JsonSchema.Format("email")
+    @JsonSchema.MaxLength(Limits.EMAIL_MAX)
     override val email: String,
+    @JsonSchema.MaxLength(Limits.USER_LANGUAGE_MAX)
     override val language: String?,
+    @JsonSchema.MinLength(Limits.COUNTRY_LENGTH)
+    @JsonSchema.MaxLength(Limits.COUNTRY_LENGTH)
+    @JsonSchema.Description("ISO 3166-1 alpha-2 code, e.g. HU.")
     override val country: String?,
+    @JsonSchema.MaxLength(Limits.SHORT_TEXT_MAX)
     override val website: String?,
     override val role: UserRole,
     override val isVerified: Boolean = false,
@@ -60,11 +81,23 @@ data class AdminUserUpdateRequest(
 @Serializable
 data class AdminUserCreateRequest(
     override val codeId: Int?,
+    @JsonSchema.Pattern(Limits.USERNAME_PATTERN)
+    @JsonSchema.MinLength(Limits.USERNAME_MIN)
+    @JsonSchema.MaxLength(Limits.USERNAME_MAX)
     override val username: String,
+    @JsonSchema.Format("email")
+    @JsonSchema.MaxLength(Limits.EMAIL_MAX)
     override val email: String,
+    @JsonSchema.MinLength(Limits.PASSWORD_MIN)
+    @JsonSchema.MaxLength(Limits.PASSWORD_MAX)
     val password: String,
+    @JsonSchema.MaxLength(Limits.USER_LANGUAGE_MAX)
     override val language: String?,
+    @JsonSchema.MinLength(Limits.COUNTRY_LENGTH)
+    @JsonSchema.MaxLength(Limits.COUNTRY_LENGTH)
+    @JsonSchema.Description("ISO 3166-1 alpha-2 code, e.g. HU.")
     override val country: String?,
+    @JsonSchema.MaxLength(Limits.SHORT_TEXT_MAX)
     override val website: String?,
     override val role: UserRole,
     override val isVerified: Boolean = false,

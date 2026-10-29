@@ -694,12 +694,30 @@
   "required" : [ "email", "password", "role", "username" ],
   "properties" : {
     "codeId" : { },
-    "username" : { },
-    "email" : { },
-    "password" : { },
-    "language" : { },
-    "country" : { },
-    "website" : { },
+    "username" : {
+      "maxLength" : 64,
+      "minLength" : 3,
+      "pattern" : "^[A-Za-z0-9._-]{3,64}$"
+    },
+    "email" : {
+      "maxLength" : 255,
+      "format" : "email"
+    },
+    "password" : {
+      "maxLength" : 128,
+      "minLength" : 8
+    },
+    "language" : {
+      "maxLength" : 5
+    },
+    "country" : {
+      "maxLength" : 2,
+      "minLength" : 2,
+      "description" : "ISO 3166-1 alpha-2 code, e.g. HU."
+    },
+    "website" : {
+      "maxLength" : 255
+    },
     "role" : {
       "enum" : [ "ADMIN", "USER" ]
     },
@@ -743,11 +761,26 @@
   "required" : [ "email", "role", "username" ],
   "properties" : {
     "codeId" : { },
-    "username" : { },
-    "email" : { },
-    "language" : { },
-    "country" : { },
-    "website" : { },
+    "username" : {
+      "maxLength" : 64,
+      "minLength" : 3,
+      "pattern" : "^[A-Za-z0-9._-]{3,64}$"
+    },
+    "email" : {
+      "maxLength" : 255,
+      "format" : "email"
+    },
+    "language" : {
+      "maxLength" : 5
+    },
+    "country" : {
+      "maxLength" : 2,
+      "minLength" : 2,
+      "description" : "ISO 3166-1 alpha-2 code, e.g. HU."
+    },
+    "website" : {
+      "maxLength" : 255
+    },
     "role" : {
       "enum" : [ "ADMIN", "USER" ]
     },
@@ -785,17 +818,28 @@
   "title" : "ChallengeRequest",
   "required" : [ "categories", "maxAttempts", "publishAt", "timeLimit", "title" ],
   "properties" : {
-    "title" : { },
-    "description" : { },
+    "title" : {
+      "maxLength" : 255,
+      "minLength" : 1
+    },
+    "description" : {
+      "description" : "Markdown; inline HTML is sanitized when shown."
+    },
     "isVisible" : { },
     "publishAt" : {
       "format" : "date-time"
     },
-    "maxAttempts" : { },
+    "maxAttempts" : {
+      "minimum" : 0.0,
+      "description" : "Wrong guesses allowed per player; 0 means no limit."
+    },
     "categories" : {
       "items" : { }
     },
-    "timeLimit" : { }
+    "timeLimit" : {
+      "minimum" : 0.0,
+      "description" : "Seconds to solve after starting; 0 means no limit."
+    }
   }
 };
             defs["ChallengeResponse"] = {
@@ -826,8 +870,13 @@
   "title" : "EmailTemplateRequest",
   "required" : [ "body", "subject" ],
   "properties" : {
-    "subject" : { },
-    "body" : { }
+    "subject" : {
+      "maxLength" : 255,
+      "minLength" : 1
+    },
+    "body" : {
+      "minLength" : 1
+    }
   }
 };
             defs["EmailTemplateResponse"] = {
@@ -864,11 +913,23 @@
   "title" : "FlagRequest",
   "required" : [ "baseValue", "pattern" ],
   "properties" : {
-    "pattern" : { },
+    "pattern" : {
+      "maxLength" : 255,
+      "minLength" : 1,
+      "description" : "Regular expression (Java syntax) a whole submission must match."
+    },
     "isCaseSensitive" : { },
-    "baseValue" : { },
-    "decayValue" : { },
-    "minValue" : { },
+    "baseValue" : {
+      "minimum" : 0.0
+    },
+    "decayValue" : {
+      "minimum" : 0.0,
+      "description" : "How fast the value drops with solves; required unless decayFun is static."
+    },
+    "minValue" : {
+      "minimum" : 0.0,
+      "description" : "The value never drops below this; at most baseValue. Required unless decayFun is static."
+    },
     "decayFun" : {
       "enum" : [ "static", "linear", "logarithmic", "parabolic" ]
     },
@@ -900,8 +961,12 @@
   "required" : [ "body", "challengeId" ],
   "properties" : {
     "challengeId" : { },
-    "body" : { },
-    "cost" : { }
+    "body" : {
+      "minLength" : 1
+    },
+    "cost" : {
+      "minimum" : 0.0
+    }
   }
 };
             defs["HintResponse"] = {
@@ -921,16 +986,27 @@
   "title" : "LoginRequest",
   "required" : [ "login", "password" ],
   "properties" : {
-    "login" : { },
-    "password" : { }
+    "login" : {
+      "maxLength" : 255,
+      "minLength" : 1,
+      "description" : "Username or email."
+    },
+    "password" : {
+      "minLength" : 1
+    }
   }
 };
             defs["NotificationRequest"] = {
   "title" : "NotificationRequest",
   "required" : [ "message", "pushAt", "title", "type" ],
   "properties" : {
-    "title" : { },
-    "message" : { },
+    "title" : {
+      "maxLength" : 255,
+      "minLength" : 1
+    },
+    "message" : {
+      "minLength" : 1
+    },
     "type" : {
       "enum" : [ "INFO", "WARNING", "DANGER", "SUCCESS" ]
     },
@@ -963,10 +1039,22 @@
   "title" : "PageRequest",
   "required" : [ "body", "format", "route", "title" ],
   "properties" : {
-    "title" : { },
-    "route" : { },
-    "language" : { },
-    "format" : { },
+    "title" : {
+      "maxLength" : 255,
+      "minLength" : 1
+    },
+    "route" : {
+      "maxLength" : 255,
+      "minLength" : 1
+    },
+    "language" : {
+      "maxLength" : 2,
+      "minLength" : 2
+    },
+    "format" : {
+      "maxLength" : 255,
+      "minLength" : 1
+    },
     "targetBlank" : { },
     "body" : { },
     "isHidden" : { },
@@ -998,18 +1086,35 @@
   "title" : "RegisterRequest",
   "required" : [ "email", "password", "username" ],
   "properties" : {
-    "username" : { },
-    "email" : { },
-    "password" : { },
-    "registrationCode" : { }
+    "username" : {
+      "maxLength" : 64,
+      "minLength" : 3,
+      "pattern" : "^[A-Za-z0-9._-]{3,64}$"
+    },
+    "email" : {
+      "maxLength" : 255,
+      "format" : "email"
+    },
+    "password" : {
+      "maxLength" : 128,
+      "minLength" : 8
+    },
+    "registrationCode" : {
+      "maxLength" : 255
+    }
   }
 };
             defs["RegistrationCodeRequest"] = {
   "title" : "RegistrationCodeRequest",
   "required" : [ "code", "expiresAt", "maxUses" ],
   "properties" : {
-    "code" : { },
-    "maxUses" : { },
+    "code" : {
+      "maxLength" : 255,
+      "minLength" : 1
+    },
+    "maxUses" : {
+      "minimum" : 0.0
+    },
     "expiresAt" : {
       "format" : "date-time"
     }
@@ -1075,17 +1180,29 @@
   "title" : "SubmitFlagRequest",
   "required" : [ "flag" ],
   "properties" : {
-    "flag" : { }
+    "flag" : {
+      "maxLength" : 1024,
+      "minLength" : 1
+    }
   }
 };
             defs["TeamRequest"] = {
   "title" : "TeamRequest",
   "required" : [ "name", "ownerId" ],
   "properties" : {
-    "name" : { },
+    "name" : {
+      "maxLength" : 64,
+      "minLength" : 1
+    },
     "ownerId" : { },
-    "country" : { },
-    "website" : { },
+    "country" : {
+      "maxLength" : 2,
+      "minLength" : 2,
+      "description" : "ISO 3166-1 alpha-2 code, e.g. HU."
+    },
+    "website" : {
+      "maxLength" : 255
+    },
     "isHidden" : { },
     "isBanned" : { }
   }
@@ -1126,11 +1243,26 @@
   "title" : "UserUpdateRequest",
   "required" : [ "email", "username" ],
   "properties" : {
-    "username" : { },
-    "email" : { },
-    "language" : { },
-    "country" : { },
-    "website" : { },
+    "username" : {
+      "maxLength" : 64,
+      "minLength" : 3,
+      "pattern" : "^[A-Za-z0-9._-]{3,64}$"
+    },
+    "email" : {
+      "maxLength" : 255,
+      "format" : "email"
+    },
+    "language" : {
+      "maxLength" : 5
+    },
+    "country" : {
+      "maxLength" : 2,
+      "minLength" : 2,
+      "description" : "ISO 3166-1 alpha-2 code, e.g. HU."
+    },
+    "website" : {
+      "maxLength" : 255
+    },
     "soundEnabled" : { },
     "visibilitySettings" : { }
   }

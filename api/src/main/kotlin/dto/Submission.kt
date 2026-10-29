@@ -1,10 +1,13 @@
 package com.ctfp.dto
 
+import io.ktor.openapi.JsonSchema
 import kotlinx.serialization.Serializable
 
 /** A flag guess for the challenge in the path. */
 @Serializable
 data class SubmitFlagRequest(
+    @JsonSchema.MinLength(1)
+    @JsonSchema.MaxLength(Limits.SUBMITTED_FLAG_MAX)
     val flag: String,
 )
 

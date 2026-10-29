@@ -1,17 +1,25 @@
 package com.ctfp.dto
 
+import io.ktor.openapi.JsonSchema
 import com.ctfp.domain.dao.ChallengeDAO
 import kotlin.time.Instant
 import kotlinx.serialization.Serializable
 
 @Serializable
 data class ChallengeRequest(
+    @JsonSchema.MinLength(1)
+    @JsonSchema.MaxLength(Limits.TITLE_MAX)
     val title: String,
+    @JsonSchema.Description("Markdown; inline HTML is sanitized when shown.")
     val description: String?,
     val isVisible: Boolean = true,
     val publishAt: Instant,
+    @JsonSchema.Description("Wrong guesses allowed per player; 0 means no limit.")
+    @JsonSchema.Minimum(0.0)
     val maxAttempts: Int,
     val categories: List<String>,
+    @JsonSchema.Description("Seconds to solve after starting; 0 means no limit.")
+    @JsonSchema.Minimum(0.0)
     val timeLimit: Int
 )
 

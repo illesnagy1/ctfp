@@ -7,6 +7,7 @@ import com.ctfp.domain.dao.UserDAO
 import com.ctfp.domain.db.withTransaction
 import com.ctfp.domain.model.FlagTable
 import com.ctfp.domain.model.SubmissionTable
+import com.ctfp.dto.Limits
 import com.ctfp.dto.SubmissionResult
 import io.ktor.http.HttpStatusCode
 import org.jetbrains.exposed.v1.core.and
@@ -22,7 +23,7 @@ class SubmissionService(private val challenges: ChallengeService) {
         challenges.get(challengeId, includeUnreleased = isAdmin)
         val flag = submitted.trim()
         if (flag.isEmpty()) throw ApiException(HttpStatusCode.BadRequest, "Flag is required")
-        if (flag.length > MAX_LENGTH) throw ApiException(HttpStatusCode.BadRequest, "Flag is too long")
+        if (flag.length > Limits.SUBMITTED_FLAG_MAX) throw ApiException(HttpStatusCode.BadRequest, "Flag is too long")
 
         return withTransaction {
             val user = UserDAO.findById(userId) ?: throw ApiException(HttpStatusCode.Unauthorized, "Session is no longer valid")
@@ -66,9 +67,5 @@ class SubmissionService(private val challenges: ChallengeService) {
         val options = if (isCaseSensitive) emptySet() else setOf(RegexOption.IGNORE_CASE)
         // Patterns are checked when saved; a broken one just never matches.
         return runCatching { Regex(pattern, options).matches(submitted) }.getOrDefault(false)
-    }
-
-    private companion object {
-        const val MAX_LENGTH = 1024
     }
 }

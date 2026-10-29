@@ -1,5 +1,6 @@
 package com.ctfp.dto
 
+import io.ktor.openapi.JsonSchema
 import com.ctfp.config.enum.NotificationType
 import com.ctfp.domain.dao.NotificationDAO
 import kotlin.time.Instant
@@ -7,7 +8,10 @@ import kotlinx.serialization.Serializable
 
 @Serializable
 data class NotificationRequest(
+    @JsonSchema.MinLength(1)
+    @JsonSchema.MaxLength(Limits.TITLE_MAX)
     val title: String,
+    @JsonSchema.MinLength(1)
     val message: String,
     val type: NotificationType,
     val sendEmail: Boolean = false,

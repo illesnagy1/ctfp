@@ -1,6 +1,7 @@
 import { resolve } from '$app/paths';
 import { renderComponent, type ColumnDef } from '@tanstack/svelte-table';
 
+import CountryFlag from '#lib/components/country-flag.svelte';
 import {
   DataTableBadgesCell,
   DataTableColumnHeader,
@@ -26,11 +27,17 @@ const usernameColumn = <T extends User>(): ColumnDef<DataTableFeatures, T> => ({
     }),
 });
 
+/** The country's flag, sorted by its code. */
+const countryColumn = <T extends User>(): ColumnDef<DataTableFeatures, T> => ({
+  ...sortableColumn<T>('country', m.users_column_country),
+  cell: ({ row }) => renderComponent(CountryFlag, { code: row.original.country }),
+});
+
 /** The public list, as players see it. */
 export const columns: ColumnDef<DataTableFeatures, User>[] = [
   usernameColumn(),
   sortableColumn('website', m.users_column_website),
-  sortableColumn('country', m.users_column_country),
+  countryColumn(),
 ];
 
 /** The full list for admins: email, role and statuses, row selection for bulk actions, and the ban menu. */
@@ -39,7 +46,7 @@ export const adminColumns: ColumnDef<DataTableFeatures, AdminUser>[] = [
   usernameColumn(),
   sortableColumn('email', m.users_column_email),
   sortableColumn('website', m.users_column_website),
-  sortableColumn('country', m.users_column_country),
+  countryColumn(),
   {
     ...sortableColumn('role', m.users_column_role),
     cell: ({ row }) => renderComponent(DataTableBadgesCell, { badges: [roleLabel(row.original.role)] }),
