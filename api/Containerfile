@@ -1,5 +1,5 @@
 # Stage 1: Cache Gradle dependencies
-FROM gradle:9-jdk21-alpine AS cache
+FROM gradle:9-jdk25-alpine AS cache
 RUN mkdir -p /home/gradle/cache_home
 ENV GRADLE_USER_HOME=/home/gradle/cache_home
 COPY settings.gradle.* build.gradle.* gradle.properties gradlew /home/gradle/app/
@@ -8,7 +8,7 @@ WORKDIR /home/gradle/app
 RUN ./gradlew dependencies --no-daemon
 
 # Stage 2: Build Application
-FROM gradle:9-jdk21-alpine AS build
+FROM gradle:9-jdk25-alpine AS build
 COPY --from=cache /home/gradle/cache_home /home/gradle/.gradle
 COPY --chown=gradle:gradle . /home/gradle/src
 WORKDIR /home/gradle/src
@@ -17,11 +17,11 @@ WORKDIR /home/gradle/src
 RUN ./gradlew buildFatJar --no-daemon
 
 # Stage 3: Create the Runtime Image
-FROM amazoncorretto:21-alpine AS runtime
+FROM amazoncorretto:25-alpine AS runtime
 EXPOSE 8080
 RUN mkdir /app
 COPY --from=build /home/gradle/src/build/libs/*-all.jar /app/api.jar
 ENV SETTINGS_FILE=/data/settings.conf
 ENV UPLOADS_DIR=/data/uploads
 VOLUME /data
-ENTRYPOINT ["java","-jar","/app/api.jar"]
+ENTRYPOINT ["java","-XX:+UseCompactObjectHeaders","-jar","/app/api.jar"]

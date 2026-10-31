@@ -3034,6 +3034,7 @@
                     },
                     "baseValue": {
                         "type": "integer",
+                        "description": "Points before any decay",
                         "minimum": 0.0
                     },
                     "decayValue": {
@@ -3506,7 +3507,7 @@
                             "string",
                             "null"
                         ],
-                        "description": "ISO 3166-1 alpha-2 code, e.g. HU.",
+                        "description": "ISO 3166-1 alpha-2 code, e.g.: HU",
                         "maxLength": 2,
                         "minLength": 2
                     },
@@ -3672,7 +3673,7 @@
                             "string",
                             "null"
                         ],
-                        "description": "ISO 3166-1 alpha-2 code, e.g. HU.",
+                        "description": "ISO 3166-1 alpha-2 code, e.g.: HU",
                         "maxLength": 2,
                         "minLength": 2
                     },
