@@ -24,6 +24,9 @@ export default defineConfig({
     }),
     paraglideVitePlugin({ project: './project.inlang', outdir: './src/lib/paraglide' }),
   ],
+  // The SJSF shadcn themes import tailwind-merge themselves; give them tailwind-variants' compatible twMerge,
+  // so the bundle ships one merge engine.
+  resolve: { alias: { 'tailwind-merge': 'tailwind-variants' } },
   test: {
     expect: { requireAssertions: true },
     projects: [
