@@ -10,7 +10,7 @@ flaxoos = "2.3.0"
 ucasoft = "0.72.1"
 asyncapi = "3.2.4"
 bouncycastle = "1.86"
-kotlinxSerialization = "1.11.0"
+kotlinxSerialization = "1.12.0"
 
 [libraries]
 exposed-core = { module = "org.jetbrains.exposed:exposed-core", version.ref = "exposed" }
