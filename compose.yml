@@ -33,6 +33,7 @@ services:
       POSTGRES_USER: ctfp
       POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-ctfp}
       JWT_SECRET: ${JWT_SECRET:?set JWT_SECRET to 32+ random characters}
+    mem_limit: 1g
     volumes:
       # settings.conf and uploads/ (see api/Containerfile)
       - api-data:/data

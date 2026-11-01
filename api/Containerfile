@@ -1,27 +1,17 @@
-# Stage 1: Cache Gradle dependencies
-FROM gradle:9-jdk25-alpine AS cache
-RUN mkdir -p /home/gradle/cache_home
-ENV GRADLE_USER_HOME=/home/gradle/cache_home
-COPY settings.gradle.* build.gradle.* gradle.properties gradlew /home/gradle/app/
-COPY gradle /home/gradle/app/gradle
-WORKDIR /home/gradle/app
-RUN ./gradlew dependencies --no-daemon
+# Stage 1: Build Application
+FROM eclipse-temurin:25-jdk-alpine AS build
+WORKDIR /src
+COPY . .
+RUN --mount=type=cache,target=/root/.gradle ./gradlew buildFatJar --no-daemon
+RUN mkdir /data
 
-# Stage 2: Build Application
-FROM gradle:9-jdk25-alpine AS build
-COPY --from=cache /home/gradle/cache_home /home/gradle/.gradle
-COPY --chown=gradle:gradle . /home/gradle/src
-WORKDIR /home/gradle/src
-# Build the fat JAR, Gradle also supports shadow
-# and boot JAR by default.
-RUN ./gradlew buildFatJar --no-daemon
-
-# Stage 3: Create the Runtime Image
-FROM amazoncorretto:25-alpine AS runtime
+# Stage 2: Create the Runtime Image
+FROM gcr.io/distroless/java25-debian13:nonroot AS runtime
 EXPOSE 8080
-RUN mkdir /app
-COPY --from=build /home/gradle/src/build/libs/*-all.jar /app/api.jar
+COPY --from=build /src/build/libs/*-all.jar /app/api.jar
+COPY --from=build --chown=65532:65532 /data /data
 ENV SETTINGS_FILE=/data/settings.conf
 ENV UPLOADS_DIR=/data/uploads
 VOLUME /data
-ENTRYPOINT ["java","-XX:+UseCompactObjectHeaders","-jar","/app/api.jar"]
+ENV JDK_JAVA_OPTIONS="-XX:+UseCompactObjectHeaders -XX:+UseG1GC -XX:MaxRAMPercentage=75 -XX:+ExitOnOutOfMemoryError"
+ENTRYPOINT ["/usr/bin/java","-jar","/app/api.jar"]
