@@ -39,6 +39,17 @@
     isHighlighted?: (row: TData) => boolean;
   } = $props();
 
+  // Orders search results by how well they match (see fuzzySort); hidden, and not searched itself.
+  const RELEVANCE = 'relevance';
+  const relevanceColumn: ColumnDef<DataTableFeatures, TData> = {
+    id: RELEVANCE,
+    accessorFn: () => 0,
+    sortFn: 'fuzzy',
+    enableHiding: false,
+    enableGlobalFilter: false,
+    enableColumnFilter: false,
+  };
+
   // v9 keeps pagination, sorting, filters, visibility and selection internally, and its reads are rune-reactive.
   const table = createTable({
     features,
@@ -46,13 +57,23 @@
       return data;
     },
     get columns() {
-      return columns;
+      return [...columns, relevanceColumn];
     },
+    globalFilterFn: 'fuzzy',
+    initialState: { columnVisibility: { [RELEVANCE]: false } },
     get enableRowSelection() {
       return selectable;
     },
     // Falls back to tanstack's default, the row's index path.
     getRowId: (row, index, parent) => getRowId?.(row) ?? (parent ? `${parent.id}.${index}` : String(index)),
+  });
+
+  // While searching with no column sorted, the best matches come first; sorting by a column header takes over.
+  $effect(() => {
+    const searching = String(table.atoms.globalFilter.get() ?? '').trim() !== '';
+    const sorting = table.atoms.sorting.get();
+    if (searching && sorting.length === 0) table.setSorting([{ id: RELEVANCE, desc: false }]);
+    else if (!searching && sorting.some((sort) => sort.id === RELEVANCE)) table.setSorting([]);
   });
 
   const selected = $derived(table.getFilteredSelectedRowModel().rows.map((row) => row.original));

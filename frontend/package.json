@@ -29,6 +29,7 @@
     "@sjsf/sveltekit3": "^3.9.0",
     "@sjsf/zod4-validator": "^3.9.0",
     "@sveltejs/kit": "^3.0.0",
+    "@tanstack/match-sorter-utils": "^9.2.6",
     "@tanstack/svelte-table": "^9.2.6",
     "bits-ui": "^2.16.5",
     "country-flag-icons": "^1.6.20",

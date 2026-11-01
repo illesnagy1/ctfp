@@ -9,6 +9,7 @@ import {
   createSortedRowModel,
   filterFn_includesString,
   globalFilteringFeature,
+  metaHelper,
   rowPaginationFeature,
   rowSelectionFeature,
   rowSortingFeature,
@@ -16,6 +17,8 @@ import {
   sortFn_text,
   tableFeatures,
 } from '@tanstack/svelte-table';
+
+import { fuzzyFilter, fuzzySort, type FuzzyFilterMeta } from './fuzzy.js';
 
 export const features = tableFeatures({
   columnFacetingFeature,
@@ -30,8 +33,9 @@ export const features = tableFeatures({
   filteredRowModel: createFilteredRowModel(),
   paginatedRowModel: createPaginatedRowModel(),
   sortedRowModel: createSortedRowModel(),
-  filterFns: { includesString: filterFn_includesString },
-  sortFns: { alphanumeric: sortFn_alphanumeric, text: sortFn_text },
+  filterFns: { fuzzy: fuzzyFilter, includesString: filterFn_includesString },
+  sortFns: { alphanumeric: sortFn_alphanumeric, fuzzy: fuzzySort, text: sortFn_text },
+  filterMeta: metaHelper<FuzzyFilterMeta>(),
 });
 
 export type DataTableFeatures = typeof features;
