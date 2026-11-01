@@ -37,6 +37,8 @@ export const columns: ColumnDef<DataTableFeatures, Challenge>[] = [
   sortableColumn('maxAttempts', m.challenges_column_max_attempts),
   {
     ...sortableColumn('publishAt', m.challenges_column_publish_at),
+    // The raw value is an ISO instant, not the local time shown.
+    enableGlobalFilter: false,
     cell: ({ row }) => renderComponent(LocalTime, { value: row.original.publishAt }),
   },
 ];

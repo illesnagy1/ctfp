@@ -16,7 +16,7 @@
   <DataTable
     {data}
     {columns}
-    search={{ column: 'title', placeholder: 'Filter tasks...' }}
+    search={{ placeholder: 'Filter tasks...' }}
     filters={[
       { column: 'status', title: 'Status', options: statuses },
       { column: 'priority', title: 'Priority', options: priorities },

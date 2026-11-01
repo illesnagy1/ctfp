@@ -66,7 +66,7 @@
       columns={adminColumns}
       getRowId={(user) => String(user.id)}
       actions={bulkActions}
-      search={{ column: 'username', placeholder: m.users_filter_placeholder() }}
+      search={{ placeholder: m.users_filter_placeholder() }}
       filters={[
         { column: 'role', title: m.users_column_role(), options: roleOptions() },
         { column: 'status', title: m.users_column_status(), options: statusOptions() },
@@ -78,7 +78,7 @@
       {columns}
       selectable={false}
       getRowId={(user) => String(user.id)}
-      search={{ column: 'username', placeholder: m.users_filter_placeholder() }}
+      search={{ placeholder: m.users_filter_placeholder() }}
     />
   {/if}
 </div>

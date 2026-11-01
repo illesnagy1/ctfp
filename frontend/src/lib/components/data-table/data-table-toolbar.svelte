@@ -25,17 +25,23 @@
     children?: Snippet;
   } = $props();
 
-  const isFiltered = $derived(table.atoms.columnFilters.get().length > 0);
-  const searchColumn = $derived(search && table.getColumn(search.column));
+  const searchValue = $derived(String(table.atoms.globalFilter.get() ?? ''));
+  const isFiltered = $derived(table.atoms.columnFilters.get().length > 0 || searchValue !== '');
+
+  function reset() {
+    table.resetColumnFilters();
+    table.resetGlobalFilter(true);
+  }
 </script>
 
 <div class="flex items-center justify-between">
   <div class="flex flex-1 items-center space-x-2">
-    {#if search && searchColumn}
+    {#if search}
       <Input
+        type="search"
         placeholder={search.placeholder}
-        value={(searchColumn.getFilterValue() as string | undefined) ?? ''}
-        oninput={(e) => searchColumn.setFilterValue(e.currentTarget.value)}
+        value={searchValue}
+        oninput={(e) => table.setGlobalFilter(e.currentTarget.value)}
         class="h-8 w-37.5 lg:w-62.5"
       />
     {/if}
@@ -48,7 +54,7 @@
     {/each}
 
     {#if isFiltered}
-      <Button variant="ghost" size="sm" onclick={() => table.resetColumnFilters()}>
+      <Button variant="ghost" size="sm" onclick={reset}>
         {m.data_table_reset()}
         <XIcon />
       </Button>

@@ -23,9 +23,11 @@ export type DataTableOption = {
   icon?: Component;
 };
 
-/** Toolbar text search on one column. */
+/**
+ * Toolbar text search over every column with an accessor, matching the raw values. A column whose cell shows something
+ * else (a formatted date, a translated label) should opt out with `enableGlobalFilter: false`.
+ */
 export type DataTableSearch = {
-  column: string;
   placeholder: string;
 };
 

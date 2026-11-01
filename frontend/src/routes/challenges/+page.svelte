@@ -72,7 +72,7 @@
     getRowId={(challenge) => String(challenge.id)}
     isHighlighted={(challenge) => solved.has(challenge.id)}
     actions={isAdmin ? bulkActions : undefined}
-    search={{ column: 'title', placeholder: m.challenges_filter_placeholder() }}
+    search={{ placeholder: m.challenges_filter_placeholder() }}
     filters={[{ column: 'categories', title: m.challenges_column_categories(), options: categories }]}
   />
 </div>

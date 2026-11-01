@@ -51,6 +51,8 @@ export const adminColumns: ColumnDef<DataTableFeatures, AdminUser>[] = [
     ...sortableColumn('role', m.users_column_role),
     cell: ({ row }) => renderComponent(DataTableBadgesCell, { badges: [roleLabel(row.original.role)] }),
     filterFn: includesValue,
+    // The search would see the raw role (ADMIN), not the translated label; the faceted filter covers it.
+    enableGlobalFilter: false,
   },
   {
     id: 'status',
@@ -63,6 +65,7 @@ export const adminColumns: ColumnDef<DataTableFeatures, AdminUser>[] = [
     // A user can have several statuses: facet on each, and match if any is selected (like challenge categories).
     getUniqueValues: userStatuses,
     filterFn: (row, _id, selected: string[]) => userStatuses(row.original).some((s) => selected.includes(s)),
+    enableGlobalFilter: false,
   },
   {
     id: 'actions',
