@@ -24,6 +24,22 @@ export const newPassword = () =>
     .min(8, { error: () => m.validation_password_length() })
     .max(128, { error: () => m.validation_password_length() });
 
+/** ISO 3166-1 alpha-2 code, e.g. HU, or empty for none. */
+export const country = () =>
+  z
+    .string()
+    .trim()
+    .toUpperCase()
+    .regex(/^([A-Z]{2})?$/, { error: () => m.validation_country() });
+
+/** An http(s) link, or empty for none; the profile only links http(s) URLs. */
+export const website = () =>
+  z
+    .string()
+    .trim()
+    .max(255, { error: () => m.validation_too_long({ max: 255 }) })
+    .regex(/^(https?:\/\/\S+)?$/i, { error: () => m.validation_website() });
+
 export const required = () => z.string().min(1, { error: () => m.validation_required() });
 
 /** A limit where 0 means none, e.g. max attempts. */

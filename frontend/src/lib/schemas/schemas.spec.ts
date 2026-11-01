@@ -7,7 +7,7 @@ import { createChallengeSchema } from './challenge';
 import { createFlagSchema } from './flag';
 import { idsSchema } from './ids';
 import { settingsSchema, settingsUiSchema } from './settings';
-import { createUserSchema, setBannedSchema } from './user';
+import { createUserSchema, editUserSchema, setBannedSchema } from './user';
 
 const issuePaths = (result: { success: boolean; error?: { issues: { path: PropertyKey[] }[] } }) =>
   result.error?.issues.map((issue) => issue.path.join('.')) ?? [];
@@ -122,5 +122,27 @@ describe('settingsSchema', () => {
     const ui = settingsUiSchema();
     expect(Object.keys(ui)).toEqual(Object.keys(valid));
     expect(ui).toMatchObject({ maxTeamSize: { 'ui:options': { title: 'Max team size' } } });
+  });
+});
+
+describe('editUserSchema', () => {
+  const valid = { username: 'player', email: 'p@example.com', country: '', website: '' };
+
+  it('allows an empty country and website', () => {
+    expect(editUserSchema.safeParse(valid).success).toBe(true);
+  });
+
+  it('upper-cases the country code and trims the website', () => {
+    const result = editUserSchema.parse({ ...valid, country: ' hu ', website: ' https://example.com ' });
+    expect(result).toMatchObject({ country: 'HU', website: 'https://example.com' });
+  });
+
+  it.each([
+    ['country', 'HUN'],
+    ['country', 'H1'],
+    ['website', 'example.com'],
+    ['website', 'javascript:alert(1)'],
+  ])('rejects an invalid %s', (field, value) => {
+    expect(issuePaths(editUserSchema.safeParse({ ...valid, [field]: value }))).toEqual([field]);
   });
 });

@@ -1,4 +1,6 @@
 <script lang="ts">
+  import type { Snippet } from 'svelte';
+
   import LocalTime from '#lib/components/local-time.svelte';
   import * as Card from '#lib/components/ui/card/index.js';
   import { m } from '#lib/paraglide/messages.js';
@@ -6,8 +8,15 @@
 
   import { roleLabel } from './labels.js';
 
-  /** Shows the account details too when given the full view (own account, or an admin looking). */
-  let { user }: { user: User } = $props();
+  let {
+    user,
+    actions,
+  }: {
+    /** Shows the account details too when given the full view (own account, or an admin looking). */
+    user: User;
+    /** Buttons in the card's header, e.g. edit. */
+    actions?: Snippet;
+  } = $props();
 
   // User-supplied; only link http(s) so a `javascript:` URL can't run script.
   let safeWebsite = $derived(user.website && /^https?:\/\//i.test(user.website) ? user.website : undefined);
@@ -23,6 +32,9 @@
         {#snippet children(date)}{m.user_profile_joined({ date })}{/snippet}
       </LocalTime>
     </Card.Description>
+    {#if actions}
+      <Card.Action>{@render actions()}</Card.Action>
+    {/if}
   </Card.Header>
   <Card.Content>
     <dl class="grid grid-cols-label-value gap-x-6 gap-y-2 text-sm">

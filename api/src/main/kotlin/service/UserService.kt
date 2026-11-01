@@ -67,20 +67,20 @@ class UserService(
         }
     }
 
-    /** [actorId] is the admin making the change; they can't ban themselves. */
+    /** [actorId] is the admin making the change; they can't ban or demote themselves. */
     suspend fun updateUser(id: Int, user: AdminUserUpdateRequest, actorId: Int) {
         validate(user)
-        ensureNotSelfBan(id, user, actorId)
+        ensureNotSelfLockout(id, user, actorId)
         withTransaction {
             ensureAvailable(user.username, user.email, exceptId = id)
             findUser(id).applyAdmin(user)
         }
     }
 
-    /** [actorId] is the admin making the change; they can't ban themselves. */
+    /** [actorId] is the admin making the change; they can't ban or demote themselves. */
     suspend fun updateUsers(users: Map<Int, AdminUserUpdateRequest>, actorId: Int) {
         users.values.forEach(::validate)
-        users.forEach { (id, user) -> ensureNotSelfBan(id, user, actorId) }
+        users.forEach { (id, user) -> ensureNotSelfLockout(id, user, actorId) }
         withTransaction {
             users.forEach { (id, user) ->
                 ensureAvailable(user.username, user.email, exceptId = id)
@@ -89,9 +89,14 @@ class UserService(
         }
     }
 
-    /** Banned users lose admin rights, so a self-ban would lock the admin out. */
-    private fun ensureNotSelfBan(id: Int, user: AdminUserUpdateRequest, actorId: Int) {
-        if (id == actorId && user.isBanned) throw ApiException(HttpStatusCode.BadRequest, "You cannot ban yourself")
+    /**
+     * Banning or demoting themselves would lock the admin out (banned users lose admin rights too). The actor passed
+     * RequireAdmin, so they are an admin now.
+     */
+    private fun ensureNotSelfLockout(id: Int, user: AdminUserUpdateRequest, actorId: Int) {
+        if (id != actorId) return
+        if (user.isBanned) throw ApiException(HttpStatusCode.BadRequest, "You cannot ban yourself")
+        if (user.role != UserRole.ADMIN) throw ApiException(HttpStatusCode.BadRequest, "You cannot change your own role")
     }
 
     suspend fun deleteUser(id: Int) = withTransaction {

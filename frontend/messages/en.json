@@ -185,5 +185,13 @@
   "settings_registrationOpen": "Registration open",
   "settings_registrationOpen_description": "Whether new players can create accounts.",
   "settings_maxTeamSize": "Max team size",
-  "settings_maxTeamSize_description": "The most players a team can have."
+  "settings_maxTeamSize_description": "The most players a team can have.",
+  "user_edit": "Edit profile",
+  "user_edit_description": "Changes apply right away.",
+  "user_edit_submit": "Save",
+  "user_edit_self_locked": "Your own role and ban can't be changed.",
+  "user_updated": "Profile saved",
+  "validation_country": "Two-letter country code, e.g. HU",
+  "validation_website": "Enter a link starting with http:// or https://",
+  "users_action_edit": "Edit"
 }

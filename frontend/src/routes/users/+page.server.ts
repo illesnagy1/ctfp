@@ -42,8 +42,6 @@ function requireAdmin(event: RequestEvent) {
   return user;
 }
 
-const SELF_BAN = 'You cannot ban yourself';
-
 export const actions: Actions = {
   create: async (event) => {
     requireAdmin(event);
@@ -60,13 +58,12 @@ export const actions: Actions = {
   },
 
   setBanned: async (event) => {
-    const self = requireAdmin(event);
+    requireAdmin(event);
 
+    // The api refuses an admin's own ban, with a message shown as the toast.
     const { data, failure } = await parseForm(event.request, idSchema.extend(setBannedSchema.shape));
     if (failure) return failure;
     const { id, banned } = data;
-    // Banned users lose admin rights, so this would lock the admin out.
-    if (banned && id === self.id) return fail(400, { message: SELF_BAN });
 
     const client = apiClient(event);
     const params = { path: { id: String(id) } };
@@ -84,13 +81,12 @@ export const actions: Actions = {
   },
 
   setBannedMany: async (event) => {
-    const self = requireAdmin(event);
+    requireAdmin(event);
 
     const { data, failure } = await parseForm(event.request, idsSchema.extend(setBannedSchema.shape));
     if (failure) return failure;
     const ids = new Set(data.ids);
     const { banned } = data;
-    if (banned && ids.has(self.id)) return fail(400, { message: SELF_BAN });
 
     const client = apiClient(event);
     const fetched = await client.GET('/v1/admin/users');

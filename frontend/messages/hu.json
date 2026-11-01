@@ -185,5 +185,13 @@
   "settings_registrationOpen": "Regisztráció nyitva",
   "settings_registrationOpen_description": "Regisztrálhatnak-e új játékosok.",
   "settings_maxTeamSize": "Maximális csapatméret",
-  "settings_maxTeamSize_description": "Legfeljebb hány játékos lehet egy csapatban."
+  "settings_maxTeamSize_description": "Legfeljebb hány játékos lehet egy csapatban.",
+  "user_edit": "Profil szerkesztése",
+  "user_edit_description": "A módosítások azonnal érvényesek.",
+  "user_edit_submit": "Mentés",
+  "user_edit_self_locked": "A saját szerepköröd és tiltásod nem módosítható.",
+  "user_updated": "Profil elmentve",
+  "validation_country": "Kétbetűs országkód, pl. HU",
+  "validation_website": "http:// vagy https:// kezdetű linket adj meg",
+  "users_action_edit": "Szerkesztés"
 }
