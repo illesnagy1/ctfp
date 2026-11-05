@@ -43,5 +43,16 @@ You can preview the production build with `npm run preview`.
 
 ## TODO
 
-- global filtering for datatables: https://tanstack.com/table/v8/docs/guide/global-filtering
 - https://app-privacy-policy-generator.nisrulz.com/
+- one source of truth for input limits (username length, password length, etc.), now written twice: in the api's
+  `UserValidation.kt` and in `src/lib/schemas/`
+  - api: put the limits on the request DTOs as `@JsonSchema.MinLength` / `MaxLength` / `Pattern` / `Format` /
+    `Minimum` annotations (Ktor 3.6, `io.ktor.openapi.JsonSchema`); they show up in `openapi.json`
+  - api: they only document, so add one generic RequestValidation rule (marker interface on the DTOs) that reads the
+    annotations from the serializer descriptor and checks them, answering 400 via StatusPages; drop the hand-written
+    checks, keep the ones annotations can't express (e.g. username taken)
+  - api: remove the template `validate<String>` "Hello" rule in `plugins/RequestValidation.kt`
+  - frontend: generate base zod schemas from `openapi.json` (e.g. `@hey-api/openapi-ts` zod plugin) next to
+    `gen:api`; build the form schemas on them (`.extend()` / `.refine()` for `confirmPassword` etc.) and translate the
+    generic errors with one `z.config({ customError })`
+  - decide where trimming happens: the check sees the body as sent

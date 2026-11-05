@@ -79,3 +79,5 @@ Table oauth_accounts {
 Half-Life Notification TTS
 Webhooks
 Social media shares
+https://github.com/ReidSync/kotlin-json-patch
+https://github.com/eygraber/jsonapi-kotlin
