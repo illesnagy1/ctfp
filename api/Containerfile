@@ -1,5 +1,5 @@
 # Stage 1: Build Application
-FROM docker.io/eclipse-temurin:25-jdk-alpine AS build
+FROM docker.io/eclipse-temurin:27-jdk-alpine AS build
 WORKDIR /src
 COPY . .
 RUN --mount=type=cache,target=/root/.gradle ./gradlew buildFatJar --no-daemon
