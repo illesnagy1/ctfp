@@ -2,6 +2,8 @@ plugins {
     alias(libs.plugins.kotlin.jvm)
     alias(ktorLibs.plugins.ktor)
     alias(libs.plugins.kotlin.serialization)
+    alias(libs.plugins.detekt)
+    alias(libs.plugins.kover)
 }
 
 group = "com.ctfp"
@@ -13,6 +15,22 @@ application {
 
 kotlin {
     jvmToolchain(25)
+}
+
+detekt {
+    config.setFrom("config/detekt.yml")
+    buildUponDefaultConfig = true
+    baseline = file("config/detekt-baseline.xml")
+}
+
+kover {
+    reports {
+        filters {
+            excludes {
+                classes("GenerateMigrationKt", "com.ctfp.GenerateOpenApiKt")
+            }
+        }
+    }
 }
 
 dependencies {

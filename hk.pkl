@@ -1,0 +1,54 @@
+amends "package://github.com/jdx/hk/releases/download/v2.11.0/hk@2.11.0#/Config.pkl"
+import "package://github.com/jdx/hk/releases/download/v2.11.0/hk@2.11.0#/Builtins.pkl"
+// Using a coding agent? See https://hk.jdx.dev/agents
+
+local linters = new Mapping<String, Step | Group> {
+  // hygiene, built into hk
+  ["check_merge_conflict"] = Builtins.check_merge_conflict
+  ["check_added_large_files"] = Builtins.check_added_large_files
+  ["detect_private_key"] = Builtins.detect_private_key
+  ["trailing_whitespace"] = Builtins.trailing_whitespace
+  ["kingfisher"] = Builtins.kingfisher
+
+  // config / infra
+  ["mise"] = Builtins.mise
+  ["tombi_format"] = (Builtins.tombi_format) { exclude = "mise.toml" } // mise step formats it
+  ["pkl_format"] = Builtins.pkl_format
+  ["dclint"] = Builtins.dclint
+  ["hadolint"] = (Builtins.hadolint) { glob = "**/Containerfile" }
+
+  // api
+  ["ktlint"] = Builtins.ktlint
+  ["detekt"] = new Step {
+    dir = "api"
+    glob = List("**/*.kt", "**/*.kts", "config/detekt*")
+    check = "./gradlew detekt --console=plain -q"
+  }
+
+  // frontend, binaries from frontend/node_modules/.bin (mise env _.path)
+  ["frontend"] = new Group {
+    dir = "frontend"
+    steps {
+      ["oxfmt"] = Builtins.oxfmt
+      ["oxlint"] = Builtins.ox_lint
+      ["eslint"] = (Builtins.eslint) { glob = List("**/*.js", "**/*.ts", "**/*.svelte") }
+    }
+  }
+}
+
+// generated files
+exclude = List("api/docs/**", "api/openapi.json", "frontend/src/lib/types/api.d.ts")
+
+steps = linters
+
+hooks {
+  ["pre-commit"] {
+    fix = false
+    stash = "git"
+  }
+  ["commit-msg"] {
+    steps {
+      ["conventional_commit"] = Builtins.check_conventional_commit
+    }
+  }
+}

@@ -1,0 +1,7 @@
+# Defaults: ./gradlew detektGenerateConfig
+style:
+  MaxLineLength:
+    maxLineLength: 140 # match ktlint_official
+naming:
+  InvalidPackageDeclaration:
+    rootPackage: com.ctfp
