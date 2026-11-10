@@ -1,0 +1,77 @@
+[tools]
+java = "temurin-25"
+bun = "1.4"
+hk = "2.11"
+pkl = "0.33"
+"npm:dclint" = "3"
+ktlint = "1.8"
+hadolint = "2.15"
+tombi = "1.9"
+kingfisher = "2.17"
+
+[settings]
+lockfile = true
+
+[env]
+_.path = ["frontend/node_modules/.bin"] # oxfmt/oxlint/eslint for hk
+API_URL = "http://localhost:8080"
+
+[tasks.install]
+description = "Install frontend dependencies"
+dir = "frontend"
+run = "bun install"
+
+[tasks."dev:api"]
+description = "Run the api"
+dir = "api"
+run = "./gradlew run"
+
+[tasks."dev:frontend"]
+description = "Run the frontend dev server"
+dir = "frontend"
+depends = ["install"]
+run = "bun run dev"
+
+[tasks.dev]
+description = "Run api and frontend in parallel"
+depends = ["dev:api", "dev:frontend"]
+
+[tasks."api:openapi"]
+description = "Generate api/openapi.json"
+dir = "api"
+run = "./gradlew generateOpenApi"
+sources = ["src/main/**/*", "build.gradle.kts", "gradle/libs.versions.toml"]
+outputs = ["openapi.json"]
+
+[tasks."gen:api"]
+description = "Regenerate frontend api types from openapi.json"
+dir = "frontend"
+depends = ["api:openapi", "install"]
+run = "bun run gen:api"
+
+[tasks.lint]
+description = "Lint everything"
+depends = ["install"]
+run = [
+  "hk check --all",
+  "bun run --cwd frontend lint",
+  "bun run --cwd frontend check",
+]
+
+[tasks.test]
+description = "Run api and frontend tests"
+depends = ["install"]
+run = ["cd api && ./gradlew test", "bun run --cwd frontend test"]
+
+[tasks.coverage]
+description = "Api test coverage report (api/build/reports/kover/html)"
+dir = "api"
+run = "./gradlew koverHtmlReport koverLog"
+
+[tasks.up]
+description = "Build and start the full stack"
+run = "podman compose up --build"              # compose requires JWT_SECRET
+
+[tasks.hooks]
+description = "Install git hooks"
+run = "hk install --mise"

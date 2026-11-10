@@ -1,16 +1,18 @@
 [versions]
-exposed = "1.6.0"
+exposed = "1.6.1"
 h2 = "2.5.252"
 koin = "4.2.2"
 kotlin = "2.4.21"
 logback = "1.6.6"
 postgresql = "42.7.14"
 flyway = "13.12.1"
-flaxoos = "2.4.0"
+flaxoos = "2.5.0"
 ucasoft = "0.72.1"
 asyncapi = "3.2.4"
 bouncycastle = "1.86"
 kotlinxSerialization = "1.12.0"
+detekt = "2.0.0-alpha.6"
+kover = "0.9.11"
 
 [libraries]
 exposed-core = { module = "org.jetbrains.exposed:exposed-core", version.ref = "exposed" }
@@ -39,3 +41,5 @@ flyway-database-postgresql = { module = "org.flywaydb:flyway-database-postgresql
 kotlin-jvm = { id = "org.jetbrains.kotlin.jvm", version.ref = "kotlin" }
 kotlin-multiplatform = { id = "org.jetbrains.kotlin.multiplatform", version.ref = "kotlin" }
 kotlin-serialization = { id = "org.jetbrains.kotlin.plugin.serialization", version.ref = "kotlin" }
+detekt = { id = "dev.detekt", version.ref = "detekt" }
+kover = { id = "org.jetbrains.kotlinx.kover", version.ref = "kover" }
