@@ -1,5 +1,6 @@
 package com.ctfp.domain.model
 
+import com.ctfp.dto.Limits
 import org.jetbrains.exposed.v1.core.dao.id.IntIdTable
 import org.jetbrains.exposed.v1.datetime.CurrentTimestamp
 import org.jetbrains.exposed.v1.datetime.timestamp
@@ -11,10 +12,10 @@ object FileTable : IntIdTable() {
     val ownerId = integer("owner_id")
 
     /** Original name, only used for display and the download's file name. */
-    val filename = varchar("filename", 255)
+    val filename = varchar("filename", Limits.FILENAME_MAX)
     val storageKey = varchar("storage_key", 64).uniqueIndex()
     val size = long("size")
-    val mimeType = varchar("mime_type", 128).nullable()
+    val mimeType = varchar("mime_type", Limits.MIME_TYPE_MAX).nullable()
     val sha256 = varchar("sha256", 64)
     val createdAt = timestamp("created_at").defaultExpression(CurrentTimestamp)
 

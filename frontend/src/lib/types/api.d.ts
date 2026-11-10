@@ -279,10 +279,7 @@ export interface paths {
       path?: never;
       cookie?: never;
     };
-    /**
-     * Documents the [ErrorResponse]s this route can return. They are sent by StatusPages (and the auth challenge), so
-     *     OpenAPI inference can't see them.
-     */
+    /** Same visibility as the challenge itself. */
     get: {
       parameters: {
         query?: never;
@@ -323,10 +320,7 @@ export interface paths {
       };
     };
     put?: never;
-    /**
-     * Documents the [ErrorResponse]s this route can return. They are sent by StatusPages (and the auth challenge), so
-     *     OpenAPI inference can't see them.
-     */
+    /** multipart/form-data with one `file` part; responds with the stored file's metadata. */
     post: {
       parameters: {
         query?: never;
@@ -408,10 +402,6 @@ export interface paths {
     };
     get?: never;
     put?: never;
-    /**
-     * Documents the [ErrorResponse]s this route can return. They are sent by StatusPages (and the auth challenge), so
-     *     OpenAPI inference can't see them.
-     */
     post: {
       parameters: {
         query?: never;
@@ -477,10 +467,6 @@ export interface paths {
     };
     get?: never;
     put?: never;
-    /**
-     * Documents the [ErrorResponse]s this route can return. They are sent by StatusPages (and the auth challenge), so
-     *     OpenAPI inference can't see them.
-     */
     post: {
       parameters: {
         query?: never;
@@ -535,10 +521,6 @@ export interface paths {
       path?: never;
       cookie?: never;
     };
-    /**
-     * Documents the [ErrorResponse]s this route can return. They are sent by StatusPages (and the auth challenge), so
-     *     OpenAPI inference can't see them.
-     */
     get: {
       parameters: {
         query?: never;
@@ -730,10 +712,6 @@ export interface paths {
       path?: never;
       cookie?: never;
     };
-    /**
-     * Documents the [ErrorResponse]s this route can return. They are sent by StatusPages (and the auth challenge), so
-     *     OpenAPI inference can't see them.
-     */
     get: {
       parameters: {
         query?: never;
@@ -803,10 +781,6 @@ export interface paths {
     get?: never;
     put?: never;
     post?: never;
-    /**
-     * Documents the [ErrorResponse]s this route can return. They are sent by StatusPages (and the auth challenge), so
-     *     OpenAPI inference can't see them.
-     */
     delete: {
       parameters: {
         query?: never;
@@ -874,10 +848,6 @@ export interface paths {
       path?: never;
       cookie?: never;
     };
-    /**
-     * Documents the [ErrorResponse]s this route can return. They are sent by StatusPages (and the auth challenge), so
-     *     OpenAPI inference can't see them.
-     */
     get: {
       parameters: {
         query?: never;
@@ -936,10 +906,6 @@ export interface paths {
       };
     };
     put?: never;
-    /**
-     * Documents the [ErrorResponse]s this route can return. They are sent by StatusPages (and the auth challenge), so
-     *     OpenAPI inference can't see them.
-     */
     post: {
       parameters: {
         query?: never;
@@ -1024,10 +990,6 @@ export interface paths {
       cookie?: never;
     };
     get?: never;
-    /**
-     * Documents the [ErrorResponse]s this route can return. They are sent by StatusPages (and the auth challenge), so
-     *     OpenAPI inference can't see them.
-     */
     put: {
       parameters: {
         query?: never;
@@ -1097,10 +1059,6 @@ export interface paths {
       };
     };
     post?: never;
-    /**
-     * Documents the [ErrorResponse]s this route can return. They are sent by StatusPages (and the auth challenge), so
-     *     OpenAPI inference can't see them.
-     */
     delete: {
       parameters: {
         query?: never;
@@ -1797,10 +1755,6 @@ export interface paths {
       cookie?: never;
     };
     get?: never;
-    /**
-     * Documents the [ErrorResponse]s this route can return. They are sent by StatusPages (and the auth challenge), so
-     *     OpenAPI inference can't see them.
-     */
     put: {
       parameters: {
         query?: never;
@@ -1867,10 +1821,7 @@ export interface paths {
     };
     get?: never;
     put?: never;
-    /**
-     * Documents the [ErrorResponse]s this route can return. They are sent by StatusPages (and the auth challenge), so
-     *     OpenAPI inference can't see them.
-     */
+    /** Answers whether the guess was right; 403 when banned or out of attempts. */
     post: {
       parameters: {
         query?: never;
@@ -1945,10 +1896,7 @@ export interface paths {
       path?: never;
       cookie?: never;
     };
-    /**
-     * Documents the [ErrorResponse]s this route can return. They are sent by StatusPages (and the auth challenge), so
-     *     OpenAPI inference can't see them.
-     */
+    /** Ids of the challenges the caller has solved, e.g. to mark them in the list. */
     get: {
       parameters: {
         query?: never;
@@ -2295,10 +2243,6 @@ export interface paths {
       path?: never;
       cookie?: never;
     };
-    /**
-     * Documents the [ErrorResponse]s this route can return. They are sent by StatusPages (and the auth challenge), so
-     *     OpenAPI inference can't see them.
-     */
     get: {
       parameters: {
         query?: never;
@@ -2342,10 +2286,6 @@ export interface paths {
       path?: never;
       cookie?: never;
     };
-    /**
-     * Documents the [ErrorResponse]s this route can return. They are sent by StatusPages (and the auth challenge), so
-     *     OpenAPI inference can't see them.
-     */
     get: {
       parameters: {
         query?: never;
@@ -2383,10 +2323,6 @@ export interface paths {
         };
       };
     };
-    /**
-     * Documents the [ErrorResponse]s this route can return. They are sent by StatusPages (and the auth challenge), so
-     *     OpenAPI inference can't see them.
-     */
     put: {
       parameters: {
         query?: never;
@@ -2458,10 +2394,6 @@ export interface paths {
       path?: never;
       cookie?: never;
     };
-    /**
-     * Documents the [ErrorResponse]s this route can return. They are sent by StatusPages (and the auth challenge), so
-     *     OpenAPI inference can't see them.
-     */
     get: {
       parameters: {
         query?: never;
@@ -2585,10 +2517,6 @@ export interface paths {
       path?: never;
       cookie?: never;
     };
-    /**
-     * Documents the [ErrorResponse]s this route can return. They are sent by StatusPages (and the auth challenge), so
-     *     OpenAPI inference can't see them.
-     */
     get: {
       parameters: {
         query?: never;
@@ -2626,10 +2554,6 @@ export interface paths {
         };
       };
     };
-    /**
-     * Documents the [ErrorResponse]s this route can return. They are sent by StatusPages (and the auth challenge), so
-     *     OpenAPI inference can't see them.
-     */
     put: {
       parameters: {
         query?: never;
@@ -2698,10 +2622,6 @@ export interface paths {
         };
       };
     };
-    /**
-     * Documents the [ErrorResponse]s this route can return. They are sent by StatusPages (and the auth challenge), so
-     *     OpenAPI inference can't see them.
-     */
     post: {
       parameters: {
         query?: never;
@@ -2781,10 +2701,6 @@ export interface paths {
       path?: never;
       cookie?: never;
     };
-    /**
-     * Documents the [ErrorResponse]s this route can return. They are sent by StatusPages (and the auth challenge), so
-     *     OpenAPI inference can't see them.
-     */
     get: {
       parameters: {
         query?: never;
@@ -2842,10 +2758,6 @@ export interface paths {
         };
       };
     };
-    /**
-     * Documents the [ErrorResponse]s this route can return. They are sent by StatusPages (and the auth challenge), so
-     *     OpenAPI inference can't see them.
-     */
     put: {
       parameters: {
         query?: never;
@@ -2915,10 +2827,6 @@ export interface paths {
       };
     };
     post?: never;
-    /**
-     * Documents the [ErrorResponse]s this route can return. They are sent by StatusPages (and the auth challenge), so
-     *     OpenAPI inference can't see them.
-     */
     delete: {
       parameters: {
         query?: never;
@@ -3111,6 +3019,7 @@ export interface components {
       /** @description Regular expression (Java syntax) a whole submission must match. */
       pattern: string;
       isCaseSensitive?: boolean;
+      /** @description Points before any decay */
       baseValue: number;
       /** @description How fast the value drops with solves; required unless decayFun is static. */
       decayValue?: number | null;
@@ -3249,7 +3158,7 @@ export interface components {
     TeamRequest: {
       name: string;
       ownerId: number;
-      /** @description ISO 3166-1 alpha-2 code, e.g. HU. */
+      /** @description ISO 3166-1 alpha-2 code, e.g.: HU */
       country?: string | null;
       website?: string | null;
       isHidden?: boolean;
@@ -3292,7 +3201,7 @@ export interface components {
       /** Format: email */
       email: string;
       language?: string | null;
-      /** @description ISO 3166-1 alpha-2 code, e.g. HU. */
+      /** @description ISO 3166-1 alpha-2 code, e.g.: HU */
       country?: string | null;
       website?: string | null;
       soundEnabled?: boolean;

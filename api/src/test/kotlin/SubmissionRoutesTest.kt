@@ -1,6 +1,10 @@
 package com.ctfp
 
+import com.ctfp.domain.dao.UserDAO
+import com.ctfp.domain.db.withTransaction
+import com.ctfp.domain.model.UserTable
 import com.ctfp.dto.ChallengeResponse
+import com.ctfp.dto.Limits
 import com.ctfp.dto.SubmissionResult
 import io.ktor.client.request.bearerAuth
 import io.ktor.client.request.get
@@ -14,6 +18,7 @@ import io.ktor.http.contentType
 import io.ktor.server.testing.ApplicationTestBuilder
 import io.ktor.server.testing.testApplication
 import kotlinx.serialization.json.Json
+import org.jetbrains.exposed.v1.core.eq
 import kotlin.test.Test
 import kotlin.test.assertEquals
 
@@ -102,5 +107,21 @@ class SubmissionRoutesTest {
             assertEquals(HttpStatusCode.NotFound, submit(id, player, "x").status)
             // Admins can try their own hidden challenges.
             assertEquals(SubmissionResult(correct = true), submit(id, admin, "x").result())
+        }
+
+    @Test
+    fun `blank, too long and banned submissions are rejected`() =
+        testApplication {
+            configure()
+            startApplication()
+            val admin = registerAdmin("reject-admin")
+            val player = register("reject-player")
+            val id = challengeWithFlag(admin, "rejecting", """{"pattern":"flag","baseValue":100,"isCaseSensitive":false}""")
+
+            assertEquals(HttpStatusCode.BadRequest, submit(id, player, "   ").status)
+            assertEquals(HttpStatusCode.BadRequest, submit(id, player, "x".repeat(Limits.SUBMITTED_FLAG_MAX + 1)).status)
+
+            withTransaction { UserDAO.find { UserTable.username eq "reject-player" }.single().isBanned = true }
+            assertEquals(HttpStatusCode.Forbidden, submit(id, player, "flag").status)
         }
 }

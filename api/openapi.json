@@ -260,7 +260,7 @@
         },
         "/v1/challenges/{id}/files": {
             "post": {
-                "summary": "Documents the [ErrorResponse]s this route can return. They are sent by StatusPages (and the auth challenge), so\nOpenAPI inference can't see them.",
+                "summary": "multipart/form-data with one `file` part; responds with the stored file's metadata.",
                 "parameters": [
                     {
                         "name": "id",
@@ -340,7 +340,7 @@
                 ]
             },
             "get": {
-                "summary": "Documents the [ErrorResponse]s this route can return. They are sent by StatusPages (and the auth challenge), so\nOpenAPI inference can't see them.",
+                "summary": "Same visibility as the challenge itself.",
                 "parameters": [
                     {
                         "name": "id",
@@ -396,7 +396,7 @@
         },
         "/v1/auth/login": {
             "post": {
-                "summary": "Documents the [ErrorResponse]s this route can return. They are sent by StatusPages (and the auth challenge), so\nOpenAPI inference can't see them.",
+                "summary": "",
                 "requestBody": {
                     "content": {
                         "application/json": {
@@ -452,7 +452,7 @@
         },
         "/v1/auth/register": {
             "post": {
-                "summary": "Documents the [ErrorResponse]s this route can return. They are sent by StatusPages (and the auth challenge), so\nOpenAPI inference can't see them.",
+                "summary": "",
                 "requestBody": {
                     "content": {
                         "application/json": {
@@ -498,7 +498,7 @@
         },
         "/v1/auth/me": {
             "get": {
-                "summary": "Documents the [ErrorResponse]s this route can return. They are sent by StatusPages (and the auth challenge), so\nOpenAPI inference can't see them.",
+                "summary": "",
                 "responses": {
                     "200": {
                         "description": "",
@@ -641,7 +641,7 @@
         },
         "/v1/files/{id}/download": {
             "get": {
-                "summary": "Documents the [ErrorResponse]s this route can return. They are sent by StatusPages (and the auth challenge), so\nOpenAPI inference can't see them.",
+                "summary": "",
                 "parameters": [
                     {
                         "name": "id",
@@ -717,7 +717,7 @@
         },
         "/v1/files/{id}": {
             "delete": {
-                "summary": "Documents the [ErrorResponse]s this route can return. They are sent by StatusPages (and the auth challenge), so\nOpenAPI inference can't see them.",
+                "summary": "",
                 "parameters": [
                     {
                         "name": "id",
@@ -782,7 +782,7 @@
         },
         "/v1/challenges/{id}/flags": {
             "post": {
-                "summary": "Documents the [ErrorResponse]s this route can return. They are sent by StatusPages (and the auth challenge), so\nOpenAPI inference can't see them.",
+                "summary": "",
                 "parameters": [
                     {
                         "name": "id",
@@ -871,7 +871,7 @@
                 ]
             },
             "get": {
-                "summary": "Documents the [ErrorResponse]s this route can return. They are sent by StatusPages (and the auth challenge), so\nOpenAPI inference can't see them.",
+                "summary": "",
                 "parameters": [
                     {
                         "name": "id",
@@ -946,7 +946,7 @@
         },
         "/v1/flags/{id}": {
             "put": {
-                "summary": "Documents the [ErrorResponse]s this route can return. They are sent by StatusPages (and the auth challenge), so\nOpenAPI inference can't see them.",
+                "summary": "",
                 "parameters": [
                     {
                         "name": "id",
@@ -1028,7 +1028,7 @@
                 ]
             },
             "delete": {
-                "summary": "Documents the [ErrorResponse]s this route can return. They are sent by StatusPages (and the auth challenge), so\nOpenAPI inference can't see them.",
+                "summary": "",
                 "parameters": [
                     {
                         "name": "id",
@@ -1563,7 +1563,7 @@
         },
         "/v1/admin/settings": {
             "put": {
-                "summary": "Documents the [ErrorResponse]s this route can return. They are sent by StatusPages (and the auth challenge), so\nOpenAPI inference can't see them.",
+                "summary": "",
                 "requestBody": {
                     "content": {
                         "application/json": {
@@ -1624,7 +1624,7 @@
         },
         "/v1/challenges/{id}/submissions": {
             "post": {
-                "summary": "Documents the [ErrorResponse]s this route can return. They are sent by StatusPages (and the auth challenge), so\nOpenAPI inference can't see them.",
+                "summary": "Answers whether the guess was right; 403 when banned or out of attempts.",
                 "parameters": [
                     {
                         "name": "id",
@@ -1705,7 +1705,7 @@
         },
         "/v1/users/me/solves": {
             "get": {
-                "summary": "Documents the [ErrorResponse]s this route can return. They are sent by StatusPages (and the auth challenge), so\nOpenAPI inference can't see them.",
+                "summary": "Ids of the challenges the caller has solved, e.g. to mark them in the list.",
                 "responses": {
                     "200": {
                         "description": "",
@@ -1979,7 +1979,7 @@
         },
         "/v1/users": {
             "get": {
-                "summary": "Documents the [ErrorResponse]s this route can return. They are sent by StatusPages (and the auth challenge), so\nOpenAPI inference can't see them.",
+                "summary": "",
                 "responses": {
                     "200": {
                         "description": "",
@@ -2014,7 +2014,7 @@
         },
         "/v1/users/me": {
             "put": {
-                "summary": "Documents the [ErrorResponse]s this route can return. They are sent by StatusPages (and the auth challenge), so\nOpenAPI inference can't see them.",
+                "summary": "",
                 "requestBody": {
                     "content": {
                         "application/json": {
@@ -2076,7 +2076,7 @@
                 ]
             },
             "get": {
-                "summary": "Documents the [ErrorResponse]s this route can return. They are sent by StatusPages (and the auth challenge), so\nOpenAPI inference can't see them.",
+                "summary": "",
                 "responses": {
                     "200": {
                         "description": "",
@@ -2118,7 +2118,7 @@
         },
         "/v1/users/{id}": {
             "get": {
-                "summary": "Documents the [ErrorResponse]s this route can return. They are sent by StatusPages (and the auth challenge), so\nOpenAPI inference can't see them.",
+                "summary": "",
                 "parameters": [
                     {
                         "name": "id",
@@ -2254,7 +2254,7 @@
         },
         "/v1/admin/users": {
             "put": {
-                "summary": "Documents the [ErrorResponse]s this route can return. They are sent by StatusPages (and the auth challenge), so\nOpenAPI inference can't see them.",
+                "summary": "",
                 "requestBody": {
                     "content": {
                         "application/json": {
@@ -2329,7 +2329,7 @@
                 ]
             },
             "post": {
-                "summary": "Documents the [ErrorResponse]s this route can return. They are sent by StatusPages (and the auth challenge), so\nOpenAPI inference can't see them.",
+                "summary": "",
                 "requestBody": {
                     "content": {
                         "application/json": {
@@ -2399,7 +2399,7 @@
                 ]
             },
             "get": {
-                "summary": "Documents the [ErrorResponse]s this route can return. They are sent by StatusPages (and the auth challenge), so\nOpenAPI inference can't see them.",
+                "summary": "",
                 "responses": {
                     "200": {
                         "description": "",
@@ -2444,7 +2444,7 @@
         },
         "/v1/admin/users/{id}": {
             "put": {
-                "summary": "Documents the [ErrorResponse]s this route can return. They are sent by StatusPages (and the auth challenge), so\nOpenAPI inference can't see them.",
+                "summary": "",
                 "parameters": [
                     {
                         "name": "id",
@@ -2526,7 +2526,7 @@
                 ]
             },
             "delete": {
-                "summary": "Documents the [ErrorResponse]s this route can return. They are sent by StatusPages (and the auth challenge), so\nOpenAPI inference can't see them.",
+                "summary": "",
                 "parameters": [
                     {
                         "name": "id",
@@ -2589,7 +2589,7 @@
                 ]
             },
             "get": {
-                "summary": "Documents the [ErrorResponse]s this route can return. They are sent by StatusPages (and the auth challenge), so\nOpenAPI inference can't see them.",
+                "summary": "",
                 "parameters": [
                     {
                         "name": "id",

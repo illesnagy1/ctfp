@@ -56,7 +56,7 @@ fun Route.file(service: FileService) {
                                 )
                         }
                     } finally {
-                        part.dispose()
+                        part.release()
                     }
                 }
 

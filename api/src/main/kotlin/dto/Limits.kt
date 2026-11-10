@@ -25,4 +25,6 @@ object Limits {
     const val COUNTRY_LENGTH = 2
     const val USER_LANGUAGE_MAX = 5
     const val PAGE_LANGUAGE_LENGTH = 2
+    const val FILENAME_MAX = 255
+    const val MIME_TYPE_MAX = 128
 }

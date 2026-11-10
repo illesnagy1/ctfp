@@ -6,6 +6,7 @@ import com.ctfp.domain.db.withTransaction
 import com.ctfp.domain.model.FileOwner
 import com.ctfp.domain.model.FileTable
 import com.ctfp.dto.FileResponse
+import com.ctfp.dto.Limits
 import com.ctfp.dto.toDto
 import com.ctfp.storage.FileStorage
 import io.ktor.http.ContentType
@@ -15,9 +16,6 @@ import io.ktor.utils.io.ByteReadChannel
 import org.jetbrains.exposed.v1.core.and
 import org.jetbrains.exposed.v1.core.eq
 import org.slf4j.LoggerFactory
-
-private const val MAX_MIME_TYPE_LENGTH = 128 // FileTable.mimeType column
-private const val MAX_FILENAME_LENGTH = 255 // FileTable.filename column
 
 /** A file ready to stream: its display name and contents. */
 class FileDownload(
@@ -64,7 +62,7 @@ class FileService(
                         this.filename = displayName(filename)
                         storageKey = stored.key
                         size = stored.size
-                        this.mimeType = mimeType?.take(MAX_MIME_TYPE_LENGTH)
+                        this.mimeType = mimeType?.take(Limits.MIME_TYPE_MAX)
                         sha256 = stored.sha256
                     }.toDto()
             }
@@ -117,7 +115,7 @@ class FileService(
                 ?.substringAfterLast('/')
                 ?.substringAfterLast('\\')
                 ?.trim()
-                ?.take(MAX_FILENAME_LENGTH)
+                ?.take(Limits.FILENAME_MAX)
                 ?.ifEmpty { null } ?: "file"
 
         /**

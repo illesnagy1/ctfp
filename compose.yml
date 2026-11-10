@@ -23,7 +23,7 @@ services:
     mem_limit: 1g
 
   db:
-    image: postgres:18-alpine
+    image: docker.io/postgres:18-alpine
     volumes:
       - db-data:/var/lib/postgresql
     environment:
@@ -57,7 +57,7 @@ services:
     restart: unless-stopped
 
   redis:
-    image: redis:8-alpine
+    image: docker.io/redis:8-alpine
     volumes:
       - redis-data:/data
     restart: unless-stopped
