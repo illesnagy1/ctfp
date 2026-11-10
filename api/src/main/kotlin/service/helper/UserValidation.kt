@@ -20,10 +20,11 @@ fun validateEmail(email: String) {
 }
 
 fun validatePassword(password: String) {
-    val error = when {
-        password.length < Limits.PASSWORD_MIN -> "Password must be at least ${Limits.PASSWORD_MIN} characters"
-        password.length > Limits.PASSWORD_MAX -> "Password must be at most ${Limits.PASSWORD_MAX} characters"
-        else -> null
-    }
+    val error =
+        when {
+            password.length < Limits.PASSWORD_MIN -> "Password must be at least ${Limits.PASSWORD_MIN} characters"
+            password.length > Limits.PASSWORD_MAX -> "Password must be at most ${Limits.PASSWORD_MAX} characters"
+            else -> null
+        }
     if (error != null) throw ApiException(HttpStatusCode.BadRequest, error)
 }

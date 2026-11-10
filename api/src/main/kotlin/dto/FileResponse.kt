@@ -16,11 +16,12 @@ data class FileResponse(
     val createdAt: Instant,
 )
 
-fun FileDAO.toDto() = FileResponse(
-    id = id.value,
-    filename = filename,
-    size = size,
-    mimeType = mimeType,
-    sha256 = sha256,
-    createdAt = createdAt,
-)
+fun FileDAO.toDto() =
+    FileResponse(
+        id = id.value,
+        filename = filename,
+        size = size,
+        mimeType = mimeType,
+        sha256 = sha256,
+        createdAt = createdAt,
+    )

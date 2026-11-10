@@ -1,10 +1,10 @@
 package com.ctfp.dto
 
-import io.ktor.openapi.JsonSchema
 import com.ctfp.domain.dao.PasswordResetTokenDAO
 import com.ctfp.domain.dao.UserDAO
-import kotlin.time.Instant
+import io.ktor.openapi.JsonSchema
 import kotlinx.serialization.Serializable
+import kotlin.time.Instant
 
 @Serializable
 data class PasswordResetTokenRequest(
@@ -12,7 +12,7 @@ data class PasswordResetTokenRequest(
     @JsonSchema.MinLength(1)
     @JsonSchema.MaxLength(Limits.SHORT_TEXT_MAX)
     val token: String,
-    val expiresAt: Instant
+    val expiresAt: Instant,
 )
 
 @Serializable
@@ -22,7 +22,7 @@ data class PasswordResetTokenResponse(
     val token: String,
     val createdAt: Instant,
     val expiresAt: Instant,
-    val usedAt: Instant?
+    val usedAt: Instant?,
 )
 
 fun PasswordResetTokenDAO.apply(dto: PasswordResetTokenRequest) {
@@ -31,11 +31,12 @@ fun PasswordResetTokenDAO.apply(dto: PasswordResetTokenRequest) {
     expiresAt = dto.expiresAt
 }
 
-fun PasswordResetTokenDAO.toDto() = PasswordResetTokenResponse(
-    id = id.value,
-    userId = user.id.value,
-    token = token,
-    createdAt = createdAt,
-    expiresAt = expiresAt,
-    usedAt = usedAt
-)
+fun PasswordResetTokenDAO.toDto() =
+    PasswordResetTokenResponse(
+        id = id.value,
+        userId = user.id.value,
+        token = token,
+        createdAt = createdAt,
+        expiresAt = expiresAt,
+        usedAt = usedAt,
+    )

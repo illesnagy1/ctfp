@@ -47,12 +47,13 @@ fun Route.file(service: FileService) {
                 call.receiveMultipart(formFieldLimit = service.maxBytes + 1).forEachPart { part ->
                     try {
                         if (part is PartData.FileItem && part.name == "file" && uploaded == null) {
-                            uploaded = service.uploadChallengeFile(
-                                challengeId,
-                                part.originalFileName,
-                                part.contentType?.toString(),
-                                part.provider(),
-                            )
+                            uploaded =
+                                service.uploadChallengeFile(
+                                    challengeId,
+                                    part.originalFileName,
+                                    part.contentType?.toString(),
+                                    part.provider(),
+                                )
                         }
                     } finally {
                         part.dispose()
@@ -98,5 +99,4 @@ fun Route.file(service: FileService) {
 }
 
 /** Header values must be ASCII; the original name stays in the file's metadata. */
-private fun asciiFilename(filename: String) =
-    filename.map { if (it in ' '..'~' && it != '"' && it != '\\') it else '_' }.joinToString("")
+private fun asciiFilename(filename: String) = filename.map { if (it in ' '..'~' && it != '"' && it != '\\') it else '_' }.joinToString("")

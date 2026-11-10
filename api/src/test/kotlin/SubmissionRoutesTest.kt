@@ -18,7 +18,11 @@ import kotlin.test.Test
 import kotlin.test.assertEquals
 
 class SubmissionRoutesTest {
-    private suspend fun ApplicationTestBuilder.post(path: String, token: String?, body: String) = client.post(path) {
+    private suspend fun ApplicationTestBuilder.post(
+        path: String,
+        token: String?,
+        body: String,
+    ) = client.post(path) {
         token?.let { bearerAuth(it) }
         contentType(ContentType.Application.Json)
         setBody(body)
@@ -33,8 +37,10 @@ class SubmissionRoutesTest {
         isVisible: Boolean = true,
     ): Int {
         post(
-            "/v1/challenges", admin,
-            """{"title":"$title","description":null,"isVisible":$isVisible,"publishAt":"2026-01-01T00:00:00Z","maxAttempts":$maxAttempts,"categories":[],"timeLimit":0}""",
+            "/v1/challenges",
+            admin,
+            """{"title":"$title","description":null,"isVisible":$isVisible,""" +
+                """"publishAt":"2026-01-01T00:00:00Z","maxAttempts":$maxAttempts,"categories":[],"timeLimit":0}""",
         )
         val all = client.get("/v1/challenges") { bearerAuth(admin) }.bodyAsText()
         val id = Json.decodeFromString<List<ChallengeResponse>>(all).single { it.title == title }.id
@@ -42,53 +48,59 @@ class SubmissionRoutesTest {
         return id
     }
 
-    private suspend fun ApplicationTestBuilder.submit(challengeId: Int, token: String?, flag: String) =
-        post("/v1/challenges/$challengeId/submissions", token, """{"flag":"$flag"}""")
+    private suspend fun ApplicationTestBuilder.submit(
+        challengeId: Int,
+        token: String?,
+        flag: String,
+    ) = post("/v1/challenges/$challengeId/submissions", token, """{"flag":"$flag"}""")
 
     private suspend fun HttpResponse.result() = Json.decodeFromString<SubmissionResult>(bodyAsText())
 
     @Test
-    fun `players solve challenges with the right flag`() = testApplication {
-        configure()
-        startApplication()
-        val admin = registerAdmin("submit-admin")
-        val player = register("submit-player")
-        val id = challengeWithFlag(admin, "solvable", """{"pattern":"flag\\{right\\}","baseValue":100,"isCaseSensitive":false}""")
+    fun `players solve challenges with the right flag`() =
+        testApplication {
+            configure()
+            startApplication()
+            val admin = registerAdmin("submit-admin")
+            val player = register("submit-player")
+            val id = challengeWithFlag(admin, "solvable", """{"pattern":"flag\\{right\\}","baseValue":100,"isCaseSensitive":false}""")
 
-        assertEquals(HttpStatusCode.Unauthorized, submit(id, null, "flag{right}").status)
-        assertEquals(SubmissionResult(correct = false), submit(id, player, "flag{wrong}").result())
-        // Trimmed, and this flag ignores case.
-        assertEquals(SubmissionResult(correct = true), submit(id, player, "  FLAG{Right} ").result())
-        assertEquals(SubmissionResult(correct = true, alreadySolved = true), submit(id, player, "anything").result())
-        assertEquals("[$id]", client.get("/v1/users/me/solves") { bearerAuth(player) }.bodyAsText())
-        assertEquals("[]", client.get("/v1/users/me/solves") { bearerAuth(admin) }.bodyAsText())
-    }
-
-    @Test
-    fun `wrong guesses are limited by max attempts`() = testApplication {
-        configure()
-        startApplication()
-        val admin = registerAdmin("attempts-admin")
-        val player = register("attempts-player")
-        val id = challengeWithFlag(admin, "limited", """{"pattern":"secret","baseValue":10}""", maxAttempts = 2)
-
-        assertEquals(SubmissionResult(correct = false, attemptsLeft = 1), submit(id, player, "nope").result())
-        assertEquals(SubmissionResult(correct = false, attemptsLeft = 0), submit(id, player, "nope").result())
-        val blocked = submit(id, player, "secret")
-        assertEquals(HttpStatusCode.Forbidden, blocked.status)
-        assertEquals("""{"message":"No attempts left"}""", blocked.bodyAsText())
-    }
+            assertEquals(HttpStatusCode.Unauthorized, submit(id, null, "flag{right}").status)
+            assertEquals(SubmissionResult(correct = false), submit(id, player, "flag{wrong}").result())
+            // Trimmed, and this flag ignores case.
+            assertEquals(SubmissionResult(correct = true), submit(id, player, "  FLAG{Right} ").result())
+            assertEquals(SubmissionResult(correct = true, alreadySolved = true), submit(id, player, "anything").result())
+            assertEquals("[$id]", client.get("/v1/users/me/solves") { bearerAuth(player) }.bodyAsText())
+            assertEquals("[]", client.get("/v1/users/me/solves") { bearerAuth(admin) }.bodyAsText())
+        }
 
     @Test
-    fun `hidden challenges can't be solved by players`() = testApplication {
-        configure()
-        startApplication()
-        val admin = registerAdmin("hidden-submit-admin")
-        val player = register("hidden-submit-player")
-        val id = challengeWithFlag(admin, "hidden-solvable", """{"pattern":"x","baseValue":1}""", isVisible = false)
+    fun `wrong guesses are limited by max attempts`() =
+        testApplication {
+            configure()
+            startApplication()
+            val admin = registerAdmin("attempts-admin")
+            val player = register("attempts-player")
+            val id = challengeWithFlag(admin, "limited", """{"pattern":"secret","baseValue":10}""", maxAttempts = 2)
 
-        assertEquals(HttpStatusCode.NotFound, submit(id, player, "x").status)
-        // Admins can try their own hidden challenges.
-        assertEquals(SubmissionResult(correct = true), submit(id, admin, "x").result())
-    }
+            assertEquals(SubmissionResult(correct = false, attemptsLeft = 1), submit(id, player, "nope").result())
+            assertEquals(SubmissionResult(correct = false, attemptsLeft = 0), submit(id, player, "nope").result())
+            val blocked = submit(id, player, "secret")
+            assertEquals(HttpStatusCode.Forbidden, blocked.status)
+            assertEquals("""{"message":"No attempts left"}""", blocked.bodyAsText())
+        }
+
+    @Test
+    fun `hidden challenges can't be solved by players`() =
+        testApplication {
+            configure()
+            startApplication()
+            val admin = registerAdmin("hidden-submit-admin")
+            val player = register("hidden-submit-player")
+            val id = challengeWithFlag(admin, "hidden-solvable", """{"pattern":"x","baseValue":1}""", isVisible = false)
+
+            assertEquals(HttpStatusCode.NotFound, submit(id, player, "x").status)
+            // Admins can try their own hidden challenges.
+            assertEquals(SubmissionResult(correct = true), submit(id, admin, "x").result())
+        }
 }

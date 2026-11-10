@@ -2,11 +2,17 @@ package com.ctfp.plugins
 
 import com.ctfp.dto.ErrorResponse
 import com.ctfp.service.ApiException
-import io.ktor.http.*
-import io.ktor.server.application.*
+import io.ktor.http.HttpStatusCode
+import io.ktor.server.application.Application
+import io.ktor.server.application.ApplicationCall
+import io.ktor.server.application.application
+import io.ktor.server.application.call
+import io.ktor.server.application.install
+import io.ktor.server.application.log
 import io.ktor.server.plugins.BadRequestException
-import io.ktor.server.plugins.statuspages.*
-import io.ktor.server.response.*
+import io.ktor.server.plugins.statuspages.StatusPages
+import io.ktor.server.plugins.statuspages.exception
+import io.ktor.server.response.respond
 import org.jetbrains.exposed.v1.dao.exceptions.EntityNotFoundException
 import java.sql.SQLException
 

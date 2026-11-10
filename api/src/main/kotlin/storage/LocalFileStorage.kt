@@ -17,42 +17,51 @@ import java.security.MessageDigest
 import java.util.UUID
 
 /** Stores uploads as files named by random UUIDs in [dir]; original names never reach the file system. */
-class LocalFileStorage(private val dir: Path) : FileStorage {
-    override suspend fun save(content: ByteReadChannel, maxBytes: Long): StoredFile = withContext(Dispatchers.IO) {
-        Files.createDirectories(dir)
-        val key = UUID.randomUUID().toString()
-        // Written under a temporary name, so a half-written upload is never served.
-        val temp = dir.resolve("$key.part")
-        val digest = MessageDigest.getInstance("SHA-256")
-        var size = 0L
+class LocalFileStorage(
+    private val dir: Path,
+) : FileStorage {
+    @Suppress("TooGenericExceptionCaught") // cleans up on any failure, then rethrows
+    override suspend fun save(
+        content: ByteReadChannel,
+        maxBytes: Long,
+    ): StoredFile =
+        withContext(Dispatchers.IO) {
+            Files.createDirectories(dir)
+            val key = UUID.randomUUID().toString()
+            // Written under a temporary name, so a half-written upload is never served.
+            val temp = dir.resolve("$key.part")
+            val digest = MessageDigest.getInstance("SHA-256")
+            var size = 0L
 
-        try {
-            content.toInputStream().use { input ->
-                Files.newOutputStream(temp, StandardOpenOption.CREATE_NEW).use { output ->
-                    val buffer = ByteArray(64 * 1024)
-                    while (true) {
-                        val read = input.read(buffer)
-                        if (read == -1) break
-                        size += read
-                        if (size > maxBytes) {
-                            throw ApiException(HttpStatusCode.PayloadTooLarge, "File is larger than $maxBytes bytes")
+            try {
+                content.toInputStream().use { input ->
+                    Files.newOutputStream(temp, StandardOpenOption.CREATE_NEW).use { output ->
+                        val buffer = ByteArray(64 * 1024)
+                        while (true) {
+                            val read = input.read(buffer)
+                            if (read == -1) break
+                            size += read
+                            if (size > maxBytes) {
+                                throw ApiException(HttpStatusCode.PayloadTooLarge, "File is larger than $maxBytes bytes")
+                            }
+                            digest.update(buffer, 0, read)
+                            output.write(buffer, 0, read)
                         }
-                        digest.update(buffer, 0, read)
-                        output.write(buffer, 0, read)
                     }
                 }
+                Files.move(temp, path(key), StandardCopyOption.ATOMIC_MOVE)
+            } catch (e: Throwable) {
+                Files.deleteIfExists(temp)
+                throw e
             }
-            Files.move(temp, path(key), StandardCopyOption.ATOMIC_MOVE)
-        } catch (e: Throwable) {
-            Files.deleteIfExists(temp)
-            throw e
+
+            StoredFile(key, size, digest.digest().joinToString("") { "%02x".format(it) })
         }
 
-        StoredFile(key, size, digest.digest().joinToString("") { "%02x".format(it) })
-    }
-
-    override fun content(key: String, contentType: ContentType): OutgoingContent =
-        LocalPathContent(path(key), contentType)
+    override fun content(
+        key: String,
+        contentType: ContentType,
+    ): OutgoingContent = LocalPathContent(path(key), contentType)
 
     override suspend fun delete(key: String) {
         withContext(Dispatchers.IO) { Files.deleteIfExists(path(key)) }

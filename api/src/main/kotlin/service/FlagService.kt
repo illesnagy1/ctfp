@@ -6,8 +6,8 @@ import com.ctfp.domain.db.withTransaction
 import com.ctfp.domain.model.FlagTable
 import com.ctfp.dto.DecayFunction
 import com.ctfp.dto.FlagRequest
-import com.ctfp.dto.Limits
 import com.ctfp.dto.FlagResponse
+import com.ctfp.dto.Limits
 import com.ctfp.dto.apply
 import com.ctfp.dto.toDto
 import io.ktor.http.HttpStatusCode
@@ -16,38 +16,46 @@ import java.util.regex.PatternSyntaxException
 
 /** Flags are the answers, so every method here is for admins only (see the routes). */
 class FlagService {
-    suspend fun getForChallenge(challengeId: Int): List<FlagResponse> = withTransaction {
-        findChallenge(challengeId)
-        FlagDAO.find { FlagTable.challengeId eq challengeId }
-            .sortedWith(compareBy({ it.sortOrder }, { it.id.value }))
-            .map { it.toDto() }
-    }
+    suspend fun getForChallenge(challengeId: Int): List<FlagResponse> =
+        withTransaction {
+            findChallenge(challengeId)
+            FlagDAO
+                .find { FlagTable.challengeId eq challengeId }
+                .sortedWith(compareBy({ it.sortOrder }, { it.id.value }))
+                .map { it.toDto() }
+        }
 
-    suspend fun create(challengeId: Int, flag: FlagRequest): FlagResponse {
+    suspend fun create(
+        challengeId: Int,
+        flag: FlagRequest,
+    ): FlagResponse {
         validate(flag)
         return withTransaction {
             val owner = findChallenge(challengeId)
-            FlagDAO.new {
-                challenge = owner
-                apply(flag)
-            }.toDto()
+            FlagDAO
+                .new {
+                    challenge = owner
+                    apply(flag)
+                }.toDto()
         }
     }
 
-    suspend fun update(id: Int, flag: FlagRequest) {
+    suspend fun update(
+        id: Int,
+        flag: FlagRequest,
+    ) {
         validate(flag)
         withTransaction { findFlag(id).apply(flag) }
     }
 
-    suspend fun delete(id: Int) = withTransaction {
-        findFlag(id).delete()
-    }
+    suspend fun delete(id: Int) =
+        withTransaction {
+            findFlag(id).delete()
+        }
 
-    private fun findChallenge(id: Int) =
-        ChallengeDAO.findById(id) ?: throw ApiException(HttpStatusCode.NotFound, "Challenge $id not found")
+    private fun findChallenge(id: Int) = ChallengeDAO.findById(id) ?: throw ApiException(HttpStatusCode.NotFound, "Challenge $id not found")
 
-    private fun findFlag(id: Int) =
-        FlagDAO.findById(id) ?: throw ApiException(HttpStatusCode.NotFound, "Flag $id not found")
+    private fun findFlag(id: Int) = FlagDAO.findById(id) ?: throw ApiException(HttpStatusCode.NotFound, "Flag $id not found")
 
     private fun validate(flag: FlagRequest) {
         fun invalid(message: String): Nothing = throw ApiException(HttpStatusCode.BadRequest, message)

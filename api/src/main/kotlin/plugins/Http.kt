@@ -3,25 +3,40 @@ package com.ctfp.plugins
 import com.asyncapi.kotlinasyncapi.context.service.AsyncApiExtension
 import com.asyncapi.kotlinasyncapi.ktor.AsyncApiPlugin
 import com.ucasoft.ktor.simpleCache.SimpleCache
-import com.ucasoft.ktor.simpleMemoryCache.*
-import com.ucasoft.ktor.simpleRedisCache.*
-import io.ktor.http.*
-import io.ktor.http.content.*
-import io.ktor.server.application.*
-import io.ktor.server.plugins.cachingheaders.*
-import io.ktor.server.plugins.compression.*
-import io.ktor.server.plugins.conditionalheaders.*
-import io.ktor.server.plugins.cors.routing.*
-import io.ktor.server.plugins.defaultheaders.*
-import io.ktor.server.plugins.forwardedheaders.*
-import io.ktor.server.plugins.hsts.*
-import io.ktor.server.plugins.httpsredirect.*
-import io.ktor.server.plugins.openapi.*
-import io.ktor.server.plugins.partialcontent.*
-import io.ktor.server.plugins.swagger.*
-import io.ktor.server.response.*
-import io.ktor.server.routing.*
+import com.ucasoft.ktor.simpleMemoryCache.memoryCache
+import com.ucasoft.ktor.simpleRedisCache.redisCache
+import io.ktor.http.CacheControl
+import io.ktor.http.ContentType
+import io.ktor.http.content.CachingOptions
+import io.ktor.http.contentType
+import io.ktor.http.path
+import io.ktor.server.application.Application
+import io.ktor.server.application.call
+import io.ktor.server.application.host
+import io.ktor.server.application.install
+import io.ktor.server.application.port
+import io.ktor.server.plugins.cachingheaders.CachingHeaders
+import io.ktor.server.plugins.compression.Compression
+import io.ktor.server.plugins.conditionalheaders.ConditionalHeaders
+import io.ktor.server.plugins.defaultheaders.DefaultHeaders
+import io.ktor.server.plugins.forwardedheaders.ForwardedHeaders
+import io.ktor.server.plugins.forwardedheaders.XForwardedHeaders
+import io.ktor.server.plugins.hsts.HSTS
+import io.ktor.server.plugins.httpsredirect.HttpsRedirect
+import io.ktor.server.plugins.openapi.openAPI
+import io.ktor.server.plugins.partialcontent.PartialContent
+import io.ktor.server.plugins.swagger.swaggerUI
+import io.ktor.server.response.header
+import io.ktor.server.routing.contentType
+import io.ktor.server.routing.header
+import io.ktor.server.routing.host
+import io.ktor.server.routing.options
+import io.ktor.server.routing.path
+import io.ktor.server.routing.port
+import io.ktor.server.routing.routing
 import kotlin.time.Duration.Companion.seconds
+
+private const val MAX_RANGE_COUNT = 10
 
 fun Application.configureHttp() {
     install(CachingHeaders) {
@@ -33,12 +48,13 @@ fun Application.configureHttp() {
         }
     }
     install(AsyncApiPlugin) {
-        extension = AsyncApiExtension.builder {
-            info {
-                title("Sample API")
-                version("1.0.0")
+        extension =
+            AsyncApiExtension.builder {
+                info {
+                    title("Sample API")
+                    version("1.0.0")
+                }
             }
-        }
     }
     install(SimpleCache) {
         memoryCache {
@@ -82,7 +98,7 @@ fun Application.configureHttp() {
     install(PartialContent) {
         // Maximum number of ranges that will be accepted from a HTTP request.
         // If the HTTP request specifies more ranges, they will all be merged into a single range.
-        maxRangeCount = 10
+        maxRangeCount = MAX_RANGE_COUNT
     }
     routing {
         swaggerUI(path = "swagger") {

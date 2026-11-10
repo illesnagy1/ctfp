@@ -15,13 +15,13 @@ import io.ktor.http.HttpStatusCode.Companion.NotFound
 import io.ktor.http.HttpStatusCode.Companion.Unauthorized
 import io.ktor.server.auth.authenticate
 import io.ktor.server.request.receive
+import io.ktor.server.response.respond
 import io.ktor.server.routing.Route
 import io.ktor.server.routing.delete
 import io.ktor.server.routing.get
 import io.ktor.server.routing.post
 import io.ktor.server.routing.put
 import io.ktor.server.routing.route
-import io.ktor.server.response.respond
 
 /** Full user views and management, admins only. */
 fun Route.adminUser(service: UserService) {
@@ -43,7 +43,6 @@ fun Route.adminUser(service: UserService) {
                 call.respond(HttpStatusCode.NoContent)
             }.errors(BadRequest, Unauthorized, Forbidden, NotFound, Conflict)
             delete {
-
             }
 
             route("/{id}") {

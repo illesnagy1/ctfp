@@ -25,7 +25,9 @@ import kotlin.io.path.writeText
  * on the first update. Reads are served from memory, so edits made to the file by hand need a restart.
  */
 @OptIn(ExperimentalSerializationApi::class)
-class SettingsService(private val file: Path) {
+class SettingsService(
+    private val file: Path,
+) {
     private val hocon = Hocon { encodeDefaults = true }
     private val mutex = Mutex()
 
@@ -35,22 +37,29 @@ class SettingsService(private val file: Path) {
 
     fun getSettings(): Settings = current
 
-    suspend fun updateSettings(settings: Settings): Settings = mutex.withLock {
-        validate(settings)
-        withContext(Dispatchers.IO) { write(settings) }
-        current = settings
-        settings
-    }
+    suspend fun updateSettings(settings: Settings): Settings =
+        mutex.withLock {
+            validate(settings)
+            withContext(Dispatchers.IO) { write(settings) }
+            current = settings
+            settings
+        }
 
     private fun load(): Settings =
-        if (file.exists()) hocon.decodeFromConfig(ConfigFactory.parseFile(file.toFile()).resolve())
-        else Settings()
+        if (file.exists()) {
+            hocon.decodeFromConfig(ConfigFactory.parseFile(file.toFile()).resolve())
+        } else {
+            Settings()
+        }
 
     /** Writes to a sibling temp file and moves it into place, so a crash never leaves a half-written file. */
     private fun write(settings: Settings) {
         file.toAbsolutePath().parent?.createDirectories()
-        val rendered = hocon.encodeToConfig(settings).root()
-            .render(ConfigRenderOptions.defaults().setOriginComments(false).setJson(false))
+        val rendered =
+            hocon
+                .encodeToConfig(settings)
+                .root()
+                .render(ConfigRenderOptions.defaults().setOriginComments(false).setJson(false))
         val tmp = file.resolveSibling("${file.name}.tmp")
         tmp.writeText(rendered)
         Files.move(tmp, file, StandardCopyOption.REPLACE_EXISTING, StandardCopyOption.ATOMIC_MOVE)

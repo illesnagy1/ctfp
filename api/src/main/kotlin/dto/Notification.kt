@@ -1,10 +1,10 @@
 package com.ctfp.dto
 
-import io.ktor.openapi.JsonSchema
 import com.ctfp.config.enum.NotificationType
 import com.ctfp.domain.dao.NotificationDAO
-import kotlin.time.Instant
+import io.ktor.openapi.JsonSchema
 import kotlinx.serialization.Serializable
+import kotlin.time.Instant
 
 @Serializable
 data class NotificationRequest(
@@ -15,7 +15,7 @@ data class NotificationRequest(
     val message: String,
     val type: NotificationType,
     val sendEmail: Boolean = false,
-    val pushAt: Instant
+    val pushAt: Instant,
 )
 
 @Serializable
@@ -26,7 +26,7 @@ data class NotificationResponse(
     val type: NotificationType,
     val sendEmail: Boolean = false,
     val pushAt: Instant,
-    val createdAt: Instant
+    val createdAt: Instant,
 )
 
 fun NotificationDAO.apply(dto: NotificationRequest) {
@@ -37,12 +37,13 @@ fun NotificationDAO.apply(dto: NotificationRequest) {
     pushAt = dto.pushAt
 }
 
-fun NotificationDAO.toDto() = NotificationResponse(
-    id = id.value,
-    title = title,
-    message = message,
-    type = type,
-    sendEmail = sendEmail,
-    pushAt = pushAt,
-    createdAt = createdAt
-)
+fun NotificationDAO.toDto() =
+    NotificationResponse(
+        id = id.value,
+        title = title,
+        message = message,
+        type = type,
+        sendEmail = sendEmail,
+        pushAt = pushAt,
+        createdAt = createdAt,
+    )

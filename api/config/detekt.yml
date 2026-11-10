@@ -2,6 +2,8 @@
 style:
   MaxLineLength:
     maxLineLength: 140 # match ktlint_official
+  ThrowsCount:
+    excludeGuardClauses: true # early `throw ApiException` checks are the API's error style
 naming:
   InvalidPackageDeclaration:
     rootPackage: com.ctfp

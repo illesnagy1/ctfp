@@ -5,13 +5,13 @@ import com.ctfp.dto.TeamRequest
 import com.ctfp.service.TeamService
 import io.ktor.http.HttpStatusCode
 import io.ktor.server.request.receive
+import io.ktor.server.response.respond
 import io.ktor.server.routing.Route
 import io.ktor.server.routing.delete
 import io.ktor.server.routing.get
 import io.ktor.server.routing.post
 import io.ktor.server.routing.put
 import io.ktor.server.routing.route
-import io.ktor.server.response.respond
 
 fun Route.team(service: TeamService) {
     route("/teams") {
@@ -25,10 +25,8 @@ fun Route.team(service: TeamService) {
             call.respond(HttpStatusCode.Created)
         }
         put {
-
         }
         delete {
-
         }
         route("/{id}") {
             get {
@@ -53,31 +51,23 @@ fun Route.team(service: TeamService) {
 
             route("/submissions") {
                 get {
-
                 }
                 post {
-
                 }
                 put {
-
                 }
                 delete {
-
                 }
             }
 
             route("users") {
                 get {
-
                 }
                 post {
-
                 }
                 put {
-
                 }
                 delete {
-
                 }
             }
         }

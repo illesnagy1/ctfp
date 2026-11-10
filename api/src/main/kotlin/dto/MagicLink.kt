@@ -1,10 +1,10 @@
 package com.ctfp.dto
 
-import io.ktor.openapi.JsonSchema
 import com.ctfp.domain.dao.MagicLinkDAO
 import com.ctfp.domain.dao.UserDAO
-import kotlin.time.Instant
+import io.ktor.openapi.JsonSchema
 import kotlinx.serialization.Serializable
+import kotlin.time.Instant
 
 @Serializable
 data class MagicLinkRequest(
@@ -12,7 +12,7 @@ data class MagicLinkRequest(
     @JsonSchema.MinLength(1)
     @JsonSchema.MaxLength(Limits.SHORT_TEXT_MAX)
     val token: String,
-    val expiresAt: Instant
+    val expiresAt: Instant,
 )
 
 @Serializable
@@ -22,7 +22,7 @@ data class MagicLinkResponse(
     val token: String,
     val createdAt: Instant,
     val expiresAt: Instant,
-    val usedAt: Instant?
+    val usedAt: Instant?,
 )
 
 fun MagicLinkDAO.apply(dto: MagicLinkRequest) {
@@ -31,11 +31,12 @@ fun MagicLinkDAO.apply(dto: MagicLinkRequest) {
     expiresAt = dto.expiresAt
 }
 
-fun MagicLinkDAO.toDto() = MagicLinkResponse(
-    id = id.value,
-    userId = user.id.value,
-    token = token,
-    createdAt = createdAt,
-    expiresAt = expiresAt,
-    usedAt = usedAt
-)
+fun MagicLinkDAO.toDto() =
+    MagicLinkResponse(
+        id = id.value,
+        userId = user.id.value,
+        token = token,
+        createdAt = createdAt,
+        expiresAt = expiresAt,
+        usedAt = usedAt,
+    )

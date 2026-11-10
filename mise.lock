@@ -233,7 +233,7 @@ url = "https://github.com/adoptium/temurin25-binaries/releases/download/jdk-25.0
 [[tools.kingfisher]]
 version = "2.17.0"
 backend = "github:mongodb/kingfisher"
-specifiers = ["latest"]
+specifiers = ["2.17"]
 
 [tools.kingfisher."platforms.linux-arm64"]
 checksum = "sha256:4118224ccbd4cc4b14997d3962c90bc7160a148bb1011db78e86eb2257665048"

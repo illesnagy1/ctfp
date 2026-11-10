@@ -17,24 +17,34 @@ import kotlin.test.assertEquals
 
 class SettingsRoutesTest {
     @Test
-    fun `settings are public but only admins can update them`() = testApplication {
-        configure()
-        val register = client.post("/v1/auth/register") {
-            contentType(ContentType.Application.Json)
-            setBody("""{"username":"settings-user","email":"settings-user@example.com","password":"correct-horse"}""")
-        }
-        val token = Json.decodeFromString<AuthResponse>(register.bodyAsText()).token
-        val body = """{"ctfName":"Hacked"}"""
+    fun `settings are public but only admins can update them`() =
+        testApplication {
+            configure()
+            val register =
+                client.post("/v1/auth/register") {
+                    contentType(ContentType.Application.Json)
+                    setBody("""{"username":"settings-user","email":"settings-user@example.com","password":"correct-horse"}""")
+                }
+            val token = Json.decodeFromString<AuthResponse>(register.bodyAsText()).token
+            val body = """{"ctfName":"Hacked"}"""
 
-        assertEquals(HttpStatusCode.OK, client.get("/v1/settings").status)
-        assertEquals(HttpStatusCode.Unauthorized, client.put("/v1/admin/settings") {
-            contentType(ContentType.Application.Json)
-            setBody(body)
-        }.status)
-        assertEquals(HttpStatusCode.Forbidden, client.put("/v1/admin/settings") {
-            bearerAuth(token)
-            contentType(ContentType.Application.Json)
-            setBody(body)
-        }.status)
-    }
+            assertEquals(HttpStatusCode.OK, client.get("/v1/settings").status)
+            assertEquals(
+                HttpStatusCode.Unauthorized,
+                client
+                    .put("/v1/admin/settings") {
+                        contentType(ContentType.Application.Json)
+                        setBody(body)
+                    }.status,
+            )
+            assertEquals(
+                HttpStatusCode.Forbidden,
+                client
+                    .put("/v1/admin/settings") {
+                        bearerAuth(token)
+                        contentType(ContentType.Application.Json)
+                        setBody(body)
+                    }.status,
+            )
+        }
 }

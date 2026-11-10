@@ -1,16 +1,18 @@
 package com.ctfp.domain.dao
 
-import com.ctfp.domain.model.UserTable
-import com.ctfp.domain.model.TeamTable
-import com.ctfp.domain.model.TeamMemberTable
-import com.ctfp.domain.model.PasswordResetTokenTable
 import com.ctfp.domain.model.MagicLinkTable
+import com.ctfp.domain.model.PasswordResetTokenTable
 import com.ctfp.domain.model.SubmissionTable
+import com.ctfp.domain.model.TeamMemberTable
+import com.ctfp.domain.model.TeamTable
+import com.ctfp.domain.model.UserTable
 import org.jetbrains.exposed.v1.core.dao.id.EntityID
 import org.jetbrains.exposed.v1.dao.IntEntity
 import org.jetbrains.exposed.v1.dao.IntEntityClass
 
-class UserDAO(id: EntityID<Int>) : IntEntity(id) {
+class UserDAO(
+    id: EntityID<Int>,
+) : IntEntity(id) {
     companion object : IntEntityClass<UserDAO>(UserTable)
 
     var username by UserTable.username

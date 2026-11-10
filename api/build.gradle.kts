@@ -90,7 +90,13 @@ dependencies {
 
 tasks.test {
     // Uploads land in the build dir, with a small limit so the size check is testable.
-    environment("UPLOADS_DIR", layout.buildDirectory.dir("test-uploads").get().asFile.absolutePath)
+    environment(
+        "UPLOADS_DIR",
+        layout.buildDirectory
+            .dir("test-uploads")
+            .get()
+            .asFile.absolutePath,
+    )
     environment("UPLOADS_MAX_BYTES", "1048576")
 }
 
@@ -106,7 +112,11 @@ tasks.register<JavaExec>("generateOpenApi") {
     description = "Generates the OpenAPI documentation to openapi.json"
     classpath = sourceSets.test.get().runtimeClasspath
     mainClass = "com.ctfp.GenerateOpenApiKt"
-    args(layout.projectDirectory.file("openapi.json").asFile.path)
+    args(
+        layout.projectDirectory
+            .file("openapi.json")
+            .asFile.path,
+    )
 }
 
 ktor {

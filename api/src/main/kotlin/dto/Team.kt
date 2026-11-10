@@ -1,10 +1,10 @@
 package com.ctfp.dto
 
-import io.ktor.openapi.JsonSchema
 import com.ctfp.domain.dao.TeamDAO
 import com.ctfp.domain.dao.UserDAO
-import kotlin.time.Instant
+import io.ktor.openapi.JsonSchema
 import kotlinx.serialization.Serializable
+import kotlin.time.Instant
 
 @Serializable
 data class TeamRequest(
@@ -19,7 +19,7 @@ data class TeamRequest(
     @JsonSchema.MaxLength(Limits.SHORT_TEXT_MAX)
     val website: String?,
     val isHidden: Boolean = false,
-    val isBanned: Boolean = false
+    val isBanned: Boolean = false,
 )
 
 @Serializable
@@ -32,7 +32,7 @@ data class TeamResponse(
     val isHidden: Boolean = false,
     val isBanned: Boolean = false,
     val createdAt: Instant,
-    val updatedAt: Instant
+    val updatedAt: Instant,
 )
 
 fun TeamDAO.apply(dto: TeamRequest) {
@@ -44,14 +44,15 @@ fun TeamDAO.apply(dto: TeamRequest) {
     isBanned = dto.isBanned
 }
 
-fun TeamDAO.toDto() = TeamResponse(
-    id = id.value,
-    name = name,
-    ownerId = owner.id.value,
-    country = country,
-    website = website,
-    isHidden = isHidden,
-    isBanned = isBanned,
-    createdAt = createdAt,
-    updatedAt = updatedAt
-)
+fun TeamDAO.toDto() =
+    TeamResponse(
+        id = id.value,
+        name = name,
+        ownerId = owner.id.value,
+        country = country,
+        website = website,
+        isHidden = isHidden,
+        isBanned = isBanned,
+        createdAt = createdAt,
+        updatedAt = updatedAt,
+    )

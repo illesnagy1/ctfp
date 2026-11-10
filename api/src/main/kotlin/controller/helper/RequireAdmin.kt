@@ -11,8 +11,9 @@ import io.ktor.server.auth.principal
  * Rejects non-admins with 403 on every route below the one it's installed on. Install it inside `authenticate { }`;
  * unauthenticated calls are already answered with 401 by then.
  */
-val RequireAdmin = createRouteScopedPlugin("RequireAdmin") {
-    on(AuthenticationChecked) { call ->
-        if (call.principal<JWTPrincipal>() != null) requireAdmin(call.userId())
+val RequireAdmin =
+    createRouteScopedPlugin("RequireAdmin") {
+        on(AuthenticationChecked) { call ->
+            if (call.principal<JWTPrincipal>() != null) requireAdmin(call.userId())
+        }
     }
-}

@@ -9,6 +9,7 @@ object FileTable : IntIdTable() {
     /** What the file belongs to, e.g. [FileOwner.CHALLENGE]. No foreign key, so owners delete their files themselves. */
     val ownerType = varchar("owner_type", 64)
     val ownerId = integer("owner_id")
+
     /** Original name, only used for display and the download's file name. */
     val filename = varchar("filename", 255)
     val storageKey = varchar("storage_key", 64).uniqueIndex()

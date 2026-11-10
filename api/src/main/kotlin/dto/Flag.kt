@@ -1,7 +1,7 @@
 package com.ctfp.dto
 
-import io.ktor.openapi.JsonSchema
 import com.ctfp.domain.dao.FlagDAO
+import io.ktor.openapi.JsonSchema
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 import kotlin.time.Instant
@@ -9,10 +9,17 @@ import kotlin.time.Instant
 /** How a flag's value drops as more teams solve it; stored lowercase in `flag.decay_fun`. */
 @Serializable
 enum class DecayFunction {
-    @SerialName("static") STATIC,
-    @SerialName("linear") LINEAR,
-    @SerialName("logarithmic") LOGARITHMIC,
-    @SerialName("parabolic") PARABOLIC,
+    @SerialName("static")
+    STATIC,
+
+    @SerialName("linear")
+    LINEAR,
+
+    @SerialName("logarithmic")
+    LOGARITHMIC,
+
+    @SerialName("parabolic")
+    PARABOLIC,
 }
 
 /** A flag of the challenge in the path. */
@@ -61,15 +68,16 @@ fun FlagDAO.apply(dto: FlagRequest) {
     sortOrder = dto.sortOrder
 }
 
-fun FlagDAO.toDto() = FlagResponse(
-    id = id.value,
-    challengeId = challenge.id.value,
-    pattern = pattern,
-    isCaseSensitive = isCaseSensitive,
-    baseValue = baseValue,
-    decayValue = decayValue,
-    minValue = minValue,
-    decayFun = DecayFunction.valueOf(decayFun.uppercase()),
-    sortOrder = sortOrder,
-    createdAt = createdAt,
-)
+fun FlagDAO.toDto() =
+    FlagResponse(
+        id = id.value,
+        challengeId = challenge.id.value,
+        pattern = pattern,
+        isCaseSensitive = isCaseSensitive,
+        baseValue = baseValue,
+        decayValue = decayValue,
+        minValue = minValue,
+        decayFun = DecayFunction.valueOf(decayFun.uppercase()),
+        sortOrder = sortOrder,
+        createdAt = createdAt,
+    )

@@ -1,7 +1,7 @@
 package com.ctfp.dto
 
-import io.ktor.openapi.JsonSchema
 import com.ctfp.domain.dao.EmailTemplateDAO
+import io.ktor.openapi.JsonSchema
 import kotlinx.serialization.Serializable
 
 @Serializable
@@ -10,14 +10,14 @@ data class EmailTemplateRequest(
     @JsonSchema.MaxLength(Limits.TITLE_MAX)
     val subject: String,
     @JsonSchema.MinLength(1)
-    val body: String
+    val body: String,
 )
 
 @Serializable
 data class EmailTemplateResponse(
     val id: Int,
     val subject: String,
-    val body: String
+    val body: String,
 )
 
 fun EmailTemplateDAO.apply(dto: EmailTemplateRequest) {
@@ -25,8 +25,9 @@ fun EmailTemplateDAO.apply(dto: EmailTemplateRequest) {
     body = dto.body
 }
 
-fun EmailTemplateDAO.toDto() = EmailTemplateResponse(
-    id = id.value,
-    subject = subject,
-    body = body
-)
+fun EmailTemplateDAO.toDto() =
+    EmailTemplateResponse(
+        id = id.value,
+        subject = subject,
+        body = body,
+    )

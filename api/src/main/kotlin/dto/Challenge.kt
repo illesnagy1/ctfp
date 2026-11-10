@@ -1,9 +1,9 @@
 package com.ctfp.dto
 
-import io.ktor.openapi.JsonSchema
 import com.ctfp.domain.dao.ChallengeDAO
-import kotlin.time.Instant
+import io.ktor.openapi.JsonSchema
 import kotlinx.serialization.Serializable
+import kotlin.time.Instant
 
 @Serializable
 data class ChallengeRequest(
@@ -20,7 +20,7 @@ data class ChallengeRequest(
     val categories: List<String>,
     @JsonSchema.Description("Seconds to solve after starting; 0 means no limit.")
     @JsonSchema.Minimum(0.0)
-    val timeLimit: Int
+    val timeLimit: Int,
 )
 
 @Serializable
@@ -34,7 +34,7 @@ data class ChallengeResponse(
     val categories: List<String>,
     val timeLimit: Int,
     val createdAt: Instant,
-    val updatedAt: Instant
+    val updatedAt: Instant,
 )
 
 fun ChallengeDAO.apply(dto: ChallengeRequest) {
@@ -47,15 +47,16 @@ fun ChallengeDAO.apply(dto: ChallengeRequest) {
     timeLimit = dto.timeLimit
 }
 
-fun ChallengeDAO.toDto() = ChallengeResponse(
-    id = id.value,
-    title = title,
-    description = description,
-    isVisible = isVisible,
-    publishAt = publishAt,
-    maxAttempts = maxAttempts,
-    categories = categories,
-    timeLimit = timeLimit,
-    createdAt = createdAt,
-    updatedAt = updatedAt,
-)
+fun ChallengeDAO.toDto() =
+    ChallengeResponse(
+        id = id.value,
+        title = title,
+        description = description,
+        isVisible = isVisible,
+        publishAt = publishAt,
+        maxAttempts = maxAttempts,
+        categories = categories,
+        timeLimit = timeLimit,
+        createdAt = createdAt,
+        updatedAt = updatedAt,
+    )

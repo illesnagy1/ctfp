@@ -1,10 +1,10 @@
 package com.ctfp.dto
 
-import io.ktor.openapi.JsonSchema
-import com.ctfp.domain.dao.HintDAO
 import com.ctfp.domain.dao.ChallengeDAO
-import kotlin.time.Instant
+import com.ctfp.domain.dao.HintDAO
+import io.ktor.openapi.JsonSchema
 import kotlinx.serialization.Serializable
+import kotlin.time.Instant
 
 @Serializable
 data class HintRequest(
@@ -12,7 +12,7 @@ data class HintRequest(
     @JsonSchema.MinLength(1)
     val body: String,
     @JsonSchema.Minimum(0.0)
-    val cost: Int = 0
+    val cost: Int = 0,
 )
 
 @Serializable
@@ -21,7 +21,7 @@ data class HintResponse(
     val challengeId: Int,
     val body: String,
     val cost: Int = 0,
-    val createdAt: Instant
+    val createdAt: Instant,
 )
 
 fun HintDAO.apply(dto: HintRequest) {
@@ -30,10 +30,11 @@ fun HintDAO.apply(dto: HintRequest) {
     cost = dto.cost
 }
 
-fun HintDAO.toDto() = HintResponse(
-    id = id.value,
-    challengeId = challenge.id.value,
-    body = body,
-    cost = cost,
-    createdAt = createdAt
-)
+fun HintDAO.toDto() =
+    HintResponse(
+        id = id.value,
+        challengeId = challenge.id.value,
+        body = body,
+        cost = cost,
+        createdAt = createdAt,
+    )

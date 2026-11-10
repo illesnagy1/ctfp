@@ -6,11 +6,12 @@ import com.ctfp.domain.db.withTransaction
 import com.ctfp.domain.model.ChallengeTable
 import com.ctfp.domain.model.FileTable
 import com.ctfp.domain.model.FlagTable
+import com.ctfp.domain.model.RegistrationCodeTable
 import com.ctfp.domain.model.SubmissionTable
 import com.ctfp.domain.model.TeamTable
-import com.ctfp.domain.model.RegistrationCodeTable
 import com.ctfp.domain.model.UserTable
-import io.ktor.server.application.*
+import io.ktor.server.application.Application
+import io.ktor.server.application.log
 import org.jetbrains.exposed.v1.jdbc.Database
 import org.jetbrains.exposed.v1.jdbc.SchemaUtils
 
@@ -20,17 +21,18 @@ suspend fun Application.configureExposed() {
     createSchemas()
 }
 
-suspend fun createSchemas() = withTransaction {
-    SchemaUtils.create(
-        ChallengeTable,
-        FileTable,
-        FlagTable,
-        TeamTable,
-        SubmissionTable,
-        RegistrationCodeTable,
-        UserTable,
-    )
-}
+suspend fun createSchemas() =
+    withTransaction {
+        SchemaUtils.create(
+            ChallengeTable,
+            FileTable,
+            FlagTable,
+            TeamTable,
+            SubmissionTable,
+            RegistrationCodeTable,
+            UserTable,
+        )
+    }
 
 fun Application.connectToDatabase(postgres: PostgresConfig): Database {
     if (postgres.embedded) {
@@ -38,7 +40,7 @@ fun Application.connectToDatabase(postgres: PostgresConfig): Database {
         return Database.connect(
             url = "jdbc:h2:mem:test;DB_CLOSE_DELAY=-1",
             user = "root",
-            password = ""
+            password = "",
         )
     } else {
         log.info("Connecting to postgres database at ${postgres.url}")
@@ -46,7 +48,7 @@ fun Application.connectToDatabase(postgres: PostgresConfig): Database {
         return Database.connect(
             url = postgres.url,
             user = postgres.user,
-            password = postgres.password
+            password = postgres.password,
         )
     }
 }

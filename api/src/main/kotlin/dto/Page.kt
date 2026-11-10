@@ -1,9 +1,9 @@
 package com.ctfp.dto
 
-import io.ktor.openapi.JsonSchema
 import com.ctfp.domain.dao.PageDAO
-import kotlin.time.Instant
+import io.ktor.openapi.JsonSchema
 import kotlinx.serialization.Serializable
+import kotlin.time.Instant
 
 @Serializable
 data class PageRequest(
@@ -22,7 +22,7 @@ data class PageRequest(
     val targetBlank: Boolean = false,
     val body: String,
     val isHidden: Boolean = false,
-    val isPrivate: Boolean = false
+    val isPrivate: Boolean = false,
 )
 
 @Serializable
@@ -37,7 +37,7 @@ data class PageResponse(
     val isHidden: Boolean = false,
     val isPrivate: Boolean = false,
     val createdAt: Instant,
-    val updatedAt: Instant
+    val updatedAt: Instant,
 )
 
 fun PageDAO.apply(dto: PageRequest) {
@@ -51,16 +51,17 @@ fun PageDAO.apply(dto: PageRequest) {
     isPrivate = dto.isPrivate
 }
 
-fun PageDAO.toDto() = PageResponse(
-    id = id.value,
-    title = title,
-    route = route,
-    language = language,
-    format = format,
-    targetBlank = targetBlank,
-    body = body,
-    isHidden = isHidden,
-    isPrivate = isPrivate,
-    createdAt = createdAt,
-    updatedAt = updatedAt
-)
+fun PageDAO.toDto() =
+    PageResponse(
+        id = id.value,
+        title = title,
+        route = route,
+        language = language,
+        format = format,
+        targetBlank = targetBlank,
+        body = body,
+        isHidden = isHidden,
+        isPrivate = isPrivate,
+        createdAt = createdAt,
+        updatedAt = updatedAt,
+    )

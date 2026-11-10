@@ -54,9 +54,10 @@ fun ApplicationConfig.settingsFileConfig(): SettingsFileConfig = property("setti
 
 fun ApplicationConfig.uploadsConfig(): UploadsConfig = property("uploads").getAs()
 
-fun ApplicationConfig.appConfig() = AppConfig(
-    jwt = jwtConfig(),
-    postgres = postgresConfig(),
-    settings = settingsFileConfig(),
-    uploads = uploadsConfig(),
-)
+fun ApplicationConfig.appConfig() =
+    AppConfig(
+        jwt = jwtConfig(),
+        postgres = postgresConfig(),
+        settings = settingsFileConfig(),
+        uploads = uploadsConfig(),
+    )

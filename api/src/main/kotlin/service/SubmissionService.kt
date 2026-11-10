@@ -14,20 +14,24 @@ import org.jetbrains.exposed.v1.core.and
 import org.jetbrains.exposed.v1.core.eq
 import org.jetbrains.exposed.v1.jdbc.select
 
-class SubmissionService(private val challenges: ChallengeService) {
+class SubmissionService(
+    private val challenges: ChallengeService,
+) {
     /**
      * Checks [submitted] against the challenge's flags and records the guess. Hidden and unpublished challenges are a
      * 404 for non-admins, as when viewing them. Not yet enforced: the challenge's time limit, and team solves.
      */
-    suspend fun submit(userId: Int, challengeId: Int, submitted: String, isAdmin: Boolean): SubmissionResult {
+    suspend fun submit(
+        userId: Int,
+        challengeId: Int,
+        submitted: String,
+        isAdmin: Boolean,
+    ): SubmissionResult {
         challenges.get(challengeId, includeUnreleased = isAdmin)
-        val flag = submitted.trim()
-        if (flag.isEmpty()) throw ApiException(HttpStatusCode.BadRequest, "Flag is required")
-        if (flag.length > Limits.SUBMITTED_FLAG_MAX) throw ApiException(HttpStatusCode.BadRequest, "Flag is too long")
+        val flag = validFlag(submitted)
 
         return withTransaction {
-            val user = UserDAO.findById(userId) ?: throw ApiException(HttpStatusCode.Unauthorized, "Session is no longer valid")
-            if (user.isBanned) throw ApiException(HttpStatusCode.Forbidden, "Banned users can't submit flags")
+            val user = submitter(userId)
             val challenge = ChallengeDAO[challengeId]
 
             val mine = (SubmissionTable.userId eq userId) and (SubmissionTable.challengeId eq challengeId)
@@ -55,13 +59,30 @@ class SubmissionService(private val challenges: ChallengeService) {
         }
     }
 
-    /** Ids of the challenges [userId] has solved. */
-    suspend fun solvedChallengeIds(userId: Int): List<Int> = withTransaction {
-        SubmissionTable.select(SubmissionTable.challengeId)
-            .where { (SubmissionTable.userId eq userId) and (SubmissionTable.isCorrect eq true) }
-            .withDistinct()
-            .map { it[SubmissionTable.challengeId].value }
+    /** [submitted] trimmed; 400 if empty or too long. */
+    private fun validFlag(submitted: String): String {
+        val flag = submitted.trim()
+        if (flag.isEmpty()) throw ApiException(HttpStatusCode.BadRequest, "Flag is required")
+        if (flag.length > Limits.SUBMITTED_FLAG_MAX) throw ApiException(HttpStatusCode.BadRequest, "Flag is too long")
+        return flag
     }
+
+    /** The submitting user; call inside a transaction. */
+    private fun submitter(userId: Int): UserDAO {
+        val user = UserDAO.findById(userId) ?: throw ApiException(HttpStatusCode.Unauthorized, "Session is no longer valid")
+        if (user.isBanned) throw ApiException(HttpStatusCode.Forbidden, "Banned users can't submit flags")
+        return user
+    }
+
+    /** Ids of the challenges [userId] has solved. */
+    suspend fun solvedChallengeIds(userId: Int): List<Int> =
+        withTransaction {
+            SubmissionTable
+                .select(SubmissionTable.challengeId)
+                .where { (SubmissionTable.userId eq userId) and (SubmissionTable.isCorrect eq true) }
+                .withDistinct()
+                .map { it[SubmissionTable.challengeId].value }
+        }
 
     private fun FlagDAO.matches(submitted: String): Boolean {
         val options = if (isCaseSensitive) emptySet() else setOf(RegexOption.IGNORE_CASE)

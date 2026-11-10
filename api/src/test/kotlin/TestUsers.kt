@@ -18,10 +18,11 @@ import kotlin.test.assertEquals
 
 /** Registers `name` (with `name@example.com`) and returns its token. The embedded database is shared between tests, so use unique names. */
 suspend fun ApplicationTestBuilder.register(name: String): String {
-    val response = client.post("/v1/auth/register") {
-        contentType(ContentType.Application.Json)
-        setBody("""{"username":"$name","email":"$name@example.com","password":"correct-horse"}""")
-    }
+    val response =
+        client.post("/v1/auth/register") {
+            contentType(ContentType.Application.Json)
+            setBody("""{"username":"$name","email":"$name@example.com","password":"correct-horse"}""")
+        }
     assertEquals(HttpStatusCode.Created, response.status)
     return Json.decodeFromString<AuthResponse>(response.bodyAsText()).token
 }
@@ -33,4 +34,10 @@ suspend fun ApplicationTestBuilder.registerAdmin(name: String): String {
     return token
 }
 
-suspend fun userId(name: String): Int = withTransaction { UserDAO.find { UserTable.username eq name }.single().id.value }
+suspend fun userId(name: String): Int =
+    withTransaction {
+        UserDAO
+            .find { UserTable.username eq name }
+            .single()
+            .id.value
+    }

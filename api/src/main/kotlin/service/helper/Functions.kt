@@ -13,8 +13,7 @@ import org.jetbrains.exposed.v1.core.neq
 import org.jetbrains.exposed.v1.core.or
 
 /** Must run inside a transaction. */
-fun findUser(id: Int): UserDAO =
-    UserDAO.findById(id) ?: throw ApiException(HttpStatusCode.NotFound, "User $id not found")
+fun findUser(id: Int): UserDAO = UserDAO.findById(id) ?: throw ApiException(HttpStatusCode.NotFound, "User $id not found")
 
 fun validate(user: UserProfileFields) {
     validateUsername(user.username)
@@ -22,7 +21,11 @@ fun validate(user: UserProfileFields) {
 }
 
 /** Must run inside a transaction. */
-fun ensureAvailable(username: String, email: String, exceptId: Int? = null) {
+fun ensureAvailable(
+    username: String,
+    email: String,
+    exceptId: Int? = null,
+) {
     val clash = (UserTable.username eq username) or (UserTable.email eq email.lowercase())
     val query = if (exceptId == null) clash else clash and (UserTable.id neq exceptId)
     if (!UserDAO.find { query }.empty()) {
@@ -35,6 +38,7 @@ suspend fun requireAdmin(userId: Int) {
     if (!isAdmin(userId)) throw ApiException(HttpStatusCode.Forbidden, "Admin access required")
 }
 
-suspend fun isAdmin(userId: Int): Boolean = withTransaction {
-    UserDAO.findById(userId)?.let { it.role == UserRole.ADMIN && !it.isBanned } ?: false
-}
+suspend fun isAdmin(userId: Int): Boolean =
+    withTransaction {
+        UserDAO.findById(userId)?.let { it.role == UserRole.ADMIN && !it.isBanned } ?: false
+    }

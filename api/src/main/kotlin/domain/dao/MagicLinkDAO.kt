@@ -5,7 +5,9 @@ import org.jetbrains.exposed.v1.core.dao.id.EntityID
 import org.jetbrains.exposed.v1.dao.IntEntity
 import org.jetbrains.exposed.v1.dao.IntEntityClass
 
-class MagicLinkDAO(id: EntityID<Int>) : IntEntity(id) {
+class MagicLinkDAO(
+    id: EntityID<Int>,
+) : IntEntity(id) {
     companion object : IntEntityClass<MagicLinkDAO>(MagicLinkTable)
 
     var user by UserDAO referencedOn MagicLinkTable.userId

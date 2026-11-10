@@ -11,10 +11,11 @@ import io.ktor.server.testing.testApplication
 import kotlinx.serialization.json.Json
 import java.io.File
 
-private val json = Json {
-    prettyPrint = true
-    explicitNulls = false
-}
+private val json =
+    Json {
+        prettyPrint = true
+        explicitNulls = false
+    }
 
 /**
  * Writes the OpenAPI documentation to the given path. Run with `./gradlew generateOpenApi`.
@@ -26,11 +27,12 @@ fun main(args: Array<String>) {
         environment {
             // Only what security and routing read while being set up; nothing here connects to a database.
             val loaded = ConfigFactory.load()
-            config = HoconApplicationConfig(
-                listOf("jwt", "settings", "uploads")
-                    .map(loaded::withOnlyPath)
-                    .reduce { merged, path -> merged.withFallback(path) }
-            )
+            config =
+                HoconApplicationConfig(
+                    listOf("jwt", "settings", "uploads")
+                        .map(loaded::withOnlyPath)
+                        .reduce { merged, path -> merged.withFallback(path) },
+                )
         }
         application {
             configureSecurity()
@@ -38,9 +40,11 @@ fun main(args: Array<String>) {
         }
         startApplication()
 
-        val doc = OpenApiDocSource.Routing(
-            serializeModel = { json.encodeToString(OpenApiDoc.serializer(), it) }
-        ).read(application, OpenApiDoc(info = OpenApiInfo("CTFP API", "1.0.0")))
+        val doc =
+            OpenApiDocSource
+                .Routing(
+                    serializeModel = { json.encodeToString(OpenApiDoc.serializer(), it) },
+                ).read(application, OpenApiDoc(info = OpenApiInfo("CTFP API", "1.0.0")))
 
         output.writeText(doc.content)
         println("Wrote ${output.path}")

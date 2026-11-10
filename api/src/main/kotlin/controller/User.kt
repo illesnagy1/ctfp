@@ -12,13 +12,13 @@ import io.ktor.http.HttpStatusCode.Companion.NotFound
 import io.ktor.http.HttpStatusCode.Companion.Unauthorized
 import io.ktor.server.auth.authenticate
 import io.ktor.server.request.receive
+import io.ktor.server.response.respond
 import io.ktor.server.routing.Route
 import io.ktor.server.routing.delete
 import io.ktor.server.routing.get
 import io.ktor.server.routing.post
 import io.ktor.server.routing.put
 import io.ktor.server.routing.route
-import io.ktor.server.response.respond
 
 /** Public user views, plus the caller's own account under `/me`. Admin views live in [adminUser]. */
 fun Route.user(service: UserService) {
@@ -46,16 +46,12 @@ fun Route.user(service: UserService) {
 
                 route("submissions") {
                     get {
-
                     }
                     post {
-
                     }
                     put {
-
                     }
                     delete {
-
                     }
                 }
             }

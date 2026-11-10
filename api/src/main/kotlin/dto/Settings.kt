@@ -14,10 +14,8 @@ data class Settings(
     @JsonSchema.MinLength(1)
     @JsonSchema.MaxLength(MAX_CTF_NAME_LENGTH)
     val ctfName: String = "CTFP",
-
     @JsonSchema.Description("Whether new players can create accounts.")
     val registrationOpen: Boolean = true,
-
     @JsonSchema.Description("The most players a team can have.")
     @JsonSchema.Minimum(1.0)
     @JsonSchema.Maximum(MAX_TEAM_SIZE.toDouble())

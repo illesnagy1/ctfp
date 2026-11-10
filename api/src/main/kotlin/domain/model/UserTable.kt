@@ -20,6 +20,7 @@ object UserTable : IntIdTable() {
     val totpSecret = varchar("totp_secret", 255).nullable()
     val totpEnabled = bool("totp_enabled").default(false)
     val soundEnabled = bool("sound_enabled").default(true)
+
     // TODO: JSON
     val visibilitySettings = text("visibility_settings").nullable()
     val createdAt = timestamp("created_at").defaultExpression(CurrentTimestamp)

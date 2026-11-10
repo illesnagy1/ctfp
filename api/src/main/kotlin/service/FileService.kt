@@ -16,8 +16,14 @@ import org.jetbrains.exposed.v1.core.and
 import org.jetbrains.exposed.v1.core.eq
 import org.slf4j.LoggerFactory
 
+private const val MAX_MIME_TYPE_LENGTH = 128 // FileTable.mimeType column
+private const val MAX_FILENAME_LENGTH = 255 // FileTable.filename column
+
 /** A file ready to stream: its display name and contents. */
-class FileDownload(val filename: String, val content: OutgoingContent)
+class FileDownload(
+    val filename: String,
+    val content: OutgoingContent,
+)
 
 class FileService(
     private val storage: FileStorage,
@@ -25,7 +31,10 @@ class FileService(
     val maxBytes: Long,
 ) {
     /** A challenge's files, visible exactly when the challenge is (see [ChallengeService.get]). */
-    suspend fun getChallengeFiles(challengeId: Int, includeUnreleased: Boolean): List<FileResponse> {
+    suspend fun getChallengeFiles(
+        challengeId: Int,
+        includeUnreleased: Boolean,
+    ): List<FileResponse> {
         challenges.get(challengeId, includeUnreleased)
         return withTransaction {
             FileDAO.find { ownedBy(FileOwner.CHALLENGE, challengeId) }.sortedBy { it.id.value }.map { it.toDto() }
@@ -33,6 +42,7 @@ class FileService(
     }
 
     /** Stores [content] as a file of the challenge; 404 if the challenge doesn't exist. */
+    @Suppress("TooGenericExceptionCaught") // cleans up on any failure, then rethrows
     suspend fun uploadChallengeFile(
         challengeId: Int,
         filename: String?,
@@ -47,15 +57,16 @@ class FileService(
             return withTransaction {
                 // Again in this transaction, in case the challenge was deleted during the upload.
                 ChallengeDAO[challengeId]
-                FileDAO.new {
-                    ownerType = FileOwner.CHALLENGE
-                    ownerId = challengeId
-                    this.filename = displayName(filename)
-                    storageKey = stored.key
-                    size = stored.size
-                    this.mimeType = mimeType?.take(128)
-                    sha256 = stored.sha256
-                }.toDto()
+                FileDAO
+                    .new {
+                        ownerType = FileOwner.CHALLENGE
+                        ownerId = challengeId
+                        this.filename = displayName(filename)
+                        storageKey = stored.key
+                        size = stored.size
+                        this.mimeType = mimeType?.take(MAX_MIME_TYPE_LENGTH)
+                        sha256 = stored.sha256
+                    }.toDto()
             }
         } catch (e: Throwable) {
             storage.delete(stored.key)
@@ -67,10 +78,14 @@ class FileService(
      * The file's contents if its owner is visible to the caller; otherwise the same 404 as a missing file. Always
      * served as `application/octet-stream`, whatever was uploaded, so browsers download rather than render it.
      */
-    suspend fun download(id: Int, includeUnreleased: Boolean): FileDownload {
+    suspend fun download(
+        id: Int,
+        includeUnreleased: Boolean,
+    ): FileDownload {
         val file = withTransaction { FileDAO.findById(id) } ?: throw notFound()
         when (file.ownerType) {
             FileOwner.CHALLENGE -> challenges.get(file.ownerId, includeUnreleased)
+
             // Owners without visibility rules yet are admin only.
             else -> if (!includeUnreleased) throw notFound()
         }
@@ -78,10 +93,11 @@ class FileService(
     }
 
     suspend fun delete(id: Int) {
-        val key = withTransaction {
-            val file = FileDAO.findById(id) ?: throw notFound()
-            file.storageKey.also { file.delete() }
-        }
+        val key =
+            withTransaction {
+                val file = FileDAO.findById(id) ?: throw notFound()
+                file.storageKey.also { file.delete() }
+            }
         deleteStored(storage, listOf(key))
     }
 
@@ -90,18 +106,28 @@ class FileService(
     companion object {
         private val log = LoggerFactory.getLogger(FileService::class.java)
 
-        fun ownedBy(ownerType: String, ownerId: Int) =
-            (FileTable.ownerType eq ownerType) and (FileTable.ownerId eq ownerId)
+        fun ownedBy(
+            ownerType: String,
+            ownerId: Int,
+        ) = (FileTable.ownerType eq ownerType) and (FileTable.ownerId eq ownerId)
 
         /** Only the base name, without any directories a client put in it; it's never used as a path. */
         fun displayName(filename: String?): String =
-            filename?.substringAfterLast('/')?.substringAfterLast('\\')?.trim()?.take(255)?.ifEmpty { null } ?: "file"
+            filename
+                ?.substringAfterLast('/')
+                ?.substringAfterLast('\\')
+                ?.trim()
+                ?.take(MAX_FILENAME_LENGTH)
+                ?.ifEmpty { null } ?: "file"
 
         /**
          * Removes stored contents after their rows are gone. A failure only leaves an orphaned file behind, so it's
          * logged rather than undoing the delete.
          */
-        suspend fun deleteStored(storage: FileStorage, keys: List<String>) {
+        suspend fun deleteStored(
+            storage: FileStorage,
+            keys: List<String>,
+        ) {
             for (key in keys) {
                 runCatching { storage.delete(key) }.onFailure { log.warn("Couldn't delete stored file $key", it) }
             }

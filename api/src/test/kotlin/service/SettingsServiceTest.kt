@@ -22,13 +22,14 @@ class SettingsServiceTest {
     }
 
     @Test
-    fun `update persists as hocon and survives a reload`() = runBlocking {
-        val updated = Settings(ctfName = "Test CTF", registrationOpen = false, maxTeamSize = 2)
-        SettingsService(file).updateSettings(updated)
+    fun `update persists as hocon and survives a reload`() =
+        runBlocking {
+            val updated = Settings(ctfName = "Test CTF", registrationOpen = false, maxTeamSize = 2)
+            SettingsService(file).updateSettings(updated)
 
-        assertTrue("ctfName" in file.readText())
-        assertEquals(updated, SettingsService(file).getSettings())
-    }
+            assertTrue("ctfName" in file.readText())
+            assertEquals(updated, SettingsService(file).getSettings())
+        }
 
     @Test
     fun `missing keys fall back to defaults`() {
@@ -39,12 +40,13 @@ class SettingsServiceTest {
     }
 
     @Test
-    fun `invalid settings are rejected and not written`() = runBlocking {
-        val service = SettingsService(file)
+    fun `invalid settings are rejected and not written`() =
+        runBlocking {
+            val service = SettingsService(file)
 
-        assertFailsWith<ApiException> { service.updateSettings(Settings(maxTeamSize = 0)) }
-        assertFailsWith<ApiException> { service.updateSettings(Settings(ctfName = " ")) }
-        assertFalse(file.exists())
-        assertEquals(Settings(), service.getSettings())
-    }
+            assertFailsWith<ApiException> { service.updateSettings(Settings(maxTeamSize = 0)) }
+            assertFailsWith<ApiException> { service.updateSettings(Settings(ctfName = " ")) }
+            assertFalse(file.exists())
+            assertEquals(Settings(), service.getSettings())
+        }
 }

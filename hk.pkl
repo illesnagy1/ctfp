@@ -1,4 +1,5 @@
 amends "package://github.com/jdx/hk/releases/download/v2.11.0/hk@2.11.0#/Config.pkl"
+
 import "package://github.com/jdx/hk/releases/download/v2.11.0/hk@2.11.0#/Builtins.pkl"
 // Using a coding agent? See https://hk.jdx.dev/agents
 

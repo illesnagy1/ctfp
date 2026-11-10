@@ -10,13 +10,14 @@ import io.ktor.server.routing.openapi.describe
  * Documents the [ErrorResponse]s this route can return. They are sent by StatusPages (and the auth challenge), so
  * OpenAPI inference can't see them.
  */
-fun Route.errors(vararg statuses: HttpStatusCode): Route = describe {
-    responses {
-        for (status in statuses) {
-            status {
-                description = status.description
-                schema = jsonSchema<ErrorResponse>()
+fun Route.errors(vararg statuses: HttpStatusCode): Route =
+    describe {
+        responses {
+            for (status in statuses) {
+                status {
+                    description = status.description
+                    schema = jsonSchema<ErrorResponse>()
+                }
             }
         }
     }
-}

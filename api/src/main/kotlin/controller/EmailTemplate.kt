@@ -5,13 +5,13 @@ import com.ctfp.dto.EmailTemplateRequest
 import com.ctfp.service.EmailTemplateService
 import io.ktor.http.HttpStatusCode
 import io.ktor.server.request.receive
+import io.ktor.server.response.respond
 import io.ktor.server.routing.Route
 import io.ktor.server.routing.delete
 import io.ktor.server.routing.get
 import io.ktor.server.routing.post
 import io.ktor.server.routing.put
 import io.ktor.server.routing.route
-import io.ktor.server.response.respond
 
 fun Route.emailTemplate(service: EmailTemplateService) {
     route("/email-templates") {
@@ -25,10 +25,8 @@ fun Route.emailTemplate(service: EmailTemplateService) {
             call.respond(HttpStatusCode.Created)
         }
         put {
-
         }
         delete {
-
         }
         route("/{id}") {
             get {

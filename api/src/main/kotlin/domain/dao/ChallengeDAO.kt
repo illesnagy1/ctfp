@@ -1,14 +1,16 @@
 package com.ctfp.domain.dao
 
 import com.ctfp.domain.model.ChallengeTable
-import com.ctfp.domain.model.HintTable
 import com.ctfp.domain.model.FlagTable
+import com.ctfp.domain.model.HintTable
 import com.ctfp.domain.model.SubmissionTable
 import org.jetbrains.exposed.v1.core.dao.id.EntityID
 import org.jetbrains.exposed.v1.dao.IntEntity
 import org.jetbrains.exposed.v1.dao.IntEntityClass
 
-class ChallengeDAO(id: EntityID<Int>) : IntEntity(id) {
+class ChallengeDAO(
+    id: EntityID<Int>,
+) : IntEntity(id) {
     companion object : IntEntityClass<ChallengeDAO>(ChallengeTable)
 
     var title by ChallengeTable.title
