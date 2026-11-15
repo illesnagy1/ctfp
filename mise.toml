@@ -23,9 +23,9 @@ dir = "frontend"
 run = "bun install"
 
 [tasks."dev:api"]
-description = "Run the api"
+description = "Run the api in development mode, seeding an empty database"
 dir = "api"
-run = "./gradlew run"
+run = "KTOR_DEVELOPMENT=true ./gradlew run"
 
 [tasks."dev:frontend"]
 description = "Run the frontend dev server"
