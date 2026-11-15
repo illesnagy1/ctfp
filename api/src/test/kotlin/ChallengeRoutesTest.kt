@@ -109,6 +109,29 @@ class ChallengeRoutesTest {
         }
 
     @Test
+    fun `bulk update changes every challenge, or none if one is missing`() =
+        testApplication {
+            configure()
+            startApplication()
+            val admin = registerAdmin("bulk-admin")
+            create(challenge("bulk-a"), admin)
+            create(challenge("bulk-b"), admin)
+            val (a, b) = listOf("bulk-a", "bulk-b").map { title -> challenges(admin).single { it.title == title }.id }
+
+            suspend fun bulk(vararg changes: Pair<Int, String>) =
+                client
+                    .put("/v1/challenges") {
+                        bearerAuth(admin)
+                        contentType(ContentType.Application.Json)
+                        setBody(changes.joinToString(",", "{", "}") { (id, title) -> "\"$id\":${challenge(title)}" })
+                    }.status
+
+            assertEquals(HttpStatusCode.NoContent, bulk(a to "bulk-a2", b to "bulk-b2"))
+            assertEquals(HttpStatusCode.NotFound, bulk(a to "bulk-a3", Int.MAX_VALUE to "bulk-missing"))
+            assertEquals(listOf("bulk-a2", "bulk-b2"), challenges(admin).filter { it.id in listOf(a, b) }.map { it.title }.sorted())
+        }
+
+    @Test
     fun `hidden and unpublished challenges are only shown to admins`() =
         testApplication {
             configure()

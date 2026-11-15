@@ -21,7 +21,6 @@ object UserTable : IntIdTable() {
     val totpEnabled = bool("totp_enabled").default(false)
     val soundEnabled = bool("sound_enabled").default(true)
 
-    // TODO: JSON
     val visibilitySettings = text("visibility_settings").nullable()
     val createdAt = timestamp("created_at").defaultExpression(CurrentTimestamp)
     val updatedAt = timestamp("updated_at").defaultExpression(CurrentTimestamp)

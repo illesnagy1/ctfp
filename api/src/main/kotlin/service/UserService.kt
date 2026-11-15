@@ -96,10 +96,8 @@ class UserService(
         users.values.forEach(::validate)
         users.forEach { (id, user) -> ensureNotSelfLockout(id, user, actorId) }
         withTransaction {
-            users.forEach { (id, user) ->
-                ensureAvailable(user.username, user.email, exceptId = id)
-                findUser(id).applyAdmin(user)
-            }
+            users.forEach { (id, user) -> ensureAvailable(user.username, user.email, exceptId = id) }
+            UserDAO.findAll(users.keys).forEach { it.applyAdmin(users.getValue(it.id.value)) }
         }
     }
 

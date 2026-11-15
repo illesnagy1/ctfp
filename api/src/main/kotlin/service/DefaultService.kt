@@ -3,8 +3,10 @@ package com.ctfp.service
 import com.ctfp.domain.db.withTransaction
 import org.jetbrains.exposed.v1.core.dao.id.IdTable
 import org.jetbrains.exposed.v1.core.inList
+import org.jetbrains.exposed.v1.dao.DaoEntityID
 import org.jetbrains.exposed.v1.dao.Entity
 import org.jetbrains.exposed.v1.dao.EntityClass
+import org.jetbrains.exposed.v1.dao.exceptions.EntityNotFoundException
 import org.jetbrains.exposed.v1.jdbc.deleteAll
 import org.jetbrains.exposed.v1.jdbc.deleteWhere
 
@@ -44,9 +46,7 @@ abstract class DefaultService<ID : Any, DAO : Entity<ID>, RequestDTO : Any, Resp
 
     open suspend fun updateMany(dtos: Map<ID, RequestDTO>) =
         withTransaction {
-            dtos.forEach { (id, dto) ->
-                dao[id].apply(dto) // TODO: test if using table would more efficient
-            }
+            dao.findAll(dtos.keys).forEach { it.apply(dtos.getValue(it.id.value)) }
         }
 
     open suspend fun delete(id: ID) =
@@ -63,4 +63,17 @@ abstract class DefaultService<ID : Any, DAO : Entity<ID>, RequestDTO : Any, Resp
         withTransaction {
             table.deleteAll()
         }
+}
+
+/**
+ * Loads all [ids] in one query, throwing [EntityNotFoundException] (404) if any is missing. Use it before bulk updates:
+ * `dao[id]` in a loop runs a SELECT per row, and each one flushes the previous row's update instead of batching them.
+ */
+fun <ID : Any, T : Entity<ID>> EntityClass<ID, T>.findAll(ids: Collection<ID>): List<T> {
+    val found = forIds(ids.toList()).toList()
+    if (found.size != ids.size) {
+        val missing = ids.first { id -> found.none { it.id.value == id } }
+        throw EntityNotFoundException(DaoEntityID(missing, table), this)
+    }
+    return found
 }
