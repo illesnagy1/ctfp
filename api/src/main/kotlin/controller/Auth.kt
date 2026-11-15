@@ -3,14 +3,14 @@ package com.ctfp.controller
 import com.ctfp.controller.helper.errors
 import com.ctfp.dto.LoginRequest
 import com.ctfp.dto.RegisterRequest
-import com.ctfp.plugins.userId
+import com.ctfp.plugins.authenticated
 import com.ctfp.service.AuthService
 import io.ktor.http.HttpStatusCode
 import io.ktor.http.HttpStatusCode.Companion.BadRequest
 import io.ktor.http.HttpStatusCode.Companion.Conflict
 import io.ktor.http.HttpStatusCode.Companion.Forbidden
 import io.ktor.http.HttpStatusCode.Companion.Unauthorized
-import io.ktor.server.auth.authenticate
+import io.ktor.server.auth.principal
 import io.ktor.server.request.receive
 import io.ktor.server.response.respond
 import io.ktor.server.routing.Route
@@ -28,9 +28,9 @@ fun Route.auth(service: AuthService) {
             val request = call.receive<RegisterRequest>()
             call.respond(HttpStatusCode.Created, service.register(request))
         }.errors(BadRequest, Conflict)
-        authenticate {
+        authenticated {
             get("me") {
-                call.respond(service.me(call.userId()))
+                call.respond(service.me(call.principal.id))
             }.errors(Unauthorized)
         }
     }

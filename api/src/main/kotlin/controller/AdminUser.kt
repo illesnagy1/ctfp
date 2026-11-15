@@ -1,11 +1,10 @@
 package com.ctfp.controller
 
-import com.ctfp.controller.helper.RequireAdmin
 import com.ctfp.controller.helper.errors
 import com.ctfp.controller.helper.getId
 import com.ctfp.dto.AdminUserCreateRequest
 import com.ctfp.dto.AdminUserUpdateRequest
-import com.ctfp.plugins.userId
+import com.ctfp.plugins.adminOnly
 import com.ctfp.service.UserService
 import io.ktor.http.HttpStatusCode
 import io.ktor.http.HttpStatusCode.Companion.BadRequest
@@ -13,7 +12,7 @@ import io.ktor.http.HttpStatusCode.Companion.Conflict
 import io.ktor.http.HttpStatusCode.Companion.Forbidden
 import io.ktor.http.HttpStatusCode.Companion.NotFound
 import io.ktor.http.HttpStatusCode.Companion.Unauthorized
-import io.ktor.server.auth.authenticate
+import io.ktor.server.auth.principal
 import io.ktor.server.request.receive
 import io.ktor.server.response.respond
 import io.ktor.server.routing.Route
@@ -25,10 +24,8 @@ import io.ktor.server.routing.route
 
 /** Full user views and management, admins only. */
 fun Route.adminUser(service: UserService) {
-    authenticate {
+    adminOnly {
         route("/admin/users") {
-            install(RequireAdmin)
-
             get {
                 call.respond(service.getAllAdminUsers())
             }.errors(Unauthorized, Forbidden)
@@ -38,7 +35,7 @@ fun Route.adminUser(service: UserService) {
                 call.respond(HttpStatusCode.Created)
             }.errors(BadRequest, Unauthorized, Forbidden, Conflict)
             put {
-                service.updateUsers(call.receive<Map<Int, AdminUserUpdateRequest>>(), actorId = call.userId())
+                service.updateUsers(call.receive<Map<Int, AdminUserUpdateRequest>>(), actorId = call.principal.id)
 
                 call.respond(HttpStatusCode.NoContent)
             }.errors(BadRequest, Unauthorized, Forbidden, NotFound, Conflict)
@@ -50,7 +47,7 @@ fun Route.adminUser(service: UserService) {
                     call.respond(service.getAdminUser(call.getId()))
                 }.errors(BadRequest, Unauthorized, Forbidden, NotFound)
                 put {
-                    service.updateUser(call.getId(), call.receive<AdminUserUpdateRequest>(), actorId = call.userId())
+                    service.updateUser(call.getId(), call.receive<AdminUserUpdateRequest>(), actorId = call.principal.id)
 
                     call.respond(HttpStatusCode.NoContent)
                 }.errors(BadRequest, Unauthorized, Forbidden, NotFound, Conflict)

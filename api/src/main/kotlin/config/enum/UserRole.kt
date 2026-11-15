@@ -1,6 +1,8 @@
 package com.ctfp.config.enum
 
-enum class UserRole {
+import io.ktor.server.auth.AuthenticationRole
+
+enum class UserRole : AuthenticationRole {
     ADMIN,
     USER,
 }

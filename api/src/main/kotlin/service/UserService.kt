@@ -104,8 +104,7 @@ class UserService(
     }
 
     /**
-     * Banning or demoting themselves would lock the admin out (banned users lose admin rights too). The actor passed
-     * RequireAdmin, so they are an admin now.
+     * Banning or demoting themselves would lock the admin out (banned users lose admin rights too)
      */
     private fun ensureNotSelfLockout(
         id: Int,

@@ -15,6 +15,9 @@ application {
 
 kotlin {
     jvmToolchain(25)
+    compilerOptions {
+        optIn.add("io.ktor.utils.io.ExperimentalKtorApi")
+    }
 }
 
 detekt {

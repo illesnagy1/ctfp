@@ -40,7 +40,7 @@
                 },
                 "security": [
                     {
-                        "default": []
+                        "jwt": []
                     }
                 ]
             },
@@ -62,7 +62,7 @@
                 },
                 "security": [
                     {
-                        "default": []
+                        "jwt": []
                     }
                 ]
             },
@@ -87,7 +87,7 @@
                 },
                 "security": [
                     {
-                        "default": []
+                        "jwt": []
                     }
                 ]
             },
@@ -110,7 +110,7 @@
                 },
                 "security": [
                     {
-                        "default": []
+                        "jwt": []
                     },
                     {}
                 ]
@@ -145,7 +145,7 @@
                 },
                 "security": [
                     {
-                        "default": []
+                        "jwt": []
                     }
                 ]
             },
@@ -168,7 +168,7 @@
                 },
                 "security": [
                     {
-                        "default": []
+                        "jwt": []
                     }
                 ]
             },
@@ -198,7 +198,7 @@
                 },
                 "security": [
                     {
-                        "default": []
+                        "jwt": []
                     },
                     {}
                 ]
@@ -335,7 +335,7 @@
                 },
                 "security": [
                     {
-                        "default": []
+                        "jwt": []
                     }
                 ]
             },
@@ -388,7 +388,7 @@
                 },
                 "security": [
                     {
-                        "default": []
+                        "jwt": []
                     },
                     {}
                 ]
@@ -523,7 +523,7 @@
                 },
                 "security": [
                     {
-                        "default": []
+                        "jwt": []
                     }
                 ]
             }
@@ -709,7 +709,7 @@
                 },
                 "security": [
                     {
-                        "default": []
+                        "jwt": []
                     },
                     {}
                 ]
@@ -775,7 +775,7 @@
                 },
                 "security": [
                     {
-                        "default": []
+                        "jwt": []
                     }
                 ]
             }
@@ -866,7 +866,7 @@
                 },
                 "security": [
                     {
-                        "default": []
+                        "jwt": []
                     }
                 ]
             },
@@ -939,7 +939,7 @@
                 },
                 "security": [
                     {
-                        "default": []
+                        "jwt": []
                     }
                 ]
             }
@@ -1023,7 +1023,7 @@
                 },
                 "security": [
                     {
-                        "default": []
+                        "jwt": []
                     }
                 ]
             },
@@ -1086,7 +1086,7 @@
                 },
                 "security": [
                     {
-                        "default": []
+                        "jwt": []
                     }
                 ]
             }
@@ -1617,7 +1617,7 @@
                 },
                 "security": [
                     {
-                        "default": []
+                        "jwt": []
                     }
                 ]
             }
@@ -1698,7 +1698,7 @@
                 },
                 "security": [
                     {
-                        "default": []
+                        "jwt": []
                     }
                 ]
             }
@@ -1733,7 +1733,7 @@
                 },
                 "security": [
                     {
-                        "default": []
+                        "jwt": []
                     }
                 ]
             }
@@ -2007,7 +2007,7 @@
                 },
                 "security": [
                     {
-                        "default": []
+                        "jwt": []
                     }
                 ]
             }
@@ -2071,7 +2071,7 @@
                 },
                 "security": [
                     {
-                        "default": []
+                        "jwt": []
                     }
                 ]
             },
@@ -2111,7 +2111,7 @@
                 },
                 "security": [
                     {
-                        "default": []
+                        "jwt": []
                     }
                 ]
             }
@@ -2173,7 +2173,7 @@
                 },
                 "security": [
                     {
-                        "default": []
+                        "jwt": []
                     }
                 ]
             }
@@ -2193,7 +2193,7 @@
                 ],
                 "security": [
                     {
-                        "default": []
+                        "jwt": []
                     }
                 ]
             },
@@ -2211,7 +2211,7 @@
                 ],
                 "security": [
                     {
-                        "default": []
+                        "jwt": []
                     }
                 ]
             },
@@ -2229,7 +2229,7 @@
                 ],
                 "security": [
                     {
-                        "default": []
+                        "jwt": []
                     }
                 ]
             },
@@ -2247,7 +2247,7 @@
                 ],
                 "security": [
                     {
-                        "default": []
+                        "jwt": []
                     }
                 ]
             }
@@ -2324,7 +2324,7 @@
                 },
                 "security": [
                     {
-                        "default": []
+                        "jwt": []
                     }
                 ]
             },
@@ -2386,7 +2386,7 @@
                 },
                 "security": [
                     {
-                        "default": []
+                        "jwt": []
                     }
                 ]
             },
@@ -2394,7 +2394,7 @@
                 "summary": "",
                 "security": [
                     {
-                        "default": []
+                        "jwt": []
                     }
                 ]
             },
@@ -2437,7 +2437,7 @@
                 },
                 "security": [
                     {
-                        "default": []
+                        "jwt": []
                     }
                 ]
             }
@@ -2521,7 +2521,7 @@
                 },
                 "security": [
                     {
-                        "default": []
+                        "jwt": []
                     }
                 ]
             },
@@ -2584,7 +2584,7 @@
                 },
                 "security": [
                     {
-                        "default": []
+                        "jwt": []
                     }
                 ]
             },
@@ -2654,7 +2654,7 @@
                 },
                 "security": [
                     {
-                        "default": []
+                        "jwt": []
                     }
                 ]
             }
@@ -3855,7 +3855,7 @@
             }
         },
         "securitySchemes": {
-            "default": {
+            "jwt": {
                 "scheme": "bearer",
                 "bearerFormat": "JWT",
                 "description": "JWT Bearer Authentication",

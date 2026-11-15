@@ -1,12 +1,13 @@
 package com.ctfp.controller
 
-import com.ctfp.controller.helper.RequireAdmin
 import com.ctfp.controller.helper.getId
-import com.ctfp.controller.helper.isAdmin
 import com.ctfp.dto.ChallengeRequest
+import com.ctfp.plugins.adminOnly
+import com.ctfp.plugins.isAdmin
+import com.ctfp.plugins.optionallyAuthenticated
 import com.ctfp.service.ChallengeService
 import io.ktor.http.HttpStatusCode
-import io.ktor.server.auth.authenticate
+import io.ktor.server.auth.principalOrNull
 import io.ktor.server.request.receive
 import io.ktor.server.response.respond
 import io.ktor.server.routing.Route
@@ -18,15 +19,13 @@ import io.ktor.server.routing.route
 
 fun Route.challenge(service: ChallengeService) {
     route("/challenges") {
-        // Login is optional for reading; admins also get hidden and not yet published challenges.
-        authenticate(optional = true) {
+        optionallyAuthenticated {
+            // Login is optional for reading; admins also get hidden and not yet published challenges.
             get {
-                call.respond(service.getAll(includeUnreleased = call.isAdmin()))
+                call.respond(service.getAll(includeUnreleased = call.principalOrNull.isAdmin))
             }
         }
-        authenticate {
-            install(RequireAdmin)
-
+        adminOnly {
             post {
                 val challenge = call.receive<ChallengeRequest>()
                 service.create(challenge)
@@ -48,17 +47,15 @@ fun Route.challenge(service: ChallengeService) {
             }
         }
         route("/{id}") {
-            authenticate(optional = true) {
+            optionallyAuthenticated {
                 get {
                     val id = call.getId()
-                    val challenge = service.get(id, includeUnreleased = call.isAdmin())
+                    val challenge = service.get(id, includeUnreleased = call.principalOrNull.isAdmin)
 
                     call.respond(challenge)
                 }
             }
-            authenticate {
-                install(RequireAdmin)
-
+            adminOnly {
                 put {
                     val id = call.getId()
                     val challenge = call.receive<ChallengeRequest>()

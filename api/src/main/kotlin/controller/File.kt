@@ -1,10 +1,11 @@
 package com.ctfp.controller
 
-import com.ctfp.controller.helper.RequireAdmin
 import com.ctfp.controller.helper.errors
 import com.ctfp.controller.helper.getId
-import com.ctfp.controller.helper.isAdmin
 import com.ctfp.dto.FileResponse
+import com.ctfp.plugins.adminOnly
+import com.ctfp.plugins.isAdmin
+import com.ctfp.plugins.optionallyAuthenticated
 import com.ctfp.service.ApiException
 import com.ctfp.service.FileService
 import io.ktor.http.ContentDisposition
@@ -17,7 +18,7 @@ import io.ktor.http.HttpStatusCode.Companion.PayloadTooLarge
 import io.ktor.http.HttpStatusCode.Companion.Unauthorized
 import io.ktor.http.content.PartData
 import io.ktor.http.content.forEachPart
-import io.ktor.server.auth.authenticate
+import io.ktor.server.auth.principalOrNull
 import io.ktor.server.http.content.suppressCompression
 import io.ktor.server.request.receiveMultipart
 import io.ktor.server.response.header
@@ -30,15 +31,13 @@ import io.ktor.server.routing.route
 
 fun Route.file(service: FileService) {
     route("/challenges/{id}/files") {
-        // Same visibility as the challenge itself.
-        authenticate(optional = true) {
+        optionallyAuthenticated {
+            // Same visibility as the challenge itself.
             get {
-                call.respond(service.getChallengeFiles(call.getId(), includeUnreleased = call.isAdmin()))
+                call.respond(service.getChallengeFiles(call.getId(), includeUnreleased = call.principalOrNull.isAdmin))
             }.errors(BadRequest, NotFound)
         }
-        authenticate {
-            install(RequireAdmin)
-
+        adminOnly {
             // multipart/form-data with one `file` part; responds with the stored file's metadata.
             post {
                 val challengeId = call.getId()
@@ -66,9 +65,9 @@ fun Route.file(service: FileService) {
     }
 
     route("/files/{id}") {
-        authenticate(optional = true) {
+        optionallyAuthenticated {
             get("/download") {
-                val download = service.download(call.getId(), includeUnreleased = call.isAdmin())
+                val download = service.download(call.getId(), includeUnreleased = call.principalOrNull.isAdmin)
 
                 // Always a download, never rendered: an uploaded .html or .svg can't run script on our origin.
                 call.response.header(
@@ -86,9 +85,7 @@ fun Route.file(service: FileService) {
                 call.respond(download.content)
             }.errors(BadRequest, NotFound)
         }
-        authenticate {
-            install(RequireAdmin)
-
+        adminOnly {
             delete {
                 service.delete(call.getId())
 

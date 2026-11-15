@@ -3,14 +3,14 @@ package com.ctfp.controller
 import com.ctfp.controller.helper.errors
 import com.ctfp.controller.helper.getId
 import com.ctfp.dto.UserUpdateRequest
-import com.ctfp.plugins.userId
+import com.ctfp.plugins.authenticated
 import com.ctfp.service.UserService
 import io.ktor.http.HttpStatusCode
 import io.ktor.http.HttpStatusCode.Companion.BadRequest
 import io.ktor.http.HttpStatusCode.Companion.Conflict
 import io.ktor.http.HttpStatusCode.Companion.NotFound
 import io.ktor.http.HttpStatusCode.Companion.Unauthorized
-import io.ktor.server.auth.authenticate
+import io.ktor.server.auth.principal
 import io.ktor.server.request.receive
 import io.ktor.server.response.respond
 import io.ktor.server.routing.Route
@@ -22,7 +22,7 @@ import io.ktor.server.routing.route
 
 /** Public user views, plus the caller's own account under `/me`. Admin views live in [adminUser]. */
 fun Route.user(service: UserService) {
-    authenticate {
+    authenticated {
         route("/users") {
             get {
                 call.respond(service.getAllUsers())
@@ -30,10 +30,10 @@ fun Route.user(service: UserService) {
 
             route("/me") {
                 get {
-                    call.respond(service.getAdminUser(call.userId()))
+                    call.respond(service.getAdminUser(call.principal.id))
                 }.errors(Unauthorized, NotFound)
                 put {
-                    service.updateUser(call.userId(), call.receive<UserUpdateRequest>())
+                    service.updateUser(call.principal.id, call.receive<UserUpdateRequest>())
 
                     call.respond(HttpStatusCode.NoContent)
                 }.errors(BadRequest, Unauthorized, NotFound, Conflict)
