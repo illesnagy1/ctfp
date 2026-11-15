@@ -39,9 +39,9 @@ abstract class DefaultService<ID : Any, DAO : Entity<ID>, RequestDTO : Any, Resp
         id: ID,
         dto: RequestDTO,
     ) = withTransaction {
-        dao.findByIdAndUpdate(id) {
-            it.apply(dto)
-        }
+        dao.findByIdAndUpdate(id) { it.apply(dto) }
+        ?: throw EntityNotFoundException(DaoEntityID(id, table), dao)
+
     }
 
     open suspend fun updateMany(dtos: Map<ID, RequestDTO>) =

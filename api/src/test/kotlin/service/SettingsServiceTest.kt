@@ -46,6 +46,8 @@ class SettingsServiceTest {
 
             assertFailsWith<ApiException> { service.updateSettings(Settings(maxTeamSize = 0)) }
             assertFailsWith<ApiException> { service.updateSettings(Settings(ctfName = " ")) }
+            assertFailsWith<ApiException> { service.updateSettings(Settings(ctfName = "x".repeat(Settings.MAX_CTF_NAME_LENGTH + 1))) }
+            assertFailsWith<ApiException> { service.updateSettings(Settings(maxTeamSize = Settings.MAX_TEAM_SIZE + 1)) }
             assertFalse(file.exists())
             assertEquals(Settings(), service.getSettings())
         }
