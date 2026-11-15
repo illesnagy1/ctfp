@@ -1,0 +1,28 @@
+---
+title: CTF+
+description: Self-hosted Capture The Flag platform.
+template: splash
+hero:
+  tagline: Self-hosted Capture The Flag platform with a Ktor API and a SvelteKit frontend.
+  actions:
+    - text: Getting started
+      link: /guides/getting-started/
+      icon: right-arrow
+---
+
+import { Card, CardGrid } from '@astrojs/starlight/components';
+
+<CardGrid>
+  <Card title="Challenges" icon="puzzle">
+    Categories, files, hints and flags with dynamic scoring.
+  </Card>
+  <Card title="Scoreboard" icon="list-format">
+    Live user and team rankings.
+  </Card>
+  <Card title="Custom pages" icon="document">
+    Markdown pages per route and language.
+  </Card>
+  <Card title="Admin" icon="setting">
+    Configure the event from the admin panel.
+  </Card>
+</CardGrid>

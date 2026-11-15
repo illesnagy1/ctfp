@@ -8,6 +8,7 @@ ktlint = "1.8"
 hadolint = "2.15"
 tombi = "1.9"
 kingfisher = "2.17"
+rumdl = "0.3.4"
 
 [settings]
 lockfile = true
@@ -70,8 +71,19 @@ run = "./gradlew koverHtmlReport koverLog"
 
 [tasks.up]
 description = "Build and start the full stack"
-run = "podman compose up --build"              # compose requires JWT_SECRET
+run = "podman compose up --build"
 
 [tasks.hooks]
 description = "Install git hooks"
 run = "hk install --mise"
+
+[tasks."install:docs"]
+description = "Install docs dependencies"
+dir = "docs"
+run = "bun install"
+
+[tasks.docs]
+description = "Run the docs dev server"
+dir = "docs"
+depends = ["install:docs"]
+run = "bun run dev"
