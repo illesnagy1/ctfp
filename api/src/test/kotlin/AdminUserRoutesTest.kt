@@ -1,5 +1,8 @@
 package com.ctfp
 
+import com.ctfp.config.enum.UserRole
+import com.ctfp.domain.dao.UserDAO
+import com.ctfp.domain.db.withTransaction
 import io.ktor.client.request.bearerAuth
 import io.ktor.client.request.get
 import io.ktor.client.request.put
@@ -10,6 +13,9 @@ import io.ktor.http.HttpStatusCode
 import io.ktor.http.contentType
 import io.ktor.server.testing.ApplicationTestBuilder
 import io.ktor.server.testing.testApplication
+import kotlinx.coroutines.async
+import kotlinx.coroutines.awaitAll
+import kotlinx.coroutines.coroutineScope
 import kotlin.test.Test
 import kotlin.test.assertEquals
 
@@ -58,6 +64,30 @@ class AdminUserRoutesTest {
         contentType(ContentType.Application.Json)
         setBody(body)
     }
+
+    @Test
+    fun `two admins demoting each other at once leave one admin`() =
+        testApplication {
+            configure()
+            startApplication()
+            repeat(10) { round ->
+                val (a, b) = listOf("mutual-a$round", "mutual-b$round")
+                val (aToken, bToken) = listOf(registerAdmin(a), registerAdmin(b))
+                val (aId, bId) = listOf(userId(a), userId(b))
+
+                val statuses =
+                    coroutineScope {
+                        listOf(
+                            async { put("/v1/admin/users/$bId", aToken, update(b, "USER")).status },
+                            async { put("/v1/admin/users/$aId", bToken, update(a, "USER")).status },
+                        ).awaitAll()
+                    }
+
+                assertEquals(setOf(HttpStatusCode.NoContent, HttpStatusCode.Forbidden), statuses.toSet())
+                val roles = withTransaction { UserDAO.forIds(listOf(aId, bId)).map { it.role } }
+                assertEquals(1, roles.count { it == UserRole.ADMIN })
+            }
+        }
 
     @Test
     fun `admins can ban others but not themselves`() =

@@ -7,6 +7,7 @@ import com.ctfp.domain.dao.UserDAO
 import com.ctfp.domain.db.withTransaction
 import com.ctfp.domain.model.FlagTable
 import com.ctfp.domain.model.SubmissionTable
+import com.ctfp.domain.model.UserTable
 import com.ctfp.dto.Limits
 import com.ctfp.dto.SubmissionResult
 import io.ktor.http.HttpStatusCode
@@ -67,9 +68,14 @@ class SubmissionService(
         return flag
     }
 
-    /** The submitting user; call inside a transaction. */
+    /**
+     * The submitting user, row-locked until the transaction ends; call inside a transaction. The lock makes a player's
+     * submissions run one at a time, so parallel ones can't both solve or both use the last attempt.
+     */
     private fun submitter(userId: Int): UserDAO {
-        val user = UserDAO.findById(userId) ?: throw ApiException(HttpStatusCode.Unauthorized, "Session is no longer valid")
+        val user =
+            UserDAO.find { UserTable.id eq userId }.forUpdate().singleOrNull()
+                ?: throw ApiException(HttpStatusCode.Unauthorized, "Session is no longer valid")
         if (user.isBanned) throw ApiException(HttpStatusCode.Forbidden, "Banned users can't submit flags")
         return user
     }

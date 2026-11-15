@@ -2,6 +2,7 @@ package com.ctfp
 
 import com.ctfp.domain.dao.UserDAO
 import com.ctfp.domain.db.withTransaction
+import com.ctfp.domain.model.SubmissionTable
 import com.ctfp.domain.model.UserTable
 import com.ctfp.dto.ChallengeResponse
 import com.ctfp.dto.Limits
@@ -17,8 +18,13 @@ import io.ktor.http.HttpStatusCode
 import io.ktor.http.contentType
 import io.ktor.server.testing.ApplicationTestBuilder
 import io.ktor.server.testing.testApplication
+import kotlinx.coroutines.async
+import kotlinx.coroutines.awaitAll
+import kotlinx.coroutines.coroutineScope
 import kotlinx.serialization.json.Json
+import org.jetbrains.exposed.v1.core.and
 import org.jetbrains.exposed.v1.core.eq
+import org.jetbrains.exposed.v1.jdbc.selectAll
 import kotlin.test.Test
 import kotlin.test.assertEquals
 
@@ -60,6 +66,44 @@ class SubmissionRoutesTest {
     ) = post("/v1/challenges/$challengeId/submissions", token, """{"flag":"$flag"}""")
 
     private suspend fun HttpResponse.result() = Json.decodeFromString<SubmissionResult>(bodyAsText())
+
+    @Test
+    fun `parallel submissions solve once and stay within max attempts`() =
+        testApplication {
+            configure()
+            startApplication()
+            val admin = registerAdmin("race-admin")
+            val solver = register("race-solver")
+            val guesser = register("race-guesser")
+
+            // Patterns are unique across challenges.
+            fun flag(name: String) = """{"pattern":"flag\\{$name\\}","baseValue":100,"isCaseSensitive":true}"""
+            val solveId = challengeWithFlag(admin, "race-solve", flag("race"))
+            val limitId = challengeWithFlag(admin, "race-limit", flag("race-limit"), maxAttempts = 3)
+
+            coroutineScope {
+                (1..20).map { async { submit(solveId, solver, "flag{race}") } }.awaitAll()
+                (1..20).map { async { submit(limitId, guesser, "flag{wrong}") } }.awaitAll()
+            }
+
+            suspend fun count(
+                user: String,
+                challengeId: Int,
+                correct: Boolean,
+            ): Long {
+                val id = userId(user)
+                return withTransaction {
+                    SubmissionTable
+                        .selectAll()
+                        .where {
+                            (SubmissionTable.userId eq id) and (SubmissionTable.challengeId eq challengeId) and
+                                (SubmissionTable.isCorrect eq correct)
+                        }.count()
+                }
+            }
+            assertEquals(1, count("race-solver", solveId, correct = true))
+            assertEquals(3, count("race-guesser", limitId, correct = false))
+        }
 
     @Test
     fun `players solve challenges with the right flag`() =

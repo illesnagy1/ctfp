@@ -2,6 +2,7 @@ package com.ctfp.domain.model
 
 import org.jetbrains.exposed.v1.core.ReferenceOption
 import org.jetbrains.exposed.v1.core.dao.id.IntIdTable
+import org.jetbrains.exposed.v1.core.eq
 import org.jetbrains.exposed.v1.datetime.CurrentTimestamp
 import org.jetbrains.exposed.v1.datetime.timestamp
 
@@ -20,5 +21,8 @@ object SubmissionTable : IntIdTable() {
 
     init {
         index("idx_submissions_user_challenge", false, userId, challengeId)
+        // Backstop for the row lock in SubmissionService.submit: one solve per player and challenge. H2 skips partial
+        // indexes, so this only exists on Postgres.
+        uniqueIndex("uq_submissions_user_challenge_solved", userId, challengeId) { isCorrect eq true }
     }
 }

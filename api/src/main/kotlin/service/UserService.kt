@@ -83,6 +83,7 @@ class UserService(
         validate(user)
         ensureNotSelfLockout(id, user, actorId)
         withTransaction {
+            lockAdmins(actorId)
             ensureAvailable(user.username, user.email, exceptId = id)
             findUser(id).applyAdmin(user)
         }
@@ -96,6 +97,7 @@ class UserService(
         users.values.forEach(::validate)
         users.forEach { (id, user) -> ensureNotSelfLockout(id, user, actorId) }
         withTransaction {
+            lockAdmins(actorId)
             users.forEach { (id, user) -> ensureAvailable(user.username, user.email, exceptId = id) }
             UserDAO.findAll(users.keys).forEach { it.applyAdmin(users.getValue(it.id.value)) }
         }
@@ -114,13 +116,31 @@ class UserService(
         if (user.role != UserRole.ADMIN) throw ApiException(HttpStatusCode.BadRequest, "You cannot change your own role")
     }
 
-    suspend fun deleteUser(id: Int) =
-        withTransaction {
-            findUser(id).delete()
-        }
+    /** [actorId] is the admin deleting. */
+    suspend fun deleteUser(
+        id: Int,
+        actorId: Int,
+    ) = withTransaction {
+        lockAdmins(actorId)
+        findUser(id).delete()
+    }
 
-    suspend fun deleteUsers(ids: List<Int>) =
-        withTransaction {
-            UserTable.deleteWhere { UserTable.id inList ids }
-        }
+    /** [actorId] is the admin deleting. */
+    suspend fun deleteUsers(
+        ids: List<Int>,
+        actorId: Int,
+    ) = withTransaction {
+        lockAdmins(actorId)
+        UserTable.deleteWhere { UserTable.id inList ids }
+    }
+}
+
+/**
+ * Locks the admin rows until the transaction ends and checks [actorId] is still one of them; call first in a
+ * transaction that changes users. The admin check ran when the request started, so without this two admins
+ * demoting or deleting each other at the same time could both succeed and leave no admin.
+ */
+private fun lockAdmins(actorId: Int) {
+    val admins = UserDAO.find { (UserTable.role eq UserRole.ADMIN) and (UserTable.isBanned eq false) }.forUpdate()
+    if (admins.none { it.id.value == actorId }) throw ApiException(HttpStatusCode.Forbidden, "Admin access required")
 }

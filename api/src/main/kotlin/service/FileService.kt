@@ -3,6 +3,7 @@ package com.ctfp.service
 import com.ctfp.domain.dao.ChallengeDAO
 import com.ctfp.domain.dao.FileDAO
 import com.ctfp.domain.db.withTransaction
+import com.ctfp.domain.model.ChallengeTable
 import com.ctfp.domain.model.FileOwner
 import com.ctfp.domain.model.FileTable
 import com.ctfp.dto.FileResponse
@@ -53,8 +54,11 @@ class FileService(
 
         try {
             return withTransaction {
-                // Again in this transaction, in case the challenge was deleted during the upload.
-                ChallengeDAO[challengeId]
+                // Again in this transaction, in case the challenge was deleted during the upload. Locked, so a
+                // concurrent delete waits for this file row instead of missing it.
+                if (ChallengeDAO.find { ChallengeTable.id eq challengeId }.forUpdate().empty()) {
+                    throw ApiException(HttpStatusCode.NotFound, "Not found")
+                }
                 FileDAO
                     .new {
                         ownerType = FileOwner.CHALLENGE

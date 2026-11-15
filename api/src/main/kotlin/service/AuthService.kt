@@ -116,7 +116,8 @@ class AuthService(
     }
 
     private fun findUsableCode(code: String): RegistrationCodeDAO {
-        val registrationCode = RegistrationCodeDAO.find { RegistrationCodeTable.code eq code }.firstOrNull()
+        // Locked, so parallel registrations count each other's uses instead of all passing the maxUses check.
+        val registrationCode = RegistrationCodeDAO.find { RegistrationCodeTable.code eq code }.forUpdate().firstOrNull()
         if (
             registrationCode == null ||
             registrationCode.expiresAt < Clock.System.now() ||

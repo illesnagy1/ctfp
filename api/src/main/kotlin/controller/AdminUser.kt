@@ -52,7 +52,7 @@ fun Route.adminUser(service: UserService) {
                     call.respond(HttpStatusCode.NoContent)
                 }.errors(BadRequest, Unauthorized, Forbidden, NotFound, Conflict)
                 delete {
-                    service.deleteUser(call.getId())
+                    service.deleteUser(call.getId(), actorId = call.principal.id)
 
                     call.respond(HttpStatusCode.NoContent)
                 }.errors(BadRequest, Unauthorized, Forbidden, NotFound)

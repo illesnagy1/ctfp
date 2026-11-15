@@ -55,8 +55,9 @@ class ChallengeService(
     override suspend fun delete(id: Int) {
         val keys =
             withTransaction {
-                val challenge = ChallengeDAO[id]
-                deleteFileRows(listOf(id)).also { challenge.delete() }
+                // Challenge row first: its lock makes a concurrent upload wait, so its file row is seen below.
+                ChallengeDAO[id].delete()
+                deleteFileRows(listOf(id))
             }
         FileService.deleteStored(storage, keys)
     }
@@ -64,8 +65,9 @@ class ChallengeService(
     override suspend fun deleteMany(ids: List<Int>): Int {
         val (deleted, keys) =
             withTransaction {
-                val keys = deleteFileRows(ids)
-                ChallengeTable.deleteWhere { ChallengeTable.id inList ids } to keys
+                // Challenge rows first, see delete().
+                val deleted = ChallengeTable.deleteWhere { ChallengeTable.id inList ids }
+                deleted to deleteFileRows(ids)
             }
         FileService.deleteStored(storage, keys)
         return deleted
