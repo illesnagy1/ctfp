@@ -23,6 +23,7 @@ import kotlin.time.Duration.Companion.days
 
 /** Password of every seeded account. */
 private const val SEED_PASSWORD = "password123"
+private const val SEED_CODE_MAX_USES = 10
 
 /**
  * Fills an empty database with sample users, challenges and solves, only in development mode
@@ -117,7 +118,7 @@ suspend fun Application.configureSeed() {
     withTransaction {
         RegistrationCodeDAO.new {
             code = "DEV-CODE"
-            maxUses = 10
+            maxUses = SEED_CODE_MAX_USES
             expiresAt = now + 30.days
         }
     }

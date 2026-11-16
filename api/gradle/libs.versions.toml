@@ -14,6 +14,8 @@ kotlinxSerialization = "1.13.0"
 detekt = "2.0.0-alpha.6"
 kover = "0.9.11"
 kotlinmailer = "2.0.0"
+micrometer = "1.17.2"
+opentelemetryInstrumentation = "2.33.1-alpha"
 
 [libraries]
 exposed-core = { module = "org.jetbrains.exposed:exposed-core", version.ref = "exposed" }
@@ -38,6 +40,14 @@ kotlinx-serialization-hocon = { module = "org.jetbrains.kotlinx:kotlinx-serializ
 kotlinmailer-smtp = { module = "at.quickme.kotlinmailer:smtp", version.ref = "kotlinmailer" }
 flyway-core = { module = "org.flywaydb:flyway-core", version.ref = "flyway" }
 flyway-database-postgresql = { module = "org.flywaydb:flyway-database-postgresql", version.ref = "flyway" }
+micrometer-registry-prometheus = { module = "io.micrometer:micrometer-registry-prometheus", version.ref = "micrometer" }
+micrometer-registry-otlp = { module = "io.micrometer:micrometer-registry-otlp", version.ref = "micrometer" }
+opentelemetry-instrumentation-bom-alpha = { module = "io.opentelemetry.instrumentation:opentelemetry-instrumentation-bom-alpha", version.ref = "opentelemetryInstrumentation" }
+opentelemetry-ktor = { module = "io.opentelemetry.instrumentation:opentelemetry-ktor-3.0" }
+opentelemetry-jdbc = { module = "io.opentelemetry.instrumentation:opentelemetry-jdbc" }
+opentelemetry-logback-mdc = { module = "io.opentelemetry.instrumentation:opentelemetry-logback-mdc-1.0" }
+opentelemetry-sdk-autoconfigure = { module = "io.opentelemetry:opentelemetry-sdk-extension-autoconfigure" }
+opentelemetry-exporter-otlp = { module = "io.opentelemetry:opentelemetry-exporter-otlp" }
 
 [plugins]
 kotlin-jvm = { id = "org.jetbrains.kotlin.jvm", version.ref = "kotlin" }

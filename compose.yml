@@ -26,6 +26,8 @@ services:
       SMTP_USERNAME: ${SMTP_USERNAME:-}
       SMTP_PASSWORD: ${SMTP_PASSWORD:-}
       MAIL_FROM: ${MAIL_FROM:-CTF+ <noreply@localhost>}
+      OTEL_EXPORTER_OTLP_ENDPOINT: ${OTEL_EXPORTER_OTLP_ENDPOINT:-}
+      OTEL_SERVICE_NAME: ctfp-api
     ports:
       - '127.0.0.1:8080:8080' # frontend reaches the api over the compose network
     restart: unless-stopped

@@ -23,7 +23,6 @@ import io.ktor.server.plugins.forwardedheaders.ForwardedHeaders
 import io.ktor.server.plugins.forwardedheaders.XForwardedHeaders
 import io.ktor.server.plugins.hsts.HSTS
 import io.ktor.server.plugins.httpsredirect.HttpsRedirect
-import io.ktor.server.plugins.openapi.openAPI
 import io.ktor.server.plugins.partialcontent.PartialContent
 import io.ktor.server.plugins.swagger.swaggerUI
 import io.ktor.server.response.header
@@ -84,31 +83,22 @@ fun Application.configureHttp() {
 //        // 301 Moved Permanently, or 302 Found redirect.
 //        permanentRedirect = true
 //    }
-    routing {
-        openAPI(path = "openapi") {
-            /*
-             Documentation source configuration goes here.
-
-             This can be from file (documentation.yaml), or it can be served dynamically from your sources using the
-             `describe {}` API on routes.  When `openApi` enabled in Gradle, these calls will be automatically injected
-             based on your code and comments.
-             */
-        }
-    }
     install(PartialContent) {
         // Maximum number of ranges that will be accepted from a HTTP request.
         // If the HTTP request specifies more ranges, they will all be merged into a single range.
         maxRangeCount = MAX_RANGE_COUNT
     }
-    routing {
-        swaggerUI(path = "swagger") {
-            /*
-             Documentation source configuration goes here.
+    if (developmentMode) {
+        routing {
+            swaggerUI(path = "swagger") {
+                /*
+                 Documentation source configuration goes here.
 
-             This can be from file (documentation.yaml), or it can be served dynamically from your sources using the
-             `describe {}` API on routes.  When `openApi` enabled in Gradle, these calls will be automatically injected
-             based on your code and comments.
-             */
+                 This can be from file (documentation.yaml), or it can be served dynamically from your sources using
+                 the `describe {}` API on routes.  When `openApi` enabled in Gradle, these calls will be automatically
+                 injected based on your code and comments.
+                 */
+            }
         }
     }
 }

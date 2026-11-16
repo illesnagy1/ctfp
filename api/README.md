@@ -22,7 +22,6 @@ Here's a list of features included in this project:
 | [Forwarded Headers](https://start.ktor.io/p/io.ktor/server-forwarded-header-support)  | Allows handling proxied headers (X-Forwarded-*)                                    |
 | [HSTS](https://start.ktor.io/p/io.ktor/server-hsts)                                   | Enables HTTP Strict Transport Security (HSTS)                                      |
 | [HttpsRedirect](https://start.ktor.io/p/io.ktor/server-https-redirect)                | Redirects insecure HTTP requests to the respective HTTPS endpoint                  |
-| [OpenAPI](https://start.ktor.io/p/io.ktor/server-openapi)                             | Serves OpenAPI documentation                                                       |
 | [Partial Content](https://start.ktor.io/p/io.ktor/server-partial-content)             | Handles requests with the Range header                                             |
 | [Simple Cache](https://start.ktor.io/p/com.ucasoft/server-simple-cache)               | Provides API for cache management                                                  |
 | [Simple Memory Cache](https://start.ktor.io/p/com.ucasoft/server-simple-memory-cache) | Provides memory cache for Simple Cache plugin                                      |
