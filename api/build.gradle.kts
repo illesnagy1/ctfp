@@ -73,6 +73,7 @@ dependencies {
     implementation(libs.exposed.migration.core)
     implementation(libs.exposed.migration.jdbc)
     implementation(libs.flaxoos.ktor.server.rateLimiting)
+    implementation(libs.kotlinmailer.smtp)
     implementation(libs.h2database.h2)
     implementation(libs.koin.ktor)
     implementation(libs.koin.loggerSlf4j)

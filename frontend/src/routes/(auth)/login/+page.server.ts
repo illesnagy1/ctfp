@@ -9,9 +9,10 @@ import { createSession } from '#lib/server/session.js';
 
 import type { Actions, PageServerLoad } from './$types';
 
-export const load: PageServerLoad = async ({ locals }) => {
+export const load: PageServerLoad = async ({ locals, url }) => {
   if (locals.user) redirect(303, '/');
-  return { form: await superValidate(zod4(loginSchema)) };
+  // Set by the reset-password page after a new password was saved.
+  return { form: await superValidate(zod4(loginSchema)), passwordReset: url.searchParams.has('reset') };
 };
 
 export const actions: Actions = {

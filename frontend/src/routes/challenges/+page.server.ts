@@ -13,16 +13,12 @@ import type { Actions, PageServerLoad } from './$types';
 export const load: PageServerLoad = async (event) => {
   const client = apiClient(event);
   // The route documents no error responses yet, so check the response itself.
-  const [{ data, response }, solves] = await Promise.all([
-    client.GET('/v1/challenges'),
-    // Only logged-in users have solves; without them nothing is highlighted, so a failure isn't fatal.
-    event.locals.user ? client.GET('/v1/users/me/solves') : undefined,
-  ]);
+  // Logged in, each challenge also says whether the caller solved it.
+  const { data, response } = await client.GET('/v1/challenges');
   if (!data) error(response.status, response.statusText);
 
   return {
     challenges: data,
-    solvedIds: solves?.data ?? [],
     createForm: await superValidate(zod4(createChallengeSchema)),
   };
 };

@@ -6,6 +6,7 @@ import com.ctfp.domain.db.withTransaction
 import com.ctfp.domain.model.ChallengeTable
 import com.ctfp.domain.model.FileTable
 import com.ctfp.domain.model.FlagTable
+import com.ctfp.domain.model.PasswordResetTokenTable
 import com.ctfp.domain.model.RegistrationCodeTable
 import com.ctfp.domain.model.SubmissionTable
 import com.ctfp.domain.model.TeamTable
@@ -27,6 +28,7 @@ suspend fun createSchemas() =
             ChallengeTable,
             FileTable,
             FlagTable,
+            PasswordResetTokenTable,
             TeamTable,
             SubmissionTable,
             RegistrationCodeTable,

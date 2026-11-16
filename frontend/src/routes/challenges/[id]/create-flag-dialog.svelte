@@ -38,7 +38,7 @@
       toast.error(result.error.message);
     },
   });
-  const { form: formData, enhance, submitting } = form;
+  const { form: formData, enhance, submitting, delayed } = form;
 
   function onOpenChange(value: boolean) {
     if (value) form.reset();
@@ -138,7 +138,7 @@
             <Button variant="outline" {...props}>{m.challenges_create_cancel()}</Button>
           {/snippet}
         </Dialog.Close>
-        <Form.Button disabled={$submitting}>{m.challenges_create_submit()}</Form.Button>
+        <Form.Button disabled={$submitting} pending={$delayed}>{m.challenges_create_submit()}</Form.Button>
       </Dialog.Footer>
     </form>
   </Dialog.Content>

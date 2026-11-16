@@ -1,6 +1,7 @@
 <script lang="ts">
   import type { Snippet } from 'svelte';
 
+  import CountryFlag from '#lib/components/country-flag.svelte';
   import LocalTime from '#lib/components/local-time.svelte';
   import * as Card from '#lib/components/ui/card/index.js';
   import { m } from '#lib/paraglide/messages.js';
@@ -39,7 +40,7 @@
   <Card.Content>
     <dl class="grid grid-cols-label-value gap-x-6 gap-y-2 text-sm">
       <dt class="text-muted-foreground">{m.users_column_country()}</dt>
-      <dd>{user.country ?? '-'}</dd>
+      <dd><CountryFlag code={user.country} /></dd>
       <dt class="text-muted-foreground">{m.users_column_website()}</dt>
       <dd>
         {#if safeWebsite}

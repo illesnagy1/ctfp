@@ -32,7 +32,8 @@
     </Table.Header>
     <Table.Body>
       {#each ranked as { entry, rank } (entry.userId)}
-        <Table.Row>
+        {@const isMe = entry.userId === data.user?.id}
+        <Table.Row data-highlighted={isMe || undefined} aria-current={isMe ? 'true' : undefined}>
           <Table.Cell><span class="font-medium">{rank}</span></Table.Cell>
           <Table.Cell>
             <a href={resolve('/users/[id]', { id: String(entry.userId) })} class="underline-offset-4 hover:underline">

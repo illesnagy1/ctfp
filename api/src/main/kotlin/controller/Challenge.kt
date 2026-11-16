@@ -22,7 +22,7 @@ fun Route.challenge(service: ChallengeService) {
         optionallyAuthenticated {
             // Login is optional for reading; admins also get hidden and not yet published challenges.
             get {
-                call.respond(service.getAll(includeUnreleased = call.principalOrNull.isAdmin))
+                call.respond(service.getAll(includeUnreleased = call.principalOrNull.isAdmin, userId = call.principalOrNull?.id))
             }
         }
         adminOnly {
@@ -50,7 +50,7 @@ fun Route.challenge(service: ChallengeService) {
             optionallyAuthenticated {
                 get {
                     val id = call.getId()
-                    val challenge = service.get(id, includeUnreleased = call.principalOrNull.isAdmin)
+                    val challenge = service.get(id, includeUnreleased = call.principalOrNull.isAdmin, userId = call.principalOrNull?.id)
 
                     call.respond(challenge)
                 }

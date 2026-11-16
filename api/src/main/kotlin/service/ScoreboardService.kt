@@ -7,6 +7,7 @@ import com.ctfp.domain.model.SubmissionTable
 import com.ctfp.domain.model.UserTable
 import com.ctfp.dto.DecayFunction
 import com.ctfp.dto.ScoreboardEntry
+import org.jetbrains.exposed.v1.core.Op
 import org.jetbrains.exposed.v1.core.and
 import org.jetbrains.exposed.v1.core.eq
 import org.jetbrains.exposed.v1.core.neq
@@ -26,7 +27,7 @@ class ScoreboardService {
             val players =
                 UserTable
                     .select(UserTable.id, UserTable.username, UserTable.country)
-                    .where { (UserTable.isHidden eq false) and (UserTable.isBanned eq false) and (UserTable.role neq UserRole.ADMIN) }
+                    .where { rankedPlayers() }
                     .associate { it[UserTable.id].value to (it[UserTable.username] to it[UserTable.country]) }
 
             // One correct submission per player and challenge (later guesses are refused once solved).
@@ -70,6 +71,10 @@ class ScoreboardService {
     )
 
     companion object {
+        /** Accounts that are ranked and count as solvers: not hidden, banned or admin. */
+        fun rankedPlayers(): Op<Boolean> =
+            (UserTable.isHidden eq false) and (UserTable.isBanned eq false) and (UserTable.role neq UserRole.ADMIN)
+
         /**
          * The flag's value once [solvers] players have solved it. The first solver gets the full value; `decayValue`
          * scales how fast it drops: per solve (linear), by the log of the solves, or by their square (parabolic).

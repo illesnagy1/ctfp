@@ -1,6 +1,7 @@
 package com.ctfp.plugins
 
 import com.ctfp.config.jwtConfig
+import com.ctfp.config.mailConfig
 import com.ctfp.config.settingsFileConfig
 import com.ctfp.config.uploadsConfig
 import com.ctfp.controller.adminUser
@@ -26,6 +27,7 @@ import com.ctfp.service.FlagService
 import com.ctfp.service.HintService
 import com.ctfp.service.NotificationService
 import com.ctfp.service.PageService
+import com.ctfp.service.PasswordResetService
 import com.ctfp.service.RegistrationCodeService
 import com.ctfp.service.ScoreboardService
 import com.ctfp.service.SettingsService
@@ -33,6 +35,7 @@ import com.ctfp.service.SubmissionService
 import com.ctfp.service.TeamService
 import com.ctfp.service.UserService
 import com.ctfp.service.helper.PasswordHasher
+import com.ctfp.service.helper.mailSender
 import com.ctfp.storage.LocalFileStorage
 import io.ktor.server.application.Application
 import io.ktor.server.application.call
@@ -56,10 +59,12 @@ fun Application.configureRouting() {
         val uploads = environment.config.uploadsConfig()
         val storage = LocalFileStorage(Path(uploads.dir))
         val challengeService = ChallengeService(storage)
+        val mail = environment.config.mailConfig()
+        val passwordResets = PasswordResetService(hasher, mailSender(mail), mail.publicUrl, this@configureRouting)
 
         route("v1") {
             challenge(challengeService)
-            auth(AuthService(environment.config.jwtConfig(), hasher))
+            auth(AuthService(environment.config.jwtConfig(), hasher), passwordResets)
             emailTemplate(EmailTemplateService())
             file(FileService(storage, challengeService, uploads.maxBytes))
             flag(FlagService())

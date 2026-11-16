@@ -39,6 +39,27 @@ data class UploadsConfig(
 )
 
 @Serializable
+data class SmtpConfig(
+    val host: String,
+    val security: String,
+    /** 0: the usual port for [security]. */
+    val port: Int,
+    val username: String,
+    val password: String,
+) {
+    override fun toString() = "SmtpConfig(host=$host, security=$security, port=$port, username=$username)"
+}
+
+@Serializable
+data class MailConfig(
+    /** `Name <address>` or a bare address. */
+    val from: String,
+    /** The frontend's origin, e.g. `https://ctf.example.com`; links in emails point there. */
+    val publicUrl: String,
+    val smtp: SmtpConfig,
+)
+
+@Serializable
 data class AppConfig(
     val jwt: JwtConfig,
     val postgres: PostgresConfig,
@@ -53,6 +74,8 @@ fun ApplicationConfig.postgresConfig(): PostgresConfig = property("postgres").ge
 fun ApplicationConfig.settingsFileConfig(): SettingsFileConfig = property("settings").getAs()
 
 fun ApplicationConfig.uploadsConfig(): UploadsConfig = property("uploads").getAs()
+
+fun ApplicationConfig.mailConfig(): MailConfig = property("mail").getAs()
 
 fun ApplicationConfig.appConfig() =
     AppConfig(

@@ -1,13 +1,16 @@
 <script lang="ts">
   import { resolve } from '$app/paths';
   import ArrowLeftIcon from '@lucide/svelte/icons/arrow-left';
+  import CircleCheckIcon from '@lucide/svelte/icons/circle-check';
   import FlagIcon from '@lucide/svelte/icons/flag';
 
   import { DataTableBadgesCell } from '#lib/components/data-table/index.js';
   import LocalTime from '#lib/components/local-time.svelte';
+  import { Badge } from '#lib/components/ui/badge/index.js';
   import * as Card from '#lib/components/ui/card/index.js';
   import { m } from '#lib/paraglide/messages.js';
   import { getLocale } from '#lib/paraglide/runtime.js';
+  import { duration } from '#lib/time.js';
 
   import ChallengeFiles from './challenge-files.svelte';
   import ChallengeFlags from './challenge-flags.svelte';
@@ -17,21 +20,6 @@
 
   const challenge = $derived(data.challenge);
   const isAdmin = $derived(data.user?.role === 'ADMIN');
-
-  /** Seconds as e.g. "1h 30m", in the current locale's unit symbols. */
-  function duration(seconds: number) {
-    const parts: [number, string][] = [
-      [Math.floor(seconds / 3600), 'hour'],
-      [Math.floor((seconds % 3600) / 60), 'minute'],
-      [seconds % 60, 'second'],
-    ];
-    return parts
-      .filter(([amount]) => amount > 0)
-      .map(([amount, unit]) =>
-        new Intl.NumberFormat(getLocale(), { style: 'unit', unit, unitDisplay: 'narrow' }).format(amount),
-      )
-      .join(' ');
-  }
 
   const yesNo = (value: boolean | undefined) => (value ? m.user_profile_yes() : m.user_profile_no());
 </script>
@@ -50,6 +38,9 @@
       {#if challenge.categories.length > 0}
         <DataTableBadgesCell badges={challenge.categories} />
       {/if}
+      <Card.Action>
+        <Badge>{m.challenge_points({ value: challenge.value ?? 0 })}</Badge>
+      </Card.Action>
     </Card.Header>
     <Card.Content>
       <div class="flex flex-col gap-6">
@@ -61,14 +52,33 @@
         {:else}
           <p class="text-sm text-muted-foreground">{m.challenge_details_no_description()}</p>
         {/if}
+        <section class="flex flex-col gap-3" aria-labelledby="flag-submission-title">
+          <h2 id="flag-submission-title" class="flex items-center gap-2 text-sm font-medium">
+            <FlagIcon class="size-4" />
+            {m.flag_submission_title()}
+          </h2>
+          {#if challenge.solved}
+            <p class="flex items-center gap-2 rounded-md border bg-success p-3 text-sm font-medium">
+              <CircleCheckIcon class="size-4" />
+              {m.challenge_solved()}
+            </p>
+          {:else if data.submitFlagForm}
+            <FlagSubmission data={data.submitFlagForm} attemptsLeft={challenge.attemptsLeft ?? null} />
+          {:else}
+            <a href={resolve('/(auth)/login')} class="text-sm underline">{m.flag_submission_login()}</a>
+          {/if}
+        </section>
         <dl class="grid grid-cols-label-value gap-x-6 gap-y-2 text-sm">
-          <dt class="text-muted-foreground">{m.challenges_field_publish_at()}</dt>
-          <dd><LocalTime value={challenge.publishAt} /></dd>
           <dt class="text-muted-foreground">{m.challenges_column_max_attempts()}</dt>
           <dd>{challenge.maxAttempts > 0 ? challenge.maxAttempts : m.challenge_details_no_limit()}</dd>
           <dt class="text-muted-foreground">{m.challenge_details_time_limit()}</dt>
-          <dd>{challenge.timeLimit > 0 ? duration(challenge.timeLimit) : m.challenge_details_no_limit()}</dd>
+          <dd>
+            {challenge.timeLimit > 0 ? duration(challenge.timeLimit, getLocale()) : m.challenge_details_no_limit()}
+          </dd>
           {#if isAdmin}
+            <!-- Players only ever see published challenges. -->
+            <dt class="text-muted-foreground">{m.challenges_field_publish_at()}</dt>
+            <dd><LocalTime value={challenge.publishAt} /></dd>
             <dt class="text-muted-foreground">{m.challenges_field_visible()}</dt>
             <dd>{yesNo(challenge.isVisible)}</dd>
             <dt class="text-muted-foreground">{m.challenge_details_created()}</dt>
@@ -77,17 +87,6 @@
             <dd><LocalTime value={challenge.updatedAt} /></dd>
           {/if}
         </dl>
-        <section class="flex flex-col gap-3" aria-labelledby="flag-submission-title">
-          <h2 id="flag-submission-title" class="flex items-center gap-2 text-sm font-medium">
-            <FlagIcon class="size-4" />
-            {m.flag_submission_title()}
-          </h2>
-          {#if data.submitFlagForm}
-            <FlagSubmission data={data.submitFlagForm} />
-          {:else}
-            <a href={resolve('/(auth)/login')} class="text-sm underline">{m.flag_submission_login()}</a>
-          {/if}
-        </section>
         <ChallengeFiles challengeId={challenge.id} files={data.files} {isAdmin} />
         {#if data.flags && data.createFlagForm}
           <ChallengeFlags flags={data.flags} createForm={data.createFlagForm} />

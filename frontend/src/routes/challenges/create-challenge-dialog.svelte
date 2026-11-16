@@ -15,6 +15,7 @@
   import { m } from '#lib/paraglide/messages.js';
   import { getLocale } from '#lib/paraglide/runtime.js';
   import { createChallengeSchema } from '#lib/schemas/challenge.js';
+  import { duration } from '#lib/time.js';
 
   let {
     data,
@@ -46,7 +47,7 @@
       toast.error(result.error.message);
     },
   });
-  const { form: formData, enhance, submitting } = form;
+  const { form: formData, enhance, submitting, delayed } = form;
 
   function onOpenChange(value: boolean) {
     if (value) form.reset({ data: { publishAt: new Date().toISOString() } });
@@ -117,7 +118,14 @@
           <Form.Control>
             {#snippet children({ props })}
               <Form.Label>{m.challenges_field_max_attempts()}</Form.Label>
-              <Input {...props} type="number" min={0} step={1} bind:value={$formData.maxAttempts} />
+              <Input
+                {...props}
+                type="number"
+                min={0}
+                step={1}
+                placeholder={m.challenge_details_no_limit()}
+                bind:value={() => $formData.maxAttempts || null, (v) => ($formData.maxAttempts = v ?? 0)}
+              />
             {/snippet}
           </Form.Control>
           <Form.FieldErrors />
@@ -126,9 +134,19 @@
           <Form.Control>
             {#snippet children({ props })}
               <Form.Label>{m.challenges_field_time_limit()}</Form.Label>
-              <Input {...props} type="number" min={0} step={1} bind:value={$formData.timeLimit} />
+              <Input
+                {...props}
+                type="number"
+                min={0}
+                step={1}
+                placeholder={m.challenge_details_no_limit()}
+                bind:value={() => $formData.timeLimit || null, (v) => ($formData.timeLimit = v ?? 0)}
+              />
             {/snippet}
           </Form.Control>
+          {#if $formData.timeLimit > 0}
+            <Form.Description>= {duration($formData.timeLimit, getLocale())}</Form.Description>
+          {/if}
           <Form.FieldErrors />
         </Form.Field>
         <p class="col-span-2 -mt-2 text-xs text-muted-foreground">{m.challenges_field_limit_hint()}</p>
@@ -149,7 +167,7 @@
             <Button variant="outline" {...props}>{m.challenges_create_cancel()}</Button>
           {/snippet}
         </Dialog.Close>
-        <Form.Button disabled={$submitting}>{m.challenges_create_submit()}</Form.Button>
+        <Form.Button disabled={$submitting} pending={$delayed}>{m.challenges_create_submit()}</Form.Button>
       </Dialog.Footer>
     </form>
   </Dialog.Content>

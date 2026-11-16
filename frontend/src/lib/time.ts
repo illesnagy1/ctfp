@@ -15,3 +15,12 @@ export function isTimeZone(value: string | undefined): value is string {
 export function browserTimeZone() {
   return Intl.DateTimeFormat().resolvedOptions().timeZone;
 }
+
+/** Seconds as e.g. "1h 30m", in the locale's own units; zero units are left out. */
+export function duration(seconds: number, locale: string) {
+  return new Intl.DurationFormat(locale, { style: 'narrow' }).format({
+    hours: Math.floor(seconds / 3600),
+    minutes: Math.floor((seconds % 3600) / 60),
+    seconds: seconds % 60,
+  });
+}

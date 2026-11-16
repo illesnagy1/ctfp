@@ -35,6 +35,14 @@ data class ChallengeResponse(
     val timeLimit: Int,
     val createdAt: Instant,
     val updatedAt: Instant,
+    @JsonSchema.Description("Points each solver gets now: the best current value of its flags, which decays as more players solve it.")
+    val value: Int = 0,
+    @JsonSchema.Description("Ranked players who solved it; hidden, banned and admin accounts don't count.")
+    val solves: Int = 0,
+    @JsonSchema.Description("Whether the caller solved it; null for guests.")
+    val solved: Boolean? = null,
+    @JsonSchema.Description("Wrong guesses the caller has left; null for guests, once solved, and without a limit.")
+    val attemptsLeft: Int? = null,
 )
 
 fun ChallengeDAO.apply(dto: ChallengeRequest) {

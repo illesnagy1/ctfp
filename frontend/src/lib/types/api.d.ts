@@ -514,6 +514,88 @@ export interface paths {
     patch?: never;
     trace?: never;
   };
+  '/v1/auth/forgot-password': {
+    parameters: {
+      query?: never;
+      header?: never;
+      path?: never;
+      cookie?: never;
+    };
+    get?: never;
+    put?: never;
+    /** 202 whether or not the address has an account, so it can't be used to find out. */
+    post: {
+      parameters: {
+        query?: never;
+        header?: never;
+        path?: never;
+        cookie?: never;
+      };
+      requestBody?: {
+        content: {
+          'application/json': components['schemas']['ForgotPasswordRequest'];
+        };
+      };
+      responses: {
+        202: {
+          headers: {
+            [name: string]: unknown;
+          };
+          content?: never;
+        };
+      };
+    };
+    delete?: never;
+    options?: never;
+    head?: never;
+    patch?: never;
+    trace?: never;
+  };
+  '/v1/auth/reset-password': {
+    parameters: {
+      query?: never;
+      header?: never;
+      path?: never;
+      cookie?: never;
+    };
+    get?: never;
+    put?: never;
+    post: {
+      parameters: {
+        query?: never;
+        header?: never;
+        path?: never;
+        cookie?: never;
+      };
+      requestBody?: {
+        content: {
+          'application/json': components['schemas']['ResetPasswordRequest'];
+        };
+      };
+      responses: {
+        204: {
+          headers: {
+            [name: string]: unknown;
+          };
+          content?: never;
+        };
+        /** @description Bad Request */
+        400: {
+          headers: {
+            [name: string]: unknown;
+          };
+          content: {
+            'application/json': components['schemas']['ErrorResponse'];
+          };
+        };
+      };
+    };
+    delete?: never;
+    options?: never;
+    head?: never;
+    patch?: never;
+    trace?: never;
+  };
   '/v1/auth/me': {
     parameters: {
       query?: never;
@@ -2931,6 +3013,14 @@ export interface components {
       createdAt: string;
       /** Format: date-time */
       updatedAt: string;
+      /** @description Points each solver gets now: the best current value of its flags, which decays as more players solve it. */
+      value?: number;
+      /** @description Ranked players who solved it; hidden, banned and admin accounts don't count. */
+      solves?: number;
+      /** @description Whether the caller solved it; null for guests. */
+      solved?: boolean | null;
+      /** @description Wrong guesses the caller has left; null for guests, once solved, and without a limit. */
+      attemptsLeft?: number | null;
     };
     /** ChallengeRequest */
     ChallengeRequest: {
@@ -2987,6 +3077,16 @@ export interface components {
       email: string;
       password: string;
       registrationCode?: string | null;
+    };
+    /** ForgotPasswordRequest */
+    ForgotPasswordRequest: {
+      email: string;
+    };
+    /** ResetPasswordRequest */
+    ResetPasswordRequest: {
+      /** @description From the link in the reset email. */
+      token: string;
+      password: string;
     };
     /** EmailTemplateResponse */
     EmailTemplateResponse: {

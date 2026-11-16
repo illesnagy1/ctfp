@@ -29,7 +29,7 @@ fun main(args: Array<String>) {
             val loaded = ConfigFactory.load()
             config =
                 HoconApplicationConfig(
-                    listOf("jwt", "settings", "uploads")
+                    listOf("jwt", "mail", "settings", "uploads")
                         .map(loaded::withOnlyPath)
                         .reduce { merged, path -> merged.withFallback(path) },
                 )

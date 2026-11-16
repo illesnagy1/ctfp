@@ -1,12 +1,14 @@
 <script lang="ts">
   import { resolve } from '$app/paths';
-  import { Bell, CircleUser, LogIn, LogOut, Menu, UserPlus, Users, Wrench, X } from '@lucide/svelte';
+  import { page } from '$app/state';
+  import { ChevronDown, CircleUser, LogIn, LogOut, Menu, UserPlus, Wrench, X } from '@lucide/svelte';
   import { ModeWatcher } from 'mode-watcher';
 
   import './layout.css';
   import favicon from '#lib/assets/favicon.svg';
   import { Button } from '#lib/components/ui/button/index.js';
   import { ConfirmDeleteDialog } from '#lib/components/ui/confirm-delete-dialog/index.js';
+  import * as DropdownMenu from '#lib/components/ui/dropdown-menu/index.js';
   import { LanguageSwitcher, type Language } from '#lib/components/ui/language-switcher/index.js';
   import { Toaster } from '#lib/components/ui/sonner/index.js';
   import { ThemeSelector } from '#lib/components/ui/theme-selector/index.js';
@@ -17,8 +19,16 @@
 
   let { children, data } = $props();
   let menuOpen = $state(false);
-  let loggedIn = $derived(!!data.user);
   let isAdmin = $derived(data.user?.role === 'ADMIN');
+  let logoutForm = $state<HTMLFormElement>();
+
+  // The main task first.
+  const navLinks = [
+    { href: resolve('/challenges'), label: m.nav_challenges },
+    { href: resolve('/scoreboard'), label: m.nav_scoreboard },
+    { href: resolve('/users'), label: m.nav_users },
+  ];
+  const isCurrent = (href: string) => page.url.pathname === href || page.url.pathname.startsWith(`${href}/`);
 
   // Lets the server render times in the browser's zone from the next request on (see LocalTime).
   $effect(() => {
@@ -70,53 +80,77 @@
         class:hidden={!menuOpen}
         class="w-full md:flex md:w-auto md:flex-1 md:items-center md:justify-between"
       >
+        <!-- Teams, Team and Notifications stay out of the nav until their pages exist. -->
         <div class="flex flex-col gap-2 md:flex-row md:items-center">
-          <Button href={resolve('users')} variant="ghost">{m.nav_users()}</Button>
-          <Button href={resolve('teams')} variant="ghost">{m.nav_teams()}</Button>
-          <Button href={resolve('scoreboard')} variant="ghost">{m.nav_scoreboard()}</Button>
-          <Button href={resolve('challenges')} variant="ghost">{m.nav_challenges()}</Button>
+          {#each navLinks as link (link.href)}
+            <Button
+              href={link.href}
+              variant={isCurrent(link.href) ? 'secondary' : 'ghost'}
+              aria-current={isCurrent(link.href) ? 'page' : undefined}
+            >
+              {link.label()}
+            </Button>
+          {/each}
         </div>
         <div class="mt-3 flex flex-col gap-2 md:mt-0 md:flex-row md:items-center">
-          {#if loggedIn}
-            {#if isAdmin}
-              <Button href={resolve('admin')} variant="ghost"><Wrench />{m.nav_admin()}</Button>
-            {/if}
-
-            <Button href={resolve('notifications')} variant="ghost"><Bell />{m.nav_notifications()}</Button>
-            <Button href={resolve('team')} variant="ghost"><Users />{m.nav_team()}</Button>
-
-            <Button href={resolve('/users/[id]', { id: String(data.user?.id) })} variant="ghost">
-              <CircleUser />{m.nav_profile()}
-            </Button>
-
-            <form method="post" action={resolve('logout')}>
-              <Button type="submit" variant="outline" class="w-full"><LogOut />{m.nav_logout()}</Button>
-            </form>
+          <div class="flex items-center gap-2">
+            <LanguageSwitcher
+              {languages}
+              variant="ghost"
+              value={getLocale()}
+              onChange={(code) => {
+                if (isLocale(code)) setLocale(code);
+              }}
+            />
+            <ThemeSelector variant="ghost" />
+          </div>
+          {#if data.user}
+            <form bind:this={logoutForm} method="post" action={resolve('/(auth)/logout')} class="hidden"></form>
+            <DropdownMenu.Root>
+              <DropdownMenu.Trigger>
+                {#snippet child({ props })}
+                  <Button {...props} variant="ghost" class="justify-start">
+                    <CircleUser />{data.user?.username}<ChevronDown class="text-muted-foreground" />
+                  </Button>
+                {/snippet}
+              </DropdownMenu.Trigger>
+              <DropdownMenu.Content align="end" class="w-48">
+                <DropdownMenu.Item>
+                  {#snippet child({ props })}
+                    <a {...props} href={resolve('/users/[id]', { id: String(data.user?.id) })}>
+                      <CircleUser />{m.nav_profile()}
+                    </a>
+                  {/snippet}
+                </DropdownMenu.Item>
+                {#if isAdmin}
+                  <DropdownMenu.Item>
+                    {#snippet child({ props })}
+                      <a {...props} href={resolve('/admin')}><Wrench />{m.nav_admin()}</a>
+                    {/snippet}
+                  </DropdownMenu.Item>
+                {/if}
+                <DropdownMenu.Separator />
+                <DropdownMenu.Item onSelect={() => logoutForm?.requestSubmit()}>
+                  <LogOut />{m.nav_logout()}
+                </DropdownMenu.Item>
+              </DropdownMenu.Content>
+            </DropdownMenu.Root>
           {:else}
-            <Button href={resolve('register')}><UserPlus />{m.nav_register()}</Button>
-            <Button href={resolve('login')} variant="outline"><LogIn />{m.nav_login()}</Button>
+            <Button href={resolve('/(auth)/register')}><UserPlus />{m.nav_register()}</Button>
+            <Button href={resolve('/(auth)/login')} variant="outline"><LogIn />{m.nav_login()}</Button>
           {/if}
-          <!-- setLocale stores the choice in the PARAGLIDE_LOCALE cookie and reloads, so the server renders it too. -->
-          <LanguageSwitcher
-            {languages}
-            value={getLocale()}
-            onChange={(code) => {
-              if (isLocale(code)) setLocale(code);
-            }}
-          />
-          <ThemeSelector />
         </div>
       </div>
     </nav>
   </header>
 
-  <main class="grow text-justify">
+  <main class="grow">
     {@render children?.()}
   </main>
 
   <footer class="border-t bg-background/95">
-    <div class="mx-auto flex max-w-6xl items-center justify-center px-4 py-6">
-      <a href="/" rel="noreferrer" target="_blank" class="text-xs text-muted-foreground hover:underline">CTF+</a>
+    <div class="mx-auto flex max-w-6xl items-center justify-center p-4">
+      <a href={resolve('/')} class="text-xs text-muted-foreground hover:underline">CTF+</a>
     </div>
   </footer>
 </div>

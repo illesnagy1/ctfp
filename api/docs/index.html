@@ -863,6 +863,18 @@
     },
     "updatedAt" : {
       "format" : "date-time"
+    },
+    "value" : {
+      "description" : "Points each solver gets now: the best current value of its flags, which decays as more players solve it."
+    },
+    "solves" : {
+      "description" : "Ranked players who solved it; hidden, banned and admin accounts don't count."
+    },
+    "solved" : {
+      "description" : "Whether the caller solved it; null for guests."
+    },
+    "attemptsLeft" : {
+      "description" : "Wrong guesses the caller has left; null for guests, once solved, and without a limit."
     }
   }
 };
@@ -954,6 +966,15 @@
     "sortOrder" : { },
     "createdAt" : {
       "format" : "date-time"
+    }
+  }
+};
+            defs["ForgotPasswordRequest"] = {
+  "title" : "ForgotPasswordRequest",
+  "required" : [ "email" ],
+  "properties" : {
+    "email" : {
+      "maxLength" : 255
     }
   }
 };
@@ -1136,6 +1157,21 @@
     }
   }
 };
+            defs["ResetPasswordRequest"] = {
+  "title" : "ResetPasswordRequest",
+  "required" : [ "password", "token" ],
+  "properties" : {
+    "token" : {
+      "maxLength" : 255,
+      "minLength" : 1,
+      "description" : "From the link in the reset email."
+    },
+    "password" : {
+      "maxLength" : 128,
+      "minLength" : 8
+    }
+  }
+};
             defs["ScoreboardEntry"] = {
   "title" : "ScoreboardEntry",
   "required" : [ "points", "solves", "userId", "username" ],
@@ -1315,6 +1351,9 @@
                     <li data-group="Default" data-name="v1AdminUsersPut" class="">
                       <a href="#api-Default-v1AdminUsersPut">v1AdminUsersPut</a>
                     </li>
+                    <li data-group="Default" data-name="v1AuthForgotPasswordPost" class="">
+                      <a href="#api-Default-v1AuthForgotPasswordPost">v1AuthForgotPasswordPost</a>
+                    </li>
                     <li data-group="Default" data-name="v1AuthLoginPost" class="">
                       <a href="#api-Default-v1AuthLoginPost">v1AuthLoginPost</a>
                     </li>
@@ -1323,6 +1362,9 @@
                     </li>
                     <li data-group="Default" data-name="v1AuthRegisterPost" class="">
                       <a href="#api-Default-v1AuthRegisterPost">v1AuthRegisterPost</a>
+                    </li>
+                    <li data-group="Default" data-name="v1AuthResetPasswordPost" class="">
+                      <a href="#api-Default-v1AuthResetPasswordPost">v1AuthResetPasswordPost</a>
                     </li>
                     <li data-group="Default" data-name="v1ChallengesDelete" class="">
                       <a href="#api-Default-v1ChallengesDelete">v1ChallengesDelete</a>
@@ -5466,6 +5508,267 @@ except ApiException as e:
                         </article>
                       </div>
                       <hr>
+                    <div id="api-Default-v1AuthForgotPasswordPost">
+                      <article id="api-Default-v1AuthForgotPasswordPost-0" data-group="User" data-name="v1AuthForgotPasswordPost" data-version="0">
+                        <div class="pull-left">
+                          <h1>v1AuthForgotPasswordPost</h1>
+                          <p>202 whether or not the address has an account, so it can&#x27;t be used to find out.</p>
+                        </div>
+                        <div class="pull-right"></div>
+                        <div class="clearfix"></div>
+                        <p></p>
+                        <p class="marked"></p>
+                        <p></p>
+                        <br />
+                        <pre class="prettyprint language-html prettyprinted" data-type="post"><code><span class="pln">/v1/auth/forgot-password</span></code></pre>
+                        <p>
+                          <h3>Usage and SDK Samples</h3>
+                        </p>
+                        <ul class="nav nav-tabs nav-tabs-examples">
+                          <li class="active"><a href="#examples-Default-v1AuthForgotPasswordPost-0-curl">Curl</a></li>
+                          <li class=""><a href="#examples-Default-v1AuthForgotPasswordPost-0-java">Java</a></li>
+                          <li class=""><a href="#examples-Default-v1AuthForgotPasswordPost-0-android">Android</a></li>
+                          <!--<li class=""><a href="#examples-Default-v1AuthForgotPasswordPost-0-groovy">Groovy</a></li>-->
+                          <li class=""><a href="#examples-Default-v1AuthForgotPasswordPost-0-objc">Obj-C</a></li>
+                          <li class=""><a href="#examples-Default-v1AuthForgotPasswordPost-0-javascript">JavaScript</a></li>
+                          <!--<li class=""><a href="#examples-Default-v1AuthForgotPasswordPost-0-angular">Angular</a></li>-->
+                          <li class=""><a href="#examples-Default-v1AuthForgotPasswordPost-0-csharp">C#</a></li>
+                          <li class=""><a href="#examples-Default-v1AuthForgotPasswordPost-0-php">PHP</a></li>
+                          <li class=""><a href="#examples-Default-v1AuthForgotPasswordPost-0-perl">Perl</a></li>
+                          <li class=""><a href="#examples-Default-v1AuthForgotPasswordPost-0-python">Python</a></li>
+                        </ul>
+
+                        <div class="tab-content">
+                          <div class="tab-pane active" id="examples-Default-v1AuthForgotPasswordPost-0-curl">
+                           <pre class="prettyprint"><code class="language-bsh">curl -X POST\
+-H "Content-Type: application/json"\
+"//v1/auth/forgot-password"</code></pre>
+                          </div>
+                          <div class="tab-pane" id="examples-Default-v1AuthForgotPasswordPost-0-java">
+                            <pre class="prettyprint"><code class="language-java">import io.swagger.client.*;
+import io.swagger.client.auth.*;
+import io.swagger.client.model.*;
+import io.swagger.client.api.DefaultApi;
+
+import java.io.File;
+import java.util.*;
+
+public class DefaultApiExample {
+
+    public static void main(String[] args) {
+        
+        DefaultApi apiInstance = new DefaultApi();
+        ForgotPasswordRequest body = ; // ForgotPasswordRequest | 
+        try {
+            apiInstance.v1AuthForgotPasswordPost(body);
+        } catch (ApiException e) {
+            System.err.println("Exception when calling DefaultApi#v1AuthForgotPasswordPost");
+            e.printStackTrace();
+        }
+    }
+}</code></pre>
+                          </div>
+
+                          <div class="tab-pane" id="examples-Default-v1AuthForgotPasswordPost-0-android">
+                            <pre class="prettyprint"><code class="language-java">import io.swagger.client.api.DefaultApi;
+
+public class DefaultApiExample {
+
+    public static void main(String[] args) {
+        DefaultApi apiInstance = new DefaultApi();
+        ForgotPasswordRequest body = ; // ForgotPasswordRequest | 
+        try {
+            apiInstance.v1AuthForgotPasswordPost(body);
+        } catch (ApiException e) {
+            System.err.println("Exception when calling DefaultApi#v1AuthForgotPasswordPost");
+            e.printStackTrace();
+        }
+    }
+}</code></pre>
+                          </div>
+  <!--
+  <div class="tab-pane" id="examples-Default-v1AuthForgotPasswordPost-0-groovy">
+  <pre class="prettyprint language-json prettyprinted" data-type="json"><code>Coming Soon!</code></pre>
+  </div> -->
+                            <div class="tab-pane" id="examples-Default-v1AuthForgotPasswordPost-0-objc">
+                              <pre class="prettyprint"><code class="language-cpp">ForgotPasswordRequest *body = ; //  (optional)
+
+DefaultApi *apiInstance = [[DefaultApi alloc] init];
+
+// 202 whether or not the address has an account, so it can't be used to find out.
+[apiInstance v1AuthForgotPasswordPostWith:body
+              completionHandler: ^(NSError* error) {
+                            if (error) {
+                                NSLog(@"Error: %@", error);
+                            }
+                        }];
+</code></pre>
+                            </div>
+
+                            <div class="tab-pane" id="examples-Default-v1AuthForgotPasswordPost-0-javascript">
+                              <pre class="prettyprint"><code class="language-js">var UntitledApi = require('untitled_api');
+
+var api = new UntitledApi.DefaultApi()
+var opts = { 
+  'body':  // {{ForgotPasswordRequest}} 
+};
+var callback = function(error, data, response) {
+  if (error) {
+    console.error(error);
+  } else {
+    console.log('API called successfully.');
+  }
+};
+api.v1AuthForgotPasswordPost(opts, callback);
+</code></pre>
+                            </div>
+
+                            <!--<div class="tab-pane" id="examples-Default-v1AuthForgotPasswordPost-0-angular">
+              <pre class="prettyprint language-json prettyprinted" data-type="json"><code>Coming Soon!</code></pre>
+            </div>-->
+                            <div class="tab-pane" id="examples-Default-v1AuthForgotPasswordPost-0-csharp">
+                              <pre class="prettyprint"><code class="language-cs">using System;
+using System.Diagnostics;
+using IO.Swagger.Api;
+using IO.Swagger.Client;
+using IO.Swagger.Model;
+
+namespace Example
+{
+    public class v1AuthForgotPasswordPostExample
+    {
+        public void main()
+        {
+
+            var apiInstance = new DefaultApi();
+            var body = new ForgotPasswordRequest(); // ForgotPasswordRequest |  (optional) 
+
+            try
+            {
+                // 202 whether or not the address has an account, so it can't be used to find out.
+                apiInstance.v1AuthForgotPasswordPost(body);
+            }
+            catch (Exception e)
+            {
+                Debug.Print("Exception when calling DefaultApi.v1AuthForgotPasswordPost: " + e.Message );
+            }
+        }
+    }
+}
+</code></pre>
+                            </div>
+
+                            <div class="tab-pane" id="examples-Default-v1AuthForgotPasswordPost-0-php">
+                              <pre class="prettyprint"><code class="language-php"><&#63;php
+require_once(__DIR__ . '/vendor/autoload.php');
+
+$api_instance = new Swagger\Client\ApiDefaultApi();
+$body = ; // ForgotPasswordRequest | 
+
+try {
+    $api_instance->v1AuthForgotPasswordPost($body);
+} catch (Exception $e) {
+    echo 'Exception when calling DefaultApi->v1AuthForgotPasswordPost: ', $e->getMessage(), PHP_EOL;
+}
+?></code></pre>
+                            </div>
+
+                            <div class="tab-pane" id="examples-Default-v1AuthForgotPasswordPost-0-perl">
+                              <pre class="prettyprint"><code class="language-perl">use Data::Dumper;
+use WWW::SwaggerClient::Configuration;
+use WWW::SwaggerClient::DefaultApi;
+
+my $api_instance = WWW::SwaggerClient::DefaultApi->new();
+my $body = WWW::SwaggerClient::Object::ForgotPasswordRequest->new(); # ForgotPasswordRequest | 
+
+eval { 
+    $api_instance->v1AuthForgotPasswordPost(body => $body);
+};
+if ($@) {
+    warn "Exception when calling DefaultApi->v1AuthForgotPasswordPost: $@\n";
+}</code></pre>
+                            </div>
+
+                            <div class="tab-pane" id="examples-Default-v1AuthForgotPasswordPost-0-python">
+                              <pre class="prettyprint"><code class="language-python">from __future__ import print_statement
+import time
+import swagger_client
+from swagger_client.rest import ApiException
+from pprint import pprint
+
+# create an instance of the API class
+api_instance = swagger_client.DefaultApi()
+body =  # ForgotPasswordRequest |  (optional)
+
+try: 
+    # 202 whether or not the address has an account, so it can't be used to find out.
+    api_instance.v1_auth_forgot_password_post(body=body)
+except ApiException as e:
+    print("Exception when calling DefaultApi->v1AuthForgotPasswordPost: %s\n" % e)</code></pre>
+                            </div>
+                          </div>
+
+                          <h2>Parameters</h2>
+
+
+
+                            <div class="methodsubtabletitle">Body parameters</div>
+                            <table id="methodsubtable">
+                              <tr>
+                                <th width="150px">Name</th>
+                                <th>Description</th>
+                              </tr>
+                                <tr><td style="width:150px;">body </td>
+                                <td>
+                                
+                                
+                                <script>
+                                $(document).ready(function() {
+                                  var schemaWrapper = {
+  "content" : {
+    "application/json" : {
+      "schema" : {
+        "$ref" : "#/components/schemas/ForgotPasswordRequest"
+      }
+    }
+  }
+};
+                                  var schema = schemaWrapper.content["application/json"].schema;
+                                  if (schema.$ref != null) {
+                                    schema = defsParser.$refs.get(schema.$ref);
+                                  } else {
+                                    schemaWrapper.components = {};
+                                    schemaWrapper.components.schemas = Object.assign({}, defs);
+                                    $RefParser.dereference(schemaWrapper).catch(function(err) {
+                                      console.log(err);
+                                    });
+                                  }
+                                
+                                  var view = new JSONSchemaView(schema,2,{isBodyParam: true});
+                                  var result = $('#d2e199_v1AuthForgotPasswordPost_body');
+                                  result.empty();
+                                  result.append(view.render());
+                                });
+                                </script>
+                                <div id="d2e199_v1AuthForgotPasswordPost_body"></div>
+                                </td>
+                                </tr>
+                            </table>
+
+
+
+                          <h2>Responses</h2>
+                            <h3> Status: 202 -  </h3>
+
+                            <ul class="nav nav-tabs nav-tabs-examples" >
+                            </ul>
+
+                            <div class="tab-content" style='margin-bottom: 10px;'>
+                            </div>
+
+                        </article>
+                      </div>
+                      <hr>
                     <div id="api-Default-v1AuthLoginPost">
                       <article id="api-Default-v1AuthLoginPost-0" data-group="User" data-name="v1AuthLoginPost" data-version="0">
                         <div class="pull-left">
@@ -6629,6 +6932,313 @@ except ApiException as e:
                                     </script>
                                   </div>
                                   <input id='responses-v1AuthRegisterPost-409-schema-data' type='hidden' value=''></input>
+                                </div>
+                            </div>
+
+                        </article>
+                      </div>
+                      <hr>
+                    <div id="api-Default-v1AuthResetPasswordPost">
+                      <article id="api-Default-v1AuthResetPasswordPost-0" data-group="User" data-name="v1AuthResetPasswordPost" data-version="0">
+                        <div class="pull-left">
+                          <h1>v1AuthResetPasswordPost</h1>
+                          <p></p>
+                        </div>
+                        <div class="pull-right"></div>
+                        <div class="clearfix"></div>
+                        <p></p>
+                        <p class="marked"></p>
+                        <p></p>
+                        <br />
+                        <pre class="prettyprint language-html prettyprinted" data-type="post"><code><span class="pln">/v1/auth/reset-password</span></code></pre>
+                        <p>
+                          <h3>Usage and SDK Samples</h3>
+                        </p>
+                        <ul class="nav nav-tabs nav-tabs-examples">
+                          <li class="active"><a href="#examples-Default-v1AuthResetPasswordPost-0-curl">Curl</a></li>
+                          <li class=""><a href="#examples-Default-v1AuthResetPasswordPost-0-java">Java</a></li>
+                          <li class=""><a href="#examples-Default-v1AuthResetPasswordPost-0-android">Android</a></li>
+                          <!--<li class=""><a href="#examples-Default-v1AuthResetPasswordPost-0-groovy">Groovy</a></li>-->
+                          <li class=""><a href="#examples-Default-v1AuthResetPasswordPost-0-objc">Obj-C</a></li>
+                          <li class=""><a href="#examples-Default-v1AuthResetPasswordPost-0-javascript">JavaScript</a></li>
+                          <!--<li class=""><a href="#examples-Default-v1AuthResetPasswordPost-0-angular">Angular</a></li>-->
+                          <li class=""><a href="#examples-Default-v1AuthResetPasswordPost-0-csharp">C#</a></li>
+                          <li class=""><a href="#examples-Default-v1AuthResetPasswordPost-0-php">PHP</a></li>
+                          <li class=""><a href="#examples-Default-v1AuthResetPasswordPost-0-perl">Perl</a></li>
+                          <li class=""><a href="#examples-Default-v1AuthResetPasswordPost-0-python">Python</a></li>
+                        </ul>
+
+                        <div class="tab-content">
+                          <div class="tab-pane active" id="examples-Default-v1AuthResetPasswordPost-0-curl">
+                           <pre class="prettyprint"><code class="language-bsh">curl -X POST\
+-H "Accept: application/json"\
+-H "Content-Type: application/json"\
+"//v1/auth/reset-password"</code></pre>
+                          </div>
+                          <div class="tab-pane" id="examples-Default-v1AuthResetPasswordPost-0-java">
+                            <pre class="prettyprint"><code class="language-java">import io.swagger.client.*;
+import io.swagger.client.auth.*;
+import io.swagger.client.model.*;
+import io.swagger.client.api.DefaultApi;
+
+import java.io.File;
+import java.util.*;
+
+public class DefaultApiExample {
+
+    public static void main(String[] args) {
+        
+        DefaultApi apiInstance = new DefaultApi();
+        ResetPasswordRequest body = ; // ResetPasswordRequest | 
+        try {
+            apiInstance.v1AuthResetPasswordPost(body);
+        } catch (ApiException e) {
+            System.err.println("Exception when calling DefaultApi#v1AuthResetPasswordPost");
+            e.printStackTrace();
+        }
+    }
+}</code></pre>
+                          </div>
+
+                          <div class="tab-pane" id="examples-Default-v1AuthResetPasswordPost-0-android">
+                            <pre class="prettyprint"><code class="language-java">import io.swagger.client.api.DefaultApi;
+
+public class DefaultApiExample {
+
+    public static void main(String[] args) {
+        DefaultApi apiInstance = new DefaultApi();
+        ResetPasswordRequest body = ; // ResetPasswordRequest | 
+        try {
+            apiInstance.v1AuthResetPasswordPost(body);
+        } catch (ApiException e) {
+            System.err.println("Exception when calling DefaultApi#v1AuthResetPasswordPost");
+            e.printStackTrace();
+        }
+    }
+}</code></pre>
+                          </div>
+  <!--
+  <div class="tab-pane" id="examples-Default-v1AuthResetPasswordPost-0-groovy">
+  <pre class="prettyprint language-json prettyprinted" data-type="json"><code>Coming Soon!</code></pre>
+  </div> -->
+                            <div class="tab-pane" id="examples-Default-v1AuthResetPasswordPost-0-objc">
+                              <pre class="prettyprint"><code class="language-cpp">ResetPasswordRequest *body = ; //  (optional)
+
+DefaultApi *apiInstance = [[DefaultApi alloc] init];
+
+[apiInstance v1AuthResetPasswordPostWith:body
+              completionHandler: ^(NSError* error) {
+                            if (error) {
+                                NSLog(@"Error: %@", error);
+                            }
+                        }];
+</code></pre>
+                            </div>
+
+                            <div class="tab-pane" id="examples-Default-v1AuthResetPasswordPost-0-javascript">
+                              <pre class="prettyprint"><code class="language-js">var UntitledApi = require('untitled_api');
+
+var api = new UntitledApi.DefaultApi()
+var opts = { 
+  'body':  // {{ResetPasswordRequest}} 
+};
+var callback = function(error, data, response) {
+  if (error) {
+    console.error(error);
+  } else {
+    console.log('API called successfully.');
+  }
+};
+api.v1AuthResetPasswordPost(opts, callback);
+</code></pre>
+                            </div>
+
+                            <!--<div class="tab-pane" id="examples-Default-v1AuthResetPasswordPost-0-angular">
+              <pre class="prettyprint language-json prettyprinted" data-type="json"><code>Coming Soon!</code></pre>
+            </div>-->
+                            <div class="tab-pane" id="examples-Default-v1AuthResetPasswordPost-0-csharp">
+                              <pre class="prettyprint"><code class="language-cs">using System;
+using System.Diagnostics;
+using IO.Swagger.Api;
+using IO.Swagger.Client;
+using IO.Swagger.Model;
+
+namespace Example
+{
+    public class v1AuthResetPasswordPostExample
+    {
+        public void main()
+        {
+
+            var apiInstance = new DefaultApi();
+            var body = new ResetPasswordRequest(); // ResetPasswordRequest |  (optional) 
+
+            try
+            {
+                apiInstance.v1AuthResetPasswordPost(body);
+            }
+            catch (Exception e)
+            {
+                Debug.Print("Exception when calling DefaultApi.v1AuthResetPasswordPost: " + e.Message );
+            }
+        }
+    }
+}
+</code></pre>
+                            </div>
+
+                            <div class="tab-pane" id="examples-Default-v1AuthResetPasswordPost-0-php">
+                              <pre class="prettyprint"><code class="language-php"><&#63;php
+require_once(__DIR__ . '/vendor/autoload.php');
+
+$api_instance = new Swagger\Client\ApiDefaultApi();
+$body = ; // ResetPasswordRequest | 
+
+try {
+    $api_instance->v1AuthResetPasswordPost($body);
+} catch (Exception $e) {
+    echo 'Exception when calling DefaultApi->v1AuthResetPasswordPost: ', $e->getMessage(), PHP_EOL;
+}
+?></code></pre>
+                            </div>
+
+                            <div class="tab-pane" id="examples-Default-v1AuthResetPasswordPost-0-perl">
+                              <pre class="prettyprint"><code class="language-perl">use Data::Dumper;
+use WWW::SwaggerClient::Configuration;
+use WWW::SwaggerClient::DefaultApi;
+
+my $api_instance = WWW::SwaggerClient::DefaultApi->new();
+my $body = WWW::SwaggerClient::Object::ResetPasswordRequest->new(); # ResetPasswordRequest | 
+
+eval { 
+    $api_instance->v1AuthResetPasswordPost(body => $body);
+};
+if ($@) {
+    warn "Exception when calling DefaultApi->v1AuthResetPasswordPost: $@\n";
+}</code></pre>
+                            </div>
+
+                            <div class="tab-pane" id="examples-Default-v1AuthResetPasswordPost-0-python">
+                              <pre class="prettyprint"><code class="language-python">from __future__ import print_statement
+import time
+import swagger_client
+from swagger_client.rest import ApiException
+from pprint import pprint
+
+# create an instance of the API class
+api_instance = swagger_client.DefaultApi()
+body =  # ResetPasswordRequest |  (optional)
+
+try: 
+    api_instance.v1_auth_reset_password_post(body=body)
+except ApiException as e:
+    print("Exception when calling DefaultApi->v1AuthResetPasswordPost: %s\n" % e)</code></pre>
+                            </div>
+                          </div>
+
+                          <h2>Parameters</h2>
+
+
+
+                            <div class="methodsubtabletitle">Body parameters</div>
+                            <table id="methodsubtable">
+                              <tr>
+                                <th width="150px">Name</th>
+                                <th>Description</th>
+                              </tr>
+                                <tr><td style="width:150px;">body </td>
+                                <td>
+                                
+                                
+                                <script>
+                                $(document).ready(function() {
+                                  var schemaWrapper = {
+  "content" : {
+    "application/json" : {
+      "schema" : {
+        "$ref" : "#/components/schemas/ResetPasswordRequest"
+      }
+    }
+  }
+};
+                                  var schema = schemaWrapper.content["application/json"].schema;
+                                  if (schema.$ref != null) {
+                                    schema = defsParser.$refs.get(schema.$ref);
+                                  } else {
+                                    schemaWrapper.components = {};
+                                    schemaWrapper.components.schemas = Object.assign({}, defs);
+                                    $RefParser.dereference(schemaWrapper).catch(function(err) {
+                                      console.log(err);
+                                    });
+                                  }
+                                
+                                  var view = new JSONSchemaView(schema,2,{isBodyParam: true});
+                                  var result = $('#d2e199_v1AuthResetPasswordPost_body');
+                                  result.empty();
+                                  result.append(view.render());
+                                });
+                                </script>
+                                <div id="d2e199_v1AuthResetPasswordPost_body"></div>
+                                </td>
+                                </tr>
+                            </table>
+
+
+
+                          <h2>Responses</h2>
+                            <h3> Status: 204 -  </h3>
+
+                            <ul class="nav nav-tabs nav-tabs-examples" >
+                            </ul>
+
+                            <div class="tab-content" style='margin-bottom: 10px;'>
+                            </div>
+
+                            <h3> Status: 400 - Bad Request </h3>
+
+                            <ul class="nav nav-tabs nav-tabs-examples" >
+                                <li class="active">
+                                  <a data-toggle="tab" href="#responses-v1AuthResetPasswordPost-400-schema">Schema</a>
+                                </li>
+
+                            </ul>
+
+                            <div class="tab-content" style='margin-bottom: 10px;'>
+                                <div class="tab-pane active" id="responses-v1AuthResetPasswordPost-400-schema">
+                                  <div id='responses-v1AuthResetPasswordPost-400-schema-400' style="padding: 30px; border-left: 1px solid #eee; border-right: 1px solid #eee; border-bottom: 1px solid #eee;">
+                                    <script>
+                                      $(document).ready(function() {
+                                        var schemaWrapper = {
+  "description" : "Bad Request",
+  "content" : {
+    "application/json" : {
+      "schema" : {
+        "$ref" : "#/components/schemas/ErrorResponse"
+      }
+    }
+  }
+};
+                                        var schema = schemaWrapper.content["application/json"].schema;
+                                        if (schema.$ref != null) {
+                                          schema = defsParser.$refs.get(schema.$ref);
+                                        } else {
+                                          schemaWrapper.components = {};
+                                          schemaWrapper.components.schemas = Object.assign({}, defs);
+                                          $RefParser.dereference(schemaWrapper).catch(function(err) {
+                                            console.log(err);
+                                          });
+                                        }
+
+                                        //console.log(JSON.stringify(schema));
+                                        var view = new JSONSchemaView(schema, 3);
+                                        $('#responses-v1AuthResetPasswordPost-400-schema-data').val(stringify(schema));
+                                        var result = $('#responses-v1AuthResetPasswordPost-400-schema-400');
+                                        result.empty();
+                                        result.append(view.render());
+                                      });
+                                    </script>
+                                  </div>
+                                  <input id='responses-v1AuthResetPasswordPost-400-schema-data' type='hidden' value=''></input>
                                 </div>
                             </div>
 

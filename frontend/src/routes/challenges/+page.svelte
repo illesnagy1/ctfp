@@ -5,6 +5,7 @@
   import { DataTable } from '#lib/components/data-table/index.js';
   import { Button } from '#lib/components/ui/button/index.js';
   import { confirmDelete } from '#lib/components/ui/confirm-delete-dialog/index.js';
+  import { Progress } from '#lib/components/ui/progress/index.js';
   import { submitAction } from '#lib/form-action.js';
   import { m } from '#lib/paraglide/messages.js';
 
@@ -15,7 +16,7 @@
   let { data } = $props();
 
   const isAdmin = $derived(data.user?.role === 'ADMIN');
-  const solved = $derived(new Set(data.solvedIds));
+  const solvedCount = $derived(data.challenges.filter((c) => c.solved).length);
 
   // Filter options are whatever categories the challenges actually use.
   const categories = $derived(
@@ -60,7 +61,17 @@
 
 <div class="mx-auto w-full max-w-6xl px-4 py-6">
   <div class="flex items-center justify-between gap-4 pb-4">
-    <h1 class="text-2xl font-semibold tracking-tight">{m.challenges_title()}</h1>
+    <div class="flex flex-col gap-1">
+      <h1 class="text-2xl font-semibold tracking-tight">{m.challenges_title()}</h1>
+      {#if data.user && !isAdmin && data.challenges.length > 0}
+        <div class="flex items-center gap-2 text-sm text-muted-foreground">
+          <Progress value={solvedCount} max={data.challenges.length} class="w-32" aria-hidden="true" />
+          <span class="tabular-nums">
+            {m.challenges_progress({ solved: solvedCount, total: data.challenges.length })}
+          </span>
+        </div>
+      {/if}
+    </div>
     {#if isAdmin}
       <CreateChallengeDialog data={data.createForm} knownCategories={categories.map((c) => c.value)} />
     {/if}
@@ -70,7 +81,7 @@
     columns={isAdmin ? adminColumns : columns}
     selectable={isAdmin}
     getRowId={(challenge) => String(challenge.id)}
-    isHighlighted={(challenge) => solved.has(challenge.id)}
+    isHighlighted={(challenge) => !!challenge.solved}
     actions={isAdmin ? bulkActions : undefined}
     search={{ placeholder: m.challenges_filter_placeholder() }}
     filters={[{ column: 'categories', title: m.challenges_column_categories(), options: categories }]}

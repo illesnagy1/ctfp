@@ -34,12 +34,11 @@ export const columns: ColumnDef<DataTableFeatures, Challenge>[] = [
     getUniqueValues: (challenge) => challenge.categories,
     filterFn: (row, _id, selected: string[]) => row.original.categories.some((c) => selected.includes(c)),
   },
-  sortableColumn('maxAttempts', m.challenges_column_max_attempts),
+  { ...sortableColumn('value', m.challenges_column_points), enableGlobalFilter: false },
+  { ...sortableColumn('solves', m.challenges_column_solves), enableGlobalFilter: false },
   {
-    ...sortableColumn('publishAt', m.challenges_column_publish_at),
-    // The raw value is an ISO instant, not the local time shown.
-    enableGlobalFilter: false,
-    cell: ({ row }) => renderComponent(LocalTime, { value: row.original.publishAt }),
+    ...sortableColumn('maxAttempts', m.challenges_column_max_attempts),
+    cell: ({ row }) => row.original.maxAttempts || m.challenge_details_no_limit(),
   },
 ];
 
@@ -47,6 +46,13 @@ export const columns: ColumnDef<DataTableFeatures, Challenge>[] = [
 export const adminColumns: ColumnDef<DataTableFeatures, Challenge>[] = [
   selectColumn<Challenge>(),
   ...columns,
+  // Players only ever see published challenges, so the date is admin-only.
+  {
+    ...sortableColumn('publishAt', m.challenges_column_publish_at),
+    // The raw value is an ISO instant, not the local time shown.
+    enableGlobalFilter: false,
+    cell: ({ row }) => renderComponent(LocalTime, { value: row.original.publishAt }),
+  },
   {
     id: 'actions',
     enableSorting: false,

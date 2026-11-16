@@ -2,7 +2,7 @@ import { superValidate } from 'sveltekit-superforms';
 import { zod4 } from 'sveltekit-superforms/adapters';
 import { describe, expect, it } from 'vitest';
 
-import { registerSchema } from './auth';
+import { registerSchema, resetPasswordSchema } from './auth';
 import { createChallengeSchema } from './challenge';
 import { createFlagSchema } from './flag';
 import { idsSchema } from './ids';
@@ -11,6 +11,21 @@ import { createUserSchema, editUserSchema, setBannedSchema } from './user';
 
 const issuePaths = (result: { success: boolean; error?: { issues: { path: PropertyKey[] }[] } }) =>
   result.error?.issues.map((issue) => issue.path.join('.')) ?? [];
+
+describe('resetPasswordSchema', () => {
+  const valid = { token: 'abc', password: 'new-battery-staple', confirmPassword: 'new-battery-staple' };
+
+  it('accepts a token and matching passwords', () => {
+    expect(resetPasswordSchema.safeParse(valid).success).toBe(true);
+  });
+
+  it('needs the token and matching passwords', () => {
+    expect(issuePaths(resetPasswordSchema.safeParse({ ...valid, token: '' }))).toEqual(['token']);
+    expect(issuePaths(resetPasswordSchema.safeParse({ ...valid, confirmPassword: 'other' }))).toEqual([
+      'confirmPassword',
+    ]);
+  });
+});
 
 describe('registerSchema', () => {
   const valid = {
@@ -137,10 +152,16 @@ describe('editUserSchema', () => {
     expect(result).toMatchObject({ country: 'HU', website: 'https://example.com' });
   });
 
+  it('adds https:// to a website without a scheme', () => {
+    expect(editUserSchema.parse({ ...valid, website: 'example.com' })).toMatchObject({
+      website: 'https://example.com',
+    });
+  });
+
   it.each([
     ['country', 'HUN'],
     ['country', 'H1'],
-    ['website', 'example.com'],
+    ['website', 'ftp://example.com'],
     ['website', 'javascript:alert(1)'],
   ])('rejects an invalid %s', (field, value) => {
     expect(issuePaths(editUserSchema.safeParse({ ...valid, [field]: value }))).toEqual([field]);

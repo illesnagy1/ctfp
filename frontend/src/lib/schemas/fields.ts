@@ -9,7 +9,7 @@ export const username = () =>
   z
     .string()
     .trim()
-    .regex(/^[A-Za-z0-9._-]{1,16}$/, { error: () => m.validation_username() });
+    .regex(/^[A-Za-z0-9._-]{3,64}$/, { error: () => m.validation_username() });
 
 export const email = () =>
   z
@@ -37,8 +37,14 @@ export const website = () =>
   z
     .string()
     .trim()
-    .max(255, { error: () => m.validation_too_long({ max: 255 }) })
-    .regex(/^(https?:\/\/\S+)?$/i, { error: () => m.validation_website() });
+    // `example.com` means https://example.com; a link with another scheme (e.g. javascript:) is left to fail below.
+    .transform((v) => (v && !/^[a-z][a-z\d+.-]*:/i.test(v) ? `https://${v}` : v))
+    .pipe(
+      z
+        .string()
+        .max(255, { error: () => m.validation_too_long({ max: 255 }) })
+        .regex(/^(https?:\/\/\S+)?$/i, { error: () => m.validation_website() }),
+    );
 
 export const required = () => z.string().min(1, { error: () => m.validation_required() });
 

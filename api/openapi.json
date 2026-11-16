@@ -496,6 +496,54 @@
                 }
             }
         },
+        "/v1/auth/forgot-password": {
+            "post": {
+                "summary": "202 whether or not the address has an account, so it can't be used to find out.",
+                "requestBody": {
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/ForgotPasswordRequest"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "202": {
+                        "description": ""
+                    }
+                }
+            }
+        },
+        "/v1/auth/reset-password": {
+            "post": {
+                "summary": "",
+                "requestBody": {
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/ResetPasswordRequest"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "204": {
+                        "description": ""
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/ErrorResponse"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
         "/v1/auth/me": {
             "get": {
                 "summary": "",
@@ -2717,6 +2765,28 @@
                     "updatedAt": {
                         "type": "string",
                         "format": "date-time"
+                    },
+                    "value": {
+                        "type": "integer",
+                        "description": "Points each solver gets now: the best current value of its flags, which decays as more players solve it."
+                    },
+                    "solves": {
+                        "type": "integer",
+                        "description": "Ranked players who solved it; hidden, banned and admin accounts don't count."
+                    },
+                    "solved": {
+                        "type": [
+                            "boolean",
+                            "null"
+                        ],
+                        "description": "Whether the caller solved it; null for guests."
+                    },
+                    "attemptsLeft": {
+                        "type": [
+                            "integer",
+                            "null"
+                        ],
+                        "description": "Wrong guesses the caller has left; null for guests, once solved, and without a limit."
                     }
                 }
             },
@@ -2914,6 +2984,40 @@
                             "null"
                         ],
                         "maxLength": 255
+                    }
+                }
+            },
+            "ForgotPasswordRequest": {
+                "type": "object",
+                "title": "ForgotPasswordRequest",
+                "required": [
+                    "email"
+                ],
+                "properties": {
+                    "email": {
+                        "type": "string",
+                        "maxLength": 255
+                    }
+                }
+            },
+            "ResetPasswordRequest": {
+                "type": "object",
+                "title": "ResetPasswordRequest",
+                "required": [
+                    "token",
+                    "password"
+                ],
+                "properties": {
+                    "token": {
+                        "type": "string",
+                        "description": "From the link in the reset email.",
+                        "maxLength": 255,
+                        "minLength": 1
+                    },
+                    "password": {
+                        "type": "string",
+                        "maxLength": 128,
+                        "minLength": 8
                     }
                 }
             },
