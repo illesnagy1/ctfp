@@ -10,8 +10,8 @@
   import * as Dialog from '#lib/components/ui/dialog/index.js';
   import * as Form from '#lib/components/ui/form/index.js';
   import { Input } from '#lib/components/ui/input/index.js';
+  import { MarkdownEditor } from '#lib/components/ui/markdown-editor/index.js';
   import { TagsInput } from '#lib/components/ui/tags-input/index.js';
-  import { Textarea } from '#lib/components/ui/textarea/index.js';
   import { m } from '#lib/paraglide/messages.js';
   import { getLocale } from '#lib/paraglide/runtime.js';
   import { createChallengeSchema } from '#lib/schemas/challenge.js';
@@ -60,107 +60,111 @@
       <Button {...props}><PlusIcon />{m.challenges_create()}</Button>
     {/snippet}
   </Dialog.Trigger>
-  <Dialog.Content class="sm:max-w-lg">
+  <!-- At most the screen's height; the fields scroll between the fixed title and buttons. -->
+  <Dialog.Content class="flex max-h-11/12 flex-col sm:max-w-lg">
     <Dialog.Header>
       <Dialog.Title>{m.challenges_create()}</Dialog.Title>
       <Dialog.Description>{m.challenges_create_description()}</Dialog.Description>
     </Dialog.Header>
-    <form method="post" action="?/create" class="flex flex-col gap-4" use:enhance>
-      <Form.Field {form} name="title">
-        <Form.Control>
-          {#snippet children({ props })}
-            <Form.Label>{m.challenges_field_title()}</Form.Label>
-            <Input {...props} bind:value={$formData.title} />
-          {/snippet}
-        </Form.Control>
-        <Form.FieldErrors />
-      </Form.Field>
-      <Form.Field {form} name="description">
-        <Form.Control>
-          {#snippet children({ props })}
-            <Form.Label>{m.challenges_field_description()}</Form.Label>
-            <Textarea {...props} rows={4} bind:value={$formData.description} />
-          {/snippet}
-        </Form.Control>
-        <Form.FieldErrors />
-      </Form.Field>
-      <Form.Field {form} name="categories">
-        <Form.Control>
-          {#snippet children({ props })}
-            <Form.Label>{m.challenges_field_categories()}</Form.Label>
-            <TagsInput
-              {...props}
-              bind:value={$formData.categories}
-              suggestions={knownCategories}
-              placeholder={m.challenges_field_categories_placeholder()}
-            />
-          {/snippet}
-        </Form.Control>
-        <Form.FieldErrors />
-      </Form.Field>
-      <Form.Field {form} name="publishAt">
-        <Form.Control>
-          {#snippet children({ props })}
-            <Form.Label>{m.challenges_field_publish_at()}</Form.Label>
-            <DateTimePicker
-              {...props}
-              bind:value={$formData.publishAt}
-              locale={getLocale()}
-              triggerLabel={m.date_time_picker_pick_date()}
-              timeLabel={m.date_time_picker_time()}
-            />
-          {/snippet}
-        </Form.Control>
-        <Form.FieldErrors />
-      </Form.Field>
-      <div class="grid grid-cols-2 gap-4">
-        <Form.Field {form} name="maxAttempts">
+    <form method="post" action="?/create" class="flex min-h-0 flex-col gap-4" use:enhance>
+      <!-- Padded so focus rings aren't clipped; the negative margin keeps the scrollbar at the dialog's edge. -->
+      <div class="-mx-6 flex min-h-0 flex-col gap-4 overflow-y-auto px-6 py-1">
+        <Form.Field {form} name="title">
           <Form.Control>
             {#snippet children({ props })}
-              <Form.Label>{m.challenges_field_max_attempts()}</Form.Label>
-              <Input
+              <Form.Label>{m.challenges_field_title()}</Form.Label>
+              <Input {...props} bind:value={$formData.title} />
+            {/snippet}
+          </Form.Control>
+          <Form.FieldErrors />
+        </Form.Field>
+        <Form.Field {form} name="description">
+          <Form.Control>
+            {#snippet children({ props })}
+              <Form.Label>{m.challenges_field_description()}</Form.Label>
+              <MarkdownEditor {...props} bind:value={$formData.description} />
+            {/snippet}
+          </Form.Control>
+          <Form.FieldErrors />
+        </Form.Field>
+        <Form.Field {form} name="categories">
+          <Form.Control>
+            {#snippet children({ props })}
+              <Form.Label>{m.challenges_field_categories()}</Form.Label>
+              <TagsInput
                 {...props}
-                type="number"
-                min={0}
-                step={1}
-                placeholder={m.challenge_details_no_limit()}
-                bind:value={() => $formData.maxAttempts || null, (v) => ($formData.maxAttempts = v ?? 0)}
+                bind:value={$formData.categories}
+                suggestions={knownCategories}
+                placeholder={m.challenges_field_categories_placeholder()}
               />
             {/snippet}
           </Form.Control>
           <Form.FieldErrors />
         </Form.Field>
-        <Form.Field {form} name="timeLimit">
+        <Form.Field {form} name="publishAt">
           <Form.Control>
             {#snippet children({ props })}
-              <Form.Label>{m.challenges_field_time_limit()}</Form.Label>
-              <Input
+              <Form.Label>{m.challenges_field_publish_at()}</Form.Label>
+              <DateTimePicker
                 {...props}
-                type="number"
-                min={0}
-                step={1}
-                placeholder={m.challenge_details_no_limit()}
-                bind:value={() => $formData.timeLimit || null, (v) => ($formData.timeLimit = v ?? 0)}
+                bind:value={$formData.publishAt}
+                locale={getLocale()}
+                triggerLabel={m.date_time_picker_pick_date()}
+                timeLabel={m.date_time_picker_time()}
               />
             {/snippet}
           </Form.Control>
-          {#if $formData.timeLimit > 0}
-            <Form.Description>= {duration($formData.timeLimit, getLocale())}</Form.Description>
-          {/if}
           <Form.FieldErrors />
         </Form.Field>
-        <p class="col-span-2 -mt-2 text-xs text-muted-foreground">{m.challenges_field_limit_hint()}</p>
+        <div class="grid grid-cols-2 gap-4">
+          <Form.Field {form} name="maxAttempts">
+            <Form.Control>
+              {#snippet children({ props })}
+                <Form.Label>{m.challenges_field_max_attempts()}</Form.Label>
+                <Input
+                  {...props}
+                  type="number"
+                  min={0}
+                  step={1}
+                  placeholder={m.challenge_details_no_limit()}
+                  bind:value={() => $formData.maxAttempts || null, (v) => ($formData.maxAttempts = v ?? 0)}
+                />
+              {/snippet}
+            </Form.Control>
+            <Form.FieldErrors />
+          </Form.Field>
+          <Form.Field {form} name="timeLimit">
+            <Form.Control>
+              {#snippet children({ props })}
+                <Form.Label>{m.challenges_field_time_limit()}</Form.Label>
+                <Input
+                  {...props}
+                  type="number"
+                  min={0}
+                  step={1}
+                  placeholder={m.challenge_details_no_limit()}
+                  bind:value={() => $formData.timeLimit || null, (v) => ($formData.timeLimit = v ?? 0)}
+                />
+              {/snippet}
+            </Form.Control>
+            {#if $formData.timeLimit > 0}
+              <Form.Description>= {duration($formData.timeLimit, getLocale())}</Form.Description>
+            {/if}
+            <Form.FieldErrors />
+          </Form.Field>
+          <p class="col-span-2 -mt-2 text-xs text-muted-foreground">{m.challenges_field_limit_hint()}</p>
+        </div>
+        <Form.Field {form} name="isVisible">
+          <Form.Control>
+            {#snippet children({ props })}
+              <div class="flex items-center gap-2">
+                <Checkbox {...props} bind:checked={$formData.isVisible} />
+                <Form.Label>{m.challenges_field_visible()}</Form.Label>
+              </div>
+            {/snippet}
+          </Form.Control>
+        </Form.Field>
       </div>
-      <Form.Field {form} name="isVisible">
-        <Form.Control>
-          {#snippet children({ props })}
-            <div class="flex items-center gap-2">
-              <Checkbox {...props} bind:checked={$formData.isVisible} />
-              <Form.Label>{m.challenges_field_visible()}</Form.Label>
-            </div>
-          {/snippet}
-        </Form.Control>
-      </Form.Field>
       <Dialog.Footer>
         <Dialog.Close>
           {#snippet child({ props })}
