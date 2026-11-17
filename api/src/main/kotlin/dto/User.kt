@@ -41,6 +41,7 @@ data class UserUpdateRequest(
     override val email: String,
     @JsonSchema.MaxLength(Limits.USER_LANGUAGE_MAX)
     override val language: String?,
+    @JsonSchema.Pattern(Limits.COUNTRY_PATTERN)
     @JsonSchema.MinLength(Limits.COUNTRY_LENGTH)
     @JsonSchema.MaxLength(Limits.COUNTRY_LENGTH)
     @JsonSchema.Description("ISO 3166-1 alpha-2 code, e.g.: HU")
@@ -63,6 +64,7 @@ data class AdminUserUpdateRequest(
     override val email: String,
     @JsonSchema.MaxLength(Limits.USER_LANGUAGE_MAX)
     override val language: String?,
+    @JsonSchema.Pattern(Limits.COUNTRY_PATTERN)
     @JsonSchema.MinLength(Limits.COUNTRY_LENGTH)
     @JsonSchema.MaxLength(Limits.COUNTRY_LENGTH)
     @JsonSchema.Description("ISO 3166-1 alpha-2 code, e.g. HU.")
@@ -93,6 +95,7 @@ data class AdminUserCreateRequest(
     val password: String,
     @JsonSchema.MaxLength(Limits.USER_LANGUAGE_MAX)
     override val language: String?,
+    @JsonSchema.Pattern(Limits.COUNTRY_PATTERN)
     @JsonSchema.MinLength(Limits.COUNTRY_LENGTH)
     @JsonSchema.MaxLength(Limits.COUNTRY_LENGTH)
     @JsonSchema.Description("ISO 3166-1 alpha-2 code, e.g. HU.")

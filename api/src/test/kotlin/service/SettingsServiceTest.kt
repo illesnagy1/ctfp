@@ -44,10 +44,8 @@ class SettingsServiceTest {
         runBlocking {
             val service = SettingsService(file)
 
-            assertFailsWith<ApiException> { service.updateSettings(Settings(maxTeamSize = 0)) }
+            // The @JsonSchema limits are checked on the request (see RequestValidationTest); a blank name passes those.
             assertFailsWith<ApiException> { service.updateSettings(Settings(ctfName = " ")) }
-            assertFailsWith<ApiException> { service.updateSettings(Settings(ctfName = "x".repeat(Settings.MAX_CTF_NAME_LENGTH + 1))) }
-            assertFailsWith<ApiException> { service.updateSettings(Settings(maxTeamSize = Settings.MAX_TEAM_SIZE + 1)) }
             assertFalse(file.exists())
             assertEquals(Settings(), service.getSettings())
         }

@@ -164,6 +164,24 @@ describe('editUserSchema', () => {
     ['website', 'ftp://example.com'],
     ['website', 'javascript:alert(1)'],
   ])('rejects an invalid %s', (field, value) => {
-    expect(issuePaths(editUserSchema.safeParse({ ...valid, [field]: value }))).toEqual([field]);
+    // Every failing check is an issue (HUN is too long and misses the pattern); forms show the first.
+    expect(new Set(issuePaths(editUserSchema.safeParse({ ...valid, [field]: value })))).toEqual(new Set([field]));
+  });
+});
+
+const messages = (result: { error?: { issues: { message: string }[] } }) =>
+  result.error?.issues.map((issue) => issue.message) ?? [];
+
+describe('messages', () => {
+  it("translates the generated schemas' issues", () => {
+    const valid = { username: 'player', email: 'p@example.com', country: '', website: '' };
+    expect(messages(editUserSchema.safeParse({ ...valid, username: 'a b' }))).toEqual([
+      '3–64 characters: letters, numbers, ".", "_" or "-"',
+    ]);
+    expect(messages(editUserSchema.safeParse({ ...valid, email: 'nope' }))).toEqual(['Enter a valid email address']);
+    expect(messages(createChallengeSchema.safeParse({ title: '' }))).toContain('Required');
+    expect(
+      messages(registerSchema.safeParse({ username: 'player', email: 'p@example.com', password: 'short' })),
+    ).toContain('At least 8 characters');
   });
 });

@@ -23,6 +23,7 @@ object Limits {
     const val SHORT_TEXT_MAX = 255
     const val TEAM_NAME_MAX = 64
     const val COUNTRY_LENGTH = 2
+    const val COUNTRY_PATTERN = "^[A-Z]{2}$"
     const val USER_LANGUAGE_MAX = 5
     const val PAGE_LANGUAGE_LENGTH = 2
     const val FILENAME_MAX = 255

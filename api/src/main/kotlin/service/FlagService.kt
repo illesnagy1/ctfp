@@ -61,18 +61,15 @@ class FlagService {
         fun invalid(message: String): Nothing = throw ApiException(HttpStatusCode.BadRequest, message)
 
         if (flag.pattern.isBlank()) invalid("Pattern is required")
-        if (flag.pattern.length > Limits.FLAG_PATTERN_MAX) invalid("Pattern must be at most ${Limits.FLAG_PATTERN_MAX} characters")
         try {
             Regex(flag.pattern)
         } catch (e: PatternSyntaxException) {
             invalid("Pattern is not a valid regular expression: ${e.description}")
         }
-        if (flag.baseValue < 0) invalid("Value must be 0 or more")
         if (flag.decayFun != DecayFunction.STATIC) {
             val decay = flag.decayValue ?: invalid("Decay is required unless the value is static")
             val min = flag.minValue ?: invalid("Minimum value is required unless the value is static")
-            if (decay < 0) invalid("Decay must be 0 or more")
-            if (min < 0 || min > flag.baseValue) invalid("Minimum value must be between 0 and the value")
+            if (min > flag.baseValue) invalid("Minimum value must be at most the value")
         }
     }
 }

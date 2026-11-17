@@ -5,6 +5,7 @@ import kotlinx.serialization.Serializable
 
 @Serializable
 data class ForgotPasswordRequest(
+    @JsonSchema.Format("email")
     @JsonSchema.MaxLength(Limits.EMAIL_MAX)
     val email: String,
 )

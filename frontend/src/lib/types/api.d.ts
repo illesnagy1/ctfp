@@ -3259,6 +3259,7 @@ export interface components {
     };
     /** ForgotPasswordRequest */
     ForgotPasswordRequest: {
+      /** Format: email */
       email: string;
     };
     /** ResetPasswordRequest */

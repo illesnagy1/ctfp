@@ -16,8 +16,6 @@ import com.ctfp.dto.toDto
 import com.ctfp.service.helper.PasswordHasher
 import com.ctfp.service.helper.ensureAvailable
 import com.ctfp.service.helper.findUser
-import com.ctfp.service.helper.validate
-import com.ctfp.service.helper.validatePassword
 import io.ktor.http.HttpStatusCode
 import org.jetbrains.exposed.v1.core.and
 import org.jetbrains.exposed.v1.core.eq
@@ -49,8 +47,6 @@ class UserService(
         }
 
     suspend fun createUser(user: AdminUserCreateRequest): Int {
-        validate(user)
-        validatePassword(user.password)
         val passwordHash = hasher.hash(user.password)
 
         return withTransaction {
@@ -67,7 +63,6 @@ class UserService(
         id: Int,
         user: UserUpdateRequest,
     ) {
-        validate(user)
         withTransaction {
             ensureAvailable(user.username, user.email, exceptId = id)
             findUser(id).applyProfile(user)
@@ -80,7 +75,6 @@ class UserService(
         user: AdminUserUpdateRequest,
         actorId: Int,
     ) {
-        validate(user)
         ensureNotSelfLockout(id, user, actorId)
         withTransaction {
             lockAdmins(actorId)
@@ -94,7 +88,6 @@ class UserService(
         users: Map<Int, AdminUserUpdateRequest>,
         actorId: Int,
     ) {
-        users.values.forEach(::validate)
         users.forEach { (id, user) -> ensureNotSelfLockout(id, user, actorId) }
         withTransaction {
             lockAdmins(actorId)

@@ -4,7 +4,6 @@ import com.ctfp.config.enum.UserRole
 import com.ctfp.domain.dao.UserDAO
 import com.ctfp.domain.db.withTransaction
 import com.ctfp.domain.model.UserTable
-import com.ctfp.dto.UserProfileFields
 import com.ctfp.service.ApiException
 import io.ktor.http.HttpStatusCode
 import org.jetbrains.exposed.v1.core.and
@@ -14,11 +13,6 @@ import org.jetbrains.exposed.v1.core.or
 
 /** Must run inside a transaction. */
 fun findUser(id: Int): UserDAO = UserDAO.findById(id) ?: throw ApiException(HttpStatusCode.NotFound, "User $id not found")
-
-fun validate(user: UserProfileFields) {
-    validateUsername(user.username)
-    validateEmail(user.email)
-}
 
 /** Must run inside a transaction. */
 fun ensureAvailable(

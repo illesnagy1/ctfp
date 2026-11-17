@@ -10,6 +10,7 @@ import io.ktor.server.application.call
 import io.ktor.server.application.install
 import io.ktor.server.application.log
 import io.ktor.server.plugins.BadRequestException
+import io.ktor.server.plugins.requestvalidation.RequestValidationException
 import io.ktor.server.plugins.statuspages.StatusPages
 import io.ktor.server.plugins.statuspages.exception
 import io.ktor.server.response.respond
@@ -26,6 +27,10 @@ fun Application.configureStatusPages() {
         }
         exception<EntityNotFoundException> { call, _ ->
             call.respond(HttpStatusCode.NotFound, ErrorResponse("Not found"))
+        }
+        // The body broke a DTO's @JsonSchema limits; see RequestValidation.kt.
+        exception<RequestValidationException> { call, cause ->
+            call.respond(HttpStatusCode.BadRequest, ErrorResponse(cause.reasons.joinToString("; ")))
         }
         exception<BadRequestException> { call, _ ->
             call.respond(HttpStatusCode.BadRequest, ErrorResponse("Malformed request"))

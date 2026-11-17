@@ -16,9 +16,6 @@ import com.ctfp.dto.RegisterRequest
 import com.ctfp.dto.toAuthUser
 import com.ctfp.service.helper.PasswordHasher
 import com.ctfp.service.helper.ensureAvailable
-import com.ctfp.service.helper.validateEmail
-import com.ctfp.service.helper.validatePassword
-import com.ctfp.service.helper.validateUsername
 import io.ktor.http.HttpStatusCode
 import org.jetbrains.exposed.v1.core.eq
 import org.jetbrains.exposed.v1.core.or
@@ -35,12 +32,8 @@ class AuthService(
     private var dummyHash: String? = null
 
     suspend fun register(request: RegisterRequest): AuthResponse {
-        val username = request.username.trim()
-        val email = request.email.trim().lowercase()
-
-        validateUsername(username)
-        validateEmail(email)
-        validatePassword(request.password)
+        val username = request.username
+        val email = request.email.lowercase()
 
         val passwordHash = hasher.hash(request.password)
 

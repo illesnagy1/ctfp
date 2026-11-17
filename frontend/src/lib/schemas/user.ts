@@ -2,14 +2,14 @@ import { z } from 'zod';
 
 import type { AdminUser } from '#lib/types/user.js';
 
-import { country, email, newPassword, username, website } from './fields.js';
+import { zAdminUserCreateRequest, zAdminUserUpdateRequest } from './api.js';
+import { country, email, username, website } from './fields.js';
 
 /** The admin add-user dialog; posted as JSON (`dataType: 'json'`). */
-export const createUserSchema = z.object({
-  username: username(),
-  email: email(),
-  password: newPassword(),
-  role: z.enum(['ADMIN', 'USER']).default('USER'),
+export const createUserSchema = zAdminUserCreateRequest.pick({ password: true }).extend({
+  username,
+  email,
+  role: zAdminUserCreateRequest.shape.role.default('USER'),
   isVerified: z.boolean().default(true),
   isHidden: z.boolean().default(false),
 });
@@ -24,11 +24,11 @@ export const setBannedSchema = z.object({
  * ignores those for anyone else). Empty country and website mean none.
  */
 export const editUserSchema = z.object({
-  username: username(),
-  email: email(),
-  country: country(),
-  website: website(),
-  role: z.enum(['ADMIN', 'USER']).default('USER'),
+  username,
+  email,
+  country,
+  website,
+  role: zAdminUserUpdateRequest.shape.role.default('USER'),
   isVerified: z.boolean().default(false),
   isHidden: z.boolean().default(false),
   isBanned: z.boolean().default(false),

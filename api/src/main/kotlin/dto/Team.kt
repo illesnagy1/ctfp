@@ -12,6 +12,7 @@ data class TeamRequest(
     @JsonSchema.MaxLength(Limits.TEAM_NAME_MAX)
     val name: String,
     val ownerId: Int,
+    @JsonSchema.Pattern(Limits.COUNTRY_PATTERN)
     @JsonSchema.MinLength(Limits.COUNTRY_LENGTH)
     @JsonSchema.MaxLength(Limits.COUNTRY_LENGTH)
     @JsonSchema.Description("ISO 3166-1 alpha-2 code, e.g.: HU")

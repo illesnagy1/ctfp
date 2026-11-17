@@ -16,7 +16,7 @@
     "check:watch": "svelte-kit sync && svelte-check --tsconfig ./tsconfig.json --watch",
     "lint": "concurrently --group --names oxfmt,oxlint,eslint \"oxfmt --check .\" \"oxlint .\" \"eslint .\"",
     "format": "oxfmt",
-    "gen:api": "openapi-typescript ../api/openapi.json -o src/lib/types/api.d.ts && bun scripts/gen-schemas.ts && oxfmt src/lib/types/api.d.ts src/lib/types/schemas.ts",
+    "gen:api": "openapi-typescript ../api/openapi.json -o src/lib/types/api.d.ts && bun scripts/gen-schemas.ts && openapi-ts && oxfmt src/lib/types/api.d.ts src/lib/types/schemas.ts src/lib/types/zod",
     "test:unit": "vitest",
     "test": "npm run test:unit -- --run"
   },
@@ -35,6 +35,7 @@
   },
   "devDependencies": {
     "@fontsource-variable/inter": "^5.3.0",
+    "@hey-api/openapi-ts": "^0.99.0",
     "@inlang/paraglide-js": "^3.2.1",
     "@internationalized/date": "^3.12.4",
     "@lucide/svelte": "^1.62.0",

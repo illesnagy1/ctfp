@@ -3161,6 +3161,7 @@
                 "properties": {
                     "email": {
                         "type": "string",
+                        "format": "email",
                         "maxLength": 255
                     }
                 }
@@ -3833,7 +3834,8 @@
                         ],
                         "description": "ISO 3166-1 alpha-2 code, e.g.: HU",
                         "maxLength": 2,
-                        "minLength": 2
+                        "minLength": 2,
+                        "pattern": "^[A-Z]{2}$"
                     },
                     "website": {
                         "type": [
@@ -3999,7 +4001,8 @@
                         ],
                         "description": "ISO 3166-1 alpha-2 code, e.g.: HU",
                         "maxLength": 2,
-                        "minLength": 2
+                        "minLength": 2,
+                        "pattern": "^[A-Z]{2}$"
                     },
                     "website": {
                         "type": [
@@ -4065,7 +4068,8 @@
                         ],
                         "description": "ISO 3166-1 alpha-2 code, e.g. HU.",
                         "maxLength": 2,
-                        "minLength": 2
+                        "minLength": 2,
+                        "pattern": "^[A-Z]{2}$"
                     },
                     "website": {
                         "type": [
@@ -4141,7 +4145,8 @@
                         ],
                         "description": "ISO 3166-1 alpha-2 code, e.g. HU.",
                         "maxLength": 2,
-                        "minLength": 2
+                        "minLength": 2,
+                        "pattern": "^[A-Z]{2}$"
                     },
                     "website": {
                         "type": [

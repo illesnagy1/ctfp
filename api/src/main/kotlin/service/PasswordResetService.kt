@@ -7,7 +7,6 @@ import com.ctfp.domain.model.PasswordResetTokenTable
 import com.ctfp.domain.model.UserTable
 import com.ctfp.service.helper.MailSender
 import com.ctfp.service.helper.PasswordHasher
-import com.ctfp.service.helper.validatePassword
 import io.ktor.http.HttpStatusCode
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Job
@@ -76,7 +75,6 @@ class PasswordResetService(
         token: String,
         password: String,
     ) {
-        validatePassword(password)
         val passwordHash = hasher.hash(password)
         withTransaction {
             val now = Clock.System.now()

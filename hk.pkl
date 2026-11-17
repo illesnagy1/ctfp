@@ -38,7 +38,7 @@ local linters = new Mapping<String, Step | Group> {
 }
 
 // generated files
-exclude = List("api/docs/**", "api/openapi.json", "frontend/src/lib/types/api.d.ts")
+exclude = List("api/docs/**", "api/openapi.json", "frontend/src/lib/types/api.d.ts", "frontend/src/lib/types/zod/**")
 
 steps = linters
 

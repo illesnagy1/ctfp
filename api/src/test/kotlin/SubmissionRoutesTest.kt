@@ -166,7 +166,9 @@ class SubmissionRoutesTest {
             val id = challengeWithFlag(admin, "rejecting", """{"pattern":"flag","baseValue":100,"isCaseSensitive":false}""")
 
             assertEquals(HttpStatusCode.BadRequest, submit(id, player, "   ").status)
-            assertEquals(HttpStatusCode.BadRequest, submit(id, player, "x".repeat(Limits.SUBMITTED_FLAG_MAX + 1)).status)
+            val tooLong = submit(id, player, "x".repeat(Limits.SUBMITTED_FLAG_MAX + 1))
+            assertEquals(HttpStatusCode.BadRequest, tooLong.status)
+            assertEquals("""{"message":"flag must be at most ${Limits.SUBMITTED_FLAG_MAX} characters"}""", tooLong.bodyAsText())
 
             withTransaction { UserDAO.find { UserTable.username eq "reject-player" }.single().isBanned = true }
             assertEquals(HttpStatusCode.Forbidden, submit(id, player, "flag").status)
@@ -206,7 +208,13 @@ class SubmissionRoutesTest {
             assertEquals(listOf("origin-other", "origin-player"), all.map { it.username })
             assertEquals(HttpStatusCode.Forbidden, client.get("/v1/admin/submissions") { bearerAuth(player) }.status)
 
-            val playerId = withTransaction { UserDAO.find { UserTable.username eq "origin-player" }.single().id.value }
+            val playerId =
+                withTransaction {
+                    UserDAO
+                        .find { UserTable.username eq "origin-player" }
+                        .single()
+                        .id.value
+                }
             assertEquals(listOf(mine), list("/v1/admin/users/$playerId/submissions", admin))
             assertEquals(HttpStatusCode.Forbidden, client.get("/v1/admin/users/$playerId/submissions") { bearerAuth(player) }.status)
             assertEquals(HttpStatusCode.NotFound, client.get("/v1/admin/users/0/submissions") { bearerAuth(admin) }.status)

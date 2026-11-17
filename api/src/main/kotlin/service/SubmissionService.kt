@@ -70,11 +70,10 @@ class SubmissionService(
         }
     }
 
-    /** [submitted] trimmed; 400 if empty or too long. */
+    /** [submitted] trimmed, since players paste with whitespace; 400 if that leaves nothing. */
     private fun validFlag(submitted: String): String {
         val flag = submitted.trim()
         if (flag.isEmpty()) throw ApiException(HttpStatusCode.BadRequest, "Flag is required")
-        if (flag.length > Limits.SUBMITTED_FLAG_MAX) throw ApiException(HttpStatusCode.BadRequest, "Flag is too long")
         return flag
     }
 
