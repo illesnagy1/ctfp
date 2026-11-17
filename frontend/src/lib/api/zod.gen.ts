@@ -236,7 +236,11 @@ export const zPageResponse = z.object({
 export const zPageRequest = z.object({
   title: z.string().min(1).max(255),
   route: z.string().min(1).max(255),
-  language: z.string().length(2).optional(),
+  language: z
+    .string()
+    .max(35)
+    .regex(/^[A-Za-z]{2,3}(-[A-Za-z]{4})?(-([A-Za-z]{2}|[0-9]{3}))?(-([A-Za-z0-9]{5,8}|[0-9][A-Za-z0-9]{3}))*$/)
+    .optional(),
   format: z.string().min(1).max(255),
   targetBlank: z.boolean().optional(),
   body: z.string(),
@@ -318,6 +322,23 @@ export const zScoreboardEntry = z.object({
 });
 
 /**
+ * CtftimeStanding
+ */
+export const zCtftimeStanding = z.object({
+  pos: z.int(),
+  team: z.string(),
+  score: z.int(),
+  lastAccept: z.int().nullish(),
+});
+
+/**
+ * CtftimeFeed
+ */
+export const zCtftimeFeed = z.object({
+  standings: z.array(zCtftimeStanding),
+});
+
+/**
  * TeamResponse
  */
 export const zTeamResponse = z.object({
@@ -391,7 +412,11 @@ export const zUserUpdateRequest = z.object({
     .max(64)
     .regex(/^[A-Za-z0-9._-]{3,64}$/),
   email: z.email().max(255),
-  language: z.string().max(5).nullish(),
+  language: z
+    .string()
+    .max(35)
+    .regex(/^[A-Za-z]{2,3}(-[A-Za-z]{4})?(-([A-Za-z]{2}|[0-9]{3}))?(-([A-Za-z0-9]{5,8}|[0-9][A-Za-z0-9]{3}))*$/)
+    .nullish(),
   country: z
     .string()
     .length(2)
@@ -414,7 +439,11 @@ export const zAdminUserCreateRequest = z.object({
     .regex(/^[A-Za-z0-9._-]{3,64}$/),
   email: z.email().max(255),
   password: z.string().min(8).max(128),
-  language: z.string().max(5).nullish(),
+  language: z
+    .string()
+    .max(35)
+    .regex(/^[A-Za-z]{2,3}(-[A-Za-z]{4})?(-([A-Za-z]{2}|[0-9]{3}))?(-([A-Za-z0-9]{5,8}|[0-9][A-Za-z0-9]{3}))*$/)
+    .nullish(),
   country: z
     .string()
     .length(2)
@@ -440,7 +469,11 @@ export const zAdminUserUpdateRequest = z.object({
     .max(64)
     .regex(/^[A-Za-z0-9._-]{3,64}$/),
   email: z.email().max(255),
-  language: z.string().max(5).nullish(),
+  language: z
+    .string()
+    .max(35)
+    .regex(/^[A-Za-z]{2,3}(-[A-Za-z]{4})?(-([A-Za-z]{2}|[0-9]{3}))?(-([A-Za-z0-9]{5,8}|[0-9][A-Za-z0-9]{3}))*$/)
+    .nullish(),
   country: z
     .string()
     .length(2)

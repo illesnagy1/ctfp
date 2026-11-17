@@ -13,8 +13,8 @@ data class PageRequest(
     @JsonSchema.MinLength(1)
     @JsonSchema.MaxLength(Limits.SHORT_TEXT_MAX)
     val route: String,
-    @JsonSchema.MinLength(Limits.PAGE_LANGUAGE_LENGTH)
-    @JsonSchema.MaxLength(Limits.PAGE_LANGUAGE_LENGTH)
+    @JsonSchema.Pattern(Limits.LANGUAGE_TAG_PATTERN)
+    @JsonSchema.MaxLength(Limits.LANGUAGE_TAG_MAX)
     val language: String = "en",
     @JsonSchema.MinLength(1)
     @JsonSchema.MaxLength(Limits.SHORT_TEXT_MAX)
@@ -43,7 +43,7 @@ data class PageResponse(
 fun PageDAO.apply(dto: PageRequest) {
     title = dto.title
     route = dto.route
-    language = dto.language
+    language = canonicalLanguageTag(dto.language)
     format = dto.format
     targetBlank = dto.targetBlank
     body = dto.body

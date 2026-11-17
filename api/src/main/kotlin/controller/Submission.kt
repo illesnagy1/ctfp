@@ -3,6 +3,7 @@ package com.ctfp.controller
 import com.ctfp.controller.helper.getId
 import com.ctfp.controller.helper.operation
 import com.ctfp.dto.SubmitFlagRequest
+import com.ctfp.plugins.SubmissionRateLimit
 import com.ctfp.plugins.adminOnly
 import com.ctfp.plugins.authenticated
 import com.ctfp.plugins.isAdmin
@@ -13,6 +14,7 @@ import io.ktor.http.HttpStatusCode.Companion.NotFound
 import io.ktor.http.HttpStatusCode.Companion.Unauthorized
 import io.ktor.server.auth.principal
 import io.ktor.server.plugins.origin
+import io.ktor.server.plugins.ratelimit.rateLimit
 import io.ktor.server.request.receive
 import io.ktor.server.request.userAgent
 import io.ktor.server.response.respond
@@ -22,21 +24,24 @@ import io.ktor.server.routing.post
 
 fun Route.submission(service: SubmissionService) {
     authenticated {
-        // Answers whether the guess was right; 403 when banned or out of attempts.
-        post("/challenges/{id}/submissions") {
-            val flag = call.receive<SubmitFlagRequest>().flag
-            call.respond(
-                service.submit(
-                    call.principal.id,
-                    call.getId(),
-                    flag,
-                    isAdmin = call.principal.isAdmin,
-                    // The client's address via X-Forwarded-For, as the frontend proxies every call.
-                    ipAddress = call.request.origin.remoteAddress,
-                    userAgent = call.request.userAgent(),
-                ),
-            )
-        }.operation("submitFlag", BadRequest, Unauthorized, Forbidden, NotFound)
+        // Per player, against guessing flags; see RateLimiting.kt.
+        rateLimit(SubmissionRateLimit) {
+            // Answers whether the guess was right; 403 when banned or out of attempts.
+            post("/challenges/{id}/submissions") {
+                val flag = call.receive<SubmitFlagRequest>().flag
+                call.respond(
+                    service.submit(
+                        call.principal.id,
+                        call.getId(),
+                        flag,
+                        isAdmin = call.principal.isAdmin,
+                        // The client's address via X-Forwarded-For, as the frontend proxies every call.
+                        ipAddress = call.request.origin.remoteAddress,
+                        userAgent = call.request.userAgent(),
+                    ),
+                )
+            }.operation("submitFlag", BadRequest, Unauthorized, Forbidden, NotFound)
+        }
 
         // The caller's own guesses, newest first.
         get("/users/me/submissions") {

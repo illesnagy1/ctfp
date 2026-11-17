@@ -77,6 +77,9 @@ import type {
   GetChallengeData,
   GetChallengeErrors,
   GetChallengeResponses,
+  GetCtftimeScoreboardData,
+  GetCtftimeScoreboardErrors,
+  GetCtftimeScoreboardResponses,
   GetEmailTemplateData,
   GetEmailTemplateErrors,
   GetEmailTemplateResponses,
@@ -335,6 +338,9 @@ export const uploadChallengeFile = <ThrowOnError extends boolean = false>(
     ...options,
   });
 
+/**
+ * Guessing passwords and flooding inboxes; see RateLimiting.kt.
+ */
 export const login = <ThrowOnError extends boolean = false>(
   options: Options<LoginData, ThrowOnError>,
 ): RequestResult<LoginResponses, LoginErrors, ThrowOnError> =>
@@ -347,6 +353,9 @@ export const login = <ThrowOnError extends boolean = false>(
     },
   });
 
+/**
+ * Guessing passwords and flooding inboxes; see RateLimiting.kt.
+ */
 export const register = <ThrowOnError extends boolean = false>(
   options: Options<RegisterData, ThrowOnError>,
 ): RequestResult<RegisterResponses, RegisterErrors, ThrowOnError> =>
@@ -374,6 +383,9 @@ export const forgotPassword = <ThrowOnError extends boolean = false>(
     },
   });
 
+/**
+ * Guessing passwords and flooding inboxes; see RateLimiting.kt.
+ */
 export const resetPassword = <ThrowOnError extends boolean = false>(
   options: Options<ResetPasswordData, ThrowOnError>,
 ): RequestResult<ResetPasswordResponses, ResetPasswordErrors, ThrowOnError> =>
@@ -811,6 +823,17 @@ export const getScoreboard = <ThrowOnError extends boolean = false>(
   options: Options<GetScoreboardData, ThrowOnError>,
 ): RequestResult<GetScoreboardResponses, GetScoreboardErrors, ThrowOnError> =>
   options.client.get<GetScoreboardResponses, GetScoreboardErrors, ThrowOnError>({ url: '/v1/scoreboard', ...options });
+
+/**
+ * The same ranking for CTFtime to import (it polls every minute); public too.
+ */
+export const getCtftimeScoreboard = <ThrowOnError extends boolean = false>(
+  options: Options<GetCtftimeScoreboardData, ThrowOnError>,
+): RequestResult<GetCtftimeScoreboardResponses, GetCtftimeScoreboardErrors, ThrowOnError> =>
+  options.client.get<GetCtftimeScoreboardResponses, GetCtftimeScoreboardErrors, ThrowOnError>({
+    url: '/v1/ctftime/scoreboard',
+    ...options,
+  });
 
 export const listTeams = <ThrowOnError extends boolean = false>(
   options: Options<ListTeamsData, ThrowOnError>,

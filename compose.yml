@@ -63,6 +63,9 @@ services:
       # Uploads stream through the frontend; keep this a bit above the api's UPLOADS_MAX_BYTES (500 MiB).
       BODY_SIZE_LIMIT: 501M
       REDIS_URL: redis://redis:6379
+      # Same collector as the api; set, page loads and their api calls are traced together (W3C Trace Context).
+      OTEL_EXPORTER_OTLP_ENDPOINT: ${OTEL_EXPORTER_OTLP_ENDPOINT:-}
+      OTEL_SERVICE_NAME: ctfp-frontend
     ports:
       - '0.0.0.0:3000:3000'
     restart: unless-stopped

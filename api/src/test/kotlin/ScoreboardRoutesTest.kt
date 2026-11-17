@@ -1,6 +1,8 @@
 package com.ctfp
 
+import com.ctfp.controller.escapeNonAscii
 import com.ctfp.dto.ChallengeResponse
+import com.ctfp.dto.CtftimeFeed
 import com.ctfp.dto.ScoreboardEntry
 import io.ktor.client.request.bearerAuth
 import io.ktor.client.request.get
@@ -87,5 +89,18 @@ class ScoreboardRoutesTest {
             assertEquals(listOf(2, 1, 0), mine.map { it.solves })
             assertNull(mine.last().lastSolveAt)
             assertEquals(board.sortedByDescending { it.points }.map { it.points }, board.map { it.points })
+
+            // The same ranking in CTFtime's feed format.
+            val feed = Json.decodeFromString<CtftimeFeed>(client.get("/v1/ctftime/scoreboard").bodyAsText())
+            assertEquals(board.map { it.username to it.points }, feed.standings.map { it.team to it.score })
+            assertEquals((1..board.size).toList(), feed.standings.map { it.pos })
+            val firstStanding = feed.standings.single { it.team == "score-first" }
+            assertEquals(mine.first().lastSolveAt?.epochSeconds, firstStanding.lastAccept)
+            assertNull(feed.standings.single { it.team == "score-none" }.lastAccept)
         }
+
+    @Test
+    fun `the CTFtime feed escapes non-ASCII as CTFtime asks`() {
+        assertEquals("""{"team":"Csap\u00e1s \ud83d\udea9"}""", escapeNonAscii("""{"team":"Csapás 🚩"}"""))
+    }
 }

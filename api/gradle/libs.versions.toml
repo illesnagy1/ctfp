@@ -5,7 +5,6 @@ kotlin = "2.4.21"
 logback = "1.6.7"
 postgresql = "42.7.14"
 flyway = "13.12.2"
-flaxoos = "2.5.0"
 bouncycastle = "1.87"
 kotlinxSerialization = "1.13.0"
 detekt = "2.0.0-alpha.6"
@@ -22,7 +21,6 @@ exposed-datetime = { module = "org.jetbrains.exposed:exposed-kotlin-datetime", v
 exposed-json = { module = "org.jetbrains.exposed:exposed-json", version.ref = "exposed" }
 exposed-migration-core = { module = "org.jetbrains.exposed:exposed-migration-core", version.ref = "exposed" }
 exposed-migration-jdbc = { module = "org.jetbrains.exposed:exposed-migration-jdbc", version.ref = "exposed" }
-flaxoos-ktor-server-rateLimiting = { module = "io.github.flaxoos:ktor-server-rate-limiting", version.ref = "flaxoos" }
 h2database-h2 = { module = "com.h2database:h2", version.ref = "h2" }
 logback-classic = { module = "ch.qos.logback:logback-classic", version.ref = "logback" }
 postgresql = { module = "org.postgresql:postgresql", version.ref = "postgresql" }

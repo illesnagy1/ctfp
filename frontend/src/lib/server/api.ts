@@ -5,14 +5,19 @@ import { createClient, createConfig } from '#lib/api/client/index.js';
 import { status } from '#lib/http.js';
 
 import { deleteSession } from './session';
+import { injectTraceContext } from './trace';
 
-/** Adds the session's JWT, and the browser's IP (for the api's rate limiting) and user agent (kept with submissions). */
+/**
+ * Adds the session's JWT, the browser's IP (for the api's rate limiting) and user agent (kept with submissions), and
+ * the trace context, so the api's spans join this request's trace.
+ */
 function authorize(event: RequestEvent, request: Request) {
   const token = event.locals.session?.token;
   request.headers.set('X-Forwarded-For', event.getClientAddress());
   const userAgent = event.request.headers.get('User-Agent');
   if (userAgent) request.headers.set('User-Agent', userAgent);
   if (token) request.headers.set('Authorization', `Bearer ${token}`);
+  injectTraceContext(request.headers);
   return request;
 }
 

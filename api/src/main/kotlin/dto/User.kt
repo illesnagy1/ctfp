@@ -39,7 +39,8 @@ data class UserUpdateRequest(
     @JsonSchema.Format("email")
     @JsonSchema.MaxLength(Limits.EMAIL_MAX)
     override val email: String,
-    @JsonSchema.MaxLength(Limits.USER_LANGUAGE_MAX)
+    @JsonSchema.Pattern(Limits.LANGUAGE_TAG_PATTERN)
+    @JsonSchema.MaxLength(Limits.LANGUAGE_TAG_MAX)
     override val language: String?,
     @JsonSchema.Pattern(Limits.COUNTRY_PATTERN)
     @JsonSchema.MinLength(Limits.COUNTRY_LENGTH)
@@ -62,7 +63,8 @@ data class AdminUserUpdateRequest(
     @JsonSchema.Format("email")
     @JsonSchema.MaxLength(Limits.EMAIL_MAX)
     override val email: String,
-    @JsonSchema.MaxLength(Limits.USER_LANGUAGE_MAX)
+    @JsonSchema.Pattern(Limits.LANGUAGE_TAG_PATTERN)
+    @JsonSchema.MaxLength(Limits.LANGUAGE_TAG_MAX)
     override val language: String?,
     @JsonSchema.Pattern(Limits.COUNTRY_PATTERN)
     @JsonSchema.MinLength(Limits.COUNTRY_LENGTH)
@@ -93,7 +95,8 @@ data class AdminUserCreateRequest(
     @JsonSchema.MinLength(Limits.PASSWORD_MIN)
     @JsonSchema.MaxLength(Limits.PASSWORD_MAX)
     val password: String,
-    @JsonSchema.MaxLength(Limits.USER_LANGUAGE_MAX)
+    @JsonSchema.Pattern(Limits.LANGUAGE_TAG_PATTERN)
+    @JsonSchema.MaxLength(Limits.LANGUAGE_TAG_MAX)
     override val language: String?,
     @JsonSchema.Pattern(Limits.COUNTRY_PATTERN)
     @JsonSchema.MinLength(Limits.COUNTRY_LENGTH)
@@ -144,7 +147,7 @@ data class AdminUserResponse(
 fun UserDAO.applyProfile(dto: UserProfileFields) {
     username = dto.username
     email = dto.email.lowercase()
-    language = dto.language
+    language = dto.language?.let(::canonicalLanguageTag)
     country = dto.country
     website = dto.website
     soundEnabled = dto.soundEnabled

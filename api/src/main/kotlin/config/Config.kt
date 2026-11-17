@@ -30,6 +30,17 @@ data class SettingsFileConfig(
     val file: String,
 )
 
+/** Requests allowed per window; see plugins/RateLimiting.kt. */
+@Serializable
+data class RateLimitConfig(
+    /** Any requests per client IP, every 10 seconds. */
+    val global: Int,
+    /** Logins, registrations and password resets per client IP, every minute. */
+    val auth: Int,
+    /** Flag submissions per player, every minute. */
+    val submissions: Int,
+)
+
 @Serializable
 data class UploadsConfig(
     /** Directory the uploaded files are stored in, under random names. */
@@ -76,6 +87,8 @@ fun ApplicationConfig.settingsFileConfig(): SettingsFileConfig = property("setti
 fun ApplicationConfig.uploadsConfig(): UploadsConfig = property("uploads").getAs()
 
 fun ApplicationConfig.mailConfig(): MailConfig = property("mail").getAs()
+
+fun ApplicationConfig.rateLimitConfig(): RateLimitConfig = property("rateLimit").getAs()
 
 fun ApplicationConfig.appConfig() =
     AppConfig(

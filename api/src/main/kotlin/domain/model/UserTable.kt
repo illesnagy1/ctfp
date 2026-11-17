@@ -1,6 +1,7 @@
 package com.ctfp.domain.model
 
 import com.ctfp.config.enum.UserRole
+import com.ctfp.dto.Limits
 import org.jetbrains.exposed.v1.core.dao.id.IntIdTable
 import org.jetbrains.exposed.v1.datetime.CurrentTimestamp
 import org.jetbrains.exposed.v1.datetime.timestamp
@@ -10,7 +11,7 @@ object UserTable : IntIdTable() {
     val username = varchar("username", 64).uniqueIndex()
     val email = varchar("email", 255).uniqueIndex()
     val passwordHash = varchar("password_hash", 255)
-    val language = varchar("language", 5).nullable()
+    val language = varchar("language", Limits.LANGUAGE_TAG_MAX).nullable()
     val country = varchar("country", 2).nullable()
     val website = varchar("website", 255).nullable()
     val role = enumeration("role", UserRole::class)

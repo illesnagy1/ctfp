@@ -75,6 +75,16 @@
                             }
                         }
                     },
+                    "429": {
+                        "description": "Too Many Requests",
+                        "content": {
+                            "application/problem+json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/ProblemDetails"
+                                }
+                            }
+                        }
+                    },
                     "500": {
                         "description": "Internal Server Error",
                         "content": {
@@ -140,6 +150,16 @@
                     },
                     "409": {
                         "description": "Conflict",
+                        "content": {
+                            "application/problem+json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/ProblemDetails"
+                                }
+                            }
+                        }
+                    },
+                    "429": {
+                        "description": "Too Many Requests",
                         "content": {
                             "application/problem+json": {
                                 "schema": {
@@ -214,6 +234,16 @@
                             }
                         }
                     },
+                    "429": {
+                        "description": "Too Many Requests",
+                        "content": {
+                            "application/problem+json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/ProblemDetails"
+                                }
+                            }
+                        }
+                    },
                     "500": {
                         "description": "Internal Server Error",
                         "content": {
@@ -244,6 +274,16 @@
                                     "items": {
                                         "$ref": "#/components/schemas/ChallengeResponse"
                                     }
+                                }
+                            }
+                        }
+                    },
+                    "429": {
+                        "description": "Too Many Requests",
+                        "content": {
+                            "application/problem+json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/ProblemDetails"
                                 }
                             }
                         }
@@ -344,6 +384,16 @@
                             }
                         }
                     },
+                    "429": {
+                        "description": "Too Many Requests",
+                        "content": {
+                            "application/problem+json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/ProblemDetails"
+                                }
+                            }
+                        }
+                    },
                     "500": {
                         "description": "Internal Server Error",
                         "content": {
@@ -418,6 +468,16 @@
                             }
                         }
                     },
+                    "429": {
+                        "description": "Too Many Requests",
+                        "content": {
+                            "application/problem+json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/ProblemDetails"
+                                }
+                            }
+                        }
+                    },
                     "500": {
                         "description": "Internal Server Error",
                         "content": {
@@ -471,6 +531,16 @@
                     },
                     "404": {
                         "description": "Not Found",
+                        "content": {
+                            "application/problem+json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/ProblemDetails"
+                                }
+                            }
+                        }
+                    },
+                    "429": {
+                        "description": "Too Many Requests",
                         "content": {
                             "application/problem+json": {
                                 "schema": {
@@ -573,6 +643,16 @@
                             }
                         }
                     },
+                    "429": {
+                        "description": "Too Many Requests",
+                        "content": {
+                            "application/problem+json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/ProblemDetails"
+                                }
+                            }
+                        }
+                    },
                     "500": {
                         "description": "Internal Server Error",
                         "content": {
@@ -637,6 +717,16 @@
                             }
                         }
                     },
+                    "429": {
+                        "description": "Too Many Requests",
+                        "content": {
+                            "application/problem+json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/ProblemDetails"
+                                }
+                            }
+                        }
+                    },
                     "500": {
                         "description": "Internal Server Error",
                         "content": {
@@ -659,7 +749,7 @@
         "/v1/auth/login": {
             "post": {
                 "operationId": "login",
-                "summary": "",
+                "summary": "Guessing passwords and flooding inboxes; see RateLimiting.kt.",
                 "requestBody": {
                     "content": {
                         "application/json": {
@@ -710,6 +800,16 @@
                             }
                         }
                     },
+                    "429": {
+                        "description": "Too Many Requests",
+                        "content": {
+                            "application/problem+json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/ProblemDetails"
+                                }
+                            }
+                        }
+                    },
                     "500": {
                         "description": "Internal Server Error",
                         "content": {
@@ -726,7 +826,7 @@
         "/v1/auth/register": {
             "post": {
                 "operationId": "register",
-                "summary": "",
+                "summary": "Guessing passwords and flooding inboxes; see RateLimiting.kt.",
                 "requestBody": {
                     "content": {
                         "application/json": {
@@ -759,6 +859,16 @@
                     },
                     "409": {
                         "description": "Conflict",
+                        "content": {
+                            "application/problem+json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/ProblemDetails"
+                                }
+                            }
+                        }
+                    },
+                    "429": {
+                        "description": "Too Many Requests",
                         "content": {
                             "application/problem+json": {
                                 "schema": {
@@ -807,6 +917,16 @@
                             }
                         }
                     },
+                    "429": {
+                        "description": "Too Many Requests",
+                        "content": {
+                            "application/problem+json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/ProblemDetails"
+                                }
+                            }
+                        }
+                    },
                     "500": {
                         "description": "Internal Server Error",
                         "content": {
@@ -823,7 +943,7 @@
         "/v1/auth/reset-password": {
             "post": {
                 "operationId": "resetPassword",
-                "summary": "",
+                "summary": "Guessing passwords and flooding inboxes; see RateLimiting.kt.",
                 "requestBody": {
                     "content": {
                         "application/json": {
@@ -839,6 +959,16 @@
                     },
                     "400": {
                         "description": "Bad Request",
+                        "content": {
+                            "application/problem+json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/ProblemDetails"
+                                }
+                            }
+                        }
+                    },
+                    "429": {
+                        "description": "Too Many Requests",
                         "content": {
                             "application/problem+json": {
                                 "schema": {
@@ -877,6 +1007,16 @@
                     },
                     "401": {
                         "description": "Unauthorized",
+                        "content": {
+                            "application/problem+json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/ProblemDetails"
+                                }
+                            }
+                        }
+                    },
+                    "429": {
+                        "description": "Too Many Requests",
                         "content": {
                             "application/problem+json": {
                                 "schema": {
@@ -960,6 +1100,16 @@
                             }
                         }
                     },
+                    "429": {
+                        "description": "Too Many Requests",
+                        "content": {
+                            "application/problem+json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/ProblemDetails"
+                                }
+                            }
+                        }
+                    },
                     "500": {
                         "description": "Internal Server Error",
                         "content": {
@@ -1006,6 +1156,16 @@
                     },
                     "403": {
                         "description": "Forbidden",
+                        "content": {
+                            "application/problem+json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/ProblemDetails"
+                                }
+                            }
+                        }
+                    },
+                    "429": {
+                        "description": "Too Many Requests",
                         "content": {
                             "application/problem+json": {
                                 "schema": {
@@ -1099,6 +1259,16 @@
                             }
                         }
                     },
+                    "429": {
+                        "description": "Too Many Requests",
+                        "content": {
+                            "application/problem+json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/ProblemDetails"
+                                }
+                            }
+                        }
+                    },
                     "500": {
                         "description": "Internal Server Error",
                         "content": {
@@ -1165,6 +1335,16 @@
                     },
                     "404": {
                         "description": "Not Found",
+                        "content": {
+                            "application/problem+json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/ProblemDetails"
+                                }
+                            }
+                        }
+                    },
+                    "429": {
+                        "description": "Too Many Requests",
                         "content": {
                             "application/problem+json": {
                                 "schema": {
@@ -1246,6 +1426,16 @@
                     },
                     "404": {
                         "description": "Not Found",
+                        "content": {
+                            "application/problem+json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/ProblemDetails"
+                                }
+                            }
+                        }
+                    },
+                    "429": {
+                        "description": "Too Many Requests",
                         "content": {
                             "application/problem+json": {
                                 "schema": {
@@ -1340,6 +1530,16 @@
                             }
                         }
                     },
+                    "429": {
+                        "description": "Too Many Requests",
+                        "content": {
+                            "application/problem+json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/ProblemDetails"
+                                }
+                            }
+                        }
+                    },
                     "500": {
                         "description": "Internal Server Error",
                         "content": {
@@ -1409,6 +1609,16 @@
                     },
                     "404": {
                         "description": "Not Found",
+                        "content": {
+                            "application/problem+json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/ProblemDetails"
+                                }
+                            }
+                        }
+                    },
+                    "429": {
+                        "description": "Too Many Requests",
                         "content": {
                             "application/problem+json": {
                                 "schema": {
@@ -1519,6 +1729,16 @@
                             }
                         }
                     },
+                    "429": {
+                        "description": "Too Many Requests",
+                        "content": {
+                            "application/problem+json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/ProblemDetails"
+                                }
+                            }
+                        }
+                    },
                     "500": {
                         "description": "Internal Server Error",
                         "content": {
@@ -1595,6 +1815,16 @@
                     },
                     "404": {
                         "description": "Not Found",
+                        "content": {
+                            "application/problem+json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/ProblemDetails"
+                                }
+                            }
+                        }
+                    },
+                    "429": {
+                        "description": "Too Many Requests",
                         "content": {
                             "application/problem+json": {
                                 "schema": {
@@ -1698,6 +1928,16 @@
                             }
                         }
                     },
+                    "429": {
+                        "description": "Too Many Requests",
+                        "content": {
+                            "application/problem+json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/ProblemDetails"
+                                }
+                            }
+                        }
+                    },
                     "500": {
                         "description": "Internal Server Error",
                         "content": {
@@ -1772,6 +2012,16 @@
                             }
                         }
                     },
+                    "429": {
+                        "description": "Too Many Requests",
+                        "content": {
+                            "application/problem+json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/ProblemDetails"
+                                }
+                            }
+                        }
+                    },
                     "500": {
                         "description": "Internal Server Error",
                         "content": {
@@ -1829,6 +2079,16 @@
                     },
                     "403": {
                         "description": "Forbidden",
+                        "content": {
+                            "application/problem+json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/ProblemDetails"
+                                }
+                            }
+                        }
+                    },
+                    "429": {
+                        "description": "Too Many Requests",
                         "content": {
                             "application/problem+json": {
                                 "schema": {
@@ -1902,6 +2162,16 @@
                     },
                     "403": {
                         "description": "Forbidden",
+                        "content": {
+                            "application/problem+json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/ProblemDetails"
+                                }
+                            }
+                        }
+                    },
+                    "429": {
+                        "description": "Too Many Requests",
                         "content": {
                             "application/problem+json": {
                                 "schema": {
@@ -1985,6 +2255,16 @@
                             }
                         }
                     },
+                    "429": {
+                        "description": "Too Many Requests",
+                        "content": {
+                            "application/problem+json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/ProblemDetails"
+                                }
+                            }
+                        }
+                    },
                     "500": {
                         "description": "Internal Server Error",
                         "content": {
@@ -2051,6 +2331,16 @@
                     },
                     "404": {
                         "description": "Not Found",
+                        "content": {
+                            "application/problem+json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/ProblemDetails"
+                                }
+                            }
+                        }
+                    },
+                    "429": {
+                        "description": "Too Many Requests",
                         "content": {
                             "application/problem+json": {
                                 "schema": {
@@ -2140,6 +2430,16 @@
                             }
                         }
                     },
+                    "429": {
+                        "description": "Too Many Requests",
+                        "content": {
+                            "application/problem+json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/ProblemDetails"
+                                }
+                            }
+                        }
+                    },
                     "500": {
                         "description": "Internal Server Error",
                         "content": {
@@ -2205,6 +2505,16 @@
                             }
                         }
                     },
+                    "429": {
+                        "description": "Too Many Requests",
+                        "content": {
+                            "application/problem+json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/ProblemDetails"
+                                }
+                            }
+                        }
+                    },
                     "500": {
                         "description": "Internal Server Error",
                         "content": {
@@ -2251,6 +2561,16 @@
                     },
                     "403": {
                         "description": "Forbidden",
+                        "content": {
+                            "application/problem+json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/ProblemDetails"
+                                }
+                            }
+                        }
+                    },
+                    "429": {
+                        "description": "Too Many Requests",
                         "content": {
                             "application/problem+json": {
                                 "schema": {
@@ -2334,6 +2654,16 @@
                             }
                         }
                     },
+                    "429": {
+                        "description": "Too Many Requests",
+                        "content": {
+                            "application/problem+json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/ProblemDetails"
+                                }
+                            }
+                        }
+                    },
                     "500": {
                         "description": "Internal Server Error",
                         "content": {
@@ -2400,6 +2730,16 @@
                     },
                     "404": {
                         "description": "Not Found",
+                        "content": {
+                            "application/problem+json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/ProblemDetails"
+                                }
+                            }
+                        }
+                    },
+                    "429": {
+                        "description": "Too Many Requests",
                         "content": {
                             "application/problem+json": {
                                 "schema": {
@@ -2489,6 +2829,16 @@
                             }
                         }
                     },
+                    "429": {
+                        "description": "Too Many Requests",
+                        "content": {
+                            "application/problem+json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/ProblemDetails"
+                                }
+                            }
+                        }
+                    },
                     "500": {
                         "description": "Internal Server Error",
                         "content": {
@@ -2564,6 +2914,16 @@
                             }
                         }
                     },
+                    "429": {
+                        "description": "Too Many Requests",
+                        "content": {
+                            "application/problem+json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/ProblemDetails"
+                                }
+                            }
+                        }
+                    },
                     "500": {
                         "description": "Internal Server Error",
                         "content": {
@@ -2610,6 +2970,16 @@
                     },
                     "403": {
                         "description": "Forbidden",
+                        "content": {
+                            "application/problem+json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/ProblemDetails"
+                                }
+                            }
+                        }
+                    },
+                    "429": {
+                        "description": "Too Many Requests",
                         "content": {
                             "application/problem+json": {
                                 "schema": {
@@ -2703,6 +3073,16 @@
                             }
                         }
                     },
+                    "429": {
+                        "description": "Too Many Requests",
+                        "content": {
+                            "application/problem+json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/ProblemDetails"
+                                }
+                            }
+                        }
+                    },
                     "500": {
                         "description": "Internal Server Error",
                         "content": {
@@ -2769,6 +3149,16 @@
                     },
                     "404": {
                         "description": "Not Found",
+                        "content": {
+                            "application/problem+json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/ProblemDetails"
+                                }
+                            }
+                        }
+                    },
+                    "429": {
+                        "description": "Too Many Requests",
                         "content": {
                             "application/problem+json": {
                                 "schema": {
@@ -2858,6 +3248,16 @@
                             }
                         }
                     },
+                    "429": {
+                        "description": "Too Many Requests",
+                        "content": {
+                            "application/problem+json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/ProblemDetails"
+                                }
+                            }
+                        }
+                    },
                     "500": {
                         "description": "Internal Server Error",
                         "content": {
@@ -2933,6 +3333,16 @@
                             }
                         }
                     },
+                    "429": {
+                        "description": "Too Many Requests",
+                        "content": {
+                            "application/problem+json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/ProblemDetails"
+                                }
+                            }
+                        }
+                    },
                     "500": {
                         "description": "Internal Server Error",
                         "content": {
@@ -2979,6 +3389,16 @@
                     },
                     "403": {
                         "description": "Forbidden",
+                        "content": {
+                            "application/problem+json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/ProblemDetails"
+                                }
+                            }
+                        }
+                    },
+                    "429": {
+                        "description": "Too Many Requests",
                         "content": {
                             "application/problem+json": {
                                 "schema": {
@@ -3072,6 +3492,16 @@
                             }
                         }
                     },
+                    "429": {
+                        "description": "Too Many Requests",
+                        "content": {
+                            "application/problem+json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/ProblemDetails"
+                                }
+                            }
+                        }
+                    },
                     "500": {
                         "description": "Internal Server Error",
                         "content": {
@@ -3138,6 +3568,16 @@
                     },
                     "404": {
                         "description": "Not Found",
+                        "content": {
+                            "application/problem+json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/ProblemDetails"
+                                }
+                            }
+                        }
+                    },
+                    "429": {
+                        "description": "Too Many Requests",
                         "content": {
                             "application/problem+json": {
                                 "schema": {
@@ -3227,6 +3667,16 @@
                             }
                         }
                     },
+                    "429": {
+                        "description": "Too Many Requests",
+                        "content": {
+                            "application/problem+json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/ProblemDetails"
+                                }
+                            }
+                        }
+                    },
                     "500": {
                         "description": "Internal Server Error",
                         "content": {
@@ -3256,6 +3706,16 @@
                             "application/json": {
                                 "schema": {
                                     "$ref": "#/components/schemas/Settings"
+                                }
+                            }
+                        }
+                    },
+                    "429": {
+                        "description": "Too Many Requests",
+                        "content": {
+                            "application/problem+json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/ProblemDetails"
                                 }
                             }
                         }
@@ -3319,6 +3779,16 @@
                     },
                     "403": {
                         "description": "Forbidden",
+                        "content": {
+                            "application/problem+json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/ProblemDetails"
+                                }
+                            }
+                        }
+                    },
+                    "429": {
+                        "description": "Too Many Requests",
                         "content": {
                             "application/problem+json": {
                                 "schema": {
@@ -3419,6 +3889,16 @@
                             }
                         }
                     },
+                    "429": {
+                        "description": "Too Many Requests",
+                        "content": {
+                            "application/problem+json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/ProblemDetails"
+                                }
+                            }
+                        }
+                    },
                     "500": {
                         "description": "Internal Server Error",
                         "content": {
@@ -3475,6 +3955,16 @@
                             }
                         }
                     },
+                    "429": {
+                        "description": "Too Many Requests",
+                        "content": {
+                            "application/problem+json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/ProblemDetails"
+                                }
+                            }
+                        }
+                    },
                     "500": {
                         "description": "Internal Server Error",
                         "content": {
@@ -3513,6 +4003,16 @@
                     },
                     "401": {
                         "description": "Unauthorized",
+                        "content": {
+                            "application/problem+json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/ProblemDetails"
+                                }
+                            }
+                        }
+                    },
+                    "429": {
+                        "description": "Too Many Requests",
                         "content": {
                             "application/problem+json": {
                                 "schema": {
@@ -3569,6 +4069,16 @@
                     },
                     "403": {
                         "description": "Forbidden",
+                        "content": {
+                            "application/problem+json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/ProblemDetails"
+                                }
+                            }
+                        }
+                    },
+                    "429": {
+                        "description": "Too Many Requests",
                         "content": {
                             "application/problem+json": {
                                 "schema": {
@@ -3663,6 +4173,16 @@
                             }
                         }
                     },
+                    "429": {
+                        "description": "Too Many Requests",
+                        "content": {
+                            "application/problem+json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/ProblemDetails"
+                                }
+                            }
+                        }
+                    },
                     "500": {
                         "description": "Internal Server Error",
                         "content": {
@@ -3695,6 +4215,54 @@
                                     "items": {
                                         "$ref": "#/components/schemas/ScoreboardEntry"
                                     }
+                                }
+                            }
+                        }
+                    },
+                    "429": {
+                        "description": "Too Many Requests",
+                        "content": {
+                            "application/problem+json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/ProblemDetails"
+                                }
+                            }
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "content": {
+                            "application/problem+json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/ProblemDetails"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/v1/ctftime/scoreboard": {
+            "get": {
+                "operationId": "getCtftimeScoreboard",
+                "summary": "The same ranking for CTFtime to import (it polls every minute); public too.",
+                "responses": {
+                    "200": {
+                        "description": "",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/CtftimeFeed"
+                                }
+                            }
+                        }
+                    },
+                    "429": {
+                        "description": "Too Many Requests",
+                        "content": {
+                            "application/problem+json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/ProblemDetails"
                                 }
                             }
                         }
@@ -3769,6 +4337,16 @@
                             }
                         }
                     },
+                    "429": {
+                        "description": "Too Many Requests",
+                        "content": {
+                            "application/problem+json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/ProblemDetails"
+                                }
+                            }
+                        }
+                    },
                     "500": {
                         "description": "Internal Server Error",
                         "content": {
@@ -3815,6 +4393,16 @@
                     },
                     "403": {
                         "description": "Forbidden",
+                        "content": {
+                            "application/problem+json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/ProblemDetails"
+                                }
+                            }
+                        }
+                    },
+                    "429": {
+                        "description": "Too Many Requests",
                         "content": {
                             "application/problem+json": {
                                 "schema": {
@@ -3908,6 +4496,16 @@
                             }
                         }
                     },
+                    "429": {
+                        "description": "Too Many Requests",
+                        "content": {
+                            "application/problem+json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/ProblemDetails"
+                                }
+                            }
+                        }
+                    },
                     "500": {
                         "description": "Internal Server Error",
                         "content": {
@@ -3974,6 +4572,16 @@
                     },
                     "404": {
                         "description": "Not Found",
+                        "content": {
+                            "application/problem+json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/ProblemDetails"
+                                }
+                            }
+                        }
+                    },
+                    "429": {
+                        "description": "Too Many Requests",
                         "content": {
                             "application/problem+json": {
                                 "schema": {
@@ -4063,6 +4671,16 @@
                             }
                         }
                     },
+                    "429": {
+                        "description": "Too Many Requests",
+                        "content": {
+                            "application/problem+json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/ProblemDetails"
+                                }
+                            }
+                        }
+                    },
                     "500": {
                         "description": "Internal Server Error",
                         "content": {
@@ -4101,6 +4719,16 @@
                     },
                     "401": {
                         "description": "Unauthorized",
+                        "content": {
+                            "application/problem+json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/ProblemDetails"
+                                }
+                            }
+                        }
+                    },
+                    "429": {
+                        "description": "Too Many Requests",
                         "content": {
                             "application/problem+json": {
                                 "schema": {
@@ -4184,6 +4812,16 @@
                             }
                         }
                     },
+                    "429": {
+                        "description": "Too Many Requests",
+                        "content": {
+                            "application/problem+json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/ProblemDetails"
+                                }
+                            }
+                        }
+                    },
                     "500": {
                         "description": "Internal Server Error",
                         "content": {
@@ -4227,6 +4865,16 @@
                     },
                     "404": {
                         "description": "Not Found",
+                        "content": {
+                            "application/problem+json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/ProblemDetails"
+                                }
+                            }
+                        }
+                    },
+                    "429": {
+                        "description": "Too Many Requests",
                         "content": {
                             "application/problem+json": {
                                 "schema": {
@@ -4300,6 +4948,16 @@
                     },
                     "404": {
                         "description": "Not Found",
+                        "content": {
+                            "application/problem+json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/ProblemDetails"
+                                }
+                            }
+                        }
+                    },
+                    "429": {
+                        "description": "Too Many Requests",
                         "content": {
                             "application/problem+json": {
                                 "schema": {
@@ -4396,6 +5054,16 @@
                             }
                         }
                     },
+                    "429": {
+                        "description": "Too Many Requests",
+                        "content": {
+                            "application/problem+json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/ProblemDetails"
+                                }
+                            }
+                        }
+                    },
                     "500": {
                         "description": "Internal Server Error",
                         "content": {
@@ -4469,6 +5137,16 @@
                             }
                         }
                     },
+                    "429": {
+                        "description": "Too Many Requests",
+                        "content": {
+                            "application/problem+json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/ProblemDetails"
+                                }
+                            }
+                        }
+                    },
                     "500": {
                         "description": "Internal Server Error",
                         "content": {
@@ -4515,6 +5193,16 @@
                     },
                     "403": {
                         "description": "Forbidden",
+                        "content": {
+                            "application/problem+json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/ProblemDetails"
+                                }
+                            }
+                        }
+                    },
+                    "429": {
+                        "description": "Too Many Requests",
                         "content": {
                             "application/problem+json": {
                                 "schema": {
@@ -4618,6 +5306,16 @@
                             }
                         }
                     },
+                    "429": {
+                        "description": "Too Many Requests",
+                        "content": {
+                            "application/problem+json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/ProblemDetails"
+                                }
+                            }
+                        }
+                    },
                     "500": {
                         "description": "Internal Server Error",
                         "content": {
@@ -4684,6 +5382,16 @@
                     },
                     "404": {
                         "description": "Not Found",
+                        "content": {
+                            "application/problem+json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/ProblemDetails"
+                                }
+                            }
+                        }
+                    },
+                    "429": {
+                        "description": "Too Many Requests",
                         "content": {
                             "application/problem+json": {
                                 "schema": {
@@ -4765,6 +5473,16 @@
                     },
                     "404": {
                         "description": "Not Found",
+                        "content": {
+                            "application/problem+json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/ProblemDetails"
+                                }
+                            }
+                        }
+                    },
+                    "429": {
+                        "description": "Too Many Requests",
                         "content": {
                             "application/problem+json": {
                                 "schema": {
@@ -5504,8 +6222,8 @@
                     },
                     "language": {
                         "type": "string",
-                        "maxLength": 2,
-                        "minLength": 2
+                        "maxLength": 35,
+                        "pattern": "^[A-Za-z]{2,3}(-[A-Za-z]{4})?(-([A-Za-z]{2}|[0-9]{3}))?(-([A-Za-z0-9]{5,8}|[0-9][A-Za-z0-9]{3}))*$"
                     },
                     "format": {
                         "type": "string",
@@ -5726,6 +6444,49 @@
                             "null"
                         ],
                         "format": "date-time"
+                    }
+                }
+            },
+            "CtftimeStanding": {
+                "type": "object",
+                "title": "CtftimeStanding",
+                "required": [
+                    "pos",
+                    "team",
+                    "score"
+                ],
+                "properties": {
+                    "pos": {
+                        "type": "integer"
+                    },
+                    "team": {
+                        "type": "string",
+                        "description": "The player's username; teams aren't scored yet."
+                    },
+                    "score": {
+                        "type": "integer"
+                    },
+                    "lastAccept": {
+                        "type": [
+                            "integer",
+                            "null"
+                        ],
+                        "description": "Unix seconds of the last accepted flag; absent without solves."
+                    }
+                }
+            },
+            "CtftimeFeed": {
+                "type": "object",
+                "title": "CtftimeFeed",
+                "required": [
+                    "standings"
+                ],
+                "properties": {
+                    "standings": {
+                        "type": "array",
+                        "items": {
+                            "$ref": "#/components/schemas/CtftimeStanding"
+                        }
                     }
                 }
             },
@@ -5958,7 +6719,8 @@
                             "string",
                             "null"
                         ],
-                        "maxLength": 5
+                        "maxLength": 35,
+                        "pattern": "^[A-Za-z]{2,3}(-[A-Za-z]{4})?(-([A-Za-z]{2}|[0-9]{3}))?(-([A-Za-z0-9]{5,8}|[0-9][A-Za-z0-9]{3}))*$"
                     },
                     "country": {
                         "type": [
@@ -6025,7 +6787,8 @@
                             "string",
                             "null"
                         ],
-                        "maxLength": 5
+                        "maxLength": 35,
+                        "pattern": "^[A-Za-z]{2,3}(-[A-Za-z]{4})?(-([A-Za-z]{2}|[0-9]{3}))?(-([A-Za-z0-9]{5,8}|[0-9][A-Za-z0-9]{3}))*$"
                     },
                     "country": {
                         "type": [
@@ -6102,7 +6865,8 @@
                             "string",
                             "null"
                         ],
-                        "maxLength": 5
+                        "maxLength": 35,
+                        "pattern": "^[A-Za-z]{2,3}(-[A-Za-z]{4})?(-([A-Za-z]{2}|[0-9]{3}))?(-([A-Za-z0-9]{5,8}|[0-9][A-Za-z0-9]{3}))*$"
                     },
                     "country": {
                         "type": [

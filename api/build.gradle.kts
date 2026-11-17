@@ -55,6 +55,7 @@ dependencies {
     implementation(ktorLibs.server.metrics.micrometer)
     implementation(ktorLibs.server.netty)
     implementation(ktorLibs.server.partialContent)
+    implementation(ktorLibs.server.rateLimit)
     implementation(ktorLibs.server.requestValidation)
     implementation(ktorLibs.server.resources)
     implementation(ktorLibs.server.routingOpenapi)
@@ -69,7 +70,6 @@ dependencies {
     implementation(libs.exposed.json)
     implementation(libs.exposed.migration.core)
     implementation(libs.exposed.migration.jdbc)
-    implementation(libs.flaxoos.ktor.server.rateLimiting)
     implementation(libs.kotlinmailer.smtp)
     implementation(libs.h2database.h2)
     implementation(libs.logback.classic)
@@ -101,6 +101,10 @@ tasks.test {
     )
     environment("UPLOADS_MAX_BYTES", "1048576")
     environment("SEED", "false")
+    environment("JWT_SECRET", "test-only-jwt-secret-0123456789abcdef")
+    environment("RATE_LIMIT_GLOBAL", "100000")
+    environment("RATE_LIMIT_AUTH", "100000")
+    environment("RATE_LIMIT_SUBMISSIONS", "100000")
 }
 
 tasks.register<JavaExec>("generateMigration") {

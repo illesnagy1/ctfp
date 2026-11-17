@@ -1,5 +1,6 @@
 package com.ctfp
 
+import com.ctfp.plugins.configureRateLimiting
 import com.ctfp.plugins.configureRouting
 import com.ctfp.plugins.configureSecurity
 import com.typesafe.config.ConfigFactory
@@ -32,13 +33,14 @@ fun main(args: Array<String>) {
             val loaded = ConfigFactory.load()
             config =
                 HoconApplicationConfig(
-                    listOf("jwt", "mail", "settings", "uploads")
+                    listOf("jwt", "mail", "rateLimit", "settings", "uploads")
                         .map(loaded::withOnlyPath)
                         .reduce { merged, path -> merged.withFallback(path) },
                 )
         }
         application {
             configureSecurity()
+            configureRateLimiting()
             configureRouting()
         }
         startApplication()

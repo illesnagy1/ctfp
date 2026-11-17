@@ -10,8 +10,8 @@ import io.ktor.utils.io.ExperimentalKtorApi
 
 /**
  * Names this route's operation ([id] becomes the generated client's function name) and documents the errors it can
- * return, as [ProblemDetails] (RFC 9457), plus the 500 any route can. They are sent by StatusPages (and the auth
- * challenge), so OpenAPI inference can't see them.
+ * return, as [ProblemDetails] (RFC 9457), plus the 429 (rate limits) and 500 any route can. They are sent by
+ * StatusPages (and the auth challenge), so OpenAPI inference can't see them.
  */
 @OptIn(ExperimentalKtorApi::class)
 fun Route.operation(
@@ -21,7 +21,7 @@ fun Route.operation(
     describe {
         operationId = id
         responses {
-            for (status in errors.toList() + HttpStatusCode.InternalServerError) {
+            for (status in errors.toList() + HttpStatusCode.TooManyRequests + HttpStatusCode.InternalServerError) {
                 status {
                     description = status.description
                     ContentType.Application.ProblemJson {

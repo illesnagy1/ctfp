@@ -4,6 +4,7 @@ import com.ctfp.dto.FieldProblem
 import com.ctfp.dto.ProblemDetails
 import com.ctfp.service.ApiException
 import io.ktor.http.ContentType
+import io.ktor.http.HttpHeaders
 import io.ktor.http.HttpStatusCode
 import io.ktor.server.application.Application
 import io.ktor.server.application.ApplicationCall
@@ -74,6 +75,13 @@ fun Application.configureStatusPages() {
         // Errors Ktor answers itself without a body, e.g. no route for the path; problem details already sent stay.
         status(HttpStatusCode.NotFound, HttpStatusCode.MethodNotAllowed, HttpStatusCode.UnsupportedMediaType) { status ->
             if (content.contentType?.match(ContentType.Application.ProblemJson) != true) call.respondProblem(status)
+        }
+        // From RateLimit, which has set Retry-After (RateLimiting.kt).
+        status(HttpStatusCode.TooManyRequests) { status ->
+            if (content.contentType?.match(ContentType.Application.ProblemJson) != true) {
+                val wait = call.response.headers[HttpHeaders.RetryAfter]
+                call.respondProblem(status, wait?.let { "Too many requests, try again in $it seconds" })
+            }
         }
     }
 }

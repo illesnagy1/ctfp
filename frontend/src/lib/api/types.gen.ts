@@ -388,6 +388,29 @@ export type ScoreboardEntry = {
 };
 
 /**
+ * CtftimeStanding
+ */
+export type CtftimeStanding = {
+  pos: number;
+  /**
+   * The player's username; teams aren't scored yet.
+   */
+  team: string;
+  score: number;
+  /**
+   * Unix seconds of the last accepted flag; absent without solves.
+   */
+  lastAccept?: number | null;
+};
+
+/**
+ * CtftimeFeed
+ */
+export type CtftimeFeed = {
+  standings: Array<CtftimeStanding>;
+};
+
+/**
  * TeamResponse
  */
 export type TeamResponse = {
@@ -530,6 +553,10 @@ export type DeleteChallengesErrors = {
    */
   403: ProblemDetails;
   /**
+   * Too Many Requests
+   */
+  429: ProblemDetails;
+  /**
    * Internal Server Error
    */
   500: ProblemDetails;
@@ -551,6 +578,10 @@ export type ListChallengesData = {
 };
 
 export type ListChallengesErrors = {
+  /**
+   * Too Many Requests
+   */
+  429: ProblemDetails;
   /**
    * Internal Server Error
    */
@@ -589,6 +620,10 @@ export type CreateChallengeErrors = {
    * Conflict
    */
   409: ProblemDetails;
+  /**
+   * Too Many Requests
+   */
+  429: ProblemDetails;
   /**
    * Internal Server Error
    */
@@ -632,6 +667,10 @@ export type UpdateChallengesErrors = {
    */
   409: ProblemDetails;
   /**
+   * Too Many Requests
+   */
+  429: ProblemDetails;
+  /**
    * Internal Server Error
    */
   500: ProblemDetails;
@@ -672,6 +711,10 @@ export type DeleteChallengeErrors = {
    */
   404: ProblemDetails;
   /**
+   * Too Many Requests
+   */
+  429: ProblemDetails;
+  /**
    * Internal Server Error
    */
   500: ProblemDetails;
@@ -703,6 +746,10 @@ export type GetChallengeErrors = {
    * Not Found
    */
   404: ProblemDetails;
+  /**
+   * Too Many Requests
+   */
+  429: ProblemDetails;
   /**
    * Internal Server Error
    */
@@ -748,6 +795,10 @@ export type UpdateChallengeErrors = {
    */
   409: ProblemDetails;
   /**
+   * Too Many Requests
+   */
+  429: ProblemDetails;
+  /**
    * Internal Server Error
    */
   500: ProblemDetails;
@@ -779,6 +830,10 @@ export type ListChallengeFilesErrors = {
    * Not Found
    */
   404: ProblemDetails;
+  /**
+   * Too Many Requests
+   */
+  429: ProblemDetails;
   /**
    * Internal Server Error
    */
@@ -824,6 +879,10 @@ export type UploadChallengeFileErrors = {
    */
   413: ProblemDetails;
   /**
+   * Too Many Requests
+   */
+  429: ProblemDetails;
+  /**
    * Internal Server Error
    */
   500: ProblemDetails;
@@ -858,6 +917,10 @@ export type LoginErrors = {
    */
   403: ProblemDetails;
   /**
+   * Too Many Requests
+   */
+  429: ProblemDetails;
+  /**
    * Internal Server Error
    */
   500: ProblemDetails;
@@ -888,6 +951,10 @@ export type RegisterErrors = {
    */
   409: ProblemDetails;
   /**
+   * Too Many Requests
+   */
+  429: ProblemDetails;
+  /**
    * Internal Server Error
    */
   500: ProblemDetails;
@@ -914,6 +981,10 @@ export type ForgotPasswordErrors = {
    */
   400: ProblemDetails;
   /**
+   * Too Many Requests
+   */
+  429: ProblemDetails;
+  /**
    * Internal Server Error
    */
   500: ProblemDetails;
@@ -937,6 +1008,10 @@ export type ResetPasswordErrors = {
    * Bad Request
    */
   400: ProblemDetails;
+  /**
+   * Too Many Requests
+   */
+  429: ProblemDetails;
   /**
    * Internal Server Error
    */
@@ -963,6 +1038,10 @@ export type GetAuthUserErrors = {
    * Unauthorized
    */
   401: ProblemDetails;
+  /**
+   * Too Many Requests
+   */
+  429: ProblemDetails;
   /**
    * Internal Server Error
    */
@@ -993,6 +1072,10 @@ export type ListEmailTemplatesErrors = {
    * Forbidden
    */
   403: ProblemDetails;
+  /**
+   * Too Many Requests
+   */
+  429: ProblemDetails;
   /**
    * Internal Server Error
    */
@@ -1032,6 +1115,10 @@ export type CreateEmailTemplateErrors = {
    */
   409: ProblemDetails;
   /**
+   * Too Many Requests
+   */
+  429: ProblemDetails;
+  /**
    * Internal Server Error
    */
   500: ProblemDetails;
@@ -1069,6 +1156,10 @@ export type DeleteEmailTemplateErrors = {
    * Not Found
    */
   404: ProblemDetails;
+  /**
+   * Too Many Requests
+   */
+  429: ProblemDetails;
   /**
    * Internal Server Error
    */
@@ -1110,6 +1201,10 @@ export type GetEmailTemplateErrors = {
    */
   404: ProblemDetails;
   /**
+   * Too Many Requests
+   */
+  429: ProblemDetails;
+  /**
    * Internal Server Error
    */
   500: ProblemDetails;
@@ -1150,6 +1245,10 @@ export type UpdateEmailTemplateErrors = {
    */
   409: ProblemDetails;
   /**
+   * Too Many Requests
+   */
+  429: ProblemDetails;
+  /**
    * Internal Server Error
    */
   500: ProblemDetails;
@@ -1181,6 +1280,10 @@ export type DownloadFileErrors = {
    * Not Found
    */
   404: ProblemDetails;
+  /**
+   * Too Many Requests
+   */
+  429: ProblemDetails;
   /**
    * Internal Server Error
    */
@@ -1229,6 +1332,10 @@ export type DeleteFileErrors = {
    */
   404: ProblemDetails;
   /**
+   * Too Many Requests
+   */
+  429: ProblemDetails;
+  /**
    * Internal Server Error
    */
   500: ProblemDetails;
@@ -1268,6 +1375,10 @@ export type ListChallengeFlagsErrors = {
    * Not Found
    */
   404: ProblemDetails;
+  /**
+   * Too Many Requests
+   */
+  429: ProblemDetails;
   /**
    * Internal Server Error
    */
@@ -1313,6 +1424,10 @@ export type CreateFlagErrors = {
    */
   409: ProblemDetails;
   /**
+   * Too Many Requests
+   */
+  429: ProblemDetails;
+  /**
    * Internal Server Error
    */
   500: ProblemDetails;
@@ -1352,6 +1467,10 @@ export type DeleteFlagErrors = {
    * Not Found
    */
   404: ProblemDetails;
+  /**
+   * Too Many Requests
+   */
+  429: ProblemDetails;
   /**
    * Internal Server Error
    */
@@ -1397,6 +1516,10 @@ export type UpdateFlagErrors = {
    */
   409: ProblemDetails;
   /**
+   * Too Many Requests
+   */
+  429: ProblemDetails;
+  /**
    * Internal Server Error
    */
   500: ProblemDetails;
@@ -1433,6 +1556,10 @@ export type ListHintsErrors = {
    */
   403: ProblemDetails;
   /**
+   * Too Many Requests
+   */
+  429: ProblemDetails;
+  /**
    * Internal Server Error
    */
   500: ProblemDetails;
@@ -1466,6 +1593,10 @@ export type CreateHintErrors = {
    * Forbidden
    */
   403: ProblemDetails;
+  /**
+   * Too Many Requests
+   */
+  429: ProblemDetails;
   /**
    * Internal Server Error
    */
@@ -1504,6 +1635,10 @@ export type DeleteHintErrors = {
    * Not Found
    */
   404: ProblemDetails;
+  /**
+   * Too Many Requests
+   */
+  429: ProblemDetails;
   /**
    * Internal Server Error
    */
@@ -1545,6 +1680,10 @@ export type GetHintErrors = {
    */
   404: ProblemDetails;
   /**
+   * Too Many Requests
+   */
+  429: ProblemDetails;
+  /**
    * Internal Server Error
    */
   500: ProblemDetails;
@@ -1581,6 +1720,10 @@ export type UpdateHintErrors = {
    */
   403: ProblemDetails;
   /**
+   * Too Many Requests
+   */
+  429: ProblemDetails;
+  /**
    * Internal Server Error
    */
   500: ProblemDetails;
@@ -1610,6 +1753,10 @@ export type ListNotificationsErrors = {
    * Forbidden
    */
   403: ProblemDetails;
+  /**
+   * Too Many Requests
+   */
+  429: ProblemDetails;
   /**
    * Internal Server Error
    */
@@ -1644,6 +1791,10 @@ export type CreateNotificationErrors = {
    * Forbidden
    */
   403: ProblemDetails;
+  /**
+   * Too Many Requests
+   */
+  429: ProblemDetails;
   /**
    * Internal Server Error
    */
@@ -1682,6 +1833,10 @@ export type DeleteNotificationErrors = {
    * Not Found
    */
   404: ProblemDetails;
+  /**
+   * Too Many Requests
+   */
+  429: ProblemDetails;
   /**
    * Internal Server Error
    */
@@ -1723,6 +1878,10 @@ export type GetNotificationErrors = {
    */
   404: ProblemDetails;
   /**
+   * Too Many Requests
+   */
+  429: ProblemDetails;
+  /**
    * Internal Server Error
    */
   500: ProblemDetails;
@@ -1759,6 +1918,10 @@ export type UpdateNotificationErrors = {
    */
   403: ProblemDetails;
   /**
+   * Too Many Requests
+   */
+  429: ProblemDetails;
+  /**
    * Internal Server Error
    */
   500: ProblemDetails;
@@ -1788,6 +1951,10 @@ export type ListPagesErrors = {
    * Forbidden
    */
   403: ProblemDetails;
+  /**
+   * Too Many Requests
+   */
+  429: ProblemDetails;
   /**
    * Internal Server Error
    */
@@ -1827,6 +1994,10 @@ export type CreatePageErrors = {
    */
   409: ProblemDetails;
   /**
+   * Too Many Requests
+   */
+  429: ProblemDetails;
+  /**
    * Internal Server Error
    */
   500: ProblemDetails;
@@ -1864,6 +2035,10 @@ export type DeletePageErrors = {
    * Not Found
    */
   404: ProblemDetails;
+  /**
+   * Too Many Requests
+   */
+  429: ProblemDetails;
   /**
    * Internal Server Error
    */
@@ -1905,6 +2080,10 @@ export type GetPageErrors = {
    */
   404: ProblemDetails;
   /**
+   * Too Many Requests
+   */
+  429: ProblemDetails;
+  /**
    * Internal Server Error
    */
   500: ProblemDetails;
@@ -1945,6 +2124,10 @@ export type UpdatePageErrors = {
    */
   409: ProblemDetails;
   /**
+   * Too Many Requests
+   */
+  429: ProblemDetails;
+  /**
    * Internal Server Error
    */
   500: ProblemDetails;
@@ -1974,6 +2157,10 @@ export type ListRegistrationCodesErrors = {
    * Forbidden
    */
   403: ProblemDetails;
+  /**
+   * Too Many Requests
+   */
+  429: ProblemDetails;
   /**
    * Internal Server Error
    */
@@ -2013,6 +2200,10 @@ export type CreateRegistrationCodeErrors = {
    */
   409: ProblemDetails;
   /**
+   * Too Many Requests
+   */
+  429: ProblemDetails;
+  /**
    * Internal Server Error
    */
   500: ProblemDetails;
@@ -2050,6 +2241,10 @@ export type DeleteRegistrationCodeErrors = {
    * Not Found
    */
   404: ProblemDetails;
+  /**
+   * Too Many Requests
+   */
+  429: ProblemDetails;
   /**
    * Internal Server Error
    */
@@ -2091,6 +2286,10 @@ export type GetRegistrationCodeErrors = {
    */
   404: ProblemDetails;
   /**
+   * Too Many Requests
+   */
+  429: ProblemDetails;
+  /**
    * Internal Server Error
    */
   500: ProblemDetails;
@@ -2131,6 +2330,10 @@ export type UpdateRegistrationCodeErrors = {
    */
   409: ProblemDetails;
   /**
+   * Too Many Requests
+   */
+  429: ProblemDetails;
+  /**
    * Internal Server Error
    */
   500: ProblemDetails;
@@ -2152,6 +2355,10 @@ export type GetSettingsData = {
 };
 
 export type GetSettingsErrors = {
+  /**
+   * Too Many Requests
+   */
+  429: ProblemDetails;
   /**
    * Internal Server Error
    */
@@ -2186,6 +2393,10 @@ export type UpdateSettingsErrors = {
    * Forbidden
    */
   403: ProblemDetails;
+  /**
+   * Too Many Requests
+   */
+  429: ProblemDetails;
   /**
    * Internal Server Error
    */
@@ -2227,6 +2438,10 @@ export type SubmitFlagErrors = {
    */
   404: ProblemDetails;
   /**
+   * Too Many Requests
+   */
+  429: ProblemDetails;
+  /**
    * Internal Server Error
    */
   500: ProblemDetails;
@@ -2257,6 +2472,10 @@ export type ListMySubmissionsErrors = {
    */
   404: ProblemDetails;
   /**
+   * Too Many Requests
+   */
+  429: ProblemDetails;
+  /**
    * Internal Server Error
    */
   500: ProblemDetails;
@@ -2282,6 +2501,10 @@ export type ListMySolvesErrors = {
    * Unauthorized
    */
   401: ProblemDetails;
+  /**
+   * Too Many Requests
+   */
+  429: ProblemDetails;
   /**
    * Internal Server Error
    */
@@ -2312,6 +2535,10 @@ export type ListSubmissionsErrors = {
    * Forbidden
    */
   403: ProblemDetails;
+  /**
+   * Too Many Requests
+   */
+  429: ProblemDetails;
   /**
    * Internal Server Error
    */
@@ -2353,6 +2580,10 @@ export type ListUserSubmissionsErrors = {
    */
   404: ProblemDetails;
   /**
+   * Too Many Requests
+   */
+  429: ProblemDetails;
+  /**
    * Internal Server Error
    */
   500: ProblemDetails;
@@ -2375,6 +2606,10 @@ export type GetScoreboardData = {
 
 export type GetScoreboardErrors = {
   /**
+   * Too Many Requests
+   */
+  429: ProblemDetails;
+  /**
    * Internal Server Error
    */
   500: ProblemDetails;
@@ -2387,6 +2622,32 @@ export type GetScoreboardResponses = {
 };
 
 export type GetScoreboardResponse = GetScoreboardResponses[keyof GetScoreboardResponses];
+
+export type GetCtftimeScoreboardData = {
+  body?: never;
+  path?: never;
+  query?: never;
+  url: '/v1/ctftime/scoreboard';
+};
+
+export type GetCtftimeScoreboardErrors = {
+  /**
+   * Too Many Requests
+   */
+  429: ProblemDetails;
+  /**
+   * Internal Server Error
+   */
+  500: ProblemDetails;
+};
+
+export type GetCtftimeScoreboardError = GetCtftimeScoreboardErrors[keyof GetCtftimeScoreboardErrors];
+
+export type GetCtftimeScoreboardResponses = {
+  200: CtftimeFeed;
+};
+
+export type GetCtftimeScoreboardResponse = GetCtftimeScoreboardResponses[keyof GetCtftimeScoreboardResponses];
 
 export type ListTeamsData = {
   body?: never;
@@ -2404,6 +2665,10 @@ export type ListTeamsErrors = {
    * Forbidden
    */
   403: ProblemDetails;
+  /**
+   * Too Many Requests
+   */
+  429: ProblemDetails;
   /**
    * Internal Server Error
    */
@@ -2443,6 +2708,10 @@ export type CreateTeamErrors = {
    */
   409: ProblemDetails;
   /**
+   * Too Many Requests
+   */
+  429: ProblemDetails;
+  /**
    * Internal Server Error
    */
   500: ProblemDetails;
@@ -2480,6 +2749,10 @@ export type DeleteTeamErrors = {
    * Not Found
    */
   404: ProblemDetails;
+  /**
+   * Too Many Requests
+   */
+  429: ProblemDetails;
   /**
    * Internal Server Error
    */
@@ -2521,6 +2794,10 @@ export type GetTeamErrors = {
    */
   404: ProblemDetails;
   /**
+   * Too Many Requests
+   */
+  429: ProblemDetails;
+  /**
    * Internal Server Error
    */
   500: ProblemDetails;
@@ -2561,6 +2838,10 @@ export type UpdateTeamErrors = {
    */
   409: ProblemDetails;
   /**
+   * Too Many Requests
+   */
+  429: ProblemDetails;
+  /**
    * Internal Server Error
    */
   500: ProblemDetails;
@@ -2586,6 +2867,10 @@ export type ListUsersErrors = {
    * Unauthorized
    */
   401: ProblemDetails;
+  /**
+   * Too Many Requests
+   */
+  429: ProblemDetails;
   /**
    * Internal Server Error
    */
@@ -2616,6 +2901,10 @@ export type GetMeErrors = {
    * Not Found
    */
   404: ProblemDetails;
+  /**
+   * Too Many Requests
+   */
+  429: ProblemDetails;
   /**
    * Internal Server Error
    */
@@ -2655,6 +2944,10 @@ export type UpdateMeErrors = {
    */
   409: ProblemDetails;
   /**
+   * Too Many Requests
+   */
+  429: ProblemDetails;
+  /**
    * Internal Server Error
    */
   500: ProblemDetails;
@@ -2691,6 +2984,10 @@ export type GetUserErrors = {
    */
   404: ProblemDetails;
   /**
+   * Too Many Requests
+   */
+  429: ProblemDetails;
+  /**
    * Internal Server Error
    */
   500: ProblemDetails;
@@ -2720,6 +3017,10 @@ export type ListAdminUsersErrors = {
    * Forbidden
    */
   403: ProblemDetails;
+  /**
+   * Too Many Requests
+   */
+  429: ProblemDetails;
   /**
    * Internal Server Error
    */
@@ -2758,6 +3059,10 @@ export type CreateUserErrors = {
    * Conflict
    */
   409: ProblemDetails;
+  /**
+   * Too Many Requests
+   */
+  429: ProblemDetails;
   /**
    * Internal Server Error
    */
@@ -2801,6 +3106,10 @@ export type UpdateUsersErrors = {
    */
   409: ProblemDetails;
   /**
+   * Too Many Requests
+   */
+  429: ProblemDetails;
+  /**
    * Internal Server Error
    */
   500: ProblemDetails;
@@ -2841,6 +3150,10 @@ export type DeleteUserErrors = {
    */
   404: ProblemDetails;
   /**
+   * Too Many Requests
+   */
+  429: ProblemDetails;
+  /**
    * Internal Server Error
    */
   500: ProblemDetails;
@@ -2880,6 +3193,10 @@ export type GetAdminUserErrors = {
    * Not Found
    */
   404: ProblemDetails;
+  /**
+   * Too Many Requests
+   */
+  429: ProblemDetails;
   /**
    * Internal Server Error
    */
@@ -2924,6 +3241,10 @@ export type UpdateUserErrors = {
    * Conflict
    */
   409: ProblemDetails;
+  /**
+   * Too Many Requests
+   */
+  429: ProblemDetails;
   /**
    * Internal Server Error
    */

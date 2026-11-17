@@ -98,9 +98,8 @@ class AuthService(
                 .create()
                 .withIssuer(jwt.issuer)
                 .withAudience(jwt.audience)
+                // Only who it is: names and roles are looked up per request, so they can't go stale (RFC 8725 §3.10).
                 .withSubject(user.id.toString())
-                .withClaim("username", user.username)
-                .withClaim("role", user.role.name)
                 .withIssuedAt(Date(now.toEpochMilliseconds()))
                 .withExpiresAt(Date(expiresAt.toEpochMilliseconds()))
                 .sign(algorithm)

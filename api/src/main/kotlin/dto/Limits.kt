@@ -24,8 +24,15 @@ object Limits {
     const val TEAM_NAME_MAX = 64
     const val COUNTRY_LENGTH = 2
     const val COUNTRY_PATTERN = "^[A-Z]{2}$"
-    const val USER_LANGUAGE_MAX = 5
-    const val PAGE_LANGUAGE_LENGTH = 2
+
+    /**
+     * A BCP 47 language tag (RFC 5646): language, then optional script, region and variants, e.g. `en`, `hu`, `pt-BR`,
+     * `zh-Hant-TW`. Extensions and private use (`-u-…`, `-x-…`) aren't accepted.
+     */
+    const val LANGUAGE_TAG_PATTERN = "^[A-Za-z]{2,3}(-[A-Za-z]{4})?(-([A-Za-z]{2}|[0-9]{3}))?(-([A-Za-z0-9]{5,8}|[0-9][A-Za-z0-9]{3}))*$"
+
+    /** RFC 5646 §4.4.1: room for tags of at least 35 characters. */
+    const val LANGUAGE_TAG_MAX = 35
     const val FILENAME_MAX = 255
     const val MIME_TYPE_MAX = 128
     const val IP_ADDRESS_MAX = 45

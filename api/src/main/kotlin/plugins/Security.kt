@@ -26,6 +26,9 @@ import io.ktor.util.AttributeKey
 
 private const val MIN_JWT_SECRET_LENGTH = 32
 
+/** application.conf's fallback for local development; anyone can read it, so anyone could sign tokens with it. */
+private const val DEV_JWT_SECRET = "dev-only-insecure-jwt-secret-change-me"
+
 /** The caller; read it with `call.principal` (or `call.principalOrNull`) inside the route builders below. */
 data class UserPrincipal(
     val id: Int,
@@ -40,7 +43,11 @@ private val Route.roleAuth: RoleAuth get() = application.attributes[RoleAuthKey]
 
 fun Application.configureSecurity() {
     val jwtConfig = environment.config.jwtConfig()
+    // RFC 8725 §3.5: HS256 needs a key of at least 256 bits, and a secret one.
     require(jwtConfig.secret.length >= MIN_JWT_SECRET_LENGTH) { "jwt.secret (JWT_SECRET) must be at least 32 characters" }
+    require(developmentMode || jwtConfig.secret != DEV_JWT_SECRET) {
+        "Set JWT_SECRET to 32+ random characters; the built-in secret is only for development (KTOR_DEVELOPMENT=true)"
+    }
 
     val jwtAuth =
         jwt<UserPrincipal>("jwt") {

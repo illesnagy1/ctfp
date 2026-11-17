@@ -1,5 +1,6 @@
 package com.ctfp.domain.model
 
+import com.ctfp.dto.Limits
 import org.jetbrains.exposed.v1.core.dao.id.IntIdTable
 import org.jetbrains.exposed.v1.datetime.CurrentTimestamp
 import org.jetbrains.exposed.v1.datetime.timestamp
@@ -7,7 +8,7 @@ import org.jetbrains.exposed.v1.datetime.timestamp
 object PageTable : IntIdTable() {
     val title = varchar("title", 255)
     val route = varchar("route", 255)
-    val language = varchar("language", 2).default("en")
+    val language = varchar("language", Limits.LANGUAGE_TAG_MAX).default("en")
     val format = varchar("format", 255)
     val targetBlank = bool("target_blank").default(false)
     val body = text("body")
