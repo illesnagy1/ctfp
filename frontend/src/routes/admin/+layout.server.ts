@@ -1,5 +1,7 @@
 import { error, redirect } from '@sveltejs/kit';
 
+import { status } from '#lib/http.js';
+
 import type { LayoutServerLoad } from './$types';
 
 /**
@@ -7,6 +9,6 @@ import type { LayoutServerLoad } from './$types';
  * themselves; the api checks it again either way.
  */
 export const load: LayoutServerLoad = ({ locals }) => {
-  if (!locals.user) redirect(303, '/login');
-  if (locals.user.role !== 'ADMIN') error(403, 'Admin access required');
+  if (!locals.user) redirect(status.SEE_OTHER, '/login');
+  if (locals.user.role !== 'ADMIN') error(status.FORBIDDEN, 'Admin access required');
 };

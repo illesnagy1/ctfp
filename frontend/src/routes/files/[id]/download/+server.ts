@@ -1,6 +1,8 @@
 import { error } from '@sveltejs/kit';
 
-import { apiClient } from '#lib/server/api.js';
+import { downloadFile } from '#lib/api/index.js';
+import { status } from '#lib/http.js';
+import { apiClient, call } from '#lib/server/api.js';
 
 import type { RequestHandler } from './$types';
 
@@ -27,7 +29,7 @@ const FORWARDED_RESPONSE_HEADERS = [
  */
 export const GET: RequestHandler = async (event) => {
   const id = Number(event.params.id);
-  if (!Number.isInteger(id)) error(404, 'File not found');
+  if (!Number.isInteger(id)) error(status.NOT_FOUND, 'File not found');
 
   const headers = Object.fromEntries(
     FORWARDED_REQUEST_HEADERS.flatMap((name) => {
@@ -36,15 +38,16 @@ export const GET: RequestHandler = async (event) => {
     }),
   );
 
-  const { data, response } = await apiClient(event).GET('/v1/files/{id}/download', {
-    params: { path: { id: String(id) } },
-    headers,
-    parseAs: 'stream',
-  });
-  if (response.status === 304) return new Response(null, { status: 304, headers: pick(response.headers) });
-  if (!data) error(response.status, response.status === 404 ? 'File not found' : response.statusText);
+  // The body is streamed through as is, so only the response is needed (parseAs keeps the client from reading it).
+  const { response } = await call(
+    downloadFile({ client: apiClient(event), path: { id: String(id) }, headers, parseAs: 'stream' }),
+  );
+  if (response.status === status.NOT_MODIFIED)
+    return new Response(null, { status: status.NOT_MODIFIED, headers: pick(response.headers) });
+  if (!response.ok)
+    error(response.status, response.status === status.NOT_FOUND ? 'File not found' : response.statusText);
 
-  return new Response(data, { status: response.status, headers: pick(response.headers) });
+  return new Response(response.body, { status: response.status, headers: pick(response.headers) });
 };
 
 function pick(source: Headers) {

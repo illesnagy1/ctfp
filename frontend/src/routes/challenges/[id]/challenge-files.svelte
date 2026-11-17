@@ -6,10 +6,11 @@
   import { toast } from 'svelte-sonner';
   import { on } from 'svelte/events';
 
+  import type { FileResponse } from '#lib/api/index.js';
   import * as FileDropZone from '#lib/components/ui/file-drop-zone/index.js';
   import { Progress } from '#lib/components/ui/progress/index.js';
+  import { status } from '#lib/http.js';
   import { m } from '#lib/paraglide/messages.js';
-  import type { components } from '#lib/types/api.js';
 
   import ChallengeFile from './challenge-file.svelte';
 
@@ -19,7 +20,7 @@
     isAdmin,
   }: {
     challengeId: number;
-    files: components['schemas']['FileResponse'][];
+    files: FileResponse[];
     isAdmin: boolean;
   } = $props();
 
@@ -37,7 +38,7 @@
         if (e instanceof ProgressEvent && e.lengthComputable && uploading) uploading.progress = e.loaded / e.total;
       });
       on(xhr, 'load', () => {
-        if (xhr.status === 201) return done();
+        if (xhr.status === status.CREATED) return done();
         let message: unknown;
         try {
           message = JSON.parse(xhr.responseText)?.message;

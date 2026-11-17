@@ -38,6 +38,7 @@
     "**/vite.config.ts.timestamp-*",
     "**/test-results",
     "src/lib/paraglide",
+    "src/lib/api",
     "project.inlang/cache/"
   ],
   "rules": {

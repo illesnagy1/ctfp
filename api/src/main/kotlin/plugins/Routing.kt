@@ -44,16 +44,13 @@ import io.ktor.server.http.content.static
 import io.ktor.server.http.content.staticResources
 import io.ktor.server.response.respondText
 import io.ktor.server.routing.get
+import io.ktor.server.routing.openapi.hide
 import io.ktor.server.routing.route
 import io.ktor.server.routing.routing
 import kotlin.io.path.Path
 
 fun Application.configureRouting() {
     routing {
-        get("/") {
-            call.respondText("Hello, World!")
-        }
-
         val hasher = PasswordHasher()
         val userService = UserService(hasher)
         val uploads = environment.config.uploadsConfig()
@@ -79,7 +76,5 @@ fun Application.configureRouting() {
             user(userService)
             adminUser(userService)
         }
-
-        staticResources("/static", "static")
     }
 }

@@ -6,15 +6,15 @@
   import { defaults } from 'sveltekit-superforms';
   import { zod4Client } from 'sveltekit-superforms/adapters';
 
+  import type { AdminUserResponse } from '#lib/api/index.js';
   import { DataTableRowMenu } from '#lib/components/data-table/index.js';
   import * as DropdownMenu from '#lib/components/ui/dropdown-menu/index.js';
   import EditUserDialog from '#lib/components/users/edit-user-dialog.svelte';
   import { actionError } from '#lib/form-action.js';
   import { m } from '#lib/paraglide/messages.js';
   import { editUserData, editUserFormId, editUserSchema } from '#lib/schemas/user.js';
-  import type { AdminUser } from '#lib/types/user.js';
 
-  let { user }: { user: AdminUser } = $props();
+  let { user }: { user: AdminUserResponse } = $props();
 
   // Banning yourself would revoke your own admin rights; the api refuses it too.
   const isSelf = $derived(page.data.user?.id === user.id);

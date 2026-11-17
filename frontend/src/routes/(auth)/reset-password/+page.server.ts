@@ -2,8 +2,10 @@ import { fail, redirect } from '@sveltejs/kit';
 import { superValidate } from 'sveltekit-superforms';
 import { zod4 } from 'sveltekit-superforms/adapters';
 
+import { resetPassword } from '#lib/api/index.js';
+import { status } from '#lib/http.js';
 import { resetPasswordSchema } from '#lib/schemas/auth.js';
-import { apiClient } from '#lib/server/api.js';
+import { apiClient, call } from '#lib/server/api.js';
 import { apiFormError } from '#lib/server/form.js';
 
 import type { Actions, PageServerLoad } from './$types';
@@ -20,11 +22,11 @@ export const actions: Actions = {
     // The form is sent back on failure; never echo the passwords.
     form.data.password = '';
     form.data.confirmPassword = '';
-    if (!form.valid) return fail(400, { form });
+    if (!form.valid) return fail(status.BAD_REQUEST, { form });
 
-    const { error, response } = await apiClient(event).POST('/v1/auth/reset-password', { body: { token, password } });
+    const { error, response } = await call(resetPassword({ client: apiClient(event), body: { token, password } }));
     if (error) return apiFormError(form, response, error, 'Password reset');
 
-    return redirect(303, '/login?reset');
+    return redirect(status.SEE_OTHER, '/login?reset');
   },
 };

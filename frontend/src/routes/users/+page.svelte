@@ -3,12 +3,12 @@
   import UndoIcon from '@lucide/svelte/icons/undo-2';
   import { toast } from 'svelte-sonner';
 
+  import type { AdminUserResponse } from '#lib/api/index.js';
   import { DataTable } from '#lib/components/data-table/index.js';
   import { Button } from '#lib/components/ui/button/index.js';
   import { roleOptions, statusOptions } from '#lib/components/users/labels.js';
   import { submitAction } from '#lib/form-action.js';
   import { m } from '#lib/paraglide/messages.js';
-  import type { AdminUser } from '#lib/types/user.js';
 
   import { adminColumns, columns } from './columns.js';
   import CreateUserDialog from './create-user-dialog.svelte';
@@ -17,7 +17,7 @@
 
   let pending = $state(false);
 
-  async function setBanned(users: AdminUser[], banned: boolean) {
+  async function setBanned(users: AdminUserResponse[], banned: boolean) {
     pending = true;
     try {
       await submitAction('?/setBannedMany', { ids: users.map((u) => u.id).join(','), banned: String(banned) });
@@ -31,7 +31,7 @@
   }
 </script>
 
-{#snippet bulkActions(selected: AdminUser[])}
+{#snippet bulkActions(selected: AdminUserResponse[])}
   {@const toBan = selected.filter((u) => !u.isBanned)}
   {@const toUnban = selected.filter((u) => u.isBanned)}
   <!-- Your own account is never banned, see setBannedMany. -->

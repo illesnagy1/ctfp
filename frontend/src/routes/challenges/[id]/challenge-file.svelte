@@ -6,14 +6,14 @@
   import prettyBytes from 'pretty-bytes';
   import { toast } from 'svelte-sonner';
 
+  import type { FileResponse } from '#lib/api/index.js';
   import { Button } from '#lib/components/ui/button/index.js';
   import { confirmDelete } from '#lib/components/ui/confirm-delete-dialog/index.js';
   import { submitAction } from '#lib/form-action.js';
   import { m } from '#lib/paraglide/messages.js';
   import { getLocale } from '#lib/paraglide/runtime.js';
-  import type { components } from '#lib/types/api.js';
 
-  let { file, isAdmin }: { file: components['schemas']['FileResponse']; isAdmin: boolean } = $props();
+  let { file, isAdmin }: { file: FileResponse; isAdmin: boolean } = $props();
 
   function askToDelete() {
     confirmDelete({

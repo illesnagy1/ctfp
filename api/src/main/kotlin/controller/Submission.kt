@@ -1,7 +1,7 @@
 package com.ctfp.controller
 
-import com.ctfp.controller.helper.errors
 import com.ctfp.controller.helper.getId
+import com.ctfp.controller.helper.operation
 import com.ctfp.dto.SubmitFlagRequest
 import com.ctfp.plugins.adminOnly
 import com.ctfp.plugins.authenticated
@@ -36,28 +36,28 @@ fun Route.submission(service: SubmissionService) {
                     userAgent = call.request.userAgent(),
                 ),
             )
-        }.errors(BadRequest, Unauthorized, Forbidden, NotFound)
+        }.operation("submitFlag", BadRequest, Unauthorized, Forbidden, NotFound)
 
         // The caller's own guesses, newest first.
         get("/users/me/submissions") {
             call.respond(service.list(call.principal.id))
-        }.errors(Unauthorized, NotFound)
+        }.operation("listMySubmissions", Unauthorized, NotFound)
 
         // Ids of the challenges the caller has solved, e.g. to mark them in the list.
         get("/users/me/solves") {
             call.respond(service.solvedChallengeIds(call.principal.id))
-        }.errors(Unauthorized)
+        }.operation("listMySolves", Unauthorized)
     }
 
     adminOnly {
         // Everyone's guesses, newest first, with where they came from.
         get("/admin/submissions") {
             call.respond(service.list())
-        }.errors(Unauthorized, Forbidden)
+        }.operation("listSubmissions", Unauthorized, Forbidden)
 
         // One user's guesses, for their profile page.
         get("/admin/users/{id}/submissions") {
             call.respond(service.list(call.getId()))
-        }.errors(BadRequest, Unauthorized, Forbidden, NotFound)
+        }.operation("listUserSubmissions", BadRequest, Unauthorized, Forbidden, NotFound)
     }
 }

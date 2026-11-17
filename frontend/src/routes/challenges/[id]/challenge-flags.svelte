@@ -4,23 +4,22 @@
   import { toast } from 'svelte-sonner';
   import type { Infer, SuperValidated } from 'sveltekit-superforms';
 
+  import type { FlagResponse } from '#lib/api/index.js';
   import { Badge } from '#lib/components/ui/badge/index.js';
   import { Button } from '#lib/components/ui/button/index.js';
   import { confirmDelete } from '#lib/components/ui/confirm-delete-dialog/index.js';
   import { submitAction } from '#lib/form-action.js';
   import { m } from '#lib/paraglide/messages.js';
   import type { createFlagSchema } from '#lib/schemas/flag.js';
-  import type { components } from '#lib/types/api.js';
 
   import CreateFlagDialog from './create-flag-dialog.svelte';
   import { flagValueLabel } from './flag-labels.js';
 
-  type Flag = components['schemas']['FlagResponse'];
-
   /** Admins only: the flags are the answers. */
-  let { flags, createForm }: { flags: Flag[]; createForm: SuperValidated<Infer<typeof createFlagSchema>> } = $props();
+  let { flags, createForm }: { flags: FlagResponse[]; createForm: SuperValidated<Infer<typeof createFlagSchema>> } =
+    $props();
 
-  function askToDelete(flag: Flag) {
+  function askToDelete(flag: FlagResponse) {
     confirmDelete({
       title: m.challenge_flags_delete_title(),
       description: m.challenge_flags_delete_description({ pattern: flag.pattern }),

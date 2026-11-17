@@ -1,6 +1,7 @@
 import { resolve } from '$app/paths';
 import { renderComponent, type ColumnDef } from '@tanstack/svelte-table';
 
+import type { AdminUserResponse, UserResponse } from '#lib/api/index.js';
 import CountryFlag from '#lib/components/country-flag.svelte';
 import {
   DataTableBadgesCell,
@@ -13,12 +14,11 @@ import {
 } from '#lib/components/data-table/index.js';
 import { roleLabel, statusLabel, userStatuses } from '#lib/components/users/labels.js';
 import { m } from '#lib/paraglide/messages.js';
-import type { AdminUser, User } from '#lib/types/user.js';
 
 import RowActions from './row-actions.svelte';
 
 /** The username, linking to the user's page. */
-const usernameColumn = <T extends User>(): ColumnDef<DataTableFeatures, T> => ({
+const usernameColumn = <T extends UserResponse>(): ColumnDef<DataTableFeatures, T> => ({
   ...sortableColumn<T>('username', m.users_column_username),
   cell: ({ row }) =>
     renderComponent(DataTableLinkCell, {
@@ -28,20 +28,20 @@ const usernameColumn = <T extends User>(): ColumnDef<DataTableFeatures, T> => ({
 });
 
 /** The country's flag, sorted by its code. */
-const countryColumn = <T extends User>(): ColumnDef<DataTableFeatures, T> => ({
+const countryColumn = <T extends UserResponse>(): ColumnDef<DataTableFeatures, T> => ({
   ...sortableColumn<T>('country', m.users_column_country),
   cell: ({ row }) => renderComponent(CountryFlag, { code: row.original.country }),
 });
 
 /** The public list, as players see it. */
-export const columns: ColumnDef<DataTableFeatures, User>[] = [
+export const columns: ColumnDef<DataTableFeatures, UserResponse>[] = [
   usernameColumn(),
   sortableColumn('website', m.users_column_website),
   countryColumn(),
 ];
 
 /** The full list for admins: email, role and statuses, row selection for bulk actions, and the ban menu. */
-export const adminColumns: ColumnDef<DataTableFeatures, AdminUser>[] = [
+export const adminColumns: ColumnDef<DataTableFeatures, AdminUserResponse>[] = [
   selectColumn(),
   usernameColumn(),
   sortableColumn('email', m.users_column_email),
@@ -58,7 +58,7 @@ export const adminColumns: ColumnDef<DataTableFeatures, AdminUser>[] = [
     id: 'status',
     meta: { title: m.users_column_status },
     header: ({ column }) =>
-      renderComponent(DataTableColumnHeader<AdminUser, unknown>, { title: m.users_column_status(), column }),
+      renderComponent(DataTableColumnHeader<AdminUserResponse, unknown>, { title: m.users_column_status(), column }),
     accessorFn: userStatuses,
     enableSorting: false,
     cell: ({ row }) => renderComponent(DataTableBadgesCell, { badges: userStatuses(row.original).map(statusLabel) }),

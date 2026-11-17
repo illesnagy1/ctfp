@@ -8,14 +8,19 @@ import io.ktor.server.routing.openapi.describe
 import io.ktor.utils.io.ExperimentalKtorApi
 
 /**
- * Documents the [ErrorResponse]s this route can return. They are sent by StatusPages (and the auth challenge), so
- * OpenAPI inference can't see them.
+ * Names this route's operation ([id] becomes the generated client's function name) and documents the [ErrorResponse]s
+ * it can return, plus the 500 any route can. They are sent by StatusPages (and the auth challenge), so OpenAPI
+ * inference can't see them.
  */
 @OptIn(ExperimentalKtorApi::class)
-fun Route.errors(vararg statuses: HttpStatusCode): Route =
+fun Route.operation(
+    id: String,
+    vararg errors: HttpStatusCode,
+): Route =
     describe {
+        operationId = id
         responses {
-            for (status in statuses) {
+            for (status in errors.toList() + HttpStatusCode.InternalServerError) {
                 status {
                     description = status.description
                     schema = jsonSchema<ErrorResponse>()

@@ -1,7 +1,7 @@
 package com.ctfp.controller
 
-import com.ctfp.controller.helper.errors
 import com.ctfp.controller.helper.getId
+import com.ctfp.controller.helper.operation
 import com.ctfp.dto.FileResponse
 import com.ctfp.plugins.adminOnly
 import com.ctfp.plugins.isAdmin
@@ -35,7 +35,7 @@ fun Route.file(service: FileService) {
             // Same visibility as the challenge itself.
             get {
                 call.respond(service.getChallengeFiles(call.getId(), includeUnreleased = call.principalOrNull.isAdmin))
-            }.errors(BadRequest, NotFound)
+            }.operation("listChallengeFiles", BadRequest, NotFound)
         }
         adminOnly {
             // multipart/form-data with one `file` part; responds with the stored file's metadata.
@@ -60,7 +60,7 @@ fun Route.file(service: FileService) {
                 }
 
                 call.respond(HttpStatusCode.Created, uploaded ?: throw ApiException(BadRequest, "Missing `file` part"))
-            }.errors(BadRequest, Unauthorized, Forbidden, NotFound, PayloadTooLarge)
+            }.operation("uploadChallengeFile", BadRequest, Unauthorized, Forbidden, NotFound, PayloadTooLarge)
         }
     }
 
@@ -83,14 +83,14 @@ fun Route.file(service: FileService) {
                 // Attachments are usually archives or binaries already; compressing them only costs CPU.
                 call.suppressCompression()
                 call.respond(download.content)
-            }.errors(BadRequest, NotFound)
+            }.operation("downloadFile", BadRequest, NotFound)
         }
         adminOnly {
             delete {
                 service.delete(call.getId())
 
                 call.respond(HttpStatusCode.NoContent)
-            }.errors(BadRequest, Unauthorized, Forbidden, NotFound)
+            }.operation("deleteFile", BadRequest, Unauthorized, Forbidden, NotFound)
         }
     }
 }

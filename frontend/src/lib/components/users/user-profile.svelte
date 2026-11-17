@@ -1,11 +1,12 @@
 <script lang="ts">
   import type { Snippet } from 'svelte';
 
+  import type { UserResponse } from '#lib/api/index.js';
   import CountryFlag from '#lib/components/country-flag.svelte';
   import LocalTime from '#lib/components/local-time.svelte';
   import * as Card from '#lib/components/ui/card/index.js';
   import { m } from '#lib/paraglide/messages.js';
-  import { type User, isAdminUser } from '#lib/types/user.js';
+  import { isAdminUser } from '#lib/types/user.js';
 
   import { roleLabel } from './labels.js';
 
@@ -14,7 +15,7 @@
     actions,
   }: {
     /** Shows the account details too when given the full view (own account, or an admin looking). */
-    user: User;
+    user: UserResponse;
     /** Buttons in the card's header, e.g. edit. */
     actions?: Snippet;
   } = $props();

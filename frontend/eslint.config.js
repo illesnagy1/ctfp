@@ -24,7 +24,14 @@ const rules = {
 const tailwindSettings = { 'better-tailwindcss': { entryPoint: 'src/routes/layout.css' } };
 
 export default defineConfig([
-  globalIgnores(['.svelte-kit/', 'build/', 'node_modules/', 'src/lib/paraglide/', 'project.inlang/cache/']),
+  globalIgnores([
+    '.svelte-kit/',
+    'build/',
+    'node_modules/',
+    'src/lib/paraglide/',
+    'src/lib/api/',
+    'project.inlang/cache/',
+  ]),
   {
     // Generated code has `eslint-disable` comments for oxlint-covered rules. Register those plugins (no rules
     // enabled) so the comments resolve, and don't report them as unused.

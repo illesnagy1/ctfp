@@ -1,18 +1,16 @@
 import type { UiSchemaRoot } from '@sjsf/form';
 import { z } from 'zod';
 
+import type { Settings } from '#lib/api/index.js';
 import { m } from '#lib/paraglide/messages.js';
-import type { components } from '#lib/types/api.js';
 import { settingsJsonSchema } from '#lib/types/schemas.js';
-
-export type SettingsValue = components['schemas']['Settings'];
 
 /**
  * The settings form's schema, built from the api's own (types, limits, descriptions; see dto/Settings.kt), so a new
  * setting there shows up on the config page after `bun run gen:api`. Typed with the api's Settings type, which
  * fromJSONSchema can't infer (the pipe adds the type and keeps the schema's limits).
  */
-export const settingsSchema = z.fromJSONSchema(settingsJsonSchema).pipe(z.custom<SettingsValue>());
+export const settingsSchema = z.fromJSONSchema(settingsJsonSchema).pipe(z.custom<Settings>());
 
 const messages: Record<string, unknown> = m;
 

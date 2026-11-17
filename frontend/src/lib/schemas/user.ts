@@ -1,6 +1,6 @@
 import { z } from 'zod';
 
-import type { AdminUser } from '#lib/types/user.js';
+import type { AdminUserResponse } from '#lib/api/index.js';
 
 import { zAdminUserCreateRequest, zAdminUserUpdateRequest } from './api.js';
 import { country, email, username, website } from './fields.js';
@@ -35,7 +35,7 @@ export const editUserSchema = z.object({
 });
 
 /** The edit form's starting values from the saved profile; empty strings for none. */
-export const editUserData = (user: AdminUser): z.infer<typeof editUserSchema> => ({
+export const editUserData = (user: AdminUserResponse): z.infer<typeof editUserSchema> => ({
   username: user.username,
   email: user.email,
   country: user.country ?? '',

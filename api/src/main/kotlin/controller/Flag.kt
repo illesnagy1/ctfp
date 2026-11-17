@@ -1,7 +1,7 @@
 package com.ctfp.controller
 
-import com.ctfp.controller.helper.errors
 import com.ctfp.controller.helper.getId
+import com.ctfp.controller.helper.operation
 import com.ctfp.dto.FlagRequest
 import com.ctfp.plugins.adminOnly
 import com.ctfp.service.FlagService
@@ -26,12 +26,12 @@ fun Route.flag(service: FlagService) {
         route("/challenges/{id}/flags") {
             get {
                 call.respond(service.getForChallenge(call.getId()))
-            }.errors(BadRequest, Unauthorized, Forbidden, NotFound)
+            }.operation("listChallengeFlags", BadRequest, Unauthorized, Forbidden, NotFound)
             post {
                 val flag = service.create(call.getId(), call.receive<FlagRequest>())
 
                 call.respond(HttpStatusCode.Created, flag)
-            }.errors(BadRequest, Unauthorized, Forbidden, NotFound, Conflict)
+            }.operation("createFlag", BadRequest, Unauthorized, Forbidden, NotFound, Conflict)
         }
 
         route("/flags/{id}") {
@@ -39,12 +39,12 @@ fun Route.flag(service: FlagService) {
                 service.update(call.getId(), call.receive<FlagRequest>())
 
                 call.respond(HttpStatusCode.NoContent)
-            }.errors(BadRequest, Unauthorized, Forbidden, NotFound, Conflict)
+            }.operation("updateFlag", BadRequest, Unauthorized, Forbidden, NotFound, Conflict)
             delete {
                 service.delete(call.getId())
 
                 call.respond(HttpStatusCode.NoContent)
-            }.errors(BadRequest, Unauthorized, Forbidden, NotFound)
+            }.operation("deleteFlag", BadRequest, Unauthorized, Forbidden, NotFound)
         }
     }
 }

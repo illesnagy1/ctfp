@@ -1,5 +1,6 @@
 package com.ctfp.controller
 
+import com.ctfp.controller.helper.operation
 import com.ctfp.service.ScoreboardService
 import io.ktor.server.response.respond
 import io.ktor.server.routing.Route
@@ -9,5 +10,5 @@ fun Route.scoreboard(service: ScoreboardService) {
     // Public, like the challenge list.
     get("/scoreboard") {
         call.respond(service.get())
-    }
+    }.operation("getScoreboard")
 }

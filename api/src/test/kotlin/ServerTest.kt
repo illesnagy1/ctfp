@@ -12,19 +12,10 @@ import kotlin.test.assertTrue
 
 class ServerTest {
     @Test
-    fun `test root endpoint`() =
-        testApplication {
-            // loads default configuration
-            configure()
-            // verify server root returns 200
-            assertEquals(HttpStatusCode.OK, client.get("/").status)
-        }
-
-    @Test
     fun `metrics endpoint exposes http and jvm metrics`() =
         testApplication {
             configure()
-            assertNotNull(client.get("/").headers[HttpHeaders.XRequestId])
+            assertNotNull(client.get("/livez").headers[HttpHeaders.XRequestId])
             val body = client.get("/metrics").bodyAsText()
             assertTrue("ktor_http_server_requests_seconds_count" in body, body)
             assertTrue("jvm_memory_used_bytes" in body, body)

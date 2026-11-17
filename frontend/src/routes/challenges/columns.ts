@@ -1,6 +1,7 @@
 import { resolve } from '$app/paths';
 import { renderComponent, type ColumnDef } from '@tanstack/svelte-table';
 
+import type { ChallengeResponse } from '#lib/api/index.js';
 import {
   DataTableBadgesCell,
   DataTableLinkCell,
@@ -10,14 +11,11 @@ import {
 } from '#lib/components/data-table/index.js';
 import LocalTime from '#lib/components/local-time.svelte';
 import { m } from '#lib/paraglide/messages.js';
-import type { components } from '#lib/types/api.js';
 
 import RowActions from './row-actions.svelte';
 
-export type Challenge = components['schemas']['ChallengeResponse'];
-
 // Titles are message functions, not strings, so they're translated on each render (see `Text`).
-export const columns: ColumnDef<DataTableFeatures, Challenge>[] = [
+export const columns: ColumnDef<DataTableFeatures, ChallengeResponse>[] = [
   {
     ...sortableColumn('title', m.challenges_column_title),
     cell: ({ row }) =>
@@ -43,8 +41,8 @@ export const columns: ColumnDef<DataTableFeatures, Challenge>[] = [
 ];
 
 /** With row selection for bulk actions, and the row menu (delete); players have no row actions. */
-export const adminColumns: ColumnDef<DataTableFeatures, Challenge>[] = [
-  selectColumn<Challenge>(),
+export const adminColumns: ColumnDef<DataTableFeatures, ChallengeResponse>[] = [
+  selectColumn<ChallengeResponse>(),
   ...columns,
   // Players only ever see published challenges, so the date is admin-only.
   {

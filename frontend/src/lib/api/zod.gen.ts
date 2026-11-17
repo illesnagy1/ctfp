@@ -23,6 +23,13 @@ export const zChallengeResponse = z.object({
 });
 
 /**
+ * ErrorResponse
+ */
+export const zErrorResponse = z.object({
+  message: z.string(),
+});
+
+/**
  * ChallengeRequest
  */
 export const zChallengeRequest = z.object({
@@ -45,13 +52,6 @@ export const zFileResponse = z.object({
   mimeType: z.string().nullish(),
   sha256: z.string(),
   createdAt: z.iso.datetime(),
-});
-
-/**
- * ErrorResponse
- */
-export const zErrorResponse = z.object({
-  message: z.string(),
 });
 
 /**

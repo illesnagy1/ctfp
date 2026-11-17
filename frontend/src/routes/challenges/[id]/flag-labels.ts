@@ -1,6 +1,6 @@
+import type { FlagResponse } from '#lib/api/index.js';
 import { m } from '#lib/paraglide/messages.js';
 import type { decayFunctions } from '#lib/schemas/flag.js';
-import type { components } from '#lib/types/api.js';
 
 type Decay = (typeof decayFunctions)[number];
 
@@ -15,7 +15,7 @@ export function decayLabel(decay: Decay) {
 }
 
 /** E.g. "100 points" or "100 → 10 points, linear, −5 per solve". */
-export function flagValueLabel(flag: components['schemas']['FlagResponse']) {
+export function flagValueLabel(flag: FlagResponse) {
   if (flag.decayFun === 'static') return m.challenge_flags_value_static({ value: flag.baseValue });
   return m.challenge_flags_value_decaying({
     value: flag.baseValue,

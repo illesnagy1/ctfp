@@ -1,6 +1,7 @@
 import { resolve } from '$app/paths';
 import { renderComponent, type ColumnDef } from '@tanstack/svelte-table';
 
+import type { SubmissionResponse } from '#lib/api/index.js';
 import {
   DataTableBadgeCell,
   DataTableBadgesCell,
@@ -13,13 +14,10 @@ import {
 } from '#lib/components/data-table/index.js';
 import LocalTime from '#lib/components/local-time.svelte';
 import { m } from '#lib/paraglide/messages.js';
-import type { components } from '#lib/types/api.js';
-
-export type Submission = components['schemas']['SubmissionResponse'];
 
 type SubmissionResult = 'correct' | 'wrong';
 
-const result = (submission: Submission): SubmissionResult => (submission.isCorrect ? 'correct' : 'wrong');
+const result = (submission: SubmissionResponse): SubmissionResult => (submission.isCorrect ? 'correct' : 'wrong');
 
 /** Result options in the current locale; call it where it renders, not at module level. */
 export const resultOptions = (): DataTableOption[] => [
@@ -30,7 +28,7 @@ export const resultOptions = (): DataTableOption[] => [
 const resultLabel = (value: SubmissionResult) => resultOptions().find((o) => o.value === value)?.label ?? value;
 
 /** A player's own guesses: what, when, and from where. */
-export const columns: ColumnDef<DataTableFeatures, Submission>[] = [
+export const columns: ColumnDef<DataTableFeatures, SubmissionResponse>[] = [
   {
     ...sortableColumn('submittedAt', m.submissions_column_time),
     // The raw value is an ISO instant, not the local time shown.
@@ -53,7 +51,10 @@ export const columns: ColumnDef<DataTableFeatures, Submission>[] = [
     id: 'result',
     meta: { title: m.submissions_column_result },
     header: ({ column }) =>
-      renderComponent(DataTableColumnHeader<Submission, unknown>, { title: m.submissions_column_result(), column }),
+      renderComponent(DataTableColumnHeader<SubmissionResponse, unknown>, {
+        title: m.submissions_column_result(),
+        column,
+      }),
     accessorFn: result,
     cell: ({ row }) => renderComponent(DataTableBadgesCell, { badges: [resultLabel(result(row.original))] }),
     filterFn: includesValue,
@@ -71,7 +72,7 @@ export const columns: ColumnDef<DataTableFeatures, Submission>[] = [
 ];
 
 /** Everyone's guesses for admins: the player too, linking to their profile. */
-export const adminColumns: ColumnDef<DataTableFeatures, Submission>[] = [
+export const adminColumns: ColumnDef<DataTableFeatures, SubmissionResponse>[] = [
   columns[0],
   {
     ...sortableColumn('username', m.submissions_column_user),

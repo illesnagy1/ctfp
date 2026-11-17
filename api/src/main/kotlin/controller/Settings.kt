@@ -1,6 +1,6 @@
 package com.ctfp.controller
 
-import com.ctfp.controller.helper.errors
+import com.ctfp.controller.helper.operation
 import com.ctfp.dto.Settings
 import com.ctfp.plugins.adminOnly
 import com.ctfp.service.SettingsService
@@ -17,13 +17,13 @@ import io.ktor.server.routing.route
 fun Route.settings(service: SettingsService) {
     get("/settings") {
         call.respond(service.getSettings())
-    }
+    }.operation("getSettings")
 
     adminOnly {
         route("/admin/settings") {
             put {
                 call.respond(service.updateSettings(call.receive<Settings>()))
-            }.errors(BadRequest, Unauthorized, Forbidden)
+            }.operation("updateSettings", BadRequest, Unauthorized, Forbidden)
         }
     }
 }

@@ -1,7 +1,7 @@
 package com.ctfp.controller
 
-import com.ctfp.controller.helper.errors
 import com.ctfp.controller.helper.getId
+import com.ctfp.controller.helper.operation
 import com.ctfp.dto.AdminUserCreateRequest
 import com.ctfp.dto.AdminUserUpdateRequest
 import com.ctfp.plugins.adminOnly
@@ -18,6 +18,7 @@ import io.ktor.server.response.respond
 import io.ktor.server.routing.Route
 import io.ktor.server.routing.delete
 import io.ktor.server.routing.get
+import io.ktor.server.routing.openapi.hide
 import io.ktor.server.routing.post
 import io.ktor.server.routing.put
 import io.ktor.server.routing.route
@@ -28,34 +29,34 @@ fun Route.adminUser(service: UserService) {
         route("/admin/users") {
             get {
                 call.respond(service.getAllAdminUsers())
-            }.errors(Unauthorized, Forbidden)
+            }.operation("listAdminUsers", Unauthorized, Forbidden)
             post {
                 service.createUser(call.receive<AdminUserCreateRequest>())
 
                 call.respond(HttpStatusCode.Created)
-            }.errors(BadRequest, Unauthorized, Forbidden, Conflict)
+            }.operation("createUser", BadRequest, Unauthorized, Forbidden, Conflict)
             put {
                 service.updateUsers(call.receive<Map<Int, AdminUserUpdateRequest>>(), actorId = call.principal.id)
 
                 call.respond(HttpStatusCode.NoContent)
-            }.errors(BadRequest, Unauthorized, Forbidden, NotFound, Conflict)
+            }.operation("updateUsers", BadRequest, Unauthorized, Forbidden, NotFound, Conflict)
             delete {
-            }
+            }.hide()
 
             route("/{id}") {
                 get {
                     call.respond(service.getAdminUser(call.getId()))
-                }.errors(BadRequest, Unauthorized, Forbidden, NotFound)
+                }.operation("getAdminUser", BadRequest, Unauthorized, Forbidden, NotFound)
                 put {
                     service.updateUser(call.getId(), call.receive<AdminUserUpdateRequest>(), actorId = call.principal.id)
 
                     call.respond(HttpStatusCode.NoContent)
-                }.errors(BadRequest, Unauthorized, Forbidden, NotFound, Conflict)
+                }.operation("updateUser", BadRequest, Unauthorized, Forbidden, NotFound, Conflict)
                 delete {
                     service.deleteUser(call.getId(), actorId = call.principal.id)
 
                     call.respond(HttpStatusCode.NoContent)
-                }.errors(BadRequest, Unauthorized, Forbidden, NotFound)
+                }.operation("deleteUser", BadRequest, Unauthorized, Forbidden, NotFound)
             }
         }
     }

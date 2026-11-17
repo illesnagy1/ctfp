@@ -1,20 +1,11 @@
-import type { components } from '#lib/types/api.js';
+import type { AdminUserResponse, AdminUserUpdateRequest, UserResponse } from '#lib/api/index.js';
 
-type Schemas = components['schemas'];
-
-export type User = Schemas['UserResponse'];
-
-export type AdminUserUpdate = Schemas['AdminUserUpdateRequest'];
-
-/** Full view of a user, returned by `/v1/admin/users` and `/v1/users/me`. */
-export type AdminUser = Schemas['AdminUserResponse'];
-
-export function isAdminUser(user: User): user is AdminUser {
+export function isAdminUser(user: UserResponse): user is AdminUserResponse {
   return 'email' in user;
 }
 
 /** Copies only the fields the api accepts; it rejects unknown keys. */
-export function toAdminUserUpdate(user: AdminUser): AdminUserUpdate {
+export function toAdminUserUpdate(user: AdminUserResponse): AdminUserUpdateRequest {
   return {
     codeId: user.codeId,
     username: user.username,

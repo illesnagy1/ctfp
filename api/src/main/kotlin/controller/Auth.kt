@@ -1,6 +1,6 @@
 package com.ctfp.controller
 
-import com.ctfp.controller.helper.errors
+import com.ctfp.controller.helper.operation
 import com.ctfp.dto.ForgotPasswordRequest
 import com.ctfp.dto.LoginRequest
 import com.ctfp.dto.RegisterRequest
@@ -29,25 +29,25 @@ fun Route.auth(
         post("login") {
             val request = call.receive<LoginRequest>()
             call.respond(service.login(request))
-        }.errors(BadRequest, Unauthorized, Forbidden)
+        }.operation("login", BadRequest, Unauthorized, Forbidden)
         post("register") {
             val request = call.receive<RegisterRequest>()
             call.respond(HttpStatusCode.Created, service.register(request))
-        }.errors(BadRequest, Conflict)
+        }.operation("register", BadRequest, Conflict)
         // 202 whether or not the address has an account, so it can't be used to find out.
         post("forgot-password") {
             resets.request(call.receive<ForgotPasswordRequest>().email)
             call.respond(HttpStatusCode.Accepted)
-        }
+        }.operation("forgotPassword", BadRequest)
         post("reset-password") {
             val request = call.receive<ResetPasswordRequest>()
             resets.reset(request.token, request.password)
             call.respond(HttpStatusCode.NoContent)
-        }.errors(BadRequest)
+        }.operation("resetPassword", BadRequest)
         authenticated {
             get("me") {
                 call.respond(service.me(call.principal.id))
-            }.errors(Unauthorized)
+            }.operation("getAuthUser", Unauthorized)
         }
     }
 }

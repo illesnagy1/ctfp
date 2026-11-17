@@ -2,6 +2,7 @@
   import Trash2Icon from '@lucide/svelte/icons/trash-2';
   import { toast } from 'svelte-sonner';
 
+  import type { ChallengeResponse } from '#lib/api/index.js';
   import { DataTable } from '#lib/components/data-table/index.js';
   import { Button } from '#lib/components/ui/button/index.js';
   import { confirmDelete } from '#lib/components/ui/confirm-delete-dialog/index.js';
@@ -9,7 +10,7 @@
   import { submitAction } from '#lib/form-action.js';
   import { m } from '#lib/paraglide/messages.js';
 
-  import { adminColumns, columns, type Challenge } from './columns.js';
+  import { adminColumns, columns } from './columns.js';
   import CreateChallengeDialog from './create-challenge-dialog.svelte';
   import DeleteCascadeWarning from './delete-cascade-warning.svelte';
 
@@ -24,9 +25,9 @@
   );
 
   // Read by the details snippet while the dialog is open.
-  let toDelete = $state<Challenge[]>([]);
+  let toDelete = $state<ChallengeResponse[]>([]);
 
-  function askToDeleteMany(selected: Challenge[]) {
+  function askToDeleteMany(selected: ChallengeResponse[]) {
     toDelete = selected;
     confirmDelete({
       title: m.challenges_delete_many_title({ count: selected.length }),
@@ -50,7 +51,7 @@
   <DeleteCascadeWarning />
 {/snippet}
 
-{#snippet bulkActions(selected: Challenge[])}
+{#snippet bulkActions(selected: ChallengeResponse[])}
   {#if selected.length > 0}
     <Button variant="destructive" size="sm" onclick={() => askToDeleteMany(selected)}>
       <Trash2Icon />

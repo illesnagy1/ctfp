@@ -1,5 +1,6 @@
 import { error } from '@sveltejs/kit';
 
+import { status } from '#lib/http.js';
 import { apiFetch } from '#lib/server/api.js';
 
 import type { RequestHandler } from './$types';
@@ -11,13 +12,14 @@ import type { RequestHandler } from './$types';
  */
 export const POST: RequestHandler = async (event) => {
   // Endpoints don't run the layout's guards; the api checks the role again either way.
-  if (event.locals.user?.role !== 'ADMIN') error(403, 'Admin access required');
+  if (event.locals.user?.role !== 'ADMIN') error(status.FORBIDDEN, 'Admin access required');
 
   const id = Number(event.params.id);
-  if (!Number.isInteger(id)) error(404, 'Challenge not found');
+  if (!Number.isInteger(id)) error(status.NOT_FOUND, 'Challenge not found');
 
   const contentType = event.request.headers.get('content-type');
-  if (!contentType?.startsWith('multipart/form-data') || !event.request.body) error(400, 'Expected a multipart upload');
+  if (!contentType?.startsWith('multipart/form-data') || !event.request.body)
+    error(status.BAD_REQUEST, 'Expected a multipart upload');
 
   // Raw fetch: the typed client can't take a stream as the body (the spec has no multipart schema).
   const response = await apiFetch(event, `/v1/challenges/${id}/files`, {
@@ -37,5 +39,5 @@ export const POST: RequestHandler = async (event) => {
         : response.statusText;
     error(response.status, message);
   }
-  return Response.json(result, { status: 201 });
+  return Response.json(result, { status: status.CREATED });
 };

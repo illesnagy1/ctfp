@@ -1,8 +1,8 @@
 import { API_URL } from '$app/env/private';
 import type { RequestEvent } from '@sveltejs/kit';
-import createClient from 'openapi-fetch';
 
-import type { paths } from '#lib/types/api.js';
+import { createClient, createConfig } from '#lib/api/client/index.js';
+import { status } from '#lib/http.js';
 
 import { deleteSession } from './session';
 
@@ -18,7 +18,7 @@ function authorize(event: RequestEvent, request: Request) {
 
 /** A 401 on an authenticated call means the token is no longer valid, so the session is dropped. */
 async function dropRejectedSession(event: RequestEvent, response: Response) {
-  if (response.status === 401 && event.locals.session) {
+  if (response.status === status.UNAUTHORIZED && event.locals.session) {
     await deleteSession(event.cookies);
     event.locals.session = undefined;
     event.locals.user = undefined;
@@ -27,26 +27,37 @@ async function dropRejectedSession(event: RequestEvent, response: Response) {
 }
 
 /**
- * Server-side client for the api, typed from api/openapi.json (`bun run gen:api`). Authenticated as the session's user.
+ * Server-side client for the api, authenticated as the session's user. Pass it to the generated endpoint functions
+ * (`#lib/api`, from api/openapi.json by `bun run gen:api`), through {@link call}:
  *
  * ```ts
- * const { data, error, response } = await apiClient(event).GET('/v1/users/{id}', { params: { path: { id: '1' } } });
+ * const client = apiClient(event);
+ * const { data, error, response } = await call(getUser({ client, path: { id: '1' } }));
  * ```
  */
 export function apiClient(event: RequestEvent) {
-  const client = createClient<paths>({ baseUrl: API_URL });
-
-  client.use({
-    onRequest: ({ request }) => authorize(event, request),
-    onResponse: ({ response }) => dropRejectedSession(event, response),
-  });
-
+  const client = createClient(createConfig({ baseUrl: API_URL }));
+  client.interceptors.request.use((request) => authorize(event, request));
+  client.interceptors.response.use((response) => dropRejectedSession(event, response));
   return client;
 }
 
 /**
- * Untyped call to the api, authenticated like {@link apiClient}, for what the typed client can't express, such as
- * streaming a request body through.
+ * Awaits an endpoint call. The client reports a request that got no response (the api is down) as an error with no
+ * response; that throws here instead, as fetch does, so every result has its response.
+ */
+export async function call<T extends { error?: unknown; response?: Response }>(
+  request: Promise<T>,
+): Promise<T & { response: Response }> {
+  const result = await request;
+  const { response } = result;
+  if (!response) throw result.error;
+  return { ...result, response };
+}
+
+/**
+ * Untyped call to the api, authenticated like {@link apiClient}, for what the generated functions can't express, such
+ * as streaming a request body through.
  */
 export async function apiFetch(
   event: RequestEvent,

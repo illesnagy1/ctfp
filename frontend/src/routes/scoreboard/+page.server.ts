@@ -1,13 +1,13 @@
 import { error } from '@sveltejs/kit';
 
-import { apiClient } from '#lib/server/api.js';
+import { getScoreboard } from '#lib/api/index.js';
+import { apiClient, call } from '#lib/server/api.js';
 
 import type { PageServerLoad } from './$types';
 
 export const load: PageServerLoad = async (event) => {
-  // The route documents no error responses, so check the response itself.
-  const { data, response } = await apiClient(event).GET('/v1/scoreboard');
-  if (!data) error(response.status, response.statusText);
+  const { data, error: apiError, response } = await call(getScoreboard({ client: apiClient(event) }));
+  if (apiError) error(response.status, apiError.message);
 
   return { entries: data };
 };

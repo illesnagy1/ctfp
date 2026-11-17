@@ -7,7 +7,7 @@ import { m } from '#lib/paraglide/messages.js';
  * from the same `@JsonSchema` annotations. Forms build on these rather than restating limits; import them from here,
  * so zod's messages below are translated.
  */
-export * from '#lib/types/zod/zod.gen.js';
+export * from '#lib/api/zod.gen.js';
 
 const messages: Record<string, unknown> = m;
 
