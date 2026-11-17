@@ -26,7 +26,6 @@ import io.opentelemetry.sdk.autoconfigure.AutoConfiguredOpenTelemetrySdk
 import java.sql.SQLException
 import java.util.UUID
 
-
 fun Application.configureMonitoring() {
     val otlpEnv = listOf("OTEL_EXPORTER_OTLP_ENDPOINT", "OTEL_EXPORTER_OTLP_METRICS_ENDPOINT")
     val otlpEnabled = otlpEnv.any { !System.getenv(it).isNullOrBlank() }
@@ -44,8 +43,7 @@ fun Application.configureMonitoring() {
                         "otel.logs.exporter" to "none",
                         "otel.exporter.otlp.protocol" to "http/protobuf",
                     )
-                }
-                .build()
+                }.build()
                 .openTelemetrySdk
         } else {
             OpenTelemetry.noop()

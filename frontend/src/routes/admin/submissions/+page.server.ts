@@ -3,6 +3,7 @@ import { error, redirect } from '@sveltejs/kit';
 import { listSubmissions } from '#lib/api/index.js';
 import { status } from '#lib/http.js';
 import { apiClient, call } from '#lib/server/api.js';
+import { problemMessage } from '#lib/server/problem.js';
 
 import type { PageServerLoad } from './$types';
 
@@ -11,7 +12,7 @@ export const load: PageServerLoad = async (event) => {
   const { data, error: apiError, response } = await call(listSubmissions({ client: apiClient(event) }));
   if (apiError) {
     if (response.status === status.UNAUTHORIZED) redirect(status.SEE_OTHER, '/login');
-    error(response.status, apiError.message);
+    error(response.status, problemMessage(apiError));
   }
   return { submissions: data };
 };

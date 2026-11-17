@@ -3,11 +3,13 @@ import { superValidate } from 'sveltekit-superforms';
 import { zod4 } from 'sveltekit-superforms/adapters';
 
 import { listAdminUsers, getAdminUser, listUsers, createUser, updateUsers, updateUser } from '#lib/api/index.js';
+import type { ProblemDetails } from '#lib/api/index.js';
 import { status } from '#lib/http.js';
 import { idSchema, idsSchema } from '#lib/schemas/ids.js';
 import { createUserSchema, setBannedSchema } from '#lib/schemas/user.js';
 import { apiClient, call } from '#lib/server/api.js';
 import { apiFormError, parseForm } from '#lib/server/form.js';
+import { problemMessage } from '#lib/server/problem.js';
 import { toAdminUserUpdate } from '#lib/types/user.js';
 
 import type { Actions, PageServerLoad } from './$types';
@@ -32,9 +34,9 @@ export const load: PageServerLoad = async (event) => {
   return { admin: false as const, users: data };
 };
 
-function fail401OrError(response: Response, apiError: { message: string }): never {
+function fail401OrError(response: Response, apiError: ProblemDetails): never {
   if (response.status === status.UNAUTHORIZED) redirect(status.SEE_OTHER, '/login');
-  error(response.status, apiError.message);
+  error(response.status, problemMessage(apiError));
 }
 
 /** The page's load decides the view, but actions don't run loads, so each action checks the role itself. */
@@ -71,13 +73,13 @@ export const actions: Actions = {
     const params = { path: { id: String(id) } };
 
     const fetched = await call(getAdminUser({ client, ...params }));
-    if (fetched.error) return fail(fetched.response.status, { message: fetched.error.message });
+    if (fetched.error) return fail(fetched.response.status, { message: problemMessage(fetched.error) });
 
     // The api has no PATCH yet, so send the full admin update with only isBanned changed.
     const updated = await call(
       updateUser({ client, ...params, body: { ...toAdminUserUpdate(fetched.data), isBanned: banned } }),
     );
-    if (updated.error) return fail(updated.response.status, { message: updated.error.message });
+    if (updated.error) return fail(updated.response.status, { message: problemMessage(updated.error) });
     return { success: true };
   },
 
@@ -91,7 +93,7 @@ export const actions: Actions = {
 
     const client = apiClient(event);
     const fetched = await call(listAdminUsers({ client }));
-    if (fetched.error) return fail(fetched.response.status, { message: fetched.error.message });
+    if (fetched.error) return fail(fetched.response.status, { message: problemMessage(fetched.error) });
 
     // Full updates again (no PATCH), sent as one bulk PUT so it's all or nothing.
     const users = fetched.data.filter((user) => ids.has(user.id));
@@ -99,7 +101,7 @@ export const actions: Actions = {
     const body = Object.fromEntries(users.map((user) => [user.id, { ...toAdminUserUpdate(user), isBanned: banned }]));
 
     const updated = await call(updateUsers({ client, body }));
-    if (updated.error) return fail(updated.response.status, { message: updated.error.message });
+    if (updated.error) return fail(updated.response.status, { message: problemMessage(updated.error) });
     return { success: true };
   },
 };

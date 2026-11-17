@@ -23,10 +23,23 @@ export const zChallengeResponse = z.object({
 });
 
 /**
- * ErrorResponse
+ * FieldProblem
  */
-export const zErrorResponse = z.object({
-  message: z.string(),
+export const zFieldProblem = z.object({
+  pointer: z.string(),
+  detail: z.string(),
+});
+
+/**
+ * ProblemDetails
+ */
+export const zProblemDetails = z.object({
+  type: z.string().optional(),
+  title: z.string(),
+  status: z.int(),
+  detail: z.string().nullish(),
+  instance: z.string().nullish(),
+  errors: z.array(zFieldProblem).nullish(),
 });
 
 /**

@@ -37,10 +37,41 @@ export type ChallengeResponse = {
 };
 
 /**
- * ErrorResponse
+ * FieldProblem
  */
-export type ErrorResponse = {
-  message: string;
+export type FieldProblem = {
+  /**
+   * JSON Pointer (RFC 6901) to the field, as a fragment, e.g. #/username or #/items/1/name.
+   */
+  pointer: string;
+  detail: string;
+};
+
+/**
+ * ProblemDetails
+ */
+export type ProblemDetails = {
+  /**
+   * A URI for the kind of problem; about:blank means the status says it all.
+   */
+  type?: string;
+  /**
+   * The status's standard phrase, e.g. Not Found.
+   */
+  title: string;
+  status: number;
+  /**
+   * What went wrong this time, for people to read.
+   */
+  detail?: string | null;
+  /**
+   * The request's path.
+   */
+  instance?: string | null;
+  /**
+   * The body's fields that broke a limit; only on 400s from request validation.
+   */
+  errors?: Array<FieldProblem> | null;
 };
 
 /**
@@ -489,19 +520,19 @@ export type DeleteChallengesErrors = {
   /**
    * Bad Request
    */
-  400: ErrorResponse;
+  400: ProblemDetails;
   /**
    * Unauthorized
    */
-  401: ErrorResponse;
+  401: ProblemDetails;
   /**
    * Forbidden
    */
-  403: ErrorResponse;
+  403: ProblemDetails;
   /**
    * Internal Server Error
    */
-  500: ErrorResponse;
+  500: ProblemDetails;
 };
 
 export type DeleteChallengesError = DeleteChallengesErrors[keyof DeleteChallengesErrors];
@@ -523,7 +554,7 @@ export type ListChallengesErrors = {
   /**
    * Internal Server Error
    */
-  500: ErrorResponse;
+  500: ProblemDetails;
 };
 
 export type ListChallengesError = ListChallengesErrors[keyof ListChallengesErrors];
@@ -545,23 +576,23 @@ export type CreateChallengeErrors = {
   /**
    * Bad Request
    */
-  400: ErrorResponse;
+  400: ProblemDetails;
   /**
    * Unauthorized
    */
-  401: ErrorResponse;
+  401: ProblemDetails;
   /**
    * Forbidden
    */
-  403: ErrorResponse;
+  403: ProblemDetails;
   /**
    * Conflict
    */
-  409: ErrorResponse;
+  409: ProblemDetails;
   /**
    * Internal Server Error
    */
-  500: ErrorResponse;
+  500: ProblemDetails;
 };
 
 export type CreateChallengeError = CreateChallengeErrors[keyof CreateChallengeErrors];
@@ -583,27 +614,27 @@ export type UpdateChallengesErrors = {
   /**
    * Bad Request
    */
-  400: ErrorResponse;
+  400: ProblemDetails;
   /**
    * Unauthorized
    */
-  401: ErrorResponse;
+  401: ProblemDetails;
   /**
    * Forbidden
    */
-  403: ErrorResponse;
+  403: ProblemDetails;
   /**
    * Not Found
    */
-  404: ErrorResponse;
+  404: ProblemDetails;
   /**
    * Conflict
    */
-  409: ErrorResponse;
+  409: ProblemDetails;
   /**
    * Internal Server Error
    */
-  500: ErrorResponse;
+  500: ProblemDetails;
 };
 
 export type UpdateChallengesError = UpdateChallengesErrors[keyof UpdateChallengesErrors];
@@ -627,23 +658,23 @@ export type DeleteChallengeErrors = {
   /**
    * Bad Request
    */
-  400: ErrorResponse;
+  400: ProblemDetails;
   /**
    * Unauthorized
    */
-  401: ErrorResponse;
+  401: ProblemDetails;
   /**
    * Forbidden
    */
-  403: ErrorResponse;
+  403: ProblemDetails;
   /**
    * Not Found
    */
-  404: ErrorResponse;
+  404: ProblemDetails;
   /**
    * Internal Server Error
    */
-  500: ErrorResponse;
+  500: ProblemDetails;
 };
 
 export type DeleteChallengeError = DeleteChallengeErrors[keyof DeleteChallengeErrors];
@@ -667,15 +698,15 @@ export type GetChallengeErrors = {
   /**
    * Bad Request
    */
-  400: ErrorResponse;
+  400: ProblemDetails;
   /**
    * Not Found
    */
-  404: ErrorResponse;
+  404: ProblemDetails;
   /**
    * Internal Server Error
    */
-  500: ErrorResponse;
+  500: ProblemDetails;
 };
 
 export type GetChallengeError = GetChallengeErrors[keyof GetChallengeErrors];
@@ -699,27 +730,27 @@ export type UpdateChallengeErrors = {
   /**
    * Bad Request
    */
-  400: ErrorResponse;
+  400: ProblemDetails;
   /**
    * Unauthorized
    */
-  401: ErrorResponse;
+  401: ProblemDetails;
   /**
    * Forbidden
    */
-  403: ErrorResponse;
+  403: ProblemDetails;
   /**
    * Not Found
    */
-  404: ErrorResponse;
+  404: ProblemDetails;
   /**
    * Conflict
    */
-  409: ErrorResponse;
+  409: ProblemDetails;
   /**
    * Internal Server Error
    */
-  500: ErrorResponse;
+  500: ProblemDetails;
 };
 
 export type UpdateChallengeError = UpdateChallengeErrors[keyof UpdateChallengeErrors];
@@ -743,15 +774,15 @@ export type ListChallengeFilesErrors = {
   /**
    * Bad Request
    */
-  400: ErrorResponse;
+  400: ProblemDetails;
   /**
    * Not Found
    */
-  404: ErrorResponse;
+  404: ProblemDetails;
   /**
    * Internal Server Error
    */
-  500: ErrorResponse;
+  500: ProblemDetails;
 };
 
 export type ListChallengeFilesError = ListChallengeFilesErrors[keyof ListChallengeFilesErrors];
@@ -775,27 +806,27 @@ export type UploadChallengeFileErrors = {
   /**
    * Bad Request
    */
-  400: ErrorResponse;
+  400: ProblemDetails;
   /**
    * Unauthorized
    */
-  401: ErrorResponse;
+  401: ProblemDetails;
   /**
    * Forbidden
    */
-  403: ErrorResponse;
+  403: ProblemDetails;
   /**
    * Not Found
    */
-  404: ErrorResponse;
+  404: ProblemDetails;
   /**
    * Payload Too Large
    */
-  413: ErrorResponse;
+  413: ProblemDetails;
   /**
    * Internal Server Error
    */
-  500: ErrorResponse;
+  500: ProblemDetails;
 };
 
 export type UploadChallengeFileError = UploadChallengeFileErrors[keyof UploadChallengeFileErrors];
@@ -817,19 +848,19 @@ export type LoginErrors = {
   /**
    * Bad Request
    */
-  400: ErrorResponse;
+  400: ProblemDetails;
   /**
    * Unauthorized
    */
-  401: ErrorResponse;
+  401: ProblemDetails;
   /**
    * Forbidden
    */
-  403: ErrorResponse;
+  403: ProblemDetails;
   /**
    * Internal Server Error
    */
-  500: ErrorResponse;
+  500: ProblemDetails;
 };
 
 export type LoginError = LoginErrors[keyof LoginErrors];
@@ -851,15 +882,15 @@ export type RegisterErrors = {
   /**
    * Bad Request
    */
-  400: ErrorResponse;
+  400: ProblemDetails;
   /**
    * Conflict
    */
-  409: ErrorResponse;
+  409: ProblemDetails;
   /**
    * Internal Server Error
    */
-  500: ErrorResponse;
+  500: ProblemDetails;
 };
 
 export type RegisterError = RegisterErrors[keyof RegisterErrors];
@@ -881,11 +912,11 @@ export type ForgotPasswordErrors = {
   /**
    * Bad Request
    */
-  400: ErrorResponse;
+  400: ProblemDetails;
   /**
    * Internal Server Error
    */
-  500: ErrorResponse;
+  500: ProblemDetails;
 };
 
 export type ForgotPasswordError = ForgotPasswordErrors[keyof ForgotPasswordErrors];
@@ -905,11 +936,11 @@ export type ResetPasswordErrors = {
   /**
    * Bad Request
    */
-  400: ErrorResponse;
+  400: ProblemDetails;
   /**
    * Internal Server Error
    */
-  500: ErrorResponse;
+  500: ProblemDetails;
 };
 
 export type ResetPasswordError = ResetPasswordErrors[keyof ResetPasswordErrors];
@@ -931,11 +962,11 @@ export type GetAuthUserErrors = {
   /**
    * Unauthorized
    */
-  401: ErrorResponse;
+  401: ProblemDetails;
   /**
    * Internal Server Error
    */
-  500: ErrorResponse;
+  500: ProblemDetails;
 };
 
 export type GetAuthUserError = GetAuthUserErrors[keyof GetAuthUserErrors];
@@ -957,15 +988,15 @@ export type ListEmailTemplatesErrors = {
   /**
    * Unauthorized
    */
-  401: ErrorResponse;
+  401: ProblemDetails;
   /**
    * Forbidden
    */
-  403: ErrorResponse;
+  403: ProblemDetails;
   /**
    * Internal Server Error
    */
-  500: ErrorResponse;
+  500: ProblemDetails;
 };
 
 export type ListEmailTemplatesError = ListEmailTemplatesErrors[keyof ListEmailTemplatesErrors];
@@ -987,23 +1018,23 @@ export type CreateEmailTemplateErrors = {
   /**
    * Bad Request
    */
-  400: ErrorResponse;
+  400: ProblemDetails;
   /**
    * Unauthorized
    */
-  401: ErrorResponse;
+  401: ProblemDetails;
   /**
    * Forbidden
    */
-  403: ErrorResponse;
+  403: ProblemDetails;
   /**
    * Conflict
    */
-  409: ErrorResponse;
+  409: ProblemDetails;
   /**
    * Internal Server Error
    */
-  500: ErrorResponse;
+  500: ProblemDetails;
 };
 
 export type CreateEmailTemplateError = CreateEmailTemplateErrors[keyof CreateEmailTemplateErrors];
@@ -1025,23 +1056,23 @@ export type DeleteEmailTemplateErrors = {
   /**
    * Bad Request
    */
-  400: ErrorResponse;
+  400: ProblemDetails;
   /**
    * Unauthorized
    */
-  401: ErrorResponse;
+  401: ProblemDetails;
   /**
    * Forbidden
    */
-  403: ErrorResponse;
+  403: ProblemDetails;
   /**
    * Not Found
    */
-  404: ErrorResponse;
+  404: ProblemDetails;
   /**
    * Internal Server Error
    */
-  500: ErrorResponse;
+  500: ProblemDetails;
 };
 
 export type DeleteEmailTemplateError = DeleteEmailTemplateErrors[keyof DeleteEmailTemplateErrors];
@@ -1065,23 +1096,23 @@ export type GetEmailTemplateErrors = {
   /**
    * Bad Request
    */
-  400: ErrorResponse;
+  400: ProblemDetails;
   /**
    * Unauthorized
    */
-  401: ErrorResponse;
+  401: ProblemDetails;
   /**
    * Forbidden
    */
-  403: ErrorResponse;
+  403: ProblemDetails;
   /**
    * Not Found
    */
-  404: ErrorResponse;
+  404: ProblemDetails;
   /**
    * Internal Server Error
    */
-  500: ErrorResponse;
+  500: ProblemDetails;
 };
 
 export type GetEmailTemplateError = GetEmailTemplateErrors[keyof GetEmailTemplateErrors];
@@ -1105,23 +1136,23 @@ export type UpdateEmailTemplateErrors = {
   /**
    * Bad Request
    */
-  400: ErrorResponse;
+  400: ProblemDetails;
   /**
    * Unauthorized
    */
-  401: ErrorResponse;
+  401: ProblemDetails;
   /**
    * Forbidden
    */
-  403: ErrorResponse;
+  403: ProblemDetails;
   /**
    * Conflict
    */
-  409: ErrorResponse;
+  409: ProblemDetails;
   /**
    * Internal Server Error
    */
-  500: ErrorResponse;
+  500: ProblemDetails;
 };
 
 export type UpdateEmailTemplateError = UpdateEmailTemplateErrors[keyof UpdateEmailTemplateErrors];
@@ -1145,15 +1176,15 @@ export type DownloadFileErrors = {
   /**
    * Bad Request
    */
-  400: ErrorResponse;
+  400: ProblemDetails;
   /**
    * Not Found
    */
-  404: ErrorResponse;
+  404: ProblemDetails;
   /**
    * Internal Server Error
    */
-  500: ErrorResponse;
+  500: ProblemDetails;
 };
 
 export type DownloadFileError = DownloadFileErrors[keyof DownloadFileErrors];
@@ -1184,23 +1215,23 @@ export type DeleteFileErrors = {
   /**
    * Bad Request
    */
-  400: ErrorResponse;
+  400: ProblemDetails;
   /**
    * Unauthorized
    */
-  401: ErrorResponse;
+  401: ProblemDetails;
   /**
    * Forbidden
    */
-  403: ErrorResponse;
+  403: ProblemDetails;
   /**
    * Not Found
    */
-  404: ErrorResponse;
+  404: ProblemDetails;
   /**
    * Internal Server Error
    */
-  500: ErrorResponse;
+  500: ProblemDetails;
 };
 
 export type DeleteFileError = DeleteFileErrors[keyof DeleteFileErrors];
@@ -1224,23 +1255,23 @@ export type ListChallengeFlagsErrors = {
   /**
    * Bad Request
    */
-  400: ErrorResponse;
+  400: ProblemDetails;
   /**
    * Unauthorized
    */
-  401: ErrorResponse;
+  401: ProblemDetails;
   /**
    * Forbidden
    */
-  403: ErrorResponse;
+  403: ProblemDetails;
   /**
    * Not Found
    */
-  404: ErrorResponse;
+  404: ProblemDetails;
   /**
    * Internal Server Error
    */
-  500: ErrorResponse;
+  500: ProblemDetails;
 };
 
 export type ListChallengeFlagsError = ListChallengeFlagsErrors[keyof ListChallengeFlagsErrors];
@@ -1264,27 +1295,27 @@ export type CreateFlagErrors = {
   /**
    * Bad Request
    */
-  400: ErrorResponse;
+  400: ProblemDetails;
   /**
    * Unauthorized
    */
-  401: ErrorResponse;
+  401: ProblemDetails;
   /**
    * Forbidden
    */
-  403: ErrorResponse;
+  403: ProblemDetails;
   /**
    * Not Found
    */
-  404: ErrorResponse;
+  404: ProblemDetails;
   /**
    * Conflict
    */
-  409: ErrorResponse;
+  409: ProblemDetails;
   /**
    * Internal Server Error
    */
-  500: ErrorResponse;
+  500: ProblemDetails;
 };
 
 export type CreateFlagError = CreateFlagErrors[keyof CreateFlagErrors];
@@ -1308,23 +1339,23 @@ export type DeleteFlagErrors = {
   /**
    * Bad Request
    */
-  400: ErrorResponse;
+  400: ProblemDetails;
   /**
    * Unauthorized
    */
-  401: ErrorResponse;
+  401: ProblemDetails;
   /**
    * Forbidden
    */
-  403: ErrorResponse;
+  403: ProblemDetails;
   /**
    * Not Found
    */
-  404: ErrorResponse;
+  404: ProblemDetails;
   /**
    * Internal Server Error
    */
-  500: ErrorResponse;
+  500: ProblemDetails;
 };
 
 export type DeleteFlagError = DeleteFlagErrors[keyof DeleteFlagErrors];
@@ -1348,27 +1379,27 @@ export type UpdateFlagErrors = {
   /**
    * Bad Request
    */
-  400: ErrorResponse;
+  400: ProblemDetails;
   /**
    * Unauthorized
    */
-  401: ErrorResponse;
+  401: ProblemDetails;
   /**
    * Forbidden
    */
-  403: ErrorResponse;
+  403: ProblemDetails;
   /**
    * Not Found
    */
-  404: ErrorResponse;
+  404: ProblemDetails;
   /**
    * Conflict
    */
-  409: ErrorResponse;
+  409: ProblemDetails;
   /**
    * Internal Server Error
    */
-  500: ErrorResponse;
+  500: ProblemDetails;
 };
 
 export type UpdateFlagError = UpdateFlagErrors[keyof UpdateFlagErrors];
@@ -1392,19 +1423,19 @@ export type ListHintsErrors = {
   /**
    * Bad Request
    */
-  400: ErrorResponse;
+  400: ProblemDetails;
   /**
    * Unauthorized
    */
-  401: ErrorResponse;
+  401: ProblemDetails;
   /**
    * Forbidden
    */
-  403: ErrorResponse;
+  403: ProblemDetails;
   /**
    * Internal Server Error
    */
-  500: ErrorResponse;
+  500: ProblemDetails;
 };
 
 export type ListHintsError = ListHintsErrors[keyof ListHintsErrors];
@@ -1426,19 +1457,19 @@ export type CreateHintErrors = {
   /**
    * Bad Request
    */
-  400: ErrorResponse;
+  400: ProblemDetails;
   /**
    * Unauthorized
    */
-  401: ErrorResponse;
+  401: ProblemDetails;
   /**
    * Forbidden
    */
-  403: ErrorResponse;
+  403: ProblemDetails;
   /**
    * Internal Server Error
    */
-  500: ErrorResponse;
+  500: ProblemDetails;
 };
 
 export type CreateHintError = CreateHintErrors[keyof CreateHintErrors];
@@ -1460,23 +1491,23 @@ export type DeleteHintErrors = {
   /**
    * Bad Request
    */
-  400: ErrorResponse;
+  400: ProblemDetails;
   /**
    * Unauthorized
    */
-  401: ErrorResponse;
+  401: ProblemDetails;
   /**
    * Forbidden
    */
-  403: ErrorResponse;
+  403: ProblemDetails;
   /**
    * Not Found
    */
-  404: ErrorResponse;
+  404: ProblemDetails;
   /**
    * Internal Server Error
    */
-  500: ErrorResponse;
+  500: ProblemDetails;
 };
 
 export type DeleteHintError = DeleteHintErrors[keyof DeleteHintErrors];
@@ -1500,23 +1531,23 @@ export type GetHintErrors = {
   /**
    * Bad Request
    */
-  400: ErrorResponse;
+  400: ProblemDetails;
   /**
    * Unauthorized
    */
-  401: ErrorResponse;
+  401: ProblemDetails;
   /**
    * Forbidden
    */
-  403: ErrorResponse;
+  403: ProblemDetails;
   /**
    * Not Found
    */
-  404: ErrorResponse;
+  404: ProblemDetails;
   /**
    * Internal Server Error
    */
-  500: ErrorResponse;
+  500: ProblemDetails;
 };
 
 export type GetHintError = GetHintErrors[keyof GetHintErrors];
@@ -1540,19 +1571,19 @@ export type UpdateHintErrors = {
   /**
    * Bad Request
    */
-  400: ErrorResponse;
+  400: ProblemDetails;
   /**
    * Unauthorized
    */
-  401: ErrorResponse;
+  401: ProblemDetails;
   /**
    * Forbidden
    */
-  403: ErrorResponse;
+  403: ProblemDetails;
   /**
    * Internal Server Error
    */
-  500: ErrorResponse;
+  500: ProblemDetails;
 };
 
 export type UpdateHintError = UpdateHintErrors[keyof UpdateHintErrors];
@@ -1574,15 +1605,15 @@ export type ListNotificationsErrors = {
   /**
    * Unauthorized
    */
-  401: ErrorResponse;
+  401: ProblemDetails;
   /**
    * Forbidden
    */
-  403: ErrorResponse;
+  403: ProblemDetails;
   /**
    * Internal Server Error
    */
-  500: ErrorResponse;
+  500: ProblemDetails;
 };
 
 export type ListNotificationsError = ListNotificationsErrors[keyof ListNotificationsErrors];
@@ -1604,19 +1635,19 @@ export type CreateNotificationErrors = {
   /**
    * Bad Request
    */
-  400: ErrorResponse;
+  400: ProblemDetails;
   /**
    * Unauthorized
    */
-  401: ErrorResponse;
+  401: ProblemDetails;
   /**
    * Forbidden
    */
-  403: ErrorResponse;
+  403: ProblemDetails;
   /**
    * Internal Server Error
    */
-  500: ErrorResponse;
+  500: ProblemDetails;
 };
 
 export type CreateNotificationError = CreateNotificationErrors[keyof CreateNotificationErrors];
@@ -1638,23 +1669,23 @@ export type DeleteNotificationErrors = {
   /**
    * Bad Request
    */
-  400: ErrorResponse;
+  400: ProblemDetails;
   /**
    * Unauthorized
    */
-  401: ErrorResponse;
+  401: ProblemDetails;
   /**
    * Forbidden
    */
-  403: ErrorResponse;
+  403: ProblemDetails;
   /**
    * Not Found
    */
-  404: ErrorResponse;
+  404: ProblemDetails;
   /**
    * Internal Server Error
    */
-  500: ErrorResponse;
+  500: ProblemDetails;
 };
 
 export type DeleteNotificationError = DeleteNotificationErrors[keyof DeleteNotificationErrors];
@@ -1678,23 +1709,23 @@ export type GetNotificationErrors = {
   /**
    * Bad Request
    */
-  400: ErrorResponse;
+  400: ProblemDetails;
   /**
    * Unauthorized
    */
-  401: ErrorResponse;
+  401: ProblemDetails;
   /**
    * Forbidden
    */
-  403: ErrorResponse;
+  403: ProblemDetails;
   /**
    * Not Found
    */
-  404: ErrorResponse;
+  404: ProblemDetails;
   /**
    * Internal Server Error
    */
-  500: ErrorResponse;
+  500: ProblemDetails;
 };
 
 export type GetNotificationError = GetNotificationErrors[keyof GetNotificationErrors];
@@ -1718,19 +1749,19 @@ export type UpdateNotificationErrors = {
   /**
    * Bad Request
    */
-  400: ErrorResponse;
+  400: ProblemDetails;
   /**
    * Unauthorized
    */
-  401: ErrorResponse;
+  401: ProblemDetails;
   /**
    * Forbidden
    */
-  403: ErrorResponse;
+  403: ProblemDetails;
   /**
    * Internal Server Error
    */
-  500: ErrorResponse;
+  500: ProblemDetails;
 };
 
 export type UpdateNotificationError = UpdateNotificationErrors[keyof UpdateNotificationErrors];
@@ -1752,15 +1783,15 @@ export type ListPagesErrors = {
   /**
    * Unauthorized
    */
-  401: ErrorResponse;
+  401: ProblemDetails;
   /**
    * Forbidden
    */
-  403: ErrorResponse;
+  403: ProblemDetails;
   /**
    * Internal Server Error
    */
-  500: ErrorResponse;
+  500: ProblemDetails;
 };
 
 export type ListPagesError = ListPagesErrors[keyof ListPagesErrors];
@@ -1782,23 +1813,23 @@ export type CreatePageErrors = {
   /**
    * Bad Request
    */
-  400: ErrorResponse;
+  400: ProblemDetails;
   /**
    * Unauthorized
    */
-  401: ErrorResponse;
+  401: ProblemDetails;
   /**
    * Forbidden
    */
-  403: ErrorResponse;
+  403: ProblemDetails;
   /**
    * Conflict
    */
-  409: ErrorResponse;
+  409: ProblemDetails;
   /**
    * Internal Server Error
    */
-  500: ErrorResponse;
+  500: ProblemDetails;
 };
 
 export type CreatePageError = CreatePageErrors[keyof CreatePageErrors];
@@ -1820,23 +1851,23 @@ export type DeletePageErrors = {
   /**
    * Bad Request
    */
-  400: ErrorResponse;
+  400: ProblemDetails;
   /**
    * Unauthorized
    */
-  401: ErrorResponse;
+  401: ProblemDetails;
   /**
    * Forbidden
    */
-  403: ErrorResponse;
+  403: ProblemDetails;
   /**
    * Not Found
    */
-  404: ErrorResponse;
+  404: ProblemDetails;
   /**
    * Internal Server Error
    */
-  500: ErrorResponse;
+  500: ProblemDetails;
 };
 
 export type DeletePageError = DeletePageErrors[keyof DeletePageErrors];
@@ -1860,23 +1891,23 @@ export type GetPageErrors = {
   /**
    * Bad Request
    */
-  400: ErrorResponse;
+  400: ProblemDetails;
   /**
    * Unauthorized
    */
-  401: ErrorResponse;
+  401: ProblemDetails;
   /**
    * Forbidden
    */
-  403: ErrorResponse;
+  403: ProblemDetails;
   /**
    * Not Found
    */
-  404: ErrorResponse;
+  404: ProblemDetails;
   /**
    * Internal Server Error
    */
-  500: ErrorResponse;
+  500: ProblemDetails;
 };
 
 export type GetPageError = GetPageErrors[keyof GetPageErrors];
@@ -1900,23 +1931,23 @@ export type UpdatePageErrors = {
   /**
    * Bad Request
    */
-  400: ErrorResponse;
+  400: ProblemDetails;
   /**
    * Unauthorized
    */
-  401: ErrorResponse;
+  401: ProblemDetails;
   /**
    * Forbidden
    */
-  403: ErrorResponse;
+  403: ProblemDetails;
   /**
    * Conflict
    */
-  409: ErrorResponse;
+  409: ProblemDetails;
   /**
    * Internal Server Error
    */
-  500: ErrorResponse;
+  500: ProblemDetails;
 };
 
 export type UpdatePageError = UpdatePageErrors[keyof UpdatePageErrors];
@@ -1938,15 +1969,15 @@ export type ListRegistrationCodesErrors = {
   /**
    * Unauthorized
    */
-  401: ErrorResponse;
+  401: ProblemDetails;
   /**
    * Forbidden
    */
-  403: ErrorResponse;
+  403: ProblemDetails;
   /**
    * Internal Server Error
    */
-  500: ErrorResponse;
+  500: ProblemDetails;
 };
 
 export type ListRegistrationCodesError = ListRegistrationCodesErrors[keyof ListRegistrationCodesErrors];
@@ -1968,23 +1999,23 @@ export type CreateRegistrationCodeErrors = {
   /**
    * Bad Request
    */
-  400: ErrorResponse;
+  400: ProblemDetails;
   /**
    * Unauthorized
    */
-  401: ErrorResponse;
+  401: ProblemDetails;
   /**
    * Forbidden
    */
-  403: ErrorResponse;
+  403: ProblemDetails;
   /**
    * Conflict
    */
-  409: ErrorResponse;
+  409: ProblemDetails;
   /**
    * Internal Server Error
    */
-  500: ErrorResponse;
+  500: ProblemDetails;
 };
 
 export type CreateRegistrationCodeError = CreateRegistrationCodeErrors[keyof CreateRegistrationCodeErrors];
@@ -2006,23 +2037,23 @@ export type DeleteRegistrationCodeErrors = {
   /**
    * Bad Request
    */
-  400: ErrorResponse;
+  400: ProblemDetails;
   /**
    * Unauthorized
    */
-  401: ErrorResponse;
+  401: ProblemDetails;
   /**
    * Forbidden
    */
-  403: ErrorResponse;
+  403: ProblemDetails;
   /**
    * Not Found
    */
-  404: ErrorResponse;
+  404: ProblemDetails;
   /**
    * Internal Server Error
    */
-  500: ErrorResponse;
+  500: ProblemDetails;
 };
 
 export type DeleteRegistrationCodeError = DeleteRegistrationCodeErrors[keyof DeleteRegistrationCodeErrors];
@@ -2046,23 +2077,23 @@ export type GetRegistrationCodeErrors = {
   /**
    * Bad Request
    */
-  400: ErrorResponse;
+  400: ProblemDetails;
   /**
    * Unauthorized
    */
-  401: ErrorResponse;
+  401: ProblemDetails;
   /**
    * Forbidden
    */
-  403: ErrorResponse;
+  403: ProblemDetails;
   /**
    * Not Found
    */
-  404: ErrorResponse;
+  404: ProblemDetails;
   /**
    * Internal Server Error
    */
-  500: ErrorResponse;
+  500: ProblemDetails;
 };
 
 export type GetRegistrationCodeError = GetRegistrationCodeErrors[keyof GetRegistrationCodeErrors];
@@ -2086,23 +2117,23 @@ export type UpdateRegistrationCodeErrors = {
   /**
    * Bad Request
    */
-  400: ErrorResponse;
+  400: ProblemDetails;
   /**
    * Unauthorized
    */
-  401: ErrorResponse;
+  401: ProblemDetails;
   /**
    * Forbidden
    */
-  403: ErrorResponse;
+  403: ProblemDetails;
   /**
    * Conflict
    */
-  409: ErrorResponse;
+  409: ProblemDetails;
   /**
    * Internal Server Error
    */
-  500: ErrorResponse;
+  500: ProblemDetails;
 };
 
 export type UpdateRegistrationCodeError = UpdateRegistrationCodeErrors[keyof UpdateRegistrationCodeErrors];
@@ -2124,7 +2155,7 @@ export type GetSettingsErrors = {
   /**
    * Internal Server Error
    */
-  500: ErrorResponse;
+  500: ProblemDetails;
 };
 
 export type GetSettingsError = GetSettingsErrors[keyof GetSettingsErrors];
@@ -2146,19 +2177,19 @@ export type UpdateSettingsErrors = {
   /**
    * Bad Request
    */
-  400: ErrorResponse;
+  400: ProblemDetails;
   /**
    * Unauthorized
    */
-  401: ErrorResponse;
+  401: ProblemDetails;
   /**
    * Forbidden
    */
-  403: ErrorResponse;
+  403: ProblemDetails;
   /**
    * Internal Server Error
    */
-  500: ErrorResponse;
+  500: ProblemDetails;
 };
 
 export type UpdateSettingsError = UpdateSettingsErrors[keyof UpdateSettingsErrors];
@@ -2182,23 +2213,23 @@ export type SubmitFlagErrors = {
   /**
    * Bad Request
    */
-  400: ErrorResponse;
+  400: ProblemDetails;
   /**
    * Unauthorized
    */
-  401: ErrorResponse;
+  401: ProblemDetails;
   /**
    * Forbidden
    */
-  403: ErrorResponse;
+  403: ProblemDetails;
   /**
    * Not Found
    */
-  404: ErrorResponse;
+  404: ProblemDetails;
   /**
    * Internal Server Error
    */
-  500: ErrorResponse;
+  500: ProblemDetails;
 };
 
 export type SubmitFlagError = SubmitFlagErrors[keyof SubmitFlagErrors];
@@ -2220,15 +2251,15 @@ export type ListMySubmissionsErrors = {
   /**
    * Unauthorized
    */
-  401: ErrorResponse;
+  401: ProblemDetails;
   /**
    * Not Found
    */
-  404: ErrorResponse;
+  404: ProblemDetails;
   /**
    * Internal Server Error
    */
-  500: ErrorResponse;
+  500: ProblemDetails;
 };
 
 export type ListMySubmissionsError = ListMySubmissionsErrors[keyof ListMySubmissionsErrors];
@@ -2250,11 +2281,11 @@ export type ListMySolvesErrors = {
   /**
    * Unauthorized
    */
-  401: ErrorResponse;
+  401: ProblemDetails;
   /**
    * Internal Server Error
    */
-  500: ErrorResponse;
+  500: ProblemDetails;
 };
 
 export type ListMySolvesError = ListMySolvesErrors[keyof ListMySolvesErrors];
@@ -2276,15 +2307,15 @@ export type ListSubmissionsErrors = {
   /**
    * Unauthorized
    */
-  401: ErrorResponse;
+  401: ProblemDetails;
   /**
    * Forbidden
    */
-  403: ErrorResponse;
+  403: ProblemDetails;
   /**
    * Internal Server Error
    */
-  500: ErrorResponse;
+  500: ProblemDetails;
 };
 
 export type ListSubmissionsError = ListSubmissionsErrors[keyof ListSubmissionsErrors];
@@ -2308,23 +2339,23 @@ export type ListUserSubmissionsErrors = {
   /**
    * Bad Request
    */
-  400: ErrorResponse;
+  400: ProblemDetails;
   /**
    * Unauthorized
    */
-  401: ErrorResponse;
+  401: ProblemDetails;
   /**
    * Forbidden
    */
-  403: ErrorResponse;
+  403: ProblemDetails;
   /**
    * Not Found
    */
-  404: ErrorResponse;
+  404: ProblemDetails;
   /**
    * Internal Server Error
    */
-  500: ErrorResponse;
+  500: ProblemDetails;
 };
 
 export type ListUserSubmissionsError = ListUserSubmissionsErrors[keyof ListUserSubmissionsErrors];
@@ -2346,7 +2377,7 @@ export type GetScoreboardErrors = {
   /**
    * Internal Server Error
    */
-  500: ErrorResponse;
+  500: ProblemDetails;
 };
 
 export type GetScoreboardError = GetScoreboardErrors[keyof GetScoreboardErrors];
@@ -2368,15 +2399,15 @@ export type ListTeamsErrors = {
   /**
    * Unauthorized
    */
-  401: ErrorResponse;
+  401: ProblemDetails;
   /**
    * Forbidden
    */
-  403: ErrorResponse;
+  403: ProblemDetails;
   /**
    * Internal Server Error
    */
-  500: ErrorResponse;
+  500: ProblemDetails;
 };
 
 export type ListTeamsError = ListTeamsErrors[keyof ListTeamsErrors];
@@ -2398,23 +2429,23 @@ export type CreateTeamErrors = {
   /**
    * Bad Request
    */
-  400: ErrorResponse;
+  400: ProblemDetails;
   /**
    * Unauthorized
    */
-  401: ErrorResponse;
+  401: ProblemDetails;
   /**
    * Forbidden
    */
-  403: ErrorResponse;
+  403: ProblemDetails;
   /**
    * Conflict
    */
-  409: ErrorResponse;
+  409: ProblemDetails;
   /**
    * Internal Server Error
    */
-  500: ErrorResponse;
+  500: ProblemDetails;
 };
 
 export type CreateTeamError = CreateTeamErrors[keyof CreateTeamErrors];
@@ -2436,23 +2467,23 @@ export type DeleteTeamErrors = {
   /**
    * Bad Request
    */
-  400: ErrorResponse;
+  400: ProblemDetails;
   /**
    * Unauthorized
    */
-  401: ErrorResponse;
+  401: ProblemDetails;
   /**
    * Forbidden
    */
-  403: ErrorResponse;
+  403: ProblemDetails;
   /**
    * Not Found
    */
-  404: ErrorResponse;
+  404: ProblemDetails;
   /**
    * Internal Server Error
    */
-  500: ErrorResponse;
+  500: ProblemDetails;
 };
 
 export type DeleteTeamError = DeleteTeamErrors[keyof DeleteTeamErrors];
@@ -2476,23 +2507,23 @@ export type GetTeamErrors = {
   /**
    * Bad Request
    */
-  400: ErrorResponse;
+  400: ProblemDetails;
   /**
    * Unauthorized
    */
-  401: ErrorResponse;
+  401: ProblemDetails;
   /**
    * Forbidden
    */
-  403: ErrorResponse;
+  403: ProblemDetails;
   /**
    * Not Found
    */
-  404: ErrorResponse;
+  404: ProblemDetails;
   /**
    * Internal Server Error
    */
-  500: ErrorResponse;
+  500: ProblemDetails;
 };
 
 export type GetTeamError = GetTeamErrors[keyof GetTeamErrors];
@@ -2516,23 +2547,23 @@ export type UpdateTeamErrors = {
   /**
    * Bad Request
    */
-  400: ErrorResponse;
+  400: ProblemDetails;
   /**
    * Unauthorized
    */
-  401: ErrorResponse;
+  401: ProblemDetails;
   /**
    * Forbidden
    */
-  403: ErrorResponse;
+  403: ProblemDetails;
   /**
    * Conflict
    */
-  409: ErrorResponse;
+  409: ProblemDetails;
   /**
    * Internal Server Error
    */
-  500: ErrorResponse;
+  500: ProblemDetails;
 };
 
 export type UpdateTeamError = UpdateTeamErrors[keyof UpdateTeamErrors];
@@ -2554,11 +2585,11 @@ export type ListUsersErrors = {
   /**
    * Unauthorized
    */
-  401: ErrorResponse;
+  401: ProblemDetails;
   /**
    * Internal Server Error
    */
-  500: ErrorResponse;
+  500: ProblemDetails;
 };
 
 export type ListUsersError = ListUsersErrors[keyof ListUsersErrors];
@@ -2580,15 +2611,15 @@ export type GetMeErrors = {
   /**
    * Unauthorized
    */
-  401: ErrorResponse;
+  401: ProblemDetails;
   /**
    * Not Found
    */
-  404: ErrorResponse;
+  404: ProblemDetails;
   /**
    * Internal Server Error
    */
-  500: ErrorResponse;
+  500: ProblemDetails;
 };
 
 export type GetMeError = GetMeErrors[keyof GetMeErrors];
@@ -2610,23 +2641,23 @@ export type UpdateMeErrors = {
   /**
    * Bad Request
    */
-  400: ErrorResponse;
+  400: ProblemDetails;
   /**
    * Unauthorized
    */
-  401: ErrorResponse;
+  401: ProblemDetails;
   /**
    * Not Found
    */
-  404: ErrorResponse;
+  404: ProblemDetails;
   /**
    * Conflict
    */
-  409: ErrorResponse;
+  409: ProblemDetails;
   /**
    * Internal Server Error
    */
-  500: ErrorResponse;
+  500: ProblemDetails;
 };
 
 export type UpdateMeError = UpdateMeErrors[keyof UpdateMeErrors];
@@ -2650,19 +2681,19 @@ export type GetUserErrors = {
   /**
    * Bad Request
    */
-  400: ErrorResponse;
+  400: ProblemDetails;
   /**
    * Unauthorized
    */
-  401: ErrorResponse;
+  401: ProblemDetails;
   /**
    * Not Found
    */
-  404: ErrorResponse;
+  404: ProblemDetails;
   /**
    * Internal Server Error
    */
-  500: ErrorResponse;
+  500: ProblemDetails;
 };
 
 export type GetUserError = GetUserErrors[keyof GetUserErrors];
@@ -2684,15 +2715,15 @@ export type ListAdminUsersErrors = {
   /**
    * Unauthorized
    */
-  401: ErrorResponse;
+  401: ProblemDetails;
   /**
    * Forbidden
    */
-  403: ErrorResponse;
+  403: ProblemDetails;
   /**
    * Internal Server Error
    */
-  500: ErrorResponse;
+  500: ProblemDetails;
 };
 
 export type ListAdminUsersError = ListAdminUsersErrors[keyof ListAdminUsersErrors];
@@ -2714,23 +2745,23 @@ export type CreateUserErrors = {
   /**
    * Bad Request
    */
-  400: ErrorResponse;
+  400: ProblemDetails;
   /**
    * Unauthorized
    */
-  401: ErrorResponse;
+  401: ProblemDetails;
   /**
    * Forbidden
    */
-  403: ErrorResponse;
+  403: ProblemDetails;
   /**
    * Conflict
    */
-  409: ErrorResponse;
+  409: ProblemDetails;
   /**
    * Internal Server Error
    */
-  500: ErrorResponse;
+  500: ProblemDetails;
 };
 
 export type CreateUserError = CreateUserErrors[keyof CreateUserErrors];
@@ -2752,27 +2783,27 @@ export type UpdateUsersErrors = {
   /**
    * Bad Request
    */
-  400: ErrorResponse;
+  400: ProblemDetails;
   /**
    * Unauthorized
    */
-  401: ErrorResponse;
+  401: ProblemDetails;
   /**
    * Forbidden
    */
-  403: ErrorResponse;
+  403: ProblemDetails;
   /**
    * Not Found
    */
-  404: ErrorResponse;
+  404: ProblemDetails;
   /**
    * Conflict
    */
-  409: ErrorResponse;
+  409: ProblemDetails;
   /**
    * Internal Server Error
    */
-  500: ErrorResponse;
+  500: ProblemDetails;
 };
 
 export type UpdateUsersError = UpdateUsersErrors[keyof UpdateUsersErrors];
@@ -2796,23 +2827,23 @@ export type DeleteUserErrors = {
   /**
    * Bad Request
    */
-  400: ErrorResponse;
+  400: ProblemDetails;
   /**
    * Unauthorized
    */
-  401: ErrorResponse;
+  401: ProblemDetails;
   /**
    * Forbidden
    */
-  403: ErrorResponse;
+  403: ProblemDetails;
   /**
    * Not Found
    */
-  404: ErrorResponse;
+  404: ProblemDetails;
   /**
    * Internal Server Error
    */
-  500: ErrorResponse;
+  500: ProblemDetails;
 };
 
 export type DeleteUserError = DeleteUserErrors[keyof DeleteUserErrors];
@@ -2836,23 +2867,23 @@ export type GetAdminUserErrors = {
   /**
    * Bad Request
    */
-  400: ErrorResponse;
+  400: ProblemDetails;
   /**
    * Unauthorized
    */
-  401: ErrorResponse;
+  401: ProblemDetails;
   /**
    * Forbidden
    */
-  403: ErrorResponse;
+  403: ProblemDetails;
   /**
    * Not Found
    */
-  404: ErrorResponse;
+  404: ProblemDetails;
   /**
    * Internal Server Error
    */
-  500: ErrorResponse;
+  500: ProblemDetails;
 };
 
 export type GetAdminUserError = GetAdminUserErrors[keyof GetAdminUserErrors];
@@ -2876,27 +2907,27 @@ export type UpdateUserErrors = {
   /**
    * Bad Request
    */
-  400: ErrorResponse;
+  400: ProblemDetails;
   /**
    * Unauthorized
    */
-  401: ErrorResponse;
+  401: ProblemDetails;
   /**
    * Forbidden
    */
-  403: ErrorResponse;
+  403: ProblemDetails;
   /**
    * Not Found
    */
-  404: ErrorResponse;
+  404: ProblemDetails;
   /**
    * Conflict
    */
-  409: ErrorResponse;
+  409: ProblemDetails;
   /**
    * Internal Server Error
    */
-  500: ErrorResponse;
+  500: ProblemDetails;
 };
 
 export type UpdateUserError = UpdateUserErrors[keyof UpdateUserErrors];

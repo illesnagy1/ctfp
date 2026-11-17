@@ -28,9 +28,9 @@
                     "400": {
                         "description": "Bad Request",
                         "content": {
-                            "application/json": {
+                            "application/problem+json": {
                                 "schema": {
-                                    "$ref": "#/components/schemas/ErrorResponse"
+                                    "$ref": "#/components/schemas/ProblemDetails"
                                 }
                             }
                         }
@@ -38,9 +38,9 @@
                     "401": {
                         "description": "Unauthorized",
                         "content": {
-                            "application/json": {
+                            "application/problem+json": {
                                 "schema": {
-                                    "$ref": "#/components/schemas/ErrorResponse"
+                                    "$ref": "#/components/schemas/ProblemDetails"
                                 }
                             }
                         }
@@ -48,9 +48,9 @@
                     "403": {
                         "description": "Forbidden",
                         "content": {
-                            "application/json": {
+                            "application/problem+json": {
                                 "schema": {
-                                    "$ref": "#/components/schemas/ErrorResponse"
+                                    "$ref": "#/components/schemas/ProblemDetails"
                                 }
                             }
                         }
@@ -58,9 +58,9 @@
                     "404": {
                         "description": "Not Found",
                         "content": {
-                            "application/json": {
+                            "application/problem+json": {
                                 "schema": {
-                                    "$ref": "#/components/schemas/ErrorResponse"
+                                    "$ref": "#/components/schemas/ProblemDetails"
                                 }
                             }
                         }
@@ -68,9 +68,9 @@
                     "409": {
                         "description": "Conflict",
                         "content": {
-                            "application/json": {
+                            "application/problem+json": {
                                 "schema": {
-                                    "$ref": "#/components/schemas/ErrorResponse"
+                                    "$ref": "#/components/schemas/ProblemDetails"
                                 }
                             }
                         }
@@ -78,9 +78,9 @@
                     "500": {
                         "description": "Internal Server Error",
                         "content": {
-                            "application/json": {
+                            "application/problem+json": {
                                 "schema": {
-                                    "$ref": "#/components/schemas/ErrorResponse"
+                                    "$ref": "#/components/schemas/ProblemDetails"
                                 }
                             }
                         }
@@ -111,9 +111,9 @@
                     "400": {
                         "description": "Bad Request",
                         "content": {
-                            "application/json": {
+                            "application/problem+json": {
                                 "schema": {
-                                    "$ref": "#/components/schemas/ErrorResponse"
+                                    "$ref": "#/components/schemas/ProblemDetails"
                                 }
                             }
                         }
@@ -121,9 +121,9 @@
                     "401": {
                         "description": "Unauthorized",
                         "content": {
-                            "application/json": {
+                            "application/problem+json": {
                                 "schema": {
-                                    "$ref": "#/components/schemas/ErrorResponse"
+                                    "$ref": "#/components/schemas/ProblemDetails"
                                 }
                             }
                         }
@@ -131,9 +131,9 @@
                     "403": {
                         "description": "Forbidden",
                         "content": {
-                            "application/json": {
+                            "application/problem+json": {
                                 "schema": {
-                                    "$ref": "#/components/schemas/ErrorResponse"
+                                    "$ref": "#/components/schemas/ProblemDetails"
                                 }
                             }
                         }
@@ -141,9 +141,9 @@
                     "409": {
                         "description": "Conflict",
                         "content": {
-                            "application/json": {
+                            "application/problem+json": {
                                 "schema": {
-                                    "$ref": "#/components/schemas/ErrorResponse"
+                                    "$ref": "#/components/schemas/ProblemDetails"
                                 }
                             }
                         }
@@ -151,9 +151,9 @@
                     "500": {
                         "description": "Internal Server Error",
                         "content": {
-                            "application/json": {
+                            "application/problem+json": {
                                 "schema": {
-                                    "$ref": "#/components/schemas/ErrorResponse"
+                                    "$ref": "#/components/schemas/ProblemDetails"
                                 }
                             }
                         }
@@ -187,9 +187,9 @@
                     "400": {
                         "description": "Bad Request",
                         "content": {
-                            "application/json": {
+                            "application/problem+json": {
                                 "schema": {
-                                    "$ref": "#/components/schemas/ErrorResponse"
+                                    "$ref": "#/components/schemas/ProblemDetails"
                                 }
                             }
                         }
@@ -197,9 +197,9 @@
                     "401": {
                         "description": "Unauthorized",
                         "content": {
-                            "application/json": {
+                            "application/problem+json": {
                                 "schema": {
-                                    "$ref": "#/components/schemas/ErrorResponse"
+                                    "$ref": "#/components/schemas/ProblemDetails"
                                 }
                             }
                         }
@@ -207,9 +207,9 @@
                     "403": {
                         "description": "Forbidden",
                         "content": {
-                            "application/json": {
+                            "application/problem+json": {
                                 "schema": {
-                                    "$ref": "#/components/schemas/ErrorResponse"
+                                    "$ref": "#/components/schemas/ProblemDetails"
                                 }
                             }
                         }
@@ -217,9 +217,9 @@
                     "500": {
                         "description": "Internal Server Error",
                         "content": {
-                            "application/json": {
+                            "application/problem+json": {
                                 "schema": {
-                                    "$ref": "#/components/schemas/ErrorResponse"
+                                    "$ref": "#/components/schemas/ProblemDetails"
                                 }
                             }
                         }
@@ -251,9 +251,9 @@
                     "500": {
                         "description": "Internal Server Error",
                         "content": {
-                            "application/json": {
+                            "application/problem+json": {
                                 "schema": {
-                                    "$ref": "#/components/schemas/ErrorResponse"
+                                    "$ref": "#/components/schemas/ProblemDetails"
                                 }
                             }
                         }
@@ -297,9 +297,9 @@
                     "400": {
                         "description": "Bad Request",
                         "content": {
-                            "application/json": {
+                            "application/problem+json": {
                                 "schema": {
-                                    "$ref": "#/components/schemas/ErrorResponse"
+                                    "$ref": "#/components/schemas/ProblemDetails"
                                 }
                             }
                         }
@@ -307,9 +307,9 @@
                     "401": {
                         "description": "Unauthorized",
                         "content": {
-                            "application/json": {
+                            "application/problem+json": {
                                 "schema": {
-                                    "$ref": "#/components/schemas/ErrorResponse"
+                                    "$ref": "#/components/schemas/ProblemDetails"
                                 }
                             }
                         }
@@ -317,9 +317,9 @@
                     "403": {
                         "description": "Forbidden",
                         "content": {
-                            "application/json": {
+                            "application/problem+json": {
                                 "schema": {
-                                    "$ref": "#/components/schemas/ErrorResponse"
+                                    "$ref": "#/components/schemas/ProblemDetails"
                                 }
                             }
                         }
@@ -327,9 +327,9 @@
                     "404": {
                         "description": "Not Found",
                         "content": {
-                            "application/json": {
+                            "application/problem+json": {
                                 "schema": {
-                                    "$ref": "#/components/schemas/ErrorResponse"
+                                    "$ref": "#/components/schemas/ProblemDetails"
                                 }
                             }
                         }
@@ -337,9 +337,9 @@
                     "409": {
                         "description": "Conflict",
                         "content": {
-                            "application/json": {
+                            "application/problem+json": {
                                 "schema": {
-                                    "$ref": "#/components/schemas/ErrorResponse"
+                                    "$ref": "#/components/schemas/ProblemDetails"
                                 }
                             }
                         }
@@ -347,9 +347,9 @@
                     "500": {
                         "description": "Internal Server Error",
                         "content": {
-                            "application/json": {
+                            "application/problem+json": {
                                 "schema": {
-                                    "$ref": "#/components/schemas/ErrorResponse"
+                                    "$ref": "#/components/schemas/ProblemDetails"
                                 }
                             }
                         }
@@ -381,9 +381,9 @@
                     "400": {
                         "description": "Bad Request",
                         "content": {
-                            "application/json": {
+                            "application/problem+json": {
                                 "schema": {
-                                    "$ref": "#/components/schemas/ErrorResponse"
+                                    "$ref": "#/components/schemas/ProblemDetails"
                                 }
                             }
                         }
@@ -391,9 +391,9 @@
                     "401": {
                         "description": "Unauthorized",
                         "content": {
-                            "application/json": {
+                            "application/problem+json": {
                                 "schema": {
-                                    "$ref": "#/components/schemas/ErrorResponse"
+                                    "$ref": "#/components/schemas/ProblemDetails"
                                 }
                             }
                         }
@@ -401,9 +401,9 @@
                     "403": {
                         "description": "Forbidden",
                         "content": {
-                            "application/json": {
+                            "application/problem+json": {
                                 "schema": {
-                                    "$ref": "#/components/schemas/ErrorResponse"
+                                    "$ref": "#/components/schemas/ProblemDetails"
                                 }
                             }
                         }
@@ -411,9 +411,9 @@
                     "404": {
                         "description": "Not Found",
                         "content": {
-                            "application/json": {
+                            "application/problem+json": {
                                 "schema": {
-                                    "$ref": "#/components/schemas/ErrorResponse"
+                                    "$ref": "#/components/schemas/ProblemDetails"
                                 }
                             }
                         }
@@ -421,9 +421,9 @@
                     "500": {
                         "description": "Internal Server Error",
                         "content": {
-                            "application/json": {
+                            "application/problem+json": {
                                 "schema": {
-                                    "$ref": "#/components/schemas/ErrorResponse"
+                                    "$ref": "#/components/schemas/ProblemDetails"
                                 }
                             }
                         }
@@ -462,9 +462,9 @@
                     "400": {
                         "description": "Bad Request",
                         "content": {
-                            "application/json": {
+                            "application/problem+json": {
                                 "schema": {
-                                    "$ref": "#/components/schemas/ErrorResponse"
+                                    "$ref": "#/components/schemas/ProblemDetails"
                                 }
                             }
                         }
@@ -472,9 +472,9 @@
                     "404": {
                         "description": "Not Found",
                         "content": {
-                            "application/json": {
+                            "application/problem+json": {
                                 "schema": {
-                                    "$ref": "#/components/schemas/ErrorResponse"
+                                    "$ref": "#/components/schemas/ProblemDetails"
                                 }
                             }
                         }
@@ -482,9 +482,9 @@
                     "500": {
                         "description": "Internal Server Error",
                         "content": {
-                            "application/json": {
+                            "application/problem+json": {
                                 "schema": {
-                                    "$ref": "#/components/schemas/ErrorResponse"
+                                    "$ref": "#/components/schemas/ProblemDetails"
                                 }
                             }
                         }
@@ -526,9 +526,9 @@
                     "400": {
                         "description": "Bad Request",
                         "content": {
-                            "application/json": {
+                            "application/problem+json": {
                                 "schema": {
-                                    "$ref": "#/components/schemas/ErrorResponse"
+                                    "$ref": "#/components/schemas/ProblemDetails"
                                 }
                             }
                         }
@@ -536,9 +536,9 @@
                     "401": {
                         "description": "Unauthorized",
                         "content": {
-                            "application/json": {
+                            "application/problem+json": {
                                 "schema": {
-                                    "$ref": "#/components/schemas/ErrorResponse"
+                                    "$ref": "#/components/schemas/ProblemDetails"
                                 }
                             }
                         }
@@ -546,9 +546,9 @@
                     "403": {
                         "description": "Forbidden",
                         "content": {
-                            "application/json": {
+                            "application/problem+json": {
                                 "schema": {
-                                    "$ref": "#/components/schemas/ErrorResponse"
+                                    "$ref": "#/components/schemas/ProblemDetails"
                                 }
                             }
                         }
@@ -556,9 +556,9 @@
                     "404": {
                         "description": "Not Found",
                         "content": {
-                            "application/json": {
+                            "application/problem+json": {
                                 "schema": {
-                                    "$ref": "#/components/schemas/ErrorResponse"
+                                    "$ref": "#/components/schemas/ProblemDetails"
                                 }
                             }
                         }
@@ -566,9 +566,9 @@
                     "413": {
                         "description": "Payload Too Large",
                         "content": {
-                            "application/json": {
+                            "application/problem+json": {
                                 "schema": {
-                                    "$ref": "#/components/schemas/ErrorResponse"
+                                    "$ref": "#/components/schemas/ProblemDetails"
                                 }
                             }
                         }
@@ -576,9 +576,9 @@
                     "500": {
                         "description": "Internal Server Error",
                         "content": {
-                            "application/json": {
+                            "application/problem+json": {
                                 "schema": {
-                                    "$ref": "#/components/schemas/ErrorResponse"
+                                    "$ref": "#/components/schemas/ProblemDetails"
                                 }
                             }
                         }
@@ -620,9 +620,9 @@
                     "400": {
                         "description": "Bad Request",
                         "content": {
-                            "application/json": {
+                            "application/problem+json": {
                                 "schema": {
-                                    "$ref": "#/components/schemas/ErrorResponse"
+                                    "$ref": "#/components/schemas/ProblemDetails"
                                 }
                             }
                         }
@@ -630,9 +630,9 @@
                     "404": {
                         "description": "Not Found",
                         "content": {
-                            "application/json": {
+                            "application/problem+json": {
                                 "schema": {
-                                    "$ref": "#/components/schemas/ErrorResponse"
+                                    "$ref": "#/components/schemas/ProblemDetails"
                                 }
                             }
                         }
@@ -640,9 +640,9 @@
                     "500": {
                         "description": "Internal Server Error",
                         "content": {
-                            "application/json": {
+                            "application/problem+json": {
                                 "schema": {
-                                    "$ref": "#/components/schemas/ErrorResponse"
+                                    "$ref": "#/components/schemas/ProblemDetails"
                                 }
                             }
                         }
@@ -683,9 +683,9 @@
                     "400": {
                         "description": "Bad Request",
                         "content": {
-                            "application/json": {
+                            "application/problem+json": {
                                 "schema": {
-                                    "$ref": "#/components/schemas/ErrorResponse"
+                                    "$ref": "#/components/schemas/ProblemDetails"
                                 }
                             }
                         }
@@ -693,9 +693,9 @@
                     "401": {
                         "description": "Unauthorized",
                         "content": {
-                            "application/json": {
+                            "application/problem+json": {
                                 "schema": {
-                                    "$ref": "#/components/schemas/ErrorResponse"
+                                    "$ref": "#/components/schemas/ProblemDetails"
                                 }
                             }
                         }
@@ -703,9 +703,9 @@
                     "403": {
                         "description": "Forbidden",
                         "content": {
-                            "application/json": {
+                            "application/problem+json": {
                                 "schema": {
-                                    "$ref": "#/components/schemas/ErrorResponse"
+                                    "$ref": "#/components/schemas/ProblemDetails"
                                 }
                             }
                         }
@@ -713,9 +713,9 @@
                     "500": {
                         "description": "Internal Server Error",
                         "content": {
-                            "application/json": {
+                            "application/problem+json": {
                                 "schema": {
-                                    "$ref": "#/components/schemas/ErrorResponse"
+                                    "$ref": "#/components/schemas/ProblemDetails"
                                 }
                             }
                         }
@@ -750,9 +750,9 @@
                     "400": {
                         "description": "Bad Request",
                         "content": {
-                            "application/json": {
+                            "application/problem+json": {
                                 "schema": {
-                                    "$ref": "#/components/schemas/ErrorResponse"
+                                    "$ref": "#/components/schemas/ProblemDetails"
                                 }
                             }
                         }
@@ -760,9 +760,9 @@
                     "409": {
                         "description": "Conflict",
                         "content": {
-                            "application/json": {
+                            "application/problem+json": {
                                 "schema": {
-                                    "$ref": "#/components/schemas/ErrorResponse"
+                                    "$ref": "#/components/schemas/ProblemDetails"
                                 }
                             }
                         }
@@ -770,9 +770,9 @@
                     "500": {
                         "description": "Internal Server Error",
                         "content": {
-                            "application/json": {
+                            "application/problem+json": {
                                 "schema": {
-                                    "$ref": "#/components/schemas/ErrorResponse"
+                                    "$ref": "#/components/schemas/ProblemDetails"
                                 }
                             }
                         }
@@ -800,9 +800,9 @@
                     "400": {
                         "description": "Bad Request",
                         "content": {
-                            "application/json": {
+                            "application/problem+json": {
                                 "schema": {
-                                    "$ref": "#/components/schemas/ErrorResponse"
+                                    "$ref": "#/components/schemas/ProblemDetails"
                                 }
                             }
                         }
@@ -810,9 +810,9 @@
                     "500": {
                         "description": "Internal Server Error",
                         "content": {
-                            "application/json": {
+                            "application/problem+json": {
                                 "schema": {
-                                    "$ref": "#/components/schemas/ErrorResponse"
+                                    "$ref": "#/components/schemas/ProblemDetails"
                                 }
                             }
                         }
@@ -840,9 +840,9 @@
                     "400": {
                         "description": "Bad Request",
                         "content": {
-                            "application/json": {
+                            "application/problem+json": {
                                 "schema": {
-                                    "$ref": "#/components/schemas/ErrorResponse"
+                                    "$ref": "#/components/schemas/ProblemDetails"
                                 }
                             }
                         }
@@ -850,9 +850,9 @@
                     "500": {
                         "description": "Internal Server Error",
                         "content": {
-                            "application/json": {
+                            "application/problem+json": {
                                 "schema": {
-                                    "$ref": "#/components/schemas/ErrorResponse"
+                                    "$ref": "#/components/schemas/ProblemDetails"
                                 }
                             }
                         }
@@ -878,9 +878,9 @@
                     "401": {
                         "description": "Unauthorized",
                         "content": {
-                            "application/json": {
+                            "application/problem+json": {
                                 "schema": {
-                                    "$ref": "#/components/schemas/ErrorResponse"
+                                    "$ref": "#/components/schemas/ProblemDetails"
                                 }
                             }
                         }
@@ -888,9 +888,9 @@
                     "500": {
                         "description": "Internal Server Error",
                         "content": {
-                            "application/json": {
+                            "application/problem+json": {
                                 "schema": {
-                                    "$ref": "#/components/schemas/ErrorResponse"
+                                    "$ref": "#/components/schemas/ProblemDetails"
                                 }
                             }
                         }
@@ -923,9 +923,9 @@
                     "400": {
                         "description": "Bad Request",
                         "content": {
-                            "application/json": {
+                            "application/problem+json": {
                                 "schema": {
-                                    "$ref": "#/components/schemas/ErrorResponse"
+                                    "$ref": "#/components/schemas/ProblemDetails"
                                 }
                             }
                         }
@@ -933,9 +933,9 @@
                     "401": {
                         "description": "Unauthorized",
                         "content": {
-                            "application/json": {
+                            "application/problem+json": {
                                 "schema": {
-                                    "$ref": "#/components/schemas/ErrorResponse"
+                                    "$ref": "#/components/schemas/ProblemDetails"
                                 }
                             }
                         }
@@ -943,9 +943,9 @@
                     "403": {
                         "description": "Forbidden",
                         "content": {
-                            "application/json": {
+                            "application/problem+json": {
                                 "schema": {
-                                    "$ref": "#/components/schemas/ErrorResponse"
+                                    "$ref": "#/components/schemas/ProblemDetails"
                                 }
                             }
                         }
@@ -953,9 +953,9 @@
                     "409": {
                         "description": "Conflict",
                         "content": {
-                            "application/json": {
+                            "application/problem+json": {
                                 "schema": {
-                                    "$ref": "#/components/schemas/ErrorResponse"
+                                    "$ref": "#/components/schemas/ProblemDetails"
                                 }
                             }
                         }
@@ -963,9 +963,9 @@
                     "500": {
                         "description": "Internal Server Error",
                         "content": {
-                            "application/json": {
+                            "application/problem+json": {
                                 "schema": {
-                                    "$ref": "#/components/schemas/ErrorResponse"
+                                    "$ref": "#/components/schemas/ProblemDetails"
                                 }
                             }
                         }
@@ -997,9 +997,9 @@
                     "401": {
                         "description": "Unauthorized",
                         "content": {
-                            "application/json": {
+                            "application/problem+json": {
                                 "schema": {
-                                    "$ref": "#/components/schemas/ErrorResponse"
+                                    "$ref": "#/components/schemas/ProblemDetails"
                                 }
                             }
                         }
@@ -1007,9 +1007,9 @@
                     "403": {
                         "description": "Forbidden",
                         "content": {
-                            "application/json": {
+                            "application/problem+json": {
                                 "schema": {
-                                    "$ref": "#/components/schemas/ErrorResponse"
+                                    "$ref": "#/components/schemas/ProblemDetails"
                                 }
                             }
                         }
@@ -1017,9 +1017,9 @@
                     "500": {
                         "description": "Internal Server Error",
                         "content": {
-                            "application/json": {
+                            "application/problem+json": {
                                 "schema": {
-                                    "$ref": "#/components/schemas/ErrorResponse"
+                                    "$ref": "#/components/schemas/ProblemDetails"
                                 }
                             }
                         }
@@ -1062,9 +1062,9 @@
                     "400": {
                         "description": "Bad Request",
                         "content": {
-                            "application/json": {
+                            "application/problem+json": {
                                 "schema": {
-                                    "$ref": "#/components/schemas/ErrorResponse"
+                                    "$ref": "#/components/schemas/ProblemDetails"
                                 }
                             }
                         }
@@ -1072,9 +1072,9 @@
                     "401": {
                         "description": "Unauthorized",
                         "content": {
-                            "application/json": {
+                            "application/problem+json": {
                                 "schema": {
-                                    "$ref": "#/components/schemas/ErrorResponse"
+                                    "$ref": "#/components/schemas/ProblemDetails"
                                 }
                             }
                         }
@@ -1082,9 +1082,9 @@
                     "403": {
                         "description": "Forbidden",
                         "content": {
-                            "application/json": {
+                            "application/problem+json": {
                                 "schema": {
-                                    "$ref": "#/components/schemas/ErrorResponse"
+                                    "$ref": "#/components/schemas/ProblemDetails"
                                 }
                             }
                         }
@@ -1092,9 +1092,9 @@
                     "409": {
                         "description": "Conflict",
                         "content": {
-                            "application/json": {
+                            "application/problem+json": {
                                 "schema": {
-                                    "$ref": "#/components/schemas/ErrorResponse"
+                                    "$ref": "#/components/schemas/ProblemDetails"
                                 }
                             }
                         }
@@ -1102,9 +1102,9 @@
                     "500": {
                         "description": "Internal Server Error",
                         "content": {
-                            "application/json": {
+                            "application/problem+json": {
                                 "schema": {
-                                    "$ref": "#/components/schemas/ErrorResponse"
+                                    "$ref": "#/components/schemas/ProblemDetails"
                                 }
                             }
                         }
@@ -1136,9 +1136,9 @@
                     "400": {
                         "description": "Bad Request",
                         "content": {
-                            "application/json": {
+                            "application/problem+json": {
                                 "schema": {
-                                    "$ref": "#/components/schemas/ErrorResponse"
+                                    "$ref": "#/components/schemas/ProblemDetails"
                                 }
                             }
                         }
@@ -1146,9 +1146,9 @@
                     "401": {
                         "description": "Unauthorized",
                         "content": {
-                            "application/json": {
+                            "application/problem+json": {
                                 "schema": {
-                                    "$ref": "#/components/schemas/ErrorResponse"
+                                    "$ref": "#/components/schemas/ProblemDetails"
                                 }
                             }
                         }
@@ -1156,9 +1156,9 @@
                     "403": {
                         "description": "Forbidden",
                         "content": {
-                            "application/json": {
+                            "application/problem+json": {
                                 "schema": {
-                                    "$ref": "#/components/schemas/ErrorResponse"
+                                    "$ref": "#/components/schemas/ProblemDetails"
                                 }
                             }
                         }
@@ -1166,9 +1166,9 @@
                     "404": {
                         "description": "Not Found",
                         "content": {
-                            "application/json": {
+                            "application/problem+json": {
                                 "schema": {
-                                    "$ref": "#/components/schemas/ErrorResponse"
+                                    "$ref": "#/components/schemas/ProblemDetails"
                                 }
                             }
                         }
@@ -1176,9 +1176,9 @@
                     "500": {
                         "description": "Internal Server Error",
                         "content": {
-                            "application/json": {
+                            "application/problem+json": {
                                 "schema": {
-                                    "$ref": "#/components/schemas/ErrorResponse"
+                                    "$ref": "#/components/schemas/ProblemDetails"
                                 }
                             }
                         }
@@ -1217,9 +1217,9 @@
                     "400": {
                         "description": "Bad Request",
                         "content": {
-                            "application/json": {
+                            "application/problem+json": {
                                 "schema": {
-                                    "$ref": "#/components/schemas/ErrorResponse"
+                                    "$ref": "#/components/schemas/ProblemDetails"
                                 }
                             }
                         }
@@ -1227,9 +1227,9 @@
                     "401": {
                         "description": "Unauthorized",
                         "content": {
-                            "application/json": {
+                            "application/problem+json": {
                                 "schema": {
-                                    "$ref": "#/components/schemas/ErrorResponse"
+                                    "$ref": "#/components/schemas/ProblemDetails"
                                 }
                             }
                         }
@@ -1237,9 +1237,9 @@
                     "403": {
                         "description": "Forbidden",
                         "content": {
-                            "application/json": {
+                            "application/problem+json": {
                                 "schema": {
-                                    "$ref": "#/components/schemas/ErrorResponse"
+                                    "$ref": "#/components/schemas/ProblemDetails"
                                 }
                             }
                         }
@@ -1247,9 +1247,9 @@
                     "404": {
                         "description": "Not Found",
                         "content": {
-                            "application/json": {
+                            "application/problem+json": {
                                 "schema": {
-                                    "$ref": "#/components/schemas/ErrorResponse"
+                                    "$ref": "#/components/schemas/ProblemDetails"
                                 }
                             }
                         }
@@ -1257,9 +1257,9 @@
                     "500": {
                         "description": "Internal Server Error",
                         "content": {
-                            "application/json": {
+                            "application/problem+json": {
                                 "schema": {
-                                    "$ref": "#/components/schemas/ErrorResponse"
+                                    "$ref": "#/components/schemas/ProblemDetails"
                                 }
                             }
                         }
@@ -1323,9 +1323,9 @@
                     "400": {
                         "description": "Bad Request",
                         "content": {
-                            "application/json": {
+                            "application/problem+json": {
                                 "schema": {
-                                    "$ref": "#/components/schemas/ErrorResponse"
+                                    "$ref": "#/components/schemas/ProblemDetails"
                                 }
                             }
                         }
@@ -1333,9 +1333,9 @@
                     "404": {
                         "description": "Not Found",
                         "content": {
-                            "application/json": {
+                            "application/problem+json": {
                                 "schema": {
-                                    "$ref": "#/components/schemas/ErrorResponse"
+                                    "$ref": "#/components/schemas/ProblemDetails"
                                 }
                             }
                         }
@@ -1343,9 +1343,9 @@
                     "500": {
                         "description": "Internal Server Error",
                         "content": {
-                            "application/json": {
+                            "application/problem+json": {
                                 "schema": {
-                                    "$ref": "#/components/schemas/ErrorResponse"
+                                    "$ref": "#/components/schemas/ProblemDetails"
                                 }
                             }
                         }
@@ -1380,9 +1380,9 @@
                     "400": {
                         "description": "Bad Request",
                         "content": {
-                            "application/json": {
+                            "application/problem+json": {
                                 "schema": {
-                                    "$ref": "#/components/schemas/ErrorResponse"
+                                    "$ref": "#/components/schemas/ProblemDetails"
                                 }
                             }
                         }
@@ -1390,9 +1390,9 @@
                     "401": {
                         "description": "Unauthorized",
                         "content": {
-                            "application/json": {
+                            "application/problem+json": {
                                 "schema": {
-                                    "$ref": "#/components/schemas/ErrorResponse"
+                                    "$ref": "#/components/schemas/ProblemDetails"
                                 }
                             }
                         }
@@ -1400,9 +1400,9 @@
                     "403": {
                         "description": "Forbidden",
                         "content": {
-                            "application/json": {
+                            "application/problem+json": {
                                 "schema": {
-                                    "$ref": "#/components/schemas/ErrorResponse"
+                                    "$ref": "#/components/schemas/ProblemDetails"
                                 }
                             }
                         }
@@ -1410,9 +1410,9 @@
                     "404": {
                         "description": "Not Found",
                         "content": {
-                            "application/json": {
+                            "application/problem+json": {
                                 "schema": {
-                                    "$ref": "#/components/schemas/ErrorResponse"
+                                    "$ref": "#/components/schemas/ProblemDetails"
                                 }
                             }
                         }
@@ -1420,9 +1420,9 @@
                     "500": {
                         "description": "Internal Server Error",
                         "content": {
-                            "application/json": {
+                            "application/problem+json": {
                                 "schema": {
-                                    "$ref": "#/components/schemas/ErrorResponse"
+                                    "$ref": "#/components/schemas/ProblemDetails"
                                 }
                             }
                         }
@@ -1472,9 +1472,9 @@
                     "400": {
                         "description": "Bad Request",
                         "content": {
-                            "application/json": {
+                            "application/problem+json": {
                                 "schema": {
-                                    "$ref": "#/components/schemas/ErrorResponse"
+                                    "$ref": "#/components/schemas/ProblemDetails"
                                 }
                             }
                         }
@@ -1482,9 +1482,9 @@
                     "401": {
                         "description": "Unauthorized",
                         "content": {
-                            "application/json": {
+                            "application/problem+json": {
                                 "schema": {
-                                    "$ref": "#/components/schemas/ErrorResponse"
+                                    "$ref": "#/components/schemas/ProblemDetails"
                                 }
                             }
                         }
@@ -1492,9 +1492,9 @@
                     "403": {
                         "description": "Forbidden",
                         "content": {
-                            "application/json": {
+                            "application/problem+json": {
                                 "schema": {
-                                    "$ref": "#/components/schemas/ErrorResponse"
+                                    "$ref": "#/components/schemas/ProblemDetails"
                                 }
                             }
                         }
@@ -1502,9 +1502,9 @@
                     "404": {
                         "description": "Not Found",
                         "content": {
-                            "application/json": {
+                            "application/problem+json": {
                                 "schema": {
-                                    "$ref": "#/components/schemas/ErrorResponse"
+                                    "$ref": "#/components/schemas/ProblemDetails"
                                 }
                             }
                         }
@@ -1512,9 +1512,9 @@
                     "409": {
                         "description": "Conflict",
                         "content": {
-                            "application/json": {
+                            "application/problem+json": {
                                 "schema": {
-                                    "$ref": "#/components/schemas/ErrorResponse"
+                                    "$ref": "#/components/schemas/ProblemDetails"
                                 }
                             }
                         }
@@ -1522,9 +1522,9 @@
                     "500": {
                         "description": "Internal Server Error",
                         "content": {
-                            "application/json": {
+                            "application/problem+json": {
                                 "schema": {
-                                    "$ref": "#/components/schemas/ErrorResponse"
+                                    "$ref": "#/components/schemas/ProblemDetails"
                                 }
                             }
                         }
@@ -1566,9 +1566,9 @@
                     "400": {
                         "description": "Bad Request",
                         "content": {
-                            "application/json": {
+                            "application/problem+json": {
                                 "schema": {
-                                    "$ref": "#/components/schemas/ErrorResponse"
+                                    "$ref": "#/components/schemas/ProblemDetails"
                                 }
                             }
                         }
@@ -1576,9 +1576,9 @@
                     "401": {
                         "description": "Unauthorized",
                         "content": {
-                            "application/json": {
+                            "application/problem+json": {
                                 "schema": {
-                                    "$ref": "#/components/schemas/ErrorResponse"
+                                    "$ref": "#/components/schemas/ProblemDetails"
                                 }
                             }
                         }
@@ -1586,9 +1586,9 @@
                     "403": {
                         "description": "Forbidden",
                         "content": {
-                            "application/json": {
+                            "application/problem+json": {
                                 "schema": {
-                                    "$ref": "#/components/schemas/ErrorResponse"
+                                    "$ref": "#/components/schemas/ProblemDetails"
                                 }
                             }
                         }
@@ -1596,9 +1596,9 @@
                     "404": {
                         "description": "Not Found",
                         "content": {
-                            "application/json": {
+                            "application/problem+json": {
                                 "schema": {
-                                    "$ref": "#/components/schemas/ErrorResponse"
+                                    "$ref": "#/components/schemas/ProblemDetails"
                                 }
                             }
                         }
@@ -1606,9 +1606,9 @@
                     "500": {
                         "description": "Internal Server Error",
                         "content": {
-                            "application/json": {
+                            "application/problem+json": {
                                 "schema": {
-                                    "$ref": "#/components/schemas/ErrorResponse"
+                                    "$ref": "#/components/schemas/ProblemDetails"
                                 }
                             }
                         }
@@ -1651,9 +1651,9 @@
                     "400": {
                         "description": "Bad Request",
                         "content": {
-                            "application/json": {
+                            "application/problem+json": {
                                 "schema": {
-                                    "$ref": "#/components/schemas/ErrorResponse"
+                                    "$ref": "#/components/schemas/ProblemDetails"
                                 }
                             }
                         }
@@ -1661,9 +1661,9 @@
                     "401": {
                         "description": "Unauthorized",
                         "content": {
-                            "application/json": {
+                            "application/problem+json": {
                                 "schema": {
-                                    "$ref": "#/components/schemas/ErrorResponse"
+                                    "$ref": "#/components/schemas/ProblemDetails"
                                 }
                             }
                         }
@@ -1671,9 +1671,9 @@
                     "403": {
                         "description": "Forbidden",
                         "content": {
-                            "application/json": {
+                            "application/problem+json": {
                                 "schema": {
-                                    "$ref": "#/components/schemas/ErrorResponse"
+                                    "$ref": "#/components/schemas/ProblemDetails"
                                 }
                             }
                         }
@@ -1681,9 +1681,9 @@
                     "404": {
                         "description": "Not Found",
                         "content": {
-                            "application/json": {
+                            "application/problem+json": {
                                 "schema": {
-                                    "$ref": "#/components/schemas/ErrorResponse"
+                                    "$ref": "#/components/schemas/ProblemDetails"
                                 }
                             }
                         }
@@ -1691,9 +1691,9 @@
                     "409": {
                         "description": "Conflict",
                         "content": {
-                            "application/json": {
+                            "application/problem+json": {
                                 "schema": {
-                                    "$ref": "#/components/schemas/ErrorResponse"
+                                    "$ref": "#/components/schemas/ProblemDetails"
                                 }
                             }
                         }
@@ -1701,9 +1701,9 @@
                     "500": {
                         "description": "Internal Server Error",
                         "content": {
-                            "application/json": {
+                            "application/problem+json": {
                                 "schema": {
-                                    "$ref": "#/components/schemas/ErrorResponse"
+                                    "$ref": "#/components/schemas/ProblemDetails"
                                 }
                             }
                         }
@@ -1735,9 +1735,9 @@
                     "400": {
                         "description": "Bad Request",
                         "content": {
-                            "application/json": {
+                            "application/problem+json": {
                                 "schema": {
-                                    "$ref": "#/components/schemas/ErrorResponse"
+                                    "$ref": "#/components/schemas/ProblemDetails"
                                 }
                             }
                         }
@@ -1745,9 +1745,9 @@
                     "401": {
                         "description": "Unauthorized",
                         "content": {
-                            "application/json": {
+                            "application/problem+json": {
                                 "schema": {
-                                    "$ref": "#/components/schemas/ErrorResponse"
+                                    "$ref": "#/components/schemas/ProblemDetails"
                                 }
                             }
                         }
@@ -1755,9 +1755,9 @@
                     "403": {
                         "description": "Forbidden",
                         "content": {
-                            "application/json": {
+                            "application/problem+json": {
                                 "schema": {
-                                    "$ref": "#/components/schemas/ErrorResponse"
+                                    "$ref": "#/components/schemas/ProblemDetails"
                                 }
                             }
                         }
@@ -1765,9 +1765,9 @@
                     "404": {
                         "description": "Not Found",
                         "content": {
-                            "application/json": {
+                            "application/problem+json": {
                                 "schema": {
-                                    "$ref": "#/components/schemas/ErrorResponse"
+                                    "$ref": "#/components/schemas/ProblemDetails"
                                 }
                             }
                         }
@@ -1775,9 +1775,9 @@
                     "500": {
                         "description": "Internal Server Error",
                         "content": {
-                            "application/json": {
+                            "application/problem+json": {
                                 "schema": {
-                                    "$ref": "#/components/schemas/ErrorResponse"
+                                    "$ref": "#/components/schemas/ProblemDetails"
                                 }
                             }
                         }
@@ -1810,9 +1810,9 @@
                     "400": {
                         "description": "Bad Request",
                         "content": {
-                            "application/json": {
+                            "application/problem+json": {
                                 "schema": {
-                                    "$ref": "#/components/schemas/ErrorResponse"
+                                    "$ref": "#/components/schemas/ProblemDetails"
                                 }
                             }
                         }
@@ -1820,9 +1820,9 @@
                     "401": {
                         "description": "Unauthorized",
                         "content": {
-                            "application/json": {
+                            "application/problem+json": {
                                 "schema": {
-                                    "$ref": "#/components/schemas/ErrorResponse"
+                                    "$ref": "#/components/schemas/ProblemDetails"
                                 }
                             }
                         }
@@ -1830,9 +1830,9 @@
                     "403": {
                         "description": "Forbidden",
                         "content": {
-                            "application/json": {
+                            "application/problem+json": {
                                 "schema": {
-                                    "$ref": "#/components/schemas/ErrorResponse"
+                                    "$ref": "#/components/schemas/ProblemDetails"
                                 }
                             }
                         }
@@ -1840,9 +1840,9 @@
                     "500": {
                         "description": "Internal Server Error",
                         "content": {
-                            "application/json": {
+                            "application/problem+json": {
                                 "schema": {
-                                    "$ref": "#/components/schemas/ErrorResponse"
+                                    "$ref": "#/components/schemas/ProblemDetails"
                                 }
                             }
                         }
@@ -1883,9 +1883,9 @@
                     "400": {
                         "description": "Bad Request",
                         "content": {
-                            "application/json": {
+                            "application/problem+json": {
                                 "schema": {
-                                    "$ref": "#/components/schemas/ErrorResponse"
+                                    "$ref": "#/components/schemas/ProblemDetails"
                                 }
                             }
                         }
@@ -1893,9 +1893,9 @@
                     "401": {
                         "description": "Unauthorized",
                         "content": {
-                            "application/json": {
+                            "application/problem+json": {
                                 "schema": {
-                                    "$ref": "#/components/schemas/ErrorResponse"
+                                    "$ref": "#/components/schemas/ProblemDetails"
                                 }
                             }
                         }
@@ -1903,9 +1903,9 @@
                     "403": {
                         "description": "Forbidden",
                         "content": {
-                            "application/json": {
+                            "application/problem+json": {
                                 "schema": {
-                                    "$ref": "#/components/schemas/ErrorResponse"
+                                    "$ref": "#/components/schemas/ProblemDetails"
                                 }
                             }
                         }
@@ -1913,9 +1913,9 @@
                     "500": {
                         "description": "Internal Server Error",
                         "content": {
-                            "application/json": {
+                            "application/problem+json": {
                                 "schema": {
-                                    "$ref": "#/components/schemas/ErrorResponse"
+                                    "$ref": "#/components/schemas/ProblemDetails"
                                 }
                             }
                         }
@@ -1958,9 +1958,9 @@
                     "400": {
                         "description": "Bad Request",
                         "content": {
-                            "application/json": {
+                            "application/problem+json": {
                                 "schema": {
-                                    "$ref": "#/components/schemas/ErrorResponse"
+                                    "$ref": "#/components/schemas/ProblemDetails"
                                 }
                             }
                         }
@@ -1968,9 +1968,9 @@
                     "401": {
                         "description": "Unauthorized",
                         "content": {
-                            "application/json": {
+                            "application/problem+json": {
                                 "schema": {
-                                    "$ref": "#/components/schemas/ErrorResponse"
+                                    "$ref": "#/components/schemas/ProblemDetails"
                                 }
                             }
                         }
@@ -1978,9 +1978,9 @@
                     "403": {
                         "description": "Forbidden",
                         "content": {
-                            "application/json": {
+                            "application/problem+json": {
                                 "schema": {
-                                    "$ref": "#/components/schemas/ErrorResponse"
+                                    "$ref": "#/components/schemas/ProblemDetails"
                                 }
                             }
                         }
@@ -1988,9 +1988,9 @@
                     "500": {
                         "description": "Internal Server Error",
                         "content": {
-                            "application/json": {
+                            "application/problem+json": {
                                 "schema": {
-                                    "$ref": "#/components/schemas/ErrorResponse"
+                                    "$ref": "#/components/schemas/ProblemDetails"
                                 }
                             }
                         }
@@ -2022,9 +2022,9 @@
                     "400": {
                         "description": "Bad Request",
                         "content": {
-                            "application/json": {
+                            "application/problem+json": {
                                 "schema": {
-                                    "$ref": "#/components/schemas/ErrorResponse"
+                                    "$ref": "#/components/schemas/ProblemDetails"
                                 }
                             }
                         }
@@ -2032,9 +2032,9 @@
                     "401": {
                         "description": "Unauthorized",
                         "content": {
-                            "application/json": {
+                            "application/problem+json": {
                                 "schema": {
-                                    "$ref": "#/components/schemas/ErrorResponse"
+                                    "$ref": "#/components/schemas/ProblemDetails"
                                 }
                             }
                         }
@@ -2042,9 +2042,9 @@
                     "403": {
                         "description": "Forbidden",
                         "content": {
-                            "application/json": {
+                            "application/problem+json": {
                                 "schema": {
-                                    "$ref": "#/components/schemas/ErrorResponse"
+                                    "$ref": "#/components/schemas/ProblemDetails"
                                 }
                             }
                         }
@@ -2052,9 +2052,9 @@
                     "404": {
                         "description": "Not Found",
                         "content": {
-                            "application/json": {
+                            "application/problem+json": {
                                 "schema": {
-                                    "$ref": "#/components/schemas/ErrorResponse"
+                                    "$ref": "#/components/schemas/ProblemDetails"
                                 }
                             }
                         }
@@ -2062,9 +2062,9 @@
                     "500": {
                         "description": "Internal Server Error",
                         "content": {
-                            "application/json": {
+                            "application/problem+json": {
                                 "schema": {
-                                    "$ref": "#/components/schemas/ErrorResponse"
+                                    "$ref": "#/components/schemas/ProblemDetails"
                                 }
                             }
                         }
@@ -2103,9 +2103,9 @@
                     "400": {
                         "description": "Bad Request",
                         "content": {
-                            "application/json": {
+                            "application/problem+json": {
                                 "schema": {
-                                    "$ref": "#/components/schemas/ErrorResponse"
+                                    "$ref": "#/components/schemas/ProblemDetails"
                                 }
                             }
                         }
@@ -2113,9 +2113,9 @@
                     "401": {
                         "description": "Unauthorized",
                         "content": {
-                            "application/json": {
+                            "application/problem+json": {
                                 "schema": {
-                                    "$ref": "#/components/schemas/ErrorResponse"
+                                    "$ref": "#/components/schemas/ProblemDetails"
                                 }
                             }
                         }
@@ -2123,9 +2123,9 @@
                     "403": {
                         "description": "Forbidden",
                         "content": {
-                            "application/json": {
+                            "application/problem+json": {
                                 "schema": {
-                                    "$ref": "#/components/schemas/ErrorResponse"
+                                    "$ref": "#/components/schemas/ProblemDetails"
                                 }
                             }
                         }
@@ -2133,9 +2133,9 @@
                     "404": {
                         "description": "Not Found",
                         "content": {
-                            "application/json": {
+                            "application/problem+json": {
                                 "schema": {
-                                    "$ref": "#/components/schemas/ErrorResponse"
+                                    "$ref": "#/components/schemas/ProblemDetails"
                                 }
                             }
                         }
@@ -2143,9 +2143,9 @@
                     "500": {
                         "description": "Internal Server Error",
                         "content": {
-                            "application/json": {
+                            "application/problem+json": {
                                 "schema": {
-                                    "$ref": "#/components/schemas/ErrorResponse"
+                                    "$ref": "#/components/schemas/ProblemDetails"
                                 }
                             }
                         }
@@ -2178,9 +2178,9 @@
                     "400": {
                         "description": "Bad Request",
                         "content": {
-                            "application/json": {
+                            "application/problem+json": {
                                 "schema": {
-                                    "$ref": "#/components/schemas/ErrorResponse"
+                                    "$ref": "#/components/schemas/ProblemDetails"
                                 }
                             }
                         }
@@ -2188,9 +2188,9 @@
                     "401": {
                         "description": "Unauthorized",
                         "content": {
-                            "application/json": {
+                            "application/problem+json": {
                                 "schema": {
-                                    "$ref": "#/components/schemas/ErrorResponse"
+                                    "$ref": "#/components/schemas/ProblemDetails"
                                 }
                             }
                         }
@@ -2198,9 +2198,9 @@
                     "403": {
                         "description": "Forbidden",
                         "content": {
-                            "application/json": {
+                            "application/problem+json": {
                                 "schema": {
-                                    "$ref": "#/components/schemas/ErrorResponse"
+                                    "$ref": "#/components/schemas/ProblemDetails"
                                 }
                             }
                         }
@@ -2208,9 +2208,9 @@
                     "500": {
                         "description": "Internal Server Error",
                         "content": {
-                            "application/json": {
+                            "application/problem+json": {
                                 "schema": {
-                                    "$ref": "#/components/schemas/ErrorResponse"
+                                    "$ref": "#/components/schemas/ProblemDetails"
                                 }
                             }
                         }
@@ -2242,9 +2242,9 @@
                     "401": {
                         "description": "Unauthorized",
                         "content": {
-                            "application/json": {
+                            "application/problem+json": {
                                 "schema": {
-                                    "$ref": "#/components/schemas/ErrorResponse"
+                                    "$ref": "#/components/schemas/ProblemDetails"
                                 }
                             }
                         }
@@ -2252,9 +2252,9 @@
                     "403": {
                         "description": "Forbidden",
                         "content": {
-                            "application/json": {
+                            "application/problem+json": {
                                 "schema": {
-                                    "$ref": "#/components/schemas/ErrorResponse"
+                                    "$ref": "#/components/schemas/ProblemDetails"
                                 }
                             }
                         }
@@ -2262,9 +2262,9 @@
                     "500": {
                         "description": "Internal Server Error",
                         "content": {
-                            "application/json": {
+                            "application/problem+json": {
                                 "schema": {
-                                    "$ref": "#/components/schemas/ErrorResponse"
+                                    "$ref": "#/components/schemas/ProblemDetails"
                                 }
                             }
                         }
@@ -2307,9 +2307,9 @@
                     "400": {
                         "description": "Bad Request",
                         "content": {
-                            "application/json": {
+                            "application/problem+json": {
                                 "schema": {
-                                    "$ref": "#/components/schemas/ErrorResponse"
+                                    "$ref": "#/components/schemas/ProblemDetails"
                                 }
                             }
                         }
@@ -2317,9 +2317,9 @@
                     "401": {
                         "description": "Unauthorized",
                         "content": {
-                            "application/json": {
+                            "application/problem+json": {
                                 "schema": {
-                                    "$ref": "#/components/schemas/ErrorResponse"
+                                    "$ref": "#/components/schemas/ProblemDetails"
                                 }
                             }
                         }
@@ -2327,9 +2327,9 @@
                     "403": {
                         "description": "Forbidden",
                         "content": {
-                            "application/json": {
+                            "application/problem+json": {
                                 "schema": {
-                                    "$ref": "#/components/schemas/ErrorResponse"
+                                    "$ref": "#/components/schemas/ProblemDetails"
                                 }
                             }
                         }
@@ -2337,9 +2337,9 @@
                     "500": {
                         "description": "Internal Server Error",
                         "content": {
-                            "application/json": {
+                            "application/problem+json": {
                                 "schema": {
-                                    "$ref": "#/components/schemas/ErrorResponse"
+                                    "$ref": "#/components/schemas/ProblemDetails"
                                 }
                             }
                         }
@@ -2371,9 +2371,9 @@
                     "400": {
                         "description": "Bad Request",
                         "content": {
-                            "application/json": {
+                            "application/problem+json": {
                                 "schema": {
-                                    "$ref": "#/components/schemas/ErrorResponse"
+                                    "$ref": "#/components/schemas/ProblemDetails"
                                 }
                             }
                         }
@@ -2381,9 +2381,9 @@
                     "401": {
                         "description": "Unauthorized",
                         "content": {
-                            "application/json": {
+                            "application/problem+json": {
                                 "schema": {
-                                    "$ref": "#/components/schemas/ErrorResponse"
+                                    "$ref": "#/components/schemas/ProblemDetails"
                                 }
                             }
                         }
@@ -2391,9 +2391,9 @@
                     "403": {
                         "description": "Forbidden",
                         "content": {
-                            "application/json": {
+                            "application/problem+json": {
                                 "schema": {
-                                    "$ref": "#/components/schemas/ErrorResponse"
+                                    "$ref": "#/components/schemas/ProblemDetails"
                                 }
                             }
                         }
@@ -2401,9 +2401,9 @@
                     "404": {
                         "description": "Not Found",
                         "content": {
-                            "application/json": {
+                            "application/problem+json": {
                                 "schema": {
-                                    "$ref": "#/components/schemas/ErrorResponse"
+                                    "$ref": "#/components/schemas/ProblemDetails"
                                 }
                             }
                         }
@@ -2411,9 +2411,9 @@
                     "500": {
                         "description": "Internal Server Error",
                         "content": {
-                            "application/json": {
+                            "application/problem+json": {
                                 "schema": {
-                                    "$ref": "#/components/schemas/ErrorResponse"
+                                    "$ref": "#/components/schemas/ProblemDetails"
                                 }
                             }
                         }
@@ -2452,9 +2452,9 @@
                     "400": {
                         "description": "Bad Request",
                         "content": {
-                            "application/json": {
+                            "application/problem+json": {
                                 "schema": {
-                                    "$ref": "#/components/schemas/ErrorResponse"
+                                    "$ref": "#/components/schemas/ProblemDetails"
                                 }
                             }
                         }
@@ -2462,9 +2462,9 @@
                     "401": {
                         "description": "Unauthorized",
                         "content": {
-                            "application/json": {
+                            "application/problem+json": {
                                 "schema": {
-                                    "$ref": "#/components/schemas/ErrorResponse"
+                                    "$ref": "#/components/schemas/ProblemDetails"
                                 }
                             }
                         }
@@ -2472,9 +2472,9 @@
                     "403": {
                         "description": "Forbidden",
                         "content": {
-                            "application/json": {
+                            "application/problem+json": {
                                 "schema": {
-                                    "$ref": "#/components/schemas/ErrorResponse"
+                                    "$ref": "#/components/schemas/ProblemDetails"
                                 }
                             }
                         }
@@ -2482,9 +2482,9 @@
                     "404": {
                         "description": "Not Found",
                         "content": {
-                            "application/json": {
+                            "application/problem+json": {
                                 "schema": {
-                                    "$ref": "#/components/schemas/ErrorResponse"
+                                    "$ref": "#/components/schemas/ProblemDetails"
                                 }
                             }
                         }
@@ -2492,9 +2492,9 @@
                     "500": {
                         "description": "Internal Server Error",
                         "content": {
-                            "application/json": {
+                            "application/problem+json": {
                                 "schema": {
-                                    "$ref": "#/components/schemas/ErrorResponse"
+                                    "$ref": "#/components/schemas/ProblemDetails"
                                 }
                             }
                         }
@@ -2527,9 +2527,9 @@
                     "400": {
                         "description": "Bad Request",
                         "content": {
-                            "application/json": {
+                            "application/problem+json": {
                                 "schema": {
-                                    "$ref": "#/components/schemas/ErrorResponse"
+                                    "$ref": "#/components/schemas/ProblemDetails"
                                 }
                             }
                         }
@@ -2537,9 +2537,9 @@
                     "401": {
                         "description": "Unauthorized",
                         "content": {
-                            "application/json": {
+                            "application/problem+json": {
                                 "schema": {
-                                    "$ref": "#/components/schemas/ErrorResponse"
+                                    "$ref": "#/components/schemas/ProblemDetails"
                                 }
                             }
                         }
@@ -2547,9 +2547,9 @@
                     "403": {
                         "description": "Forbidden",
                         "content": {
-                            "application/json": {
+                            "application/problem+json": {
                                 "schema": {
-                                    "$ref": "#/components/schemas/ErrorResponse"
+                                    "$ref": "#/components/schemas/ProblemDetails"
                                 }
                             }
                         }
@@ -2557,9 +2557,9 @@
                     "409": {
                         "description": "Conflict",
                         "content": {
-                            "application/json": {
+                            "application/problem+json": {
                                 "schema": {
-                                    "$ref": "#/components/schemas/ErrorResponse"
+                                    "$ref": "#/components/schemas/ProblemDetails"
                                 }
                             }
                         }
@@ -2567,9 +2567,9 @@
                     "500": {
                         "description": "Internal Server Error",
                         "content": {
-                            "application/json": {
+                            "application/problem+json": {
                                 "schema": {
-                                    "$ref": "#/components/schemas/ErrorResponse"
+                                    "$ref": "#/components/schemas/ProblemDetails"
                                 }
                             }
                         }
@@ -2601,9 +2601,9 @@
                     "401": {
                         "description": "Unauthorized",
                         "content": {
-                            "application/json": {
+                            "application/problem+json": {
                                 "schema": {
-                                    "$ref": "#/components/schemas/ErrorResponse"
+                                    "$ref": "#/components/schemas/ProblemDetails"
                                 }
                             }
                         }
@@ -2611,9 +2611,9 @@
                     "403": {
                         "description": "Forbidden",
                         "content": {
-                            "application/json": {
+                            "application/problem+json": {
                                 "schema": {
-                                    "$ref": "#/components/schemas/ErrorResponse"
+                                    "$ref": "#/components/schemas/ProblemDetails"
                                 }
                             }
                         }
@@ -2621,9 +2621,9 @@
                     "500": {
                         "description": "Internal Server Error",
                         "content": {
-                            "application/json": {
+                            "application/problem+json": {
                                 "schema": {
-                                    "$ref": "#/components/schemas/ErrorResponse"
+                                    "$ref": "#/components/schemas/ProblemDetails"
                                 }
                             }
                         }
@@ -2666,9 +2666,9 @@
                     "400": {
                         "description": "Bad Request",
                         "content": {
-                            "application/json": {
+                            "application/problem+json": {
                                 "schema": {
-                                    "$ref": "#/components/schemas/ErrorResponse"
+                                    "$ref": "#/components/schemas/ProblemDetails"
                                 }
                             }
                         }
@@ -2676,9 +2676,9 @@
                     "401": {
                         "description": "Unauthorized",
                         "content": {
-                            "application/json": {
+                            "application/problem+json": {
                                 "schema": {
-                                    "$ref": "#/components/schemas/ErrorResponse"
+                                    "$ref": "#/components/schemas/ProblemDetails"
                                 }
                             }
                         }
@@ -2686,9 +2686,9 @@
                     "403": {
                         "description": "Forbidden",
                         "content": {
-                            "application/json": {
+                            "application/problem+json": {
                                 "schema": {
-                                    "$ref": "#/components/schemas/ErrorResponse"
+                                    "$ref": "#/components/schemas/ProblemDetails"
                                 }
                             }
                         }
@@ -2696,9 +2696,9 @@
                     "409": {
                         "description": "Conflict",
                         "content": {
-                            "application/json": {
+                            "application/problem+json": {
                                 "schema": {
-                                    "$ref": "#/components/schemas/ErrorResponse"
+                                    "$ref": "#/components/schemas/ProblemDetails"
                                 }
                             }
                         }
@@ -2706,9 +2706,9 @@
                     "500": {
                         "description": "Internal Server Error",
                         "content": {
-                            "application/json": {
+                            "application/problem+json": {
                                 "schema": {
-                                    "$ref": "#/components/schemas/ErrorResponse"
+                                    "$ref": "#/components/schemas/ProblemDetails"
                                 }
                             }
                         }
@@ -2740,9 +2740,9 @@
                     "400": {
                         "description": "Bad Request",
                         "content": {
-                            "application/json": {
+                            "application/problem+json": {
                                 "schema": {
-                                    "$ref": "#/components/schemas/ErrorResponse"
+                                    "$ref": "#/components/schemas/ProblemDetails"
                                 }
                             }
                         }
@@ -2750,9 +2750,9 @@
                     "401": {
                         "description": "Unauthorized",
                         "content": {
-                            "application/json": {
+                            "application/problem+json": {
                                 "schema": {
-                                    "$ref": "#/components/schemas/ErrorResponse"
+                                    "$ref": "#/components/schemas/ProblemDetails"
                                 }
                             }
                         }
@@ -2760,9 +2760,9 @@
                     "403": {
                         "description": "Forbidden",
                         "content": {
-                            "application/json": {
+                            "application/problem+json": {
                                 "schema": {
-                                    "$ref": "#/components/schemas/ErrorResponse"
+                                    "$ref": "#/components/schemas/ProblemDetails"
                                 }
                             }
                         }
@@ -2770,9 +2770,9 @@
                     "404": {
                         "description": "Not Found",
                         "content": {
-                            "application/json": {
+                            "application/problem+json": {
                                 "schema": {
-                                    "$ref": "#/components/schemas/ErrorResponse"
+                                    "$ref": "#/components/schemas/ProblemDetails"
                                 }
                             }
                         }
@@ -2780,9 +2780,9 @@
                     "500": {
                         "description": "Internal Server Error",
                         "content": {
-                            "application/json": {
+                            "application/problem+json": {
                                 "schema": {
-                                    "$ref": "#/components/schemas/ErrorResponse"
+                                    "$ref": "#/components/schemas/ProblemDetails"
                                 }
                             }
                         }
@@ -2821,9 +2821,9 @@
                     "400": {
                         "description": "Bad Request",
                         "content": {
-                            "application/json": {
+                            "application/problem+json": {
                                 "schema": {
-                                    "$ref": "#/components/schemas/ErrorResponse"
+                                    "$ref": "#/components/schemas/ProblemDetails"
                                 }
                             }
                         }
@@ -2831,9 +2831,9 @@
                     "401": {
                         "description": "Unauthorized",
                         "content": {
-                            "application/json": {
+                            "application/problem+json": {
                                 "schema": {
-                                    "$ref": "#/components/schemas/ErrorResponse"
+                                    "$ref": "#/components/schemas/ProblemDetails"
                                 }
                             }
                         }
@@ -2841,9 +2841,9 @@
                     "403": {
                         "description": "Forbidden",
                         "content": {
-                            "application/json": {
+                            "application/problem+json": {
                                 "schema": {
-                                    "$ref": "#/components/schemas/ErrorResponse"
+                                    "$ref": "#/components/schemas/ProblemDetails"
                                 }
                             }
                         }
@@ -2851,9 +2851,9 @@
                     "404": {
                         "description": "Not Found",
                         "content": {
-                            "application/json": {
+                            "application/problem+json": {
                                 "schema": {
-                                    "$ref": "#/components/schemas/ErrorResponse"
+                                    "$ref": "#/components/schemas/ProblemDetails"
                                 }
                             }
                         }
@@ -2861,9 +2861,9 @@
                     "500": {
                         "description": "Internal Server Error",
                         "content": {
-                            "application/json": {
+                            "application/problem+json": {
                                 "schema": {
-                                    "$ref": "#/components/schemas/ErrorResponse"
+                                    "$ref": "#/components/schemas/ProblemDetails"
                                 }
                             }
                         }
@@ -2896,9 +2896,9 @@
                     "400": {
                         "description": "Bad Request",
                         "content": {
-                            "application/json": {
+                            "application/problem+json": {
                                 "schema": {
-                                    "$ref": "#/components/schemas/ErrorResponse"
+                                    "$ref": "#/components/schemas/ProblemDetails"
                                 }
                             }
                         }
@@ -2906,9 +2906,9 @@
                     "401": {
                         "description": "Unauthorized",
                         "content": {
-                            "application/json": {
+                            "application/problem+json": {
                                 "schema": {
-                                    "$ref": "#/components/schemas/ErrorResponse"
+                                    "$ref": "#/components/schemas/ProblemDetails"
                                 }
                             }
                         }
@@ -2916,9 +2916,9 @@
                     "403": {
                         "description": "Forbidden",
                         "content": {
-                            "application/json": {
+                            "application/problem+json": {
                                 "schema": {
-                                    "$ref": "#/components/schemas/ErrorResponse"
+                                    "$ref": "#/components/schemas/ProblemDetails"
                                 }
                             }
                         }
@@ -2926,9 +2926,9 @@
                     "409": {
                         "description": "Conflict",
                         "content": {
-                            "application/json": {
+                            "application/problem+json": {
                                 "schema": {
-                                    "$ref": "#/components/schemas/ErrorResponse"
+                                    "$ref": "#/components/schemas/ProblemDetails"
                                 }
                             }
                         }
@@ -2936,9 +2936,9 @@
                     "500": {
                         "description": "Internal Server Error",
                         "content": {
-                            "application/json": {
+                            "application/problem+json": {
                                 "schema": {
-                                    "$ref": "#/components/schemas/ErrorResponse"
+                                    "$ref": "#/components/schemas/ProblemDetails"
                                 }
                             }
                         }
@@ -2970,9 +2970,9 @@
                     "401": {
                         "description": "Unauthorized",
                         "content": {
-                            "application/json": {
+                            "application/problem+json": {
                                 "schema": {
-                                    "$ref": "#/components/schemas/ErrorResponse"
+                                    "$ref": "#/components/schemas/ProblemDetails"
                                 }
                             }
                         }
@@ -2980,9 +2980,9 @@
                     "403": {
                         "description": "Forbidden",
                         "content": {
-                            "application/json": {
+                            "application/problem+json": {
                                 "schema": {
-                                    "$ref": "#/components/schemas/ErrorResponse"
+                                    "$ref": "#/components/schemas/ProblemDetails"
                                 }
                             }
                         }
@@ -2990,9 +2990,9 @@
                     "500": {
                         "description": "Internal Server Error",
                         "content": {
-                            "application/json": {
+                            "application/problem+json": {
                                 "schema": {
-                                    "$ref": "#/components/schemas/ErrorResponse"
+                                    "$ref": "#/components/schemas/ProblemDetails"
                                 }
                             }
                         }
@@ -3035,9 +3035,9 @@
                     "400": {
                         "description": "Bad Request",
                         "content": {
-                            "application/json": {
+                            "application/problem+json": {
                                 "schema": {
-                                    "$ref": "#/components/schemas/ErrorResponse"
+                                    "$ref": "#/components/schemas/ProblemDetails"
                                 }
                             }
                         }
@@ -3045,9 +3045,9 @@
                     "401": {
                         "description": "Unauthorized",
                         "content": {
-                            "application/json": {
+                            "application/problem+json": {
                                 "schema": {
-                                    "$ref": "#/components/schemas/ErrorResponse"
+                                    "$ref": "#/components/schemas/ProblemDetails"
                                 }
                             }
                         }
@@ -3055,9 +3055,9 @@
                     "403": {
                         "description": "Forbidden",
                         "content": {
-                            "application/json": {
+                            "application/problem+json": {
                                 "schema": {
-                                    "$ref": "#/components/schemas/ErrorResponse"
+                                    "$ref": "#/components/schemas/ProblemDetails"
                                 }
                             }
                         }
@@ -3065,9 +3065,9 @@
                     "409": {
                         "description": "Conflict",
                         "content": {
-                            "application/json": {
+                            "application/problem+json": {
                                 "schema": {
-                                    "$ref": "#/components/schemas/ErrorResponse"
+                                    "$ref": "#/components/schemas/ProblemDetails"
                                 }
                             }
                         }
@@ -3075,9 +3075,9 @@
                     "500": {
                         "description": "Internal Server Error",
                         "content": {
-                            "application/json": {
+                            "application/problem+json": {
                                 "schema": {
-                                    "$ref": "#/components/schemas/ErrorResponse"
+                                    "$ref": "#/components/schemas/ProblemDetails"
                                 }
                             }
                         }
@@ -3109,9 +3109,9 @@
                     "400": {
                         "description": "Bad Request",
                         "content": {
-                            "application/json": {
+                            "application/problem+json": {
                                 "schema": {
-                                    "$ref": "#/components/schemas/ErrorResponse"
+                                    "$ref": "#/components/schemas/ProblemDetails"
                                 }
                             }
                         }
@@ -3119,9 +3119,9 @@
                     "401": {
                         "description": "Unauthorized",
                         "content": {
-                            "application/json": {
+                            "application/problem+json": {
                                 "schema": {
-                                    "$ref": "#/components/schemas/ErrorResponse"
+                                    "$ref": "#/components/schemas/ProblemDetails"
                                 }
                             }
                         }
@@ -3129,9 +3129,9 @@
                     "403": {
                         "description": "Forbidden",
                         "content": {
-                            "application/json": {
+                            "application/problem+json": {
                                 "schema": {
-                                    "$ref": "#/components/schemas/ErrorResponse"
+                                    "$ref": "#/components/schemas/ProblemDetails"
                                 }
                             }
                         }
@@ -3139,9 +3139,9 @@
                     "404": {
                         "description": "Not Found",
                         "content": {
-                            "application/json": {
+                            "application/problem+json": {
                                 "schema": {
-                                    "$ref": "#/components/schemas/ErrorResponse"
+                                    "$ref": "#/components/schemas/ProblemDetails"
                                 }
                             }
                         }
@@ -3149,9 +3149,9 @@
                     "500": {
                         "description": "Internal Server Error",
                         "content": {
-                            "application/json": {
+                            "application/problem+json": {
                                 "schema": {
-                                    "$ref": "#/components/schemas/ErrorResponse"
+                                    "$ref": "#/components/schemas/ProblemDetails"
                                 }
                             }
                         }
@@ -3190,9 +3190,9 @@
                     "400": {
                         "description": "Bad Request",
                         "content": {
-                            "application/json": {
+                            "application/problem+json": {
                                 "schema": {
-                                    "$ref": "#/components/schemas/ErrorResponse"
+                                    "$ref": "#/components/schemas/ProblemDetails"
                                 }
                             }
                         }
@@ -3200,9 +3200,9 @@
                     "401": {
                         "description": "Unauthorized",
                         "content": {
-                            "application/json": {
+                            "application/problem+json": {
                                 "schema": {
-                                    "$ref": "#/components/schemas/ErrorResponse"
+                                    "$ref": "#/components/schemas/ProblemDetails"
                                 }
                             }
                         }
@@ -3210,9 +3210,9 @@
                     "403": {
                         "description": "Forbidden",
                         "content": {
-                            "application/json": {
+                            "application/problem+json": {
                                 "schema": {
-                                    "$ref": "#/components/schemas/ErrorResponse"
+                                    "$ref": "#/components/schemas/ProblemDetails"
                                 }
                             }
                         }
@@ -3220,9 +3220,9 @@
                     "404": {
                         "description": "Not Found",
                         "content": {
-                            "application/json": {
+                            "application/problem+json": {
                                 "schema": {
-                                    "$ref": "#/components/schemas/ErrorResponse"
+                                    "$ref": "#/components/schemas/ProblemDetails"
                                 }
                             }
                         }
@@ -3230,9 +3230,9 @@
                     "500": {
                         "description": "Internal Server Error",
                         "content": {
-                            "application/json": {
+                            "application/problem+json": {
                                 "schema": {
-                                    "$ref": "#/components/schemas/ErrorResponse"
+                                    "$ref": "#/components/schemas/ProblemDetails"
                                 }
                             }
                         }
@@ -3263,9 +3263,9 @@
                     "500": {
                         "description": "Internal Server Error",
                         "content": {
-                            "application/json": {
+                            "application/problem+json": {
                                 "schema": {
-                                    "$ref": "#/components/schemas/ErrorResponse"
+                                    "$ref": "#/components/schemas/ProblemDetails"
                                 }
                             }
                         }
@@ -3300,9 +3300,9 @@
                     "400": {
                         "description": "Bad Request",
                         "content": {
-                            "application/json": {
+                            "application/problem+json": {
                                 "schema": {
-                                    "$ref": "#/components/schemas/ErrorResponse"
+                                    "$ref": "#/components/schemas/ProblemDetails"
                                 }
                             }
                         }
@@ -3310,9 +3310,9 @@
                     "401": {
                         "description": "Unauthorized",
                         "content": {
-                            "application/json": {
+                            "application/problem+json": {
                                 "schema": {
-                                    "$ref": "#/components/schemas/ErrorResponse"
+                                    "$ref": "#/components/schemas/ProblemDetails"
                                 }
                             }
                         }
@@ -3320,9 +3320,9 @@
                     "403": {
                         "description": "Forbidden",
                         "content": {
-                            "application/json": {
+                            "application/problem+json": {
                                 "schema": {
-                                    "$ref": "#/components/schemas/ErrorResponse"
+                                    "$ref": "#/components/schemas/ProblemDetails"
                                 }
                             }
                         }
@@ -3330,9 +3330,9 @@
                     "500": {
                         "description": "Internal Server Error",
                         "content": {
-                            "application/json": {
+                            "application/problem+json": {
                                 "schema": {
-                                    "$ref": "#/components/schemas/ErrorResponse"
+                                    "$ref": "#/components/schemas/ProblemDetails"
                                 }
                             }
                         }
@@ -3382,9 +3382,9 @@
                     "400": {
                         "description": "Bad Request",
                         "content": {
-                            "application/json": {
+                            "application/problem+json": {
                                 "schema": {
-                                    "$ref": "#/components/schemas/ErrorResponse"
+                                    "$ref": "#/components/schemas/ProblemDetails"
                                 }
                             }
                         }
@@ -3392,9 +3392,9 @@
                     "401": {
                         "description": "Unauthorized",
                         "content": {
-                            "application/json": {
+                            "application/problem+json": {
                                 "schema": {
-                                    "$ref": "#/components/schemas/ErrorResponse"
+                                    "$ref": "#/components/schemas/ProblemDetails"
                                 }
                             }
                         }
@@ -3402,9 +3402,9 @@
                     "403": {
                         "description": "Forbidden",
                         "content": {
-                            "application/json": {
+                            "application/problem+json": {
                                 "schema": {
-                                    "$ref": "#/components/schemas/ErrorResponse"
+                                    "$ref": "#/components/schemas/ProblemDetails"
                                 }
                             }
                         }
@@ -3412,9 +3412,9 @@
                     "404": {
                         "description": "Not Found",
                         "content": {
-                            "application/json": {
+                            "application/problem+json": {
                                 "schema": {
-                                    "$ref": "#/components/schemas/ErrorResponse"
+                                    "$ref": "#/components/schemas/ProblemDetails"
                                 }
                             }
                         }
@@ -3422,9 +3422,9 @@
                     "500": {
                         "description": "Internal Server Error",
                         "content": {
-                            "application/json": {
+                            "application/problem+json": {
                                 "schema": {
-                                    "$ref": "#/components/schemas/ErrorResponse"
+                                    "$ref": "#/components/schemas/ProblemDetails"
                                 }
                             }
                         }
@@ -3458,9 +3458,9 @@
                     "401": {
                         "description": "Unauthorized",
                         "content": {
-                            "application/json": {
+                            "application/problem+json": {
                                 "schema": {
-                                    "$ref": "#/components/schemas/ErrorResponse"
+                                    "$ref": "#/components/schemas/ProblemDetails"
                                 }
                             }
                         }
@@ -3468,9 +3468,9 @@
                     "404": {
                         "description": "Not Found",
                         "content": {
-                            "application/json": {
+                            "application/problem+json": {
                                 "schema": {
-                                    "$ref": "#/components/schemas/ErrorResponse"
+                                    "$ref": "#/components/schemas/ProblemDetails"
                                 }
                             }
                         }
@@ -3478,9 +3478,9 @@
                     "500": {
                         "description": "Internal Server Error",
                         "content": {
-                            "application/json": {
+                            "application/problem+json": {
                                 "schema": {
-                                    "$ref": "#/components/schemas/ErrorResponse"
+                                    "$ref": "#/components/schemas/ProblemDetails"
                                 }
                             }
                         }
@@ -3514,9 +3514,9 @@
                     "401": {
                         "description": "Unauthorized",
                         "content": {
-                            "application/json": {
+                            "application/problem+json": {
                                 "schema": {
-                                    "$ref": "#/components/schemas/ErrorResponse"
+                                    "$ref": "#/components/schemas/ProblemDetails"
                                 }
                             }
                         }
@@ -3524,9 +3524,9 @@
                     "500": {
                         "description": "Internal Server Error",
                         "content": {
-                            "application/json": {
+                            "application/problem+json": {
                                 "schema": {
-                                    "$ref": "#/components/schemas/ErrorResponse"
+                                    "$ref": "#/components/schemas/ProblemDetails"
                                 }
                             }
                         }
@@ -3560,9 +3560,9 @@
                     "401": {
                         "description": "Unauthorized",
                         "content": {
-                            "application/json": {
+                            "application/problem+json": {
                                 "schema": {
-                                    "$ref": "#/components/schemas/ErrorResponse"
+                                    "$ref": "#/components/schemas/ProblemDetails"
                                 }
                             }
                         }
@@ -3570,9 +3570,9 @@
                     "403": {
                         "description": "Forbidden",
                         "content": {
-                            "application/json": {
+                            "application/problem+json": {
                                 "schema": {
-                                    "$ref": "#/components/schemas/ErrorResponse"
+                                    "$ref": "#/components/schemas/ProblemDetails"
                                 }
                             }
                         }
@@ -3580,9 +3580,9 @@
                     "500": {
                         "description": "Internal Server Error",
                         "content": {
-                            "application/json": {
+                            "application/problem+json": {
                                 "schema": {
-                                    "$ref": "#/components/schemas/ErrorResponse"
+                                    "$ref": "#/components/schemas/ProblemDetails"
                                 }
                             }
                         }
@@ -3626,9 +3626,9 @@
                     "400": {
                         "description": "Bad Request",
                         "content": {
-                            "application/json": {
+                            "application/problem+json": {
                                 "schema": {
-                                    "$ref": "#/components/schemas/ErrorResponse"
+                                    "$ref": "#/components/schemas/ProblemDetails"
                                 }
                             }
                         }
@@ -3636,9 +3636,9 @@
                     "401": {
                         "description": "Unauthorized",
                         "content": {
-                            "application/json": {
+                            "application/problem+json": {
                                 "schema": {
-                                    "$ref": "#/components/schemas/ErrorResponse"
+                                    "$ref": "#/components/schemas/ProblemDetails"
                                 }
                             }
                         }
@@ -3646,9 +3646,9 @@
                     "403": {
                         "description": "Forbidden",
                         "content": {
-                            "application/json": {
+                            "application/problem+json": {
                                 "schema": {
-                                    "$ref": "#/components/schemas/ErrorResponse"
+                                    "$ref": "#/components/schemas/ProblemDetails"
                                 }
                             }
                         }
@@ -3656,9 +3656,9 @@
                     "404": {
                         "description": "Not Found",
                         "content": {
-                            "application/json": {
+                            "application/problem+json": {
                                 "schema": {
-                                    "$ref": "#/components/schemas/ErrorResponse"
+                                    "$ref": "#/components/schemas/ProblemDetails"
                                 }
                             }
                         }
@@ -3666,9 +3666,9 @@
                     "500": {
                         "description": "Internal Server Error",
                         "content": {
-                            "application/json": {
+                            "application/problem+json": {
                                 "schema": {
-                                    "$ref": "#/components/schemas/ErrorResponse"
+                                    "$ref": "#/components/schemas/ProblemDetails"
                                 }
                             }
                         }
@@ -3702,9 +3702,9 @@
                     "500": {
                         "description": "Internal Server Error",
                         "content": {
-                            "application/json": {
+                            "application/problem+json": {
                                 "schema": {
-                                    "$ref": "#/components/schemas/ErrorResponse"
+                                    "$ref": "#/components/schemas/ProblemDetails"
                                 }
                             }
                         }
@@ -3732,9 +3732,9 @@
                     "400": {
                         "description": "Bad Request",
                         "content": {
-                            "application/json": {
+                            "application/problem+json": {
                                 "schema": {
-                                    "$ref": "#/components/schemas/ErrorResponse"
+                                    "$ref": "#/components/schemas/ProblemDetails"
                                 }
                             }
                         }
@@ -3742,9 +3742,9 @@
                     "401": {
                         "description": "Unauthorized",
                         "content": {
-                            "application/json": {
+                            "application/problem+json": {
                                 "schema": {
-                                    "$ref": "#/components/schemas/ErrorResponse"
+                                    "$ref": "#/components/schemas/ProblemDetails"
                                 }
                             }
                         }
@@ -3752,9 +3752,9 @@
                     "403": {
                         "description": "Forbidden",
                         "content": {
-                            "application/json": {
+                            "application/problem+json": {
                                 "schema": {
-                                    "$ref": "#/components/schemas/ErrorResponse"
+                                    "$ref": "#/components/schemas/ProblemDetails"
                                 }
                             }
                         }
@@ -3762,9 +3762,9 @@
                     "409": {
                         "description": "Conflict",
                         "content": {
-                            "application/json": {
+                            "application/problem+json": {
                                 "schema": {
-                                    "$ref": "#/components/schemas/ErrorResponse"
+                                    "$ref": "#/components/schemas/ProblemDetails"
                                 }
                             }
                         }
@@ -3772,9 +3772,9 @@
                     "500": {
                         "description": "Internal Server Error",
                         "content": {
-                            "application/json": {
+                            "application/problem+json": {
                                 "schema": {
-                                    "$ref": "#/components/schemas/ErrorResponse"
+                                    "$ref": "#/components/schemas/ProblemDetails"
                                 }
                             }
                         }
@@ -3806,9 +3806,9 @@
                     "401": {
                         "description": "Unauthorized",
                         "content": {
-                            "application/json": {
+                            "application/problem+json": {
                                 "schema": {
-                                    "$ref": "#/components/schemas/ErrorResponse"
+                                    "$ref": "#/components/schemas/ProblemDetails"
                                 }
                             }
                         }
@@ -3816,9 +3816,9 @@
                     "403": {
                         "description": "Forbidden",
                         "content": {
-                            "application/json": {
+                            "application/problem+json": {
                                 "schema": {
-                                    "$ref": "#/components/schemas/ErrorResponse"
+                                    "$ref": "#/components/schemas/ProblemDetails"
                                 }
                             }
                         }
@@ -3826,9 +3826,9 @@
                     "500": {
                         "description": "Internal Server Error",
                         "content": {
-                            "application/json": {
+                            "application/problem+json": {
                                 "schema": {
-                                    "$ref": "#/components/schemas/ErrorResponse"
+                                    "$ref": "#/components/schemas/ProblemDetails"
                                 }
                             }
                         }
@@ -3871,9 +3871,9 @@
                     "400": {
                         "description": "Bad Request",
                         "content": {
-                            "application/json": {
+                            "application/problem+json": {
                                 "schema": {
-                                    "$ref": "#/components/schemas/ErrorResponse"
+                                    "$ref": "#/components/schemas/ProblemDetails"
                                 }
                             }
                         }
@@ -3881,9 +3881,9 @@
                     "401": {
                         "description": "Unauthorized",
                         "content": {
-                            "application/json": {
+                            "application/problem+json": {
                                 "schema": {
-                                    "$ref": "#/components/schemas/ErrorResponse"
+                                    "$ref": "#/components/schemas/ProblemDetails"
                                 }
                             }
                         }
@@ -3891,9 +3891,9 @@
                     "403": {
                         "description": "Forbidden",
                         "content": {
-                            "application/json": {
+                            "application/problem+json": {
                                 "schema": {
-                                    "$ref": "#/components/schemas/ErrorResponse"
+                                    "$ref": "#/components/schemas/ProblemDetails"
                                 }
                             }
                         }
@@ -3901,9 +3901,9 @@
                     "409": {
                         "description": "Conflict",
                         "content": {
-                            "application/json": {
+                            "application/problem+json": {
                                 "schema": {
-                                    "$ref": "#/components/schemas/ErrorResponse"
+                                    "$ref": "#/components/schemas/ProblemDetails"
                                 }
                             }
                         }
@@ -3911,9 +3911,9 @@
                     "500": {
                         "description": "Internal Server Error",
                         "content": {
-                            "application/json": {
+                            "application/problem+json": {
                                 "schema": {
-                                    "$ref": "#/components/schemas/ErrorResponse"
+                                    "$ref": "#/components/schemas/ProblemDetails"
                                 }
                             }
                         }
@@ -3945,9 +3945,9 @@
                     "400": {
                         "description": "Bad Request",
                         "content": {
-                            "application/json": {
+                            "application/problem+json": {
                                 "schema": {
-                                    "$ref": "#/components/schemas/ErrorResponse"
+                                    "$ref": "#/components/schemas/ProblemDetails"
                                 }
                             }
                         }
@@ -3955,9 +3955,9 @@
                     "401": {
                         "description": "Unauthorized",
                         "content": {
-                            "application/json": {
+                            "application/problem+json": {
                                 "schema": {
-                                    "$ref": "#/components/schemas/ErrorResponse"
+                                    "$ref": "#/components/schemas/ProblemDetails"
                                 }
                             }
                         }
@@ -3965,9 +3965,9 @@
                     "403": {
                         "description": "Forbidden",
                         "content": {
-                            "application/json": {
+                            "application/problem+json": {
                                 "schema": {
-                                    "$ref": "#/components/schemas/ErrorResponse"
+                                    "$ref": "#/components/schemas/ProblemDetails"
                                 }
                             }
                         }
@@ -3975,9 +3975,9 @@
                     "404": {
                         "description": "Not Found",
                         "content": {
-                            "application/json": {
+                            "application/problem+json": {
                                 "schema": {
-                                    "$ref": "#/components/schemas/ErrorResponse"
+                                    "$ref": "#/components/schemas/ProblemDetails"
                                 }
                             }
                         }
@@ -3985,9 +3985,9 @@
                     "500": {
                         "description": "Internal Server Error",
                         "content": {
-                            "application/json": {
+                            "application/problem+json": {
                                 "schema": {
-                                    "$ref": "#/components/schemas/ErrorResponse"
+                                    "$ref": "#/components/schemas/ProblemDetails"
                                 }
                             }
                         }
@@ -4026,9 +4026,9 @@
                     "400": {
                         "description": "Bad Request",
                         "content": {
-                            "application/json": {
+                            "application/problem+json": {
                                 "schema": {
-                                    "$ref": "#/components/schemas/ErrorResponse"
+                                    "$ref": "#/components/schemas/ProblemDetails"
                                 }
                             }
                         }
@@ -4036,9 +4036,9 @@
                     "401": {
                         "description": "Unauthorized",
                         "content": {
-                            "application/json": {
+                            "application/problem+json": {
                                 "schema": {
-                                    "$ref": "#/components/schemas/ErrorResponse"
+                                    "$ref": "#/components/schemas/ProblemDetails"
                                 }
                             }
                         }
@@ -4046,9 +4046,9 @@
                     "403": {
                         "description": "Forbidden",
                         "content": {
-                            "application/json": {
+                            "application/problem+json": {
                                 "schema": {
-                                    "$ref": "#/components/schemas/ErrorResponse"
+                                    "$ref": "#/components/schemas/ProblemDetails"
                                 }
                             }
                         }
@@ -4056,9 +4056,9 @@
                     "404": {
                         "description": "Not Found",
                         "content": {
-                            "application/json": {
+                            "application/problem+json": {
                                 "schema": {
-                                    "$ref": "#/components/schemas/ErrorResponse"
+                                    "$ref": "#/components/schemas/ProblemDetails"
                                 }
                             }
                         }
@@ -4066,9 +4066,9 @@
                     "500": {
                         "description": "Internal Server Error",
                         "content": {
-                            "application/json": {
+                            "application/problem+json": {
                                 "schema": {
-                                    "$ref": "#/components/schemas/ErrorResponse"
+                                    "$ref": "#/components/schemas/ProblemDetails"
                                 }
                             }
                         }
@@ -4102,9 +4102,9 @@
                     "401": {
                         "description": "Unauthorized",
                         "content": {
-                            "application/json": {
+                            "application/problem+json": {
                                 "schema": {
-                                    "$ref": "#/components/schemas/ErrorResponse"
+                                    "$ref": "#/components/schemas/ProblemDetails"
                                 }
                             }
                         }
@@ -4112,9 +4112,9 @@
                     "500": {
                         "description": "Internal Server Error",
                         "content": {
-                            "application/json": {
+                            "application/problem+json": {
                                 "schema": {
-                                    "$ref": "#/components/schemas/ErrorResponse"
+                                    "$ref": "#/components/schemas/ProblemDetails"
                                 }
                             }
                         }
@@ -4147,9 +4147,9 @@
                     "400": {
                         "description": "Bad Request",
                         "content": {
-                            "application/json": {
+                            "application/problem+json": {
                                 "schema": {
-                                    "$ref": "#/components/schemas/ErrorResponse"
+                                    "$ref": "#/components/schemas/ProblemDetails"
                                 }
                             }
                         }
@@ -4157,9 +4157,9 @@
                     "401": {
                         "description": "Unauthorized",
                         "content": {
-                            "application/json": {
+                            "application/problem+json": {
                                 "schema": {
-                                    "$ref": "#/components/schemas/ErrorResponse"
+                                    "$ref": "#/components/schemas/ProblemDetails"
                                 }
                             }
                         }
@@ -4167,9 +4167,9 @@
                     "404": {
                         "description": "Not Found",
                         "content": {
-                            "application/json": {
+                            "application/problem+json": {
                                 "schema": {
-                                    "$ref": "#/components/schemas/ErrorResponse"
+                                    "$ref": "#/components/schemas/ProblemDetails"
                                 }
                             }
                         }
@@ -4177,9 +4177,9 @@
                     "409": {
                         "description": "Conflict",
                         "content": {
-                            "application/json": {
+                            "application/problem+json": {
                                 "schema": {
-                                    "$ref": "#/components/schemas/ErrorResponse"
+                                    "$ref": "#/components/schemas/ProblemDetails"
                                 }
                             }
                         }
@@ -4187,9 +4187,9 @@
                     "500": {
                         "description": "Internal Server Error",
                         "content": {
-                            "application/json": {
+                            "application/problem+json": {
                                 "schema": {
-                                    "$ref": "#/components/schemas/ErrorResponse"
+                                    "$ref": "#/components/schemas/ProblemDetails"
                                 }
                             }
                         }
@@ -4218,9 +4218,9 @@
                     "401": {
                         "description": "Unauthorized",
                         "content": {
-                            "application/json": {
+                            "application/problem+json": {
                                 "schema": {
-                                    "$ref": "#/components/schemas/ErrorResponse"
+                                    "$ref": "#/components/schemas/ProblemDetails"
                                 }
                             }
                         }
@@ -4228,9 +4228,9 @@
                     "404": {
                         "description": "Not Found",
                         "content": {
-                            "application/json": {
+                            "application/problem+json": {
                                 "schema": {
-                                    "$ref": "#/components/schemas/ErrorResponse"
+                                    "$ref": "#/components/schemas/ProblemDetails"
                                 }
                             }
                         }
@@ -4238,9 +4238,9 @@
                     "500": {
                         "description": "Internal Server Error",
                         "content": {
-                            "application/json": {
+                            "application/problem+json": {
                                 "schema": {
-                                    "$ref": "#/components/schemas/ErrorResponse"
+                                    "$ref": "#/components/schemas/ProblemDetails"
                                 }
                             }
                         }
@@ -4281,9 +4281,9 @@
                     "400": {
                         "description": "Bad Request",
                         "content": {
-                            "application/json": {
+                            "application/problem+json": {
                                 "schema": {
-                                    "$ref": "#/components/schemas/ErrorResponse"
+                                    "$ref": "#/components/schemas/ProblemDetails"
                                 }
                             }
                         }
@@ -4291,9 +4291,9 @@
                     "401": {
                         "description": "Unauthorized",
                         "content": {
-                            "application/json": {
+                            "application/problem+json": {
                                 "schema": {
-                                    "$ref": "#/components/schemas/ErrorResponse"
+                                    "$ref": "#/components/schemas/ProblemDetails"
                                 }
                             }
                         }
@@ -4301,9 +4301,9 @@
                     "404": {
                         "description": "Not Found",
                         "content": {
-                            "application/json": {
+                            "application/problem+json": {
                                 "schema": {
-                                    "$ref": "#/components/schemas/ErrorResponse"
+                                    "$ref": "#/components/schemas/ProblemDetails"
                                 }
                             }
                         }
@@ -4311,9 +4311,9 @@
                     "500": {
                         "description": "Internal Server Error",
                         "content": {
-                            "application/json": {
+                            "application/problem+json": {
                                 "schema": {
-                                    "$ref": "#/components/schemas/ErrorResponse"
+                                    "$ref": "#/components/schemas/ProblemDetails"
                                 }
                             }
                         }
@@ -4349,9 +4349,9 @@
                     "400": {
                         "description": "Bad Request",
                         "content": {
-                            "application/json": {
+                            "application/problem+json": {
                                 "schema": {
-                                    "$ref": "#/components/schemas/ErrorResponse"
+                                    "$ref": "#/components/schemas/ProblemDetails"
                                 }
                             }
                         }
@@ -4359,9 +4359,9 @@
                     "401": {
                         "description": "Unauthorized",
                         "content": {
-                            "application/json": {
+                            "application/problem+json": {
                                 "schema": {
-                                    "$ref": "#/components/schemas/ErrorResponse"
+                                    "$ref": "#/components/schemas/ProblemDetails"
                                 }
                             }
                         }
@@ -4369,9 +4369,9 @@
                     "403": {
                         "description": "Forbidden",
                         "content": {
-                            "application/json": {
+                            "application/problem+json": {
                                 "schema": {
-                                    "$ref": "#/components/schemas/ErrorResponse"
+                                    "$ref": "#/components/schemas/ProblemDetails"
                                 }
                             }
                         }
@@ -4379,9 +4379,9 @@
                     "404": {
                         "description": "Not Found",
                         "content": {
-                            "application/json": {
+                            "application/problem+json": {
                                 "schema": {
-                                    "$ref": "#/components/schemas/ErrorResponse"
+                                    "$ref": "#/components/schemas/ProblemDetails"
                                 }
                             }
                         }
@@ -4389,9 +4389,9 @@
                     "409": {
                         "description": "Conflict",
                         "content": {
-                            "application/json": {
+                            "application/problem+json": {
                                 "schema": {
-                                    "$ref": "#/components/schemas/ErrorResponse"
+                                    "$ref": "#/components/schemas/ProblemDetails"
                                 }
                             }
                         }
@@ -4399,9 +4399,9 @@
                     "500": {
                         "description": "Internal Server Error",
                         "content": {
-                            "application/json": {
+                            "application/problem+json": {
                                 "schema": {
-                                    "$ref": "#/components/schemas/ErrorResponse"
+                                    "$ref": "#/components/schemas/ProblemDetails"
                                 }
                             }
                         }
@@ -4432,9 +4432,9 @@
                     "400": {
                         "description": "Bad Request",
                         "content": {
-                            "application/json": {
+                            "application/problem+json": {
                                 "schema": {
-                                    "$ref": "#/components/schemas/ErrorResponse"
+                                    "$ref": "#/components/schemas/ProblemDetails"
                                 }
                             }
                         }
@@ -4442,9 +4442,9 @@
                     "401": {
                         "description": "Unauthorized",
                         "content": {
-                            "application/json": {
+                            "application/problem+json": {
                                 "schema": {
-                                    "$ref": "#/components/schemas/ErrorResponse"
+                                    "$ref": "#/components/schemas/ProblemDetails"
                                 }
                             }
                         }
@@ -4452,9 +4452,9 @@
                     "403": {
                         "description": "Forbidden",
                         "content": {
-                            "application/json": {
+                            "application/problem+json": {
                                 "schema": {
-                                    "$ref": "#/components/schemas/ErrorResponse"
+                                    "$ref": "#/components/schemas/ProblemDetails"
                                 }
                             }
                         }
@@ -4462,9 +4462,9 @@
                     "409": {
                         "description": "Conflict",
                         "content": {
-                            "application/json": {
+                            "application/problem+json": {
                                 "schema": {
-                                    "$ref": "#/components/schemas/ErrorResponse"
+                                    "$ref": "#/components/schemas/ProblemDetails"
                                 }
                             }
                         }
@@ -4472,9 +4472,9 @@
                     "500": {
                         "description": "Internal Server Error",
                         "content": {
-                            "application/json": {
+                            "application/problem+json": {
                                 "schema": {
-                                    "$ref": "#/components/schemas/ErrorResponse"
+                                    "$ref": "#/components/schemas/ProblemDetails"
                                 }
                             }
                         }
@@ -4506,9 +4506,9 @@
                     "401": {
                         "description": "Unauthorized",
                         "content": {
-                            "application/json": {
+                            "application/problem+json": {
                                 "schema": {
-                                    "$ref": "#/components/schemas/ErrorResponse"
+                                    "$ref": "#/components/schemas/ProblemDetails"
                                 }
                             }
                         }
@@ -4516,9 +4516,9 @@
                     "403": {
                         "description": "Forbidden",
                         "content": {
-                            "application/json": {
+                            "application/problem+json": {
                                 "schema": {
-                                    "$ref": "#/components/schemas/ErrorResponse"
+                                    "$ref": "#/components/schemas/ProblemDetails"
                                 }
                             }
                         }
@@ -4526,9 +4526,9 @@
                     "500": {
                         "description": "Internal Server Error",
                         "content": {
-                            "application/json": {
+                            "application/problem+json": {
                                 "schema": {
-                                    "$ref": "#/components/schemas/ErrorResponse"
+                                    "$ref": "#/components/schemas/ProblemDetails"
                                 }
                             }
                         }
@@ -4571,9 +4571,9 @@
                     "400": {
                         "description": "Bad Request",
                         "content": {
-                            "application/json": {
+                            "application/problem+json": {
                                 "schema": {
-                                    "$ref": "#/components/schemas/ErrorResponse"
+                                    "$ref": "#/components/schemas/ProblemDetails"
                                 }
                             }
                         }
@@ -4581,9 +4581,9 @@
                     "401": {
                         "description": "Unauthorized",
                         "content": {
-                            "application/json": {
+                            "application/problem+json": {
                                 "schema": {
-                                    "$ref": "#/components/schemas/ErrorResponse"
+                                    "$ref": "#/components/schemas/ProblemDetails"
                                 }
                             }
                         }
@@ -4591,9 +4591,9 @@
                     "403": {
                         "description": "Forbidden",
                         "content": {
-                            "application/json": {
+                            "application/problem+json": {
                                 "schema": {
-                                    "$ref": "#/components/schemas/ErrorResponse"
+                                    "$ref": "#/components/schemas/ProblemDetails"
                                 }
                             }
                         }
@@ -4601,9 +4601,9 @@
                     "404": {
                         "description": "Not Found",
                         "content": {
-                            "application/json": {
+                            "application/problem+json": {
                                 "schema": {
-                                    "$ref": "#/components/schemas/ErrorResponse"
+                                    "$ref": "#/components/schemas/ProblemDetails"
                                 }
                             }
                         }
@@ -4611,9 +4611,9 @@
                     "409": {
                         "description": "Conflict",
                         "content": {
-                            "application/json": {
+                            "application/problem+json": {
                                 "schema": {
-                                    "$ref": "#/components/schemas/ErrorResponse"
+                                    "$ref": "#/components/schemas/ProblemDetails"
                                 }
                             }
                         }
@@ -4621,9 +4621,9 @@
                     "500": {
                         "description": "Internal Server Error",
                         "content": {
-                            "application/json": {
+                            "application/problem+json": {
                                 "schema": {
-                                    "$ref": "#/components/schemas/ErrorResponse"
+                                    "$ref": "#/components/schemas/ProblemDetails"
                                 }
                             }
                         }
@@ -4655,9 +4655,9 @@
                     "400": {
                         "description": "Bad Request",
                         "content": {
-                            "application/json": {
+                            "application/problem+json": {
                                 "schema": {
-                                    "$ref": "#/components/schemas/ErrorResponse"
+                                    "$ref": "#/components/schemas/ProblemDetails"
                                 }
                             }
                         }
@@ -4665,9 +4665,9 @@
                     "401": {
                         "description": "Unauthorized",
                         "content": {
-                            "application/json": {
+                            "application/problem+json": {
                                 "schema": {
-                                    "$ref": "#/components/schemas/ErrorResponse"
+                                    "$ref": "#/components/schemas/ProblemDetails"
                                 }
                             }
                         }
@@ -4675,9 +4675,9 @@
                     "403": {
                         "description": "Forbidden",
                         "content": {
-                            "application/json": {
+                            "application/problem+json": {
                                 "schema": {
-                                    "$ref": "#/components/schemas/ErrorResponse"
+                                    "$ref": "#/components/schemas/ProblemDetails"
                                 }
                             }
                         }
@@ -4685,9 +4685,9 @@
                     "404": {
                         "description": "Not Found",
                         "content": {
-                            "application/json": {
+                            "application/problem+json": {
                                 "schema": {
-                                    "$ref": "#/components/schemas/ErrorResponse"
+                                    "$ref": "#/components/schemas/ProblemDetails"
                                 }
                             }
                         }
@@ -4695,9 +4695,9 @@
                     "500": {
                         "description": "Internal Server Error",
                         "content": {
-                            "application/json": {
+                            "application/problem+json": {
                                 "schema": {
-                                    "$ref": "#/components/schemas/ErrorResponse"
+                                    "$ref": "#/components/schemas/ProblemDetails"
                                 }
                             }
                         }
@@ -4736,9 +4736,9 @@
                     "400": {
                         "description": "Bad Request",
                         "content": {
-                            "application/json": {
+                            "application/problem+json": {
                                 "schema": {
-                                    "$ref": "#/components/schemas/ErrorResponse"
+                                    "$ref": "#/components/schemas/ProblemDetails"
                                 }
                             }
                         }
@@ -4746,9 +4746,9 @@
                     "401": {
                         "description": "Unauthorized",
                         "content": {
-                            "application/json": {
+                            "application/problem+json": {
                                 "schema": {
-                                    "$ref": "#/components/schemas/ErrorResponse"
+                                    "$ref": "#/components/schemas/ProblemDetails"
                                 }
                             }
                         }
@@ -4756,9 +4756,9 @@
                     "403": {
                         "description": "Forbidden",
                         "content": {
-                            "application/json": {
+                            "application/problem+json": {
                                 "schema": {
-                                    "$ref": "#/components/schemas/ErrorResponse"
+                                    "$ref": "#/components/schemas/ProblemDetails"
                                 }
                             }
                         }
@@ -4766,9 +4766,9 @@
                     "404": {
                         "description": "Not Found",
                         "content": {
-                            "application/json": {
+                            "application/problem+json": {
                                 "schema": {
-                                    "$ref": "#/components/schemas/ErrorResponse"
+                                    "$ref": "#/components/schemas/ProblemDetails"
                                 }
                             }
                         }
@@ -4776,9 +4776,9 @@
                     "500": {
                         "description": "Internal Server Error",
                         "content": {
-                            "application/json": {
+                            "application/problem+json": {
                                 "schema": {
-                                    "$ref": "#/components/schemas/ErrorResponse"
+                                    "$ref": "#/components/schemas/ProblemDetails"
                                 }
                             }
                         }
@@ -4871,15 +4871,65 @@
                     }
                 }
             },
-            "ErrorResponse": {
+            "FieldProblem": {
                 "type": "object",
-                "title": "ErrorResponse",
+                "title": "FieldProblem",
                 "required": [
-                    "message"
+                    "pointer",
+                    "detail"
                 ],
                 "properties": {
-                    "message": {
+                    "pointer": {
+                        "type": "string",
+                        "description": "JSON Pointer (RFC 6901) to the field, as a fragment, e.g. #/username or #/items/1/name."
+                    },
+                    "detail": {
                         "type": "string"
+                    }
+                }
+            },
+            "ProblemDetails": {
+                "type": "object",
+                "title": "ProblemDetails",
+                "required": [
+                    "title",
+                    "status"
+                ],
+                "properties": {
+                    "type": {
+                        "type": "string",
+                        "description": "A URI for the kind of problem; about:blank means the status says it all."
+                    },
+                    "title": {
+                        "type": "string",
+                        "description": "The status's standard phrase, e.g. Not Found."
+                    },
+                    "status": {
+                        "type": "integer"
+                    },
+                    "detail": {
+                        "type": [
+                            "string",
+                            "null"
+                        ],
+                        "description": "What went wrong this time, for people to read."
+                    },
+                    "instance": {
+                        "type": [
+                            "string",
+                            "null"
+                        ],
+                        "description": "The request's path."
+                    },
+                    "errors": {
+                        "type": [
+                            "array",
+                            "null"
+                        ],
+                        "description": "The body's fields that broke a limit; only on 400s from request validation.",
+                        "items": {
+                            "$ref": "#/components/schemas/FieldProblem"
+                        }
                     }
                 }
             },

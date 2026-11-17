@@ -47,11 +47,6 @@ data class AuthResponse(
     val user: AuthUser,
 )
 
-@Serializable
-data class ErrorResponse(
-    val message: String,
-)
-
 fun UserDAO.toAuthUser() =
     AuthUser(
         id = id.value,

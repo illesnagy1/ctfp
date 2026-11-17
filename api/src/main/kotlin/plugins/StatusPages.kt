@@ -1,44 +1,69 @@
 package com.ctfp.plugins
 
-import com.ctfp.dto.ErrorResponse
+import com.ctfp.dto.FieldProblem
+import com.ctfp.dto.ProblemDetails
 import com.ctfp.service.ApiException
+import io.ktor.http.ContentType
 import io.ktor.http.HttpStatusCode
 import io.ktor.server.application.Application
 import io.ktor.server.application.ApplicationCall
 import io.ktor.server.application.application
-import io.ktor.server.application.call
 import io.ktor.server.application.install
 import io.ktor.server.application.log
 import io.ktor.server.plugins.BadRequestException
 import io.ktor.server.plugins.requestvalidation.RequestValidationException
 import io.ktor.server.plugins.statuspages.StatusPages
-import io.ktor.server.plugins.statuspages.exception
-import io.ktor.server.response.respond
+import io.ktor.server.request.path
+import io.ktor.server.response.respondText
+import kotlinx.serialization.json.Json
 import org.jetbrains.exposed.v1.dao.exceptions.EntityNotFoundException
 import java.sql.SQLException
 
 /** SQLSTATE for a unique constraint violation, the same in PostgreSQL and H2. */
 private const val UNIQUE_VIOLATION = "23505"
 
+/** Absent members are left out, rather than sent as null; `type` is always written. */
+private val problemJson =
+    Json {
+        explicitNulls = false
+        encodeDefaults = true
+    }
+
+/** Answers with RFC 9457 problem details (`application/problem+json`). */
+suspend fun ApplicationCall.respondProblem(
+    status: HttpStatusCode,
+    detail: String? = null,
+    errors: List<FieldProblem>? = null,
+) {
+    val problem =
+        ProblemDetails(title = status.description, status = status.value, detail = detail, instance = request.path(), errors = errors)
+    respondText(problemJson.encodeToString(problem), ContentType.Application.ProblemJson, status)
+}
+
 fun Application.configureStatusPages() {
     install(StatusPages) {
         exception<ApiException> { call, cause ->
-            call.respond(cause.status, ErrorResponse(cause.message))
+            call.respondProblem(cause.status, cause.message)
         }
         exception<EntityNotFoundException> { call, _ ->
-            call.respond(HttpStatusCode.NotFound, ErrorResponse("Not found"))
+            call.respondProblem(HttpStatusCode.NotFound, "Not found")
         }
-        // The body broke a DTO's @JsonSchema limits; see RequestValidation.kt.
+        // The body broke a DTO's @JsonSchema limits; each field is listed, see RequestValidation.kt.
         exception<RequestValidationException> { call, cause ->
-            call.respond(HttpStatusCode.BadRequest, ErrorResponse(cause.reasons.joinToString("; ")))
+            val violations = violations(cause.value)
+            call.respondProblem(
+                HttpStatusCode.BadRequest,
+                cause.reasons.joinToString("; "),
+                violations.map { FieldProblem(it.pointer, it.message) },
+            )
         }
         exception<BadRequestException> { call, _ ->
-            call.respond(HttpStatusCode.BadRequest, ErrorResponse("Malformed request"))
+            call.respondProblem(HttpStatusCode.BadRequest, "Malformed request")
         }
         // Exposed wraps driver errors in ExposedSQLException, a SQLException that carries the original SQLSTATE.
         exception<SQLException> { call, cause ->
             if (cause.sqlState == UNIQUE_VIOLATION) {
-                call.respond(HttpStatusCode.Conflict, ErrorResponse("Already exists"))
+                call.respondProblem(HttpStatusCode.Conflict, "Already exists")
             } else {
                 call.respondInternalError(cause)
             }
@@ -46,10 +71,14 @@ fun Application.configureStatusPages() {
         exception<Throwable> { call, cause ->
             call.respondInternalError(cause)
         }
+        // Errors Ktor answers itself without a body, e.g. no route for the path; problem details already sent stay.
+        status(HttpStatusCode.NotFound, HttpStatusCode.MethodNotAllowed, HttpStatusCode.UnsupportedMediaType) { status ->
+            if (content.contentType?.match(ContentType.Application.ProblemJson) != true) call.respondProblem(status)
+        }
     }
 }
 
 private suspend fun ApplicationCall.respondInternalError(cause: Throwable) {
     application.log.error("Unhandled exception", cause)
-    respond(HttpStatusCode.InternalServerError, ErrorResponse("Internal server error"))
+    respondProblem(HttpStatusCode.InternalServerError)
 }

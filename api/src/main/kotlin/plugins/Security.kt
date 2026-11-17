@@ -4,7 +4,6 @@ import com.auth0.jwt.JWT
 import com.auth0.jwt.algorithms.Algorithm
 import com.ctfp.config.enum.UserRole
 import com.ctfp.config.jwtConfig
-import com.ctfp.dto.ErrorResponse
 import com.ctfp.service.helper.isAdmin
 import io.ktor.http.HttpStatusCode
 import io.ktor.server.application.Application
@@ -19,7 +18,6 @@ import io.ktor.server.auth.authenticateWithOptional
 import io.ktor.server.auth.jwt.jwt
 import io.ktor.server.auth.roles
 import io.ktor.server.auth.withRoles
-import io.ktor.server.response.respond
 import io.ktor.server.routing.Route
 import io.ktor.server.routing.RoutingContext
 import io.ktor.server.routing.application
@@ -59,17 +57,14 @@ fun Application.configureSecurity() {
                     ?.toIntOrNull()
                     ?.let(::UserPrincipal)
             }
-            onUnauthorized = { call.respond(HttpStatusCode.Unauthorized, ErrorResponse("Authentication required")) }
+            onUnauthorized = { call.respondProblem(HttpStatusCode.Unauthorized, "Authentication required") }
         }
     // Roles come from the database on every call, so promotions and bans apply without a new token.
     val roleAuth =
         jwtAuth.withRoles(
             onForbidden =
                 ForbiddenHandler<UserPrincipal, Unit, UserRole> {
-                    call.respond(
-                        HttpStatusCode.Forbidden,
-                        ErrorResponse("Admin access required"),
-                    )
+                    call.respondProblem(HttpStatusCode.Forbidden, "Admin access required")
                 },
         ) { setOf(if (isAdmin(it.id)) UserRole.ADMIN else UserRole.USER) }
     attributes.put(RoleAuthKey, roleAuth)

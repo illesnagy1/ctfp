@@ -15,6 +15,7 @@ import { status } from '#lib/http.js';
 import { editUserData, editUserFormId, editUserSchema } from '#lib/schemas/user.js';
 import { apiClient, call } from '#lib/server/api.js';
 import { apiFormError } from '#lib/server/form.js';
+import { problemMessage } from '#lib/server/problem.js';
 import { isAdminUser, toAdminUserUpdate } from '#lib/types/user.js';
 
 import type { Actions, PageServerLoad } from './$types';
@@ -45,7 +46,7 @@ export const load: PageServerLoad = async (event) => {
       : await call(getUser({ client, ...params }));
   if (apiError) {
     if (response.status === status.UNAUTHORIZED) redirect(status.SEE_OTHER, '/login');
-    error(response.status, apiError.message);
+    error(response.status, problemMessage(apiError));
   }
 
   // The full view comes exactly when the viewer may edit: their own profile, or any as an admin.
@@ -61,7 +62,7 @@ export const load: PageServerLoad = async (event) => {
       : self
         ? await call(listMySubmissions({ client }))
         : undefined;
-  if (submissions?.error) error(submissions.response.status, submissions.error.message);
+  if (submissions?.error) error(submissions.response.status, problemMessage(submissions.error));
   return { profile: data, editForm, admin: user.role === 'ADMIN', self, submissions: submissions?.data };
 };
 

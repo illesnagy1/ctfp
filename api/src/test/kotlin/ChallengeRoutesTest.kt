@@ -69,7 +69,7 @@ class ChallengeRoutesTest {
             assertEquals(HttpStatusCode.Created, create(body, admin).status)
             val duplicate = create(body, admin)
             assertEquals(HttpStatusCode.Conflict, duplicate.status)
-            assertEquals("""{"message":"Already exists"}""", duplicate.bodyAsText())
+            assertEquals("Already exists", duplicate.problem().detail)
         }
 
     @Test

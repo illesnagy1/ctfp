@@ -18,6 +18,7 @@ import { idSchema } from '#lib/schemas/ids.js';
 import { apiClient, call } from '#lib/server/api.js';
 import { apiFormError, parseForm } from '#lib/server/form.js';
 import { renderMarkdown } from '#lib/server/markdown.js';
+import { problemMessage } from '#lib/server/problem.js';
 
 import type { Actions, PageServerLoad } from './$types';
 
@@ -36,10 +37,11 @@ export const load: PageServerLoad = async (event) => {
     isAdmin ? call(listChallengeFlags({ client, ...params })) : undefined,
   ]);
   const { data, error: apiError, response } = challenge;
-  if (apiError) error(response.status, response.status === status.NOT_FOUND ? 'Challenge not found' : apiError.message);
+  if (apiError)
+    error(response.status, response.status === status.NOT_FOUND ? 'Challenge not found' : problemMessage(apiError));
   // Same visibility as the challenge, so this only fails if something else went wrong.
-  if (files.error) error(files.response.status, files.error.message);
-  if (flags?.error) error(flags.response.status, flags.error.message);
+  if (files.error) error(files.response.status, problemMessage(files.error));
+  if (flags?.error) error(flags.response.status, problemMessage(flags.error));
 
   // Rendered here so the page never sees unsanitized markup.
   const descriptionHtml = data.description ? await renderMarkdown(data.description) : undefined;
@@ -100,9 +102,9 @@ export const actions: Actions = {
     // Patterns are unique across all challenges.
     if (response.status === status.CONFLICT) return setError(form, 'pattern', m.validation_flag_taken());
     // E.g. not a valid regular expression (Java's syntax): show it on the field; other errors become the form message.
-    if (response.status === status.BAD_REQUEST && apiError?.message.startsWith('Pattern')) {
-      return setError(form, 'pattern', apiError.message);
-    }
+    const detail = problemMessage(apiError);
+    if (response.status === status.BAD_REQUEST && detail?.startsWith('Pattern'))
+      return setError(form, 'pattern', detail);
     if (!response.ok) return apiFormError(form, response, apiError, 'Creating flag');
     return { form };
   },
@@ -116,7 +118,7 @@ export const actions: Actions = {
     const { error: apiError, response } = await call(
       deleteFlag({ client: apiClient(event), path: { id: String(data.id) } }),
     );
-    if (apiError) return fail(response.status, { message: apiError.message });
+    if (apiError) return fail(response.status, { message: problemMessage(apiError) });
     return { success: true };
   },
 
@@ -129,7 +131,7 @@ export const actions: Actions = {
     const { error: apiError, response } = await call(
       deleteFile({ client: apiClient(event), path: { id: String(data.id) } }),
     );
-    if (apiError) return fail(response.status, { message: apiError.message });
+    if (apiError) return fail(response.status, { message: problemMessage(apiError) });
     return { success: true };
   },
 };

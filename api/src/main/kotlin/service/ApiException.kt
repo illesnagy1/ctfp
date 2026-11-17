@@ -2,7 +2,7 @@ package com.ctfp.service
 
 import io.ktor.http.HttpStatusCode
 
-/** Thrown by services for expected failures; turned into an [com.ctfp.dto.ErrorResponse] by StatusPages. */
+/** Thrown by services for expected failures; StatusPages answers with problem details, [message] as their `detail`. */
 class ApiException(
     val status: HttpStatusCode,
     override val message: String,

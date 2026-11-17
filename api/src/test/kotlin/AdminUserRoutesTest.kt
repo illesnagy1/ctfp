@@ -101,7 +101,7 @@ class AdminUserRoutesTest {
 
             val single = put("/v1/admin/users/$adminId", admin, ban("self-ban-admin", "ADMIN"))
             assertEquals(HttpStatusCode.BadRequest, single.status)
-            assertEquals("""{"message":"You cannot ban yourself"}""", single.bodyAsText())
+            assertEquals("You cannot ban yourself", single.problem().detail)
 
             // All or nothing: the other user in the same bulk update isn't banned either.
             val bulk =
@@ -129,7 +129,7 @@ class AdminUserRoutesTest {
 
             val single = put("/v1/admin/users/$adminId", admin, update("self-demote-admin", "USER"))
             assertEquals(HttpStatusCode.BadRequest, single.status)
-            assertEquals("""{"message":"You cannot change your own role"}""", single.bodyAsText())
+            assertEquals("You cannot change your own role", single.problem().detail)
 
             // All or nothing: the other user in the same bulk update isn't promoted either.
             val bulk =

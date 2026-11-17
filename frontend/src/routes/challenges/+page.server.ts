@@ -8,7 +8,8 @@ import { m } from '#lib/paraglide/messages.js';
 import { createChallengeSchema } from '#lib/schemas/challenge.js';
 import { idSchema, idsSchema } from '#lib/schemas/ids.js';
 import { apiClient, call } from '#lib/server/api.js';
-import { apiFormError, apiMessage, parseForm } from '#lib/server/form.js';
+import { apiFormError, parseForm } from '#lib/server/form.js';
+import { problemMessage } from '#lib/server/problem.js';
 
 import type { Actions, PageServerLoad } from './$types';
 
@@ -16,7 +17,7 @@ export const load: PageServerLoad = async (event) => {
   const client = apiClient(event);
   // Logged in, each challenge also says whether the caller solved it.
   const { data, error: apiError, response } = await call(listChallenges({ client }));
-  if (apiError) error(response.status, apiError.message);
+  if (apiError) error(response.status, problemMessage(apiError));
 
   return {
     challenges: data,
@@ -27,7 +28,7 @@ export const load: PageServerLoad = async (event) => {
 /** For the id-only actions, which report failures as `{ message }` for `submitAction`. */
 function apiFailure(response: Response, apiError: unknown, what: string) {
   if (!isServerError(response.status))
-    return fail(response.status, { message: apiMessage(apiError) ?? response.statusText });
+    return fail(response.status, { message: problemMessage(apiError) ?? response.statusText });
   console.error(`${what} failed`, response.status, apiError);
   return fail(status.INTERNAL_SERVER_ERROR, { message: 'Something went wrong, try again later' });
 }

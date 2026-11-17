@@ -2,6 +2,7 @@ import { error } from '@sveltejs/kit';
 
 import { status } from '#lib/http.js';
 import { apiFetch } from '#lib/server/api.js';
+import { problemMessage } from '#lib/server/problem.js';
 
 import type { RequestHandler } from './$types';
 
@@ -33,11 +34,7 @@ export const POST: RequestHandler = async (event) => {
   const result: unknown = await response.json().catch(() => undefined);
 
   if (!response.ok) {
-    const message =
-      typeof result === 'object' && result !== null && 'message' in result && typeof result.message === 'string'
-        ? result.message
-        : response.statusText;
-    error(response.status, message);
+    error(response.status, problemMessage(result) ?? response.statusText);
   }
   return Response.json(result, { status: status.CREATED });
 };

@@ -52,7 +52,7 @@ class UserManagementTest {
             assertEquals(HttpStatusCode.NotFound, call(HttpMethod.Get, "/v1/users/${Int.MAX_VALUE}", viewer).status)
             val malformed = call(HttpMethod.Get, "/v1/users/abc", viewer)
             assertEquals(HttpStatusCode.BadRequest, malformed.status)
-            assertEquals("""{"message":"Malformed request"}""", malformed.bodyAsText())
+            assertEquals("Malformed request", malformed.problem().detail)
 
             val listed =
                 Json

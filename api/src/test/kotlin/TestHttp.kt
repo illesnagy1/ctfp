@@ -3,15 +3,19 @@ package com.ctfp
 import com.ctfp.domain.dao.ChallengeDAO
 import com.ctfp.domain.db.withTransaction
 import com.ctfp.domain.model.ChallengeTable
+import com.ctfp.dto.ProblemDetails
 import io.ktor.client.request.bearerAuth
 import io.ktor.client.request.request
 import io.ktor.client.request.setBody
 import io.ktor.client.statement.HttpResponse
+import io.ktor.client.statement.bodyAsText
 import io.ktor.http.ContentType
 import io.ktor.http.HttpMethod
 import io.ktor.http.contentType
 import io.ktor.server.testing.ApplicationTestBuilder
+import kotlinx.serialization.json.Json
 import org.jetbrains.exposed.v1.core.eq
+import kotlin.test.assertEquals
 
 /** A JSON request with an optional bearer token. */
 suspend fun ApplicationTestBuilder.call(
@@ -58,3 +62,9 @@ suspend fun challengeId(title: String): Int =
             .single()
             .id.value
     }
+
+/** The response's RFC 9457 problem details, checking it was sent as `application/problem+json`. */
+suspend fun HttpResponse.problem(): ProblemDetails {
+    assertEquals(ContentType.Application.ProblemJson, contentType()?.withoutParameters())
+    return Json.decodeFromString(bodyAsText())
+}

@@ -5,6 +5,7 @@ import com.ctfp.domain.db.withTransaction
 import com.ctfp.domain.model.SubmissionTable
 import com.ctfp.domain.model.UserTable
 import com.ctfp.dto.ChallengeResponse
+import com.ctfp.dto.FieldProblem
 import com.ctfp.dto.Limits
 import com.ctfp.dto.SubmissionResponse
 import com.ctfp.dto.SubmissionResult
@@ -139,7 +140,7 @@ class SubmissionRoutesTest {
             assertEquals(SubmissionResult(correct = false, attemptsLeft = 0), submit(id, player, "nope").result())
             val blocked = submit(id, player, "secret")
             assertEquals(HttpStatusCode.Forbidden, blocked.status)
-            assertEquals("""{"message":"No attempts left"}""", blocked.bodyAsText())
+            assertEquals("No attempts left", blocked.problem().detail)
         }
 
     @Test
@@ -168,7 +169,9 @@ class SubmissionRoutesTest {
             assertEquals(HttpStatusCode.BadRequest, submit(id, player, "   ").status)
             val tooLong = submit(id, player, "x".repeat(Limits.SUBMITTED_FLAG_MAX + 1))
             assertEquals(HttpStatusCode.BadRequest, tooLong.status)
-            assertEquals("""{"message":"flag must be at most ${Limits.SUBMITTED_FLAG_MAX} characters"}""", tooLong.bodyAsText())
+            val problem = tooLong.problem()
+            assertEquals("flag must be at most ${Limits.SUBMITTED_FLAG_MAX} characters", problem.detail)
+            assertEquals(listOf(FieldProblem("#/flag", problem.detail!!)), problem.errors)
 
             withTransaction { UserDAO.find { UserTable.username eq "reject-player" }.single().isBanned = true }
             assertEquals(HttpStatusCode.Forbidden, submit(id, player, "flag").status)

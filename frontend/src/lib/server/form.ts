@@ -1,8 +1,10 @@
 import { fail } from '@sveltejs/kit';
-import type { SuperValidated } from 'sveltekit-superforms';
+import { setError, type FormPathLeavesWithErrors, type SuperValidated } from 'sveltekit-superforms';
 import type { z } from 'zod';
 
 import { isClientError, isServerError, status } from '#lib/http.js';
+
+import { problemFields, problemMessage } from './problem.js';
 
 /**
  * Parses an action's form fields with [schema]; for the id-only actions called by `submitAction`, which have no form
@@ -18,19 +20,17 @@ export async function parseForm<T extends z.ZodType>(request: Request, schema: T
       };
 }
 
-/** The api's `{ message }` from a failed call's error, which is untyped for routes that document no errors. */
-export function apiMessage(apiError: unknown): string | undefined {
-  return typeof apiError === 'object' &&
-    apiError !== null &&
-    'message' in apiError &&
-    typeof apiError.message === 'string'
-    ? apiError.message
-    : undefined;
+/** Whether [key] is one of the form's own fields, so a problem about it can be shown on it. */
+function isFieldOf<T extends Record<string, unknown>>(
+  form: SuperValidated<T>,
+  key: string,
+): key is FormPathLeavesWithErrors<T> {
+  return Object.hasOwn(form.data, key);
 }
 
 /**
- * Reports a failed api call on a superform as its form-level message: the api's own message for 4xx, a generic one
- * (and a log entry) for 5xx.
+ * Reports a failed api call on a superform. For 4xx: the problem's field errors go on the form's fields of the same
+ * name, anything else becomes the form-level message. For 5xx: a generic message, and a log entry.
  */
 export function apiFormError<T extends Record<string, unknown>>(
   form: SuperValidated<T>,
@@ -38,9 +38,14 @@ export function apiFormError<T extends Record<string, unknown>>(
   apiError: unknown,
   what: string,
 ) {
-  // What superforms' `message()` does, without its narrower status type.
   if (!isServerError(response.status)) {
-    form.message = apiMessage(apiError) ?? response.statusText;
+    const fields = problemFields(apiError).filter(({ path }) => path.length === 1);
+    for (const { path, detail } of fields) {
+      const [key = ''] = path;
+      if (isFieldOf(form, key)) setError(form, key, detail);
+    }
+    if (form.valid) form.message = problemMessage(apiError) ?? response.statusText;
+    // What superforms' `message()` does, without its narrower status type.
     return fail(isClientError(response.status) ? response.status : status.BAD_REQUEST, { form });
   }
   console.error(`${what} failed`, response.status, apiError);
