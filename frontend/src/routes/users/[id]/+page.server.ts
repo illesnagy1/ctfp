@@ -8,15 +8,15 @@ import {
   getUser,
   getMe,
   listMySubmissions,
-  updateUser,
-  updateMe,
+  patchUser,
+  patchMe,
 } from '#lib/api/index.js';
 import { status } from '#lib/http.js';
 import { editUserData, editUserFormId, editUserSchema } from '#lib/schemas/user.js';
 import { apiClient, call } from '#lib/server/api.js';
 import { apiFormError } from '#lib/server/form.js';
 import { problemMessage } from '#lib/server/problem.js';
-import { isAdminUser, toAdminUserUpdate } from '#lib/types/user.js';
+import { isAdminUser } from '#lib/types/user.js';
 
 import type { Actions, PageServerLoad } from './$types';
 
@@ -78,47 +78,21 @@ export const actions: Actions = {
     const form = await superValidate(event, zod4(editUserSchema));
     if (!form.valid) return fail(status.BAD_REQUEST, { form });
     const { username, email, role, isVerified, isHidden, isBanned } = form.data;
-    // Explicit nulls: the api requires the nullable fields to be present.
-    const profile = {
-      username,
-      email,
-      country: form.data.country || null,
-      website: form.data.website || null,
-    };
+    // Empty means none: null clears the field.
+    const profile = { username, email, country: form.data.country || null, website: form.data.website || null };
 
-    // The api only takes full updates, so the fields the form doesn't show are sent back as they are.
+    // Only the fields the form shows change (JSON Merge Patch); the api keeps the rest as they are.
     const client = apiClient(event);
-    const params = { path: { id: String(id) } };
-    const current = admin ? await call(getAdminUser({ client, ...params })) : await call(getMe({ client }));
-    if (current.error) return apiFormError(form, current.response, current.error, 'Loading user');
-
     const { error: apiError, response } = admin
       ? await call(
-          updateUser({
+          patchUser({
             client,
-            ...params,
-            body: {
-              ...toAdminUserUpdate(current.data),
-              ...profile,
-              // The api refuses an admin's own demotion or ban; the dialog disables those fields for them.
-              role,
-              isBanned,
-              isVerified,
-              isHidden,
-            },
+            path: { id: String(id) },
+            // The api refuses an admin's own demotion or ban; the dialog disables those fields for them.
+            body: { ...profile, role, isBanned, isVerified, isHidden },
           }),
         )
-      : await call(
-          updateMe({
-            client,
-            body: {
-              ...profile,
-              language: current.data.language,
-              soundEnabled: current.data.soundEnabled,
-              visibilitySettings: current.data.visibilitySettings,
-            },
-          }),
-        );
+      : await call(patchMe({ client, body: profile }));
     if (apiError) return apiFormError(form, response, apiError, 'Updating user');
     return { form };
   },

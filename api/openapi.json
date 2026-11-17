@@ -4899,6 +4899,90 @@
                         "jwt": []
                     }
                 ]
+            },
+            "patch": {
+                "operationId": "patchMe",
+                "summary": "Only the fields sent change; null clears an optional one (JSON Merge Patch).",
+                "requestBody": {
+                    "content": {
+                        "application/merge-patch+json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/UserUpdatePatch"
+                            }
+                        }
+                    },
+                    "required": true
+                },
+                "responses": {
+                    "204": {
+                        "description": ""
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "content": {
+                            "application/problem+json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/ProblemDetails"
+                                }
+                            }
+                        }
+                    },
+                    "401": {
+                        "description": "Unauthorized",
+                        "content": {
+                            "application/problem+json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/ProblemDetails"
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "Not Found",
+                        "content": {
+                            "application/problem+json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/ProblemDetails"
+                                }
+                            }
+                        }
+                    },
+                    "409": {
+                        "description": "Conflict",
+                        "content": {
+                            "application/problem+json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/ProblemDetails"
+                                }
+                            }
+                        }
+                    },
+                    "429": {
+                        "description": "Too Many Requests",
+                        "content": {
+                            "application/problem+json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/ProblemDetails"
+                                }
+                            }
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "content": {
+                            "application/problem+json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/ProblemDetails"
+                                }
+                            }
+                        }
+                    }
+                },
+                "security": [
+                    {
+                        "jwt": []
+                    }
+                ]
             }
         },
         "/v1/users/{id}": {
@@ -5227,6 +5311,103 @@
                         "jwt": []
                     }
                 ]
+            },
+            "patch": {
+                "operationId": "patchUsers",
+                "summary": "Merge patches keyed by user id, e.g. {\"3\": {\"isBanned\": true}}; all or nothing, like the PUT.",
+                "requestBody": {
+                    "content": {
+                        "application/merge-patch+json": {
+                            "schema": {
+                                "type": "object",
+                                "additionalProperties": {
+                                    "$ref": "#/components/schemas/AdminUserUpdatePatch"
+                                }
+                            }
+                        }
+                    },
+                    "required": true
+                },
+                "responses": {
+                    "204": {
+                        "description": ""
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "content": {
+                            "application/problem+json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/ProblemDetails"
+                                }
+                            }
+                        }
+                    },
+                    "401": {
+                        "description": "Unauthorized",
+                        "content": {
+                            "application/problem+json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/ProblemDetails"
+                                }
+                            }
+                        }
+                    },
+                    "403": {
+                        "description": "Forbidden",
+                        "content": {
+                            "application/problem+json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/ProblemDetails"
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "Not Found",
+                        "content": {
+                            "application/problem+json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/ProblemDetails"
+                                }
+                            }
+                        }
+                    },
+                    "409": {
+                        "description": "Conflict",
+                        "content": {
+                            "application/problem+json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/ProblemDetails"
+                                }
+                            }
+                        }
+                    },
+                    "429": {
+                        "description": "Too Many Requests",
+                        "content": {
+                            "application/problem+json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/ProblemDetails"
+                                }
+                            }
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "content": {
+                            "application/problem+json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/ProblemDetails"
+                                }
+                            }
+                        }
+                    }
+                },
+                "security": [
+                    {
+                        "jwt": []
+                    }
+                ]
             }
         },
         "/v1/admin/users/{id}": {
@@ -5473,6 +5654,110 @@
                     },
                     "404": {
                         "description": "Not Found",
+                        "content": {
+                            "application/problem+json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/ProblemDetails"
+                                }
+                            }
+                        }
+                    },
+                    "429": {
+                        "description": "Too Many Requests",
+                        "content": {
+                            "application/problem+json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/ProblemDetails"
+                                }
+                            }
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "content": {
+                            "application/problem+json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/ProblemDetails"
+                                }
+                            }
+                        }
+                    }
+                },
+                "security": [
+                    {
+                        "jwt": []
+                    }
+                ]
+            },
+            "patch": {
+                "operationId": "patchUser",
+                "summary": "Only the fields sent change, e.g. {\"isBanned\": true}; null clears an optional one (JSON Merge Patch).",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                ],
+                "requestBody": {
+                    "content": {
+                        "application/merge-patch+json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/AdminUserUpdatePatch"
+                            }
+                        }
+                    },
+                    "required": true
+                },
+                "responses": {
+                    "204": {
+                        "description": ""
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "content": {
+                            "application/problem+json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/ProblemDetails"
+                                }
+                            }
+                        }
+                    },
+                    "401": {
+                        "description": "Unauthorized",
+                        "content": {
+                            "application/problem+json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/ProblemDetails"
+                                }
+                            }
+                        }
+                    },
+                    "403": {
+                        "description": "Forbidden",
+                        "content": {
+                            "application/problem+json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/ProblemDetails"
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "Not Found",
+                        "content": {
+                            "application/problem+json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/ProblemDetails"
+                                }
+                            }
+                        }
+                    },
+                    "409": {
+                        "description": "Conflict",
                         "content": {
                             "application/problem+json": {
                                 "schema": {
@@ -6750,6 +7035,57 @@
                     }
                 }
             },
+            "UserUpdatePatch": {
+                "type": "object",
+                "title": "UserUpdatePatch",
+                "properties": {
+                    "username": {
+                        "type": "string",
+                        "maxLength": 64,
+                        "minLength": 3,
+                        "pattern": "^[A-Za-z0-9._-]{3,64}$"
+                    },
+                    "email": {
+                        "type": "string",
+                        "format": "email",
+                        "maxLength": 255
+                    },
+                    "language": {
+                        "type": [
+                            "string",
+                            "null"
+                        ],
+                        "maxLength": 35,
+                        "pattern": "^[A-Za-z]{2,3}(-[A-Za-z]{4})?(-([A-Za-z]{2}|[0-9]{3}))?(-([A-Za-z0-9]{5,8}|[0-9][A-Za-z0-9]{3}))*$"
+                    },
+                    "country": {
+                        "type": [
+                            "string",
+                            "null"
+                        ],
+                        "description": "ISO 3166-1 alpha-2 code, e.g.: HU",
+                        "maxLength": 2,
+                        "minLength": 2,
+                        "pattern": "^[A-Z]{2}$"
+                    },
+                    "website": {
+                        "type": [
+                            "string",
+                            "null"
+                        ],
+                        "maxLength": 255
+                    },
+                    "soundEnabled": {
+                        "type": "boolean"
+                    },
+                    "visibilitySettings": {
+                        "type": [
+                            "string",
+                            "null"
+                        ]
+                    }
+                }
+            },
             "AdminUserCreateRequest": {
                 "type": "object",
                 "title": "AdminUserCreateRequest",
@@ -6842,6 +7178,79 @@
                     "email",
                     "role"
                 ],
+                "properties": {
+                    "codeId": {
+                        "type": [
+                            "integer",
+                            "null"
+                        ]
+                    },
+                    "username": {
+                        "type": "string",
+                        "maxLength": 64,
+                        "minLength": 3,
+                        "pattern": "^[A-Za-z0-9._-]{3,64}$"
+                    },
+                    "email": {
+                        "type": "string",
+                        "format": "email",
+                        "maxLength": 255
+                    },
+                    "language": {
+                        "type": [
+                            "string",
+                            "null"
+                        ],
+                        "maxLength": 35,
+                        "pattern": "^[A-Za-z]{2,3}(-[A-Za-z]{4})?(-([A-Za-z]{2}|[0-9]{3}))?(-([A-Za-z0-9]{5,8}|[0-9][A-Za-z0-9]{3}))*$"
+                    },
+                    "country": {
+                        "type": [
+                            "string",
+                            "null"
+                        ],
+                        "description": "ISO 3166-1 alpha-2 code, e.g. HU.",
+                        "maxLength": 2,
+                        "minLength": 2,
+                        "pattern": "^[A-Z]{2}$"
+                    },
+                    "website": {
+                        "type": [
+                            "string",
+                            "null"
+                        ],
+                        "maxLength": 255
+                    },
+                    "role": {
+                        "type": "string",
+                        "enum": [
+                            "ADMIN",
+                            "USER"
+                        ]
+                    },
+                    "isVerified": {
+                        "type": "boolean"
+                    },
+                    "isHidden": {
+                        "type": "boolean"
+                    },
+                    "isBanned": {
+                        "type": "boolean"
+                    },
+                    "soundEnabled": {
+                        "type": "boolean"
+                    },
+                    "visibilitySettings": {
+                        "type": [
+                            "string",
+                            "null"
+                        ]
+                    }
+                }
+            },
+            "AdminUserUpdatePatch": {
+                "type": "object",
+                "title": "AdminUserUpdatePatch",
                 "properties": {
                     "codeId": {
                         "type": [

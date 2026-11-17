@@ -2,7 +2,7 @@ import { error, fail, redirect, type RequestEvent } from '@sveltejs/kit';
 import { superValidate } from 'sveltekit-superforms';
 import { zod4 } from 'sveltekit-superforms/adapters';
 
-import { listAdminUsers, getAdminUser, listUsers, createUser, updateUsers, updateUser } from '#lib/api/index.js';
+import { createUser, listAdminUsers, listUsers, patchUser, patchUsers } from '#lib/api/index.js';
 import type { ProblemDetails } from '#lib/api/index.js';
 import { status } from '#lib/http.js';
 import { idSchema, idsSchema } from '#lib/schemas/ids.js';
@@ -10,7 +10,6 @@ import { createUserSchema, setBannedSchema } from '#lib/schemas/user.js';
 import { apiClient, call } from '#lib/server/api.js';
 import { apiFormError, parseForm } from '#lib/server/form.js';
 import { problemMessage } from '#lib/server/problem.js';
-import { toAdminUserUpdate } from '#lib/types/user.js';
 
 import type { Actions, PageServerLoad } from './$types';
 
@@ -69,17 +68,11 @@ export const actions: Actions = {
     if (failure) return failure;
     const { id, banned } = data;
 
-    const client = apiClient(event);
-    const params = { path: { id: String(id) } };
-
-    const fetched = await call(getAdminUser({ client, ...params }));
-    if (fetched.error) return fail(fetched.response.status, { message: problemMessage(fetched.error) });
-
-    // The api has no PATCH yet, so send the full admin update with only isBanned changed.
-    const updated = await call(
-      updateUser({ client, ...params, body: { ...toAdminUserUpdate(fetched.data), isBanned: banned } }),
+    // Only isBanned changes (JSON Merge Patch).
+    const { error: apiError, response } = await call(
+      patchUser({ client: apiClient(event), path: { id: String(id) }, body: { isBanned: banned } }),
     );
-    if (updated.error) return fail(updated.response.status, { message: problemMessage(updated.error) });
+    if (apiError) return fail(response.status, { message: problemMessage(apiError) });
     return { success: true };
   },
 
@@ -88,20 +81,12 @@ export const actions: Actions = {
 
     const { data, failure } = await parseForm(event.request, idsSchema.extend(setBannedSchema.shape));
     if (failure) return failure;
-    const ids = new Set(data.ids);
-    const { banned } = data;
+    const { ids, banned } = data;
 
-    const client = apiClient(event);
-    const fetched = await call(listAdminUsers({ client }));
-    if (fetched.error) return fail(fetched.response.status, { message: problemMessage(fetched.error) });
-
-    // Full updates again (no PATCH), sent as one bulk PUT so it's all or nothing.
-    const users = fetched.data.filter((user) => ids.has(user.id));
-    if (users.length !== ids.size) return fail(status.NOT_FOUND, { message: 'Some users no longer exist' });
-    const body = Object.fromEntries(users.map((user) => [user.id, { ...toAdminUserUpdate(user), isBanned: banned }]));
-
-    const updated = await call(updateUsers({ client, body }));
-    if (updated.error) return fail(updated.response.status, { message: problemMessage(updated.error) });
+    // One bulk patch, so it's all or nothing; a user that no longer exists makes it a 404.
+    const body = Object.fromEntries(ids.map((id) => [id, { isBanned: banned }]));
+    const { error: apiError, response } = await call(patchUsers({ client: apiClient(event), body }));
+    if (apiError) return fail(response.status, { message: problemMessage(apiError) });
     return { success: true };
   },
 };

@@ -490,6 +490,22 @@ export type UserUpdateRequest = {
 };
 
 /**
+ * UserUpdatePatch
+ */
+export type UserUpdatePatch = {
+  username?: string;
+  email?: string;
+  language?: string | null;
+  /**
+   * ISO 3166-1 alpha-2 code, e.g.: HU
+   */
+  country?: string | null;
+  website?: string | null;
+  soundEnabled?: boolean;
+  visibilitySettings?: string | null;
+};
+
+/**
  * AdminUserCreateRequest
  */
 export type AdminUserCreateRequest = {
@@ -525,6 +541,27 @@ export type AdminUserUpdateRequest = {
   country?: string | null;
   website?: string | null;
   role: 'ADMIN' | 'USER';
+  isVerified?: boolean;
+  isHidden?: boolean;
+  isBanned?: boolean;
+  soundEnabled?: boolean;
+  visibilitySettings?: string | null;
+};
+
+/**
+ * AdminUserUpdatePatch
+ */
+export type AdminUserUpdatePatch = {
+  codeId?: number | null;
+  username?: string;
+  email?: string;
+  language?: string | null;
+  /**
+   * ISO 3166-1 alpha-2 code, e.g. HU.
+   */
+  country?: string | null;
+  website?: string | null;
+  role?: 'ADMIN' | 'USER';
   isVerified?: boolean;
   isHidden?: boolean;
   isBanned?: boolean;
@@ -2919,6 +2956,48 @@ export type GetMeResponses = {
 
 export type GetMeResponse = GetMeResponses[keyof GetMeResponses];
 
+export type PatchMeData = {
+  body: UserUpdatePatch;
+  path?: never;
+  query?: never;
+  url: '/v1/users/me';
+};
+
+export type PatchMeErrors = {
+  /**
+   * Bad Request
+   */
+  400: ProblemDetails;
+  /**
+   * Unauthorized
+   */
+  401: ProblemDetails;
+  /**
+   * Not Found
+   */
+  404: ProblemDetails;
+  /**
+   * Conflict
+   */
+  409: ProblemDetails;
+  /**
+   * Too Many Requests
+   */
+  429: ProblemDetails;
+  /**
+   * Internal Server Error
+   */
+  500: ProblemDetails;
+};
+
+export type PatchMeError = PatchMeErrors[keyof PatchMeErrors];
+
+export type PatchMeResponses = {
+  204: void;
+};
+
+export type PatchMeResponse = PatchMeResponses[keyof PatchMeResponses];
+
 export type UpdateMeData = {
   body?: UserUpdateRequest;
   path?: never;
@@ -3034,6 +3113,54 @@ export type ListAdminUsersResponses = {
 };
 
 export type ListAdminUsersResponse = ListAdminUsersResponses[keyof ListAdminUsersResponses];
+
+export type PatchUsersData = {
+  body: {
+    [key: string]: AdminUserUpdatePatch;
+  };
+  path?: never;
+  query?: never;
+  url: '/v1/admin/users';
+};
+
+export type PatchUsersErrors = {
+  /**
+   * Bad Request
+   */
+  400: ProblemDetails;
+  /**
+   * Unauthorized
+   */
+  401: ProblemDetails;
+  /**
+   * Forbidden
+   */
+  403: ProblemDetails;
+  /**
+   * Not Found
+   */
+  404: ProblemDetails;
+  /**
+   * Conflict
+   */
+  409: ProblemDetails;
+  /**
+   * Too Many Requests
+   */
+  429: ProblemDetails;
+  /**
+   * Internal Server Error
+   */
+  500: ProblemDetails;
+};
+
+export type PatchUsersError = PatchUsersErrors[keyof PatchUsersErrors];
+
+export type PatchUsersResponses = {
+  204: void;
+};
+
+export type PatchUsersResponse = PatchUsersResponses[keyof PatchUsersResponses];
 
 export type CreateUserData = {
   body?: AdminUserCreateRequest;
@@ -3210,6 +3337,54 @@ export type GetAdminUserResponses = {
 };
 
 export type GetAdminUserResponse = GetAdminUserResponses[keyof GetAdminUserResponses];
+
+export type PatchUserData = {
+  body: AdminUserUpdatePatch;
+  path: {
+    id: string;
+  };
+  query?: never;
+  url: '/v1/admin/users/{id}';
+};
+
+export type PatchUserErrors = {
+  /**
+   * Bad Request
+   */
+  400: ProblemDetails;
+  /**
+   * Unauthorized
+   */
+  401: ProblemDetails;
+  /**
+   * Forbidden
+   */
+  403: ProblemDetails;
+  /**
+   * Not Found
+   */
+  404: ProblemDetails;
+  /**
+   * Conflict
+   */
+  409: ProblemDetails;
+  /**
+   * Too Many Requests
+   */
+  429: ProblemDetails;
+  /**
+   * Internal Server Error
+   */
+  500: ProblemDetails;
+};
+
+export type PatchUserError = PatchUserErrors[keyof PatchUserErrors];
+
+export type PatchUserResponses = {
+  204: void;
+};
+
+export type PatchUserResponse = PatchUserResponses[keyof PatchUserResponses];
 
 export type UpdateUserData = {
   body?: AdminUserUpdateRequest;

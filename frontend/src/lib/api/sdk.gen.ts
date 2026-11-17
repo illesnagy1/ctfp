@@ -158,6 +158,15 @@ import type {
   LoginData,
   LoginErrors,
   LoginResponses,
+  PatchMeData,
+  PatchMeErrors,
+  PatchMeResponses,
+  PatchUserData,
+  PatchUserErrors,
+  PatchUserResponses,
+  PatchUsersData,
+  PatchUsersErrors,
+  PatchUsersResponses,
   RegisterData,
   RegisterErrors,
   RegisterResponses,
@@ -906,6 +915,22 @@ export const getMe = <ThrowOnError extends boolean = false>(
     ...options,
   });
 
+/**
+ * Only the fields sent change; null clears an optional one (JSON Merge Patch).
+ */
+export const patchMe = <ThrowOnError extends boolean = false>(
+  options: Options<PatchMeData, ThrowOnError>,
+): RequestResult<PatchMeResponses, PatchMeErrors, ThrowOnError> =>
+  options.client.patch<PatchMeResponses, PatchMeErrors, ThrowOnError>({
+    security: [{ scheme: 'bearer', type: 'http' }],
+    url: '/v1/users/me',
+    ...options,
+    headers: {
+      'Content-Type': 'application/merge-patch+json',
+      ...options.headers,
+    },
+  });
+
 export const updateMe = <ThrowOnError extends boolean = false>(
   options: Options<UpdateMeData, ThrowOnError>,
 ): RequestResult<UpdateMeResponses, UpdateMeErrors, ThrowOnError> =>
@@ -935,6 +960,22 @@ export const listAdminUsers = <ThrowOnError extends boolean = false>(
     security: [{ scheme: 'bearer', type: 'http' }],
     url: '/v1/admin/users',
     ...options,
+  });
+
+/**
+ * Merge patches keyed by user id, e.g. {"3": {"isBanned": true}}; all or nothing, like the PUT.
+ */
+export const patchUsers = <ThrowOnError extends boolean = false>(
+  options: Options<PatchUsersData, ThrowOnError>,
+): RequestResult<PatchUsersResponses, PatchUsersErrors, ThrowOnError> =>
+  options.client.patch<PatchUsersResponses, PatchUsersErrors, ThrowOnError>({
+    security: [{ scheme: 'bearer', type: 'http' }],
+    url: '/v1/admin/users',
+    ...options,
+    headers: {
+      'Content-Type': 'application/merge-patch+json',
+      ...options.headers,
+    },
   });
 
 export const createUser = <ThrowOnError extends boolean = false>(
@@ -979,6 +1020,22 @@ export const getAdminUser = <ThrowOnError extends boolean = false>(
     security: [{ scheme: 'bearer', type: 'http' }],
     url: '/v1/admin/users/{id}',
     ...options,
+  });
+
+/**
+ * Only the fields sent change, e.g. {"isBanned": true}; null clears an optional one (JSON Merge Patch).
+ */
+export const patchUser = <ThrowOnError extends boolean = false>(
+  options: Options<PatchUserData, ThrowOnError>,
+): RequestResult<PatchUserResponses, PatchUserErrors, ThrowOnError> =>
+  options.client.patch<PatchUserResponses, PatchUserErrors, ThrowOnError>({
+    security: [{ scheme: 'bearer', type: 'http' }],
+    url: '/v1/admin/users/{id}',
+    ...options,
+    headers: {
+      'Content-Type': 'application/merge-patch+json',
+      ...options.headers,
+    },
   });
 
 export const updateUser = <ThrowOnError extends boolean = false>(

@@ -144,6 +144,35 @@ data class AdminUserResponse(
     val updatedAt: Instant,
 )
 
+/** The account as a full admin update: what a merge patch (PATCH /admin/users/{id}) is applied to. */
+fun AdminUserResponse.toUpdateRequest() =
+    AdminUserUpdateRequest(
+        codeId = codeId,
+        username = username,
+        email = email,
+        language = language,
+        country = country,
+        website = website,
+        role = role,
+        isVerified = isVerified,
+        isHidden = isHidden,
+        isBanned = isBanned,
+        soundEnabled = soundEnabled,
+        visibilitySettings = visibilitySettings,
+    )
+
+/** The account's own profile as a full update: what a merge patch (PATCH /users/me) is applied to. */
+fun AdminUserResponse.toProfileUpdate() =
+    UserUpdateRequest(
+        username = username,
+        email = email,
+        language = language,
+        country = country,
+        website = website,
+        soundEnabled = soundEnabled,
+        visibilitySettings = visibilitySettings,
+    )
+
 fun UserDAO.applyProfile(dto: UserProfileFields) {
     username = dto.username
     email = dto.email.lowercase()

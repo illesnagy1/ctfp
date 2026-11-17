@@ -428,6 +428,32 @@ export const zUserUpdateRequest = z.object({
 });
 
 /**
+ * UserUpdatePatch
+ */
+export const zUserUpdatePatch = z.object({
+  username: z
+    .string()
+    .min(3)
+    .max(64)
+    .regex(/^[A-Za-z0-9._-]{3,64}$/)
+    .optional(),
+  email: z.email().max(255).optional(),
+  language: z
+    .string()
+    .max(35)
+    .regex(/^[A-Za-z]{2,3}(-[A-Za-z]{4})?(-([A-Za-z]{2}|[0-9]{3}))?(-([A-Za-z0-9]{5,8}|[0-9][A-Za-z0-9]{3}))*$/)
+    .nullish(),
+  country: z
+    .string()
+    .length(2)
+    .regex(/^[A-Z]{2}$/)
+    .nullish(),
+  website: z.string().max(255).nullish(),
+  soundEnabled: z.boolean().optional(),
+  visibilitySettings: z.string().nullish(),
+});
+
+/**
  * AdminUserCreateRequest
  */
 export const zAdminUserCreateRequest = z.object({
@@ -481,6 +507,37 @@ export const zAdminUserUpdateRequest = z.object({
     .nullish(),
   website: z.string().max(255).nullish(),
   role: z.enum(['ADMIN', 'USER']),
+  isVerified: z.boolean().optional(),
+  isHidden: z.boolean().optional(),
+  isBanned: z.boolean().optional(),
+  soundEnabled: z.boolean().optional(),
+  visibilitySettings: z.string().nullish(),
+});
+
+/**
+ * AdminUserUpdatePatch
+ */
+export const zAdminUserUpdatePatch = z.object({
+  codeId: z.int().nullish(),
+  username: z
+    .string()
+    .min(3)
+    .max(64)
+    .regex(/^[A-Za-z0-9._-]{3,64}$/)
+    .optional(),
+  email: z.email().max(255).optional(),
+  language: z
+    .string()
+    .max(35)
+    .regex(/^[A-Za-z]{2,3}(-[A-Za-z]{4})?(-([A-Za-z]{2}|[0-9]{3}))?(-([A-Za-z0-9]{5,8}|[0-9][A-Za-z0-9]{3}))*$/)
+    .nullish(),
+  country: z
+    .string()
+    .length(2)
+    .regex(/^[A-Z]{2}$/)
+    .nullish(),
+  website: z.string().max(255).nullish(),
+  role: z.enum(['ADMIN', 'USER']).optional(),
   isVerified: z.boolean().optional(),
   isHidden: z.boolean().optional(),
   isBanned: z.boolean().optional(),
