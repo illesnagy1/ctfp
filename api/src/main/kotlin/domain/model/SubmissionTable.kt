@@ -1,5 +1,6 @@
 package com.ctfp.domain.model
 
+import com.ctfp.dto.Limits
 import org.jetbrains.exposed.v1.core.ReferenceOption
 import org.jetbrains.exposed.v1.core.dao.id.IntIdTable
 import org.jetbrains.exposed.v1.core.eq
@@ -18,6 +19,9 @@ object SubmissionTable : IntIdTable() {
     /** Its own column: [flagId] goes null when the matched flag is deleted, but the solve still counts. */
     val isCorrect = bool("is_correct")
     val submittedAt = timestamp("submitted_at").defaultExpression(CurrentTimestamp)
+
+    val ipAddress = varchar("ip_address", Limits.IP_ADDRESS_MAX).nullable()
+    val userAgent = varchar("user_agent", Limits.USER_AGENT_MAX).nullable()
 
     init {
         index("idx_submissions_user_challenge", false, userId, challengeId)

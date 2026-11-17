@@ -27,4 +27,6 @@ object Limits {
     const val PAGE_LANGUAGE_LENGTH = 2
     const val FILENAME_MAX = 255
     const val MIME_TYPE_MAX = 128
+    const val IP_ADDRESS_MAX = 45
+    const val USER_AGENT_MAX = 512
 }

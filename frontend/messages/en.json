@@ -218,5 +218,18 @@
   "challenges_column_points": "Points",
   "challenges_column_solves": "Solves",
   "challenge_points": "{value} pts",
-  "flag_submission_no_attempts": "No attempts left"
+  "flag_submission_no_attempts": "No attempts left",
+  "nav_submissions": "Submissions",
+  "submissions_title": "Submissions",
+  "submissions_mine_title": "My submissions",
+  "submissions_filter_placeholder": "Search submissions...",
+  "submissions_column_time": "Submitted",
+  "submissions_column_user": "User",
+  "submissions_column_challenge": "Challenge",
+  "submissions_column_flag": "Flag",
+  "submissions_column_result": "Result",
+  "submissions_column_ip": "IP address",
+  "submissions_column_user_agent": "User agent",
+  "submissions_result_correct": "Correct",
+  "submissions_result_wrong": "Wrong"
 }

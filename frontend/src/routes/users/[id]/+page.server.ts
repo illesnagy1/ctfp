@@ -42,7 +42,17 @@ export const load: PageServerLoad = async (event) => {
   const editForm = isAdminUser(data)
     ? await superValidate(editUserData(data), zod4(editUserSchema), { id: editUserFormId(id) })
     : undefined;
-  return { profile: data, editForm, admin: user.role === 'ADMIN', self: id === user.id };
+
+  // On your own profile, or any as an admin.
+  const self = id === user.id;
+  const submissions =
+    user.role === 'ADMIN'
+      ? await client.GET('/v1/admin/users/{id}/submissions', { params })
+      : self
+        ? await client.GET('/v1/users/me/submissions')
+        : undefined;
+  if (submissions?.error) error(submissions.response.status, submissions.error.message);
+  return { profile: data, editForm, admin: user.role === 'ADMIN', self, submissions: submissions?.data };
 };
 
 export const actions: Actions = {

@@ -1,7 +1,7 @@
 <script lang="ts">
   import { resolve } from '$app/paths';
   import { page } from '$app/state';
-  import { ChevronDown, CircleUser, LogIn, LogOut, Menu, UserPlus, Wrench, X } from '@lucide/svelte';
+  import { ChevronDown, CircleUser, Flag, LogIn, LogOut, Menu, UserPlus, Wrench, X } from '@lucide/svelte';
   import { ModeWatcher } from 'mode-watcher';
 
   import './layout.css';
@@ -126,6 +126,11 @@
                   <DropdownMenu.Item>
                     {#snippet child({ props })}
                       <a {...props} href={resolve('/admin')}><Wrench />{m.nav_admin()}</a>
+                    {/snippet}
+                  </DropdownMenu.Item>
+                  <DropdownMenu.Item>
+                    {#snippet child({ props })}
+                      <a {...props} href={resolve('/admin/submissions')}><Flag />{m.nav_submissions()}</a>
                     {/snippet}
                   </DropdownMenu.Item>
                 {/if}

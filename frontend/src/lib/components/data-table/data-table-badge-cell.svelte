@@ -9,7 +9,7 @@
   {#if badge}
     <Badge variant="outline">{badge}</Badge>
   {/if}
-  <span class="max-w-125 truncate font-medium">
+  <span class="max-w-125 truncate font-medium" title={value}>
     {value}
   </span>
 </div>

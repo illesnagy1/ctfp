@@ -17,4 +17,6 @@ class SubmissionDAO(
     var submittedFlag by SubmissionTable.submittedFlag
     var isCorrect by SubmissionTable.isCorrect
     var submittedAt by SubmissionTable.submittedAt
+    var ipAddress by SubmissionTable.ipAddress
+    var userAgent by SubmissionTable.userAgent
 }

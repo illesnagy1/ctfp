@@ -6,10 +6,12 @@ import type { paths } from '#lib/types/api.js';
 
 import { deleteSession } from './session';
 
-/** Adds the session's JWT and the browser's IP (for the api's rate limiting). */
+/** Adds the session's JWT, and the browser's IP (for the api's rate limiting) and user agent (kept with submissions). */
 function authorize(event: RequestEvent, request: Request) {
   const token = event.locals.session?.token;
   request.headers.set('X-Forwarded-For', event.getClientAddress());
+  const userAgent = event.request.headers.get('User-Agent');
+  if (userAgent) request.headers.set('User-Agent', userAgent);
   if (token) request.headers.set('Authorization', `Bearer ${token}`);
   return request;
 }

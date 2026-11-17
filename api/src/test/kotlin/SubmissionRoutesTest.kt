@@ -6,14 +6,17 @@ import com.ctfp.domain.model.SubmissionTable
 import com.ctfp.domain.model.UserTable
 import com.ctfp.dto.ChallengeResponse
 import com.ctfp.dto.Limits
+import com.ctfp.dto.SubmissionResponse
 import com.ctfp.dto.SubmissionResult
 import io.ktor.client.request.bearerAuth
 import io.ktor.client.request.get
+import io.ktor.client.request.header
 import io.ktor.client.request.post
 import io.ktor.client.request.setBody
 import io.ktor.client.statement.HttpResponse
 import io.ktor.client.statement.bodyAsText
 import io.ktor.http.ContentType
+import io.ktor.http.HttpHeaders
 import io.ktor.http.HttpStatusCode
 import io.ktor.http.contentType
 import io.ktor.server.testing.ApplicationTestBuilder
@@ -167,5 +170,45 @@ class SubmissionRoutesTest {
 
             withTransaction { UserDAO.find { UserTable.username eq "reject-player" }.single().isBanned = true }
             assertEquals(HttpStatusCode.Forbidden, submit(id, player, "flag").status)
+        }
+
+    @Test
+    fun `submissions keep the submitter's ip and user agent`() =
+        testApplication {
+            configure()
+            startApplication()
+            val admin = registerAdmin("origin-admin")
+            val player = register("origin-player")
+            val other = register("origin-other")
+            val id = challengeWithFlag(admin, "origin", """{"pattern":"flag\\{origin\\}","baseValue":1}""")
+
+            client.post("/v1/challenges/$id/submissions") {
+                bearerAuth(player)
+                header(HttpHeaders.XForwardedFor, "203.0.113.7")
+                header(HttpHeaders.UserAgent, "Firefox/1" + "x".repeat(Limits.USER_AGENT_MAX))
+                contentType(ContentType.Application.Json)
+                setBody("""{"flag":"nope"}""")
+            }
+            submit(id, other, "flag{origin}")
+
+            suspend fun list(
+                path: String,
+                token: String,
+            ) = Json.decodeFromString<List<SubmissionResponse>>(client.get(path) { bearerAuth(token) }.bodyAsText())
+
+            val mine = list("/v1/users/me/submissions", player).single()
+            assertEquals("203.0.113.7", mine.ipAddress)
+            assertEquals(Limits.USER_AGENT_MAX, mine.userAgent?.length)
+            assertEquals(Pair("nope", false), mine.submittedFlag to mine.isCorrect)
+            assertEquals("origin", mine.challengeTitle)
+
+            val all = list("/v1/admin/submissions", admin).filter { it.challengeId == id }
+            assertEquals(listOf("origin-other", "origin-player"), all.map { it.username })
+            assertEquals(HttpStatusCode.Forbidden, client.get("/v1/admin/submissions") { bearerAuth(player) }.status)
+
+            val playerId = withTransaction { UserDAO.find { UserTable.username eq "origin-player" }.single().id.value }
+            assertEquals(listOf(mine), list("/v1/admin/users/$playerId/submissions", admin))
+            assertEquals(HttpStatusCode.Forbidden, client.get("/v1/admin/users/$playerId/submissions") { bearerAuth(player) }.status)
+            assertEquals(HttpStatusCode.NotFound, client.get("/v1/admin/users/0/submissions") { bearerAuth(admin) }.status)
         }
 }

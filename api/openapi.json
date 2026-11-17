@@ -1751,6 +1751,51 @@
                 ]
             }
         },
+        "/v1/users/me/submissions": {
+            "get": {
+                "summary": "The caller's own guesses, newest first.",
+                "responses": {
+                    "200": {
+                        "description": "",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "array",
+                                    "items": {
+                                        "$ref": "#/components/schemas/SubmissionResponse"
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "401": {
+                        "description": "Unauthorized",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/ErrorResponse"
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "Not Found",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/ErrorResponse"
+                                }
+                            }
+                        }
+                    }
+                },
+                "security": [
+                    {
+                        "jwt": []
+                    }
+                ]
+            }
+        },
         "/v1/users/me/solves": {
             "get": {
                 "summary": "Ids of the challenges the caller has solved, e.g. to mark them in the list.",
@@ -1770,6 +1815,126 @@
                     },
                     "401": {
                         "description": "Unauthorized",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/ErrorResponse"
+                                }
+                            }
+                        }
+                    }
+                },
+                "security": [
+                    {
+                        "jwt": []
+                    }
+                ]
+            }
+        },
+        "/v1/admin/submissions": {
+            "get": {
+                "summary": "Everyone's guesses, newest first, with where they came from.",
+                "responses": {
+                    "200": {
+                        "description": "",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "array",
+                                    "items": {
+                                        "$ref": "#/components/schemas/SubmissionResponse"
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "401": {
+                        "description": "Unauthorized",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/ErrorResponse"
+                                }
+                            }
+                        }
+                    },
+                    "403": {
+                        "description": "Forbidden",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/ErrorResponse"
+                                }
+                            }
+                        }
+                    }
+                },
+                "security": [
+                    {
+                        "jwt": []
+                    }
+                ]
+            }
+        },
+        "/v1/admin/users/{id}/submissions": {
+            "get": {
+                "summary": "One user's guesses, for their profile page.",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "array",
+                                    "items": {
+                                        "$ref": "#/components/schemas/SubmissionResponse"
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/ErrorResponse"
+                                }
+                            }
+                        }
+                    },
+                    "401": {
+                        "description": "Unauthorized",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/ErrorResponse"
+                                }
+                            }
+                        }
+                    },
+                    "403": {
+                        "description": "Forbidden",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/ErrorResponse"
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "Not Found",
                         "content": {
                             "application/json": {
                                 "schema": {
@@ -3502,6 +3667,61 @@
                             "integer",
                             "null"
                         ]
+                    }
+                }
+            },
+            "SubmissionResponse": {
+                "type": "object",
+                "title": "SubmissionResponse",
+                "required": [
+                    "id",
+                    "challengeId",
+                    "challengeTitle",
+                    "userId",
+                    "username",
+                    "submittedFlag",
+                    "isCorrect",
+                    "submittedAt"
+                ],
+                "properties": {
+                    "id": {
+                        "type": "integer"
+                    },
+                    "challengeId": {
+                        "type": "integer"
+                    },
+                    "challengeTitle": {
+                        "type": "string"
+                    },
+                    "userId": {
+                        "type": "integer"
+                    },
+                    "username": {
+                        "type": "string"
+                    },
+                    "submittedFlag": {
+                        "type": "string"
+                    },
+                    "isCorrect": {
+                        "type": "boolean"
+                    },
+                    "submittedAt": {
+                        "type": "string",
+                        "format": "date-time"
+                    },
+                    "ipAddress": {
+                        "type": [
+                            "string",
+                            "null"
+                        ],
+                        "description": "The submitter's IP address; null for guesses recorded before it was kept."
+                    },
+                    "userAgent": {
+                        "type": [
+                            "string",
+                            "null"
+                        ],
+                        "description": "The submitter's browser, as it reported itself; null when it didn't."
                     }
                 }
             },
