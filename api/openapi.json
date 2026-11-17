@@ -4758,7 +4758,7 @@
         "/v1/users/me": {
             "put": {
                 "operationId": "updateMe",
-                "summary": "",
+                "summary": "With If-Match (the ETag read), 412 if the account changed since.",
                 "requestBody": {
                     "content": {
                         "application/json": {
@@ -4812,6 +4812,16 @@
                             }
                         }
                     },
+                    "412": {
+                        "description": "Precondition Failed",
+                        "content": {
+                            "application/problem+json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/ProblemDetails"
+                                }
+                            }
+                        }
+                    },
                     "429": {
                         "description": "Too Many Requests",
                         "content": {
@@ -4845,6 +4855,13 @@
                 "responses": {
                     "200": {
                         "description": "",
+                        "headers": {
+                            "ETag": {
+                                "content": {
+                                    "text/plain": {}
+                                }
+                            }
+                        },
                         "content": {
                             "application/json": {
                                 "schema": {
@@ -4949,6 +4966,16 @@
                     },
                     "409": {
                         "description": "Conflict",
+                        "content": {
+                            "application/problem+json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/ProblemDetails"
+                                }
+                            }
+                        }
+                    },
+                    "412": {
+                        "description": "Precondition Failed",
                         "content": {
                             "application/problem+json": {
                                 "schema": {
@@ -5413,7 +5440,7 @@
         "/v1/admin/users/{id}": {
             "put": {
                 "operationId": "updateUser",
-                "summary": "",
+                "summary": "With If-Match (the ETag read), 412 if the account changed since.",
                 "parameters": [
                     {
                         "name": "id",
@@ -5479,6 +5506,16 @@
                     },
                     "409": {
                         "description": "Conflict",
+                        "content": {
+                            "application/problem+json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/ProblemDetails"
+                                }
+                            }
+                        }
+                    },
+                    "412": {
+                        "description": "Precondition Failed",
                         "content": {
                             "application/problem+json": {
                                 "schema": {
@@ -5614,6 +5651,13 @@
                 "responses": {
                     "200": {
                         "description": "",
+                        "headers": {
+                            "ETag": {
+                                "content": {
+                                    "text/plain": {}
+                                }
+                            }
+                        },
                         "content": {
                             "application/json": {
                                 "schema": {
@@ -5758,6 +5802,16 @@
                     },
                     "409": {
                         "description": "Conflict",
+                        "content": {
+                            "application/problem+json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/ProblemDetails"
+                                }
+                            }
+                        }
+                    },
+                    "412": {
+                        "description": "Precondition Failed",
                         "content": {
                             "application/problem+json": {
                                 "schema": {
@@ -6906,7 +6960,8 @@
                     "email",
                     "role",
                     "createdAt",
-                    "updatedAt"
+                    "updatedAt",
+                    "version"
                 ],
                 "properties": {
                     "id": {
@@ -6977,6 +7032,10 @@
                     "updatedAt": {
                         "type": "string",
                         "format": "date-time"
+                    },
+                    "version": {
+                        "type": "integer",
+                        "description": "Goes up on every change; also sent as the ETag, to send back in If-Match."
                     }
                 }
             },

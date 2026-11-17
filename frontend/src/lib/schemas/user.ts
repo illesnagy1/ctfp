@@ -32,6 +32,9 @@ export const editUserSchema = z.object({
   isVerified: z.boolean().default(false),
   isHidden: z.boolean().default(false),
   isBanned: z.boolean().default(false),
+  // The version the form was filled from, sent back as If-Match: the api refuses the save (412) if the user has
+  // changed since, e.g. another admin banned them, rather than quietly undoing that.
+  etag: z.string().default(''),
 });
 
 /** The edit form's starting values from the saved profile; empty strings for none. */
@@ -44,6 +47,8 @@ export const editUserData = (user: AdminUserResponse): z.infer<typeof editUserSc
   isVerified: user.isVerified ?? false,
   isHidden: user.isHidden ?? false,
   isBanned: user.isBanned ?? false,
+  // The api's ETag for this version (see AdminUserResponse.version).
+  etag: `"${user.version}"`,
 });
 
 /** Superform id of a user's edit form; unique, so the users table can hold several. */

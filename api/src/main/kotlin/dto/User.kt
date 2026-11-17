@@ -142,7 +142,14 @@ data class AdminUserResponse(
     val visibilitySettings: String?,
     val createdAt: Instant,
     val updatedAt: Instant,
+    @JsonSchema.Description("Goes up on every change; also sent as the ETag, to send back in If-Match.")
+    val version: Int,
 )
+
+/** [version] as a strong entity tag, e.g. `"7"`. */
+val AdminUserResponse.etag get() = etag(version)
+
+fun etag(version: Int) = "\"$version\""
 
 /** The account as a full admin update: what a merge patch (PATCH /admin/users/{id}) is applied to. */
 fun AdminUserResponse.toUpdateRequest() =
@@ -174,6 +181,8 @@ fun AdminUserResponse.toProfileUpdate() =
     )
 
 fun UserDAO.applyProfile(dto: UserProfileFields) {
+    // Every profile or admin write goes through here.
+    version += 1
     username = dto.username
     email = dto.email.lowercase()
     language = dto.language?.let(::canonicalLanguageTag)
@@ -223,4 +232,5 @@ fun UserDAO.toAdminDto() =
         visibilitySettings = visibilitySettings,
         createdAt = createdAt,
         updatedAt = updatedAt,
+        version = version,
     )

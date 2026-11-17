@@ -1,17 +1,22 @@
 package com.ctfp
 
-import com.ctfp.controller.helper.mergePatch
 import com.ctfp.dto.AdminUserResponse
 import com.ctfp.plugins.MergePatchJson
+import com.ctfp.service.helper.mergePatch
 import io.ktor.client.request.bearerAuth
 import io.ktor.client.request.get
+import io.ktor.client.request.header
 import io.ktor.client.request.patch
 import io.ktor.client.request.setBody
 import io.ktor.client.statement.bodyAsText
+import io.ktor.http.HttpHeaders
 import io.ktor.http.HttpStatusCode
 import io.ktor.http.contentType
 import io.ktor.server.testing.ApplicationTestBuilder
 import io.ktor.server.testing.testApplication
+import kotlinx.coroutines.async
+import kotlinx.coroutines.awaitAll
+import kotlinx.coroutines.coroutineScope
 import kotlinx.serialization.json.Json
 import kotlin.test.Test
 import kotlin.test.assertEquals
@@ -113,5 +118,67 @@ class MergePatchTest {
             val invalid = patch("/v1/admin/users", admin, """{"$b":{"email":"nope"}}""")
             assertEquals(listOf("#/$b/email"), invalid.problem().errors?.map { it.pointer })
             assertEquals(HttpStatusCode.NotFound, patch("/v1/admin/users", admin, """{"999999":{"isHidden":true}}""").status)
+        }
+
+    @Test
+    fun `parallel patches to one user all apply`() =
+        testApplication {
+            configure()
+            startApplication()
+            val admin = registerAdmin("race-patch-admin")
+            register("race-patch-target")
+            val id = userId("race-patch-target")
+
+            // Each patch changes a different field; without the row lock, one would write back the others' old values.
+            val patches =
+                listOf(
+                    """{"isHidden":true}""",
+                    """{"isVerified":true}""",
+                    """{"country":"HU"}""",
+                    """{"website":"https://example.com"}""",
+                    """{"language":"hu"}""",
+                )
+            coroutineScope { patches.map { async { patch("/v1/admin/users/$id", admin, it).status } }.awaitAll() }
+                .forEach { assertEquals(HttpStatusCode.NoContent, it) }
+
+            val user = adminView(admin, id)
+            assertEquals(
+                listOf(true, true, "HU", "https://example.com", "hu"),
+                listOf(user.isHidden, user.isVerified, user.country, user.website, user.language),
+            )
+            assertEquals(patches.size, user.version)
+        }
+
+    @Test
+    fun `If-Match refuses edits of a changed user`() =
+        testApplication {
+            configure()
+            startApplication()
+            val admin = registerAdmin("version-admin")
+            register("version-target")
+            val id = userId("version-target")
+
+            suspend fun patchIfMatch(
+                etag: String?,
+                body: String,
+            ) = client.patch("/v1/admin/users/$id") {
+                bearerAuth(admin)
+                contentType(MergePatchJson)
+                etag?.let { header(HttpHeaders.IfMatch, it) }
+                setBody(body)
+            }
+
+            val read = client.get("/v1/admin/users/$id") { bearerAuth(admin) }.headers[HttpHeaders.ETag]
+            val written = patchIfMatch(read, """{"isHidden":true}""")
+            assertEquals(HttpStatusCode.NoContent, written.status)
+
+            // Someone else's edit was based on the old version.
+            val stale = patchIfMatch(read, """{"isHidden":false}""")
+            assertEquals(HttpStatusCode.PreconditionFailed, stale.status)
+            assertEquals("This user was changed in the meantime; reload and try again", stale.problem().detail)
+            assertEquals(true, adminView(admin, id).isHidden)
+
+            assertEquals(HttpStatusCode.NoContent, patchIfMatch("*", """{"isVerified":true}""").status)
+            assertEquals(HttpStatusCode.NoContent, patchIfMatch(null, """{"isVerified":false}""").status)
         }
 }

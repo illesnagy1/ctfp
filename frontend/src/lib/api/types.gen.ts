@@ -471,6 +471,10 @@ export type AdminUserResponse = {
   visibilitySettings?: string | null;
   createdAt: string;
   updatedAt: string;
+  /**
+   * Goes up on every change; also sent as the ETag, to send back in If-Match.
+   */
+  version: number;
 };
 
 /**
@@ -2981,6 +2985,10 @@ export type PatchMeErrors = {
    */
   409: ProblemDetails;
   /**
+   * Precondition Failed
+   */
+  412: ProblemDetails;
+  /**
    * Too Many Requests
    */
   429: ProblemDetails;
@@ -3022,6 +3030,10 @@ export type UpdateMeErrors = {
    * Conflict
    */
   409: ProblemDetails;
+  /**
+   * Precondition Failed
+   */
+  412: ProblemDetails;
   /**
    * Too Many Requests
    */
@@ -3369,6 +3381,10 @@ export type PatchUserErrors = {
    */
   409: ProblemDetails;
   /**
+   * Precondition Failed
+   */
+  412: ProblemDetails;
+  /**
    * Too Many Requests
    */
   429: ProblemDetails;
@@ -3416,6 +3432,10 @@ export type UpdateUserErrors = {
    * Conflict
    */
   409: ProblemDetails;
+  /**
+   * Precondition Failed
+   */
+  412: ProblemDetails;
   /**
    * Too Many Requests
    */

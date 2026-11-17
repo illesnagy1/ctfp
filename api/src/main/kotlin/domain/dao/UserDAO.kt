@@ -31,6 +31,7 @@ class UserDAO(
     var visibilitySettings by UserTable.visibilitySettings
     var createdAt by UserTable.createdAt
     var updatedAt by UserTable.updatedAt
+    var version by UserTable.version
 
     var registrationCode by RegistrationCodeDAO optionalReferencedOn UserTable.codeId
     val ownedTeams by TeamDAO referrersOn TeamTable.ownerId

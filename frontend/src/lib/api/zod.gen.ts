@@ -400,6 +400,7 @@ export const zAdminUserResponse = z.object({
   visibilitySettings: z.string().nullish(),
   createdAt: z.iso.datetime(),
   updatedAt: z.iso.datetime(),
+  version: z.int(),
 });
 
 /**

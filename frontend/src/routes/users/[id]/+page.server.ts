@@ -77,22 +77,25 @@ export const actions: Actions = {
 
     const form = await superValidate(event, zod4(editUserSchema));
     if (!form.valid) return fail(status.BAD_REQUEST, { form });
-    const { username, email, role, isVerified, isHidden, isBanned } = form.data;
+    const { username, email, role, isVerified, isHidden, isBanned, etag } = form.data;
     // Empty means none: null clears the field.
     const profile = { username, email, country: form.data.country || null, website: form.data.website || null };
 
-    // Only the fields the form shows change (JSON Merge Patch); the api keeps the rest as they are.
+    // Only the fields the form shows change (JSON Merge Patch); the api keeps the rest as they are. A 412 (changed
+    // since the form was filled) comes back as the form's message.
     const client = apiClient(event);
+    const ifMatch = etag ? { 'If-Match': etag } : undefined;
     const { error: apiError, response } = admin
       ? await call(
           patchUser({
             client,
             path: { id: String(id) },
+            headers: ifMatch,
             // The api refuses an admin's own demotion or ban; the dialog disables those fields for them.
             body: { ...profile, role, isBanned, isVerified, isHidden },
           }),
         )
-      : await call(patchMe({ client, body: profile }));
+      : await call(patchMe({ client, headers: ifMatch, body: profile }));
     if (apiError) return apiFormError(form, response, apiError, 'Updating user');
     return { form };
   },

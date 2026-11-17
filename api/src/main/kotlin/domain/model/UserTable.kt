@@ -25,4 +25,7 @@ object UserTable : IntIdTable() {
     val visibilitySettings = text("visibility_settings").nullable()
     val createdAt = timestamp("created_at").defaultExpression(CurrentTimestamp)
     val updatedAt = timestamp("updated_at").defaultExpression(CurrentTimestamp)
+
+    /** Goes up on every write to the account; its ETag, so a stale edit can be refused (If-Match, RFC 9110). */
+    val version = integer("version").default(0)
 }

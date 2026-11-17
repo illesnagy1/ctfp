@@ -931,6 +931,9 @@ export const patchMe = <ThrowOnError extends boolean = false>(
     },
   });
 
+/**
+ * With If-Match (the ETag read), 412 if the account changed since.
+ */
 export const updateMe = <ThrowOnError extends boolean = false>(
   options: Options<UpdateMeData, ThrowOnError>,
 ): RequestResult<UpdateMeResponses, UpdateMeErrors, ThrowOnError> =>
@@ -1038,6 +1041,9 @@ export const patchUser = <ThrowOnError extends boolean = false>(
     },
   });
 
+/**
+ * With If-Match (the ETag read), 412 if the account changed since.
+ */
 export const updateUser = <ThrowOnError extends boolean = false>(
   options: Options<UpdateUserData, ThrowOnError>,
 ): RequestResult<UpdateUserResponses, UpdateUserErrors, ThrowOnError> =>

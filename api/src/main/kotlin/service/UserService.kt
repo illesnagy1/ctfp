@@ -11,12 +11,19 @@ import com.ctfp.dto.UserResponse
 import com.ctfp.dto.UserUpdateRequest
 import com.ctfp.dto.applyAdmin
 import com.ctfp.dto.applyProfile
+import com.ctfp.dto.etag
 import com.ctfp.dto.toAdminDto
 import com.ctfp.dto.toDto
+import com.ctfp.dto.toProfileUpdate
+import com.ctfp.dto.toUpdateRequest
 import com.ctfp.service.helper.PasswordHasher
 import com.ctfp.service.helper.ensureAvailable
 import com.ctfp.service.helper.findUser
+import com.ctfp.service.helper.patched
+import com.ctfp.service.helper.validated
 import io.ktor.http.HttpStatusCode
+import kotlinx.serialization.json.JsonObject
+import kotlinx.serialization.serializer
 import org.jetbrains.exposed.v1.core.and
 import org.jetbrains.exposed.v1.core.eq
 import org.jetbrains.exposed.v1.core.inList
@@ -59,41 +66,97 @@ class UserService(
         }
     }
 
+    /** Replaces [id]'s own profile; [ifMatch] as in [lockUser]. */
     suspend fun updateUser(
         id: Int,
         user: UserUpdateRequest,
-    ) {
-        withTransaction {
-            ensureAvailable(user.username, user.email, exceptId = id)
-            findUser(id).applyProfile(user)
-        }
+        ifMatch: String? = null,
+    ) = withTransaction {
+        val dao = lockUser(id, ifMatch)
+        saveProfile(dao, user)
     }
 
-    /** [actorId] is the admin making the change; they can't ban or demote themselves. */
+    /** Changes the fields of [id]'s own profile that [patch] names (JSON Merge Patch). */
+    suspend fun patchUser(
+        id: Int,
+        patch: JsonObject,
+        ifMatch: String? = null,
+    ) = withTransaction {
+        val dao = lockUser(id, ifMatch)
+        saveProfile(dao, validated(patched(serializer(), dao.toAdminDto().toProfileUpdate(), patch)))
+    }
+
+    /** Replaces [id]'s account; [actorId] is the admin, who can't ban or demote themselves. */
     suspend fun updateUser(
         id: Int,
         user: AdminUserUpdateRequest,
         actorId: Int,
-    ) {
-        ensureNotSelfLockout(id, user, actorId)
-        withTransaction {
-            lockAdmins(actorId)
-            ensureAvailable(user.username, user.email, exceptId = id)
-            findUser(id).applyAdmin(user)
-        }
+        ifMatch: String? = null,
+    ) = withTransaction {
+        lockAdmins(actorId)
+        val dao = lockUser(id, ifMatch)
+        saveAdmin(dao, user, actorId)
     }
 
-    /** [actorId] is the admin making the change; they can't ban or demote themselves. */
+    /** Changes the fields of [id]'s account that [patch] names (JSON Merge Patch). */
+    suspend fun patchUser(
+        id: Int,
+        patch: JsonObject,
+        actorId: Int,
+        ifMatch: String? = null,
+    ) = withTransaction {
+        lockAdmins(actorId)
+        val dao = lockUser(id, ifMatch)
+        saveAdmin(dao, validated(patched(serializer(), dao.toAdminDto().toUpdateRequest(), patch)), actorId)
+    }
+
+    /** Replaces several accounts at once, all or nothing; [actorId] as in [updateUser]. */
     suspend fun updateUsers(
         users: Map<Int, AdminUserUpdateRequest>,
         actorId: Int,
     ) {
-        users.forEach { (id, user) -> ensureNotSelfLockout(id, user, actorId) }
         withTransaction {
             lockAdmins(actorId)
-            users.forEach { (id, user) -> ensureAvailable(user.username, user.email, exceptId = id) }
-            UserDAO.findAll(users.keys).forEach { it.applyAdmin(users.getValue(it.id.value)) }
+            // In id order, so two bulk writes lock rows in the same order and can't deadlock.
+            for ((id, user) in users.toSortedMap()) saveAdmin(lockUser(id), user, actorId)
         }
+    }
+
+    /** Patches several accounts at once (`{"<id>": patch}`), all or nothing; field errors point at `/<id>/…`. */
+    suspend fun patchUsers(
+        patches: Map<Int, JsonObject>,
+        actorId: Int,
+    ) {
+        withTransaction {
+            lockAdmins(actorId)
+            // In id order, see updateUsers.
+            val users = patches.keys.sorted().associateWith { lockUser(it) }
+            val updated =
+                validated(
+                    patches.mapValues { (id, patch) ->
+                        patched(serializer(), users.getValue(id).toAdminDto().toUpdateRequest(), patch)
+                    },
+                )
+            for ((id, user) in updated) saveAdmin(users.getValue(id), user, actorId)
+        }
+    }
+
+    private fun saveProfile(
+        dao: UserDAO,
+        user: UserUpdateRequest,
+    ) {
+        ensureAvailable(user.username, user.email, exceptId = dao.id.value)
+        dao.applyProfile(user)
+    }
+
+    private fun saveAdmin(
+        dao: UserDAO,
+        user: AdminUserUpdateRequest,
+        actorId: Int,
+    ) {
+        ensureNotSelfLockout(dao.id.value, user, actorId)
+        ensureAvailable(user.username, user.email, exceptId = dao.id.value)
+        dao.applyAdmin(user)
     }
 
     /**
@@ -126,6 +189,25 @@ class UserService(
         lockAdmins(actorId)
         UserTable.deleteWhere { UserTable.id inList ids }
     }
+}
+
+/**
+ * [id]'s row, locked until the transaction ends, so writes to one account run one after another: a patch then applies
+ * to the latest state, not one another write is replacing. With [ifMatch] (an If-Match header), 412 unless it names
+ * the current version: the client edited what it saw, and someone has changed it since (RFC 9110 §13.1.1).
+ */
+private fun lockUser(
+    id: Int,
+    ifMatch: String? = null,
+): UserDAO {
+    val user =
+        UserDAO.find { UserTable.id eq id }.forUpdate().singleOrNull()
+            ?: throw ApiException(HttpStatusCode.NotFound, "User $id not found")
+    val current = etag(user.version)
+    if (ifMatch != null && ifMatch.split(',').map(String::trim).none { it == "*" || it == current }) {
+        throw ApiException(HttpStatusCode.PreconditionFailed, "This user was changed in the meantime; reload and try again")
+    }
+    return user
 }
 
 /**
