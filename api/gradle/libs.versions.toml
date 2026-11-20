@@ -14,7 +14,7 @@ kotlinxSerialization = "1.13.0"
 detekt = "2.0.0-alpha.6"
 kover = "0.9.11"
 kotlinmailer = "2.0.0"
-micrometer = "1.17.2"
+micrometer = "1.18.0"
 opentelemetryInstrumentation = "2.33.1-alpha"
 
 [libraries]
