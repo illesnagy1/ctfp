@@ -1,6 +1,6 @@
 [versions]
 exposed = "1.6.1"
-flyway = "13.12.2"
+flyway = "13.13.0"
 h2 = "2.5.252"
 kotlin = "2.4.21"
 logback = "1.6.8"
