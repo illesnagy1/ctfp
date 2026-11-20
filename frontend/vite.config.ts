@@ -3,7 +3,6 @@ import adapter from '@sveltejs/adapter-node';
 import { sveltekit } from '@sveltejs/kit/vite';
 import tailwindcss from '@tailwindcss/vite';
 import { playwright } from '@vitest/browser-playwright';
-import { mdsvex } from 'mdsvex';
 import { defineConfig } from 'vitest/config';
 
 export default defineConfig({
@@ -14,8 +13,6 @@ export default defineConfig({
         // Force runes mode for the project, except for libraries. Can be removed in svelte 6.
         runes: ({ filename }) => (filename.split(/[/\\]/).includes('node_modules') ? undefined : true),
       },
-      preprocess: [mdsvex({ extensions: ['.svx', '.md'] })],
-      extensions: ['.svelte', '.svx', '.md'],
       // Builds a standalone server into build/, run by the Containerfile with `bun index.js`.
       adapter: adapter(),
       // OpenTelemetry spans for handle, loads, actions and endpoints; exported only when src/instrumentation.server.ts
