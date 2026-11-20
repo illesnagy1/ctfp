@@ -182,7 +182,7 @@ signer = "sigstore-oidc:https://github.com/jdx/hk/.github/workflows/release.yml"
 repository_ids = { repository = "922514152" }
 
 [[tools.java]]
-version = "temurin-25.0.5+8.0.LTS"
+version = "temurin-25.0.5+100000002.0.LTS"
 backend = "core:java"
 specifiers = ["temurin-25"]
 
