@@ -4,9 +4,16 @@ import com.auth0.jwt.JWT
 import com.auth0.jwt.algorithms.Algorithm
 import com.ctfp.config.enum.UserRole
 import com.ctfp.config.jwtConfig
-import com.ctfp.service.helper.isAdmin
+import com.ctfp.domain.dao.UserDAO
+import com.ctfp.domain.db.withTransaction
+import com.ctfp.service.helper.audit
+import io.ktor.http.HttpHeaders
+import io.ktor.http.HttpMethod
 import io.ktor.http.HttpStatusCode
 import io.ktor.server.application.Application
+import io.ktor.server.application.createRouteScopedPlugin
+import io.ktor.server.application.hooks.ResponseSent
+import io.ktor.server.application.install
 import io.ktor.server.auth.AuthenticationSchemeWithRoles
 import io.ktor.server.auth.ForbiddenHandler
 import io.ktor.server.auth.OptionalPrincipalContext
@@ -16,13 +23,17 @@ import io.ktor.server.auth.SimpleAuthenticationScheme
 import io.ktor.server.auth.authenticateWith
 import io.ktor.server.auth.authenticateWithOptional
 import io.ktor.server.auth.jwt.jwt
+import io.ktor.server.auth.principal
 import io.ktor.server.auth.roles
 import io.ktor.server.auth.withRoles
+import io.ktor.server.request.httpMethod
+import io.ktor.server.request.path
 import io.ktor.server.routing.Route
 import io.ktor.server.routing.RoutingContext
 import io.ktor.server.routing.application
 import io.ktor.server.routing.openapi.describe
 import io.ktor.util.AttributeKey
+import org.slf4j.event.Level
 
 private const val MIN_JWT_SECRET_LENGTH = 32
 
@@ -32,6 +43,7 @@ private const val DEV_JWT_SECRET = "dev-only-insecure-jwt-secret-change-me"
 /** The caller; read it with `call.principal` (or `call.principalOrNull`) inside the route builders below. */
 data class UserPrincipal(
     val id: Int,
+    val role: UserRole,
 )
 
 private typealias RoleAuth =
@@ -59,27 +71,34 @@ fun Application.configureSecurity() {
                     .withIssuer(jwtConfig.issuer)
                     .build(),
             )
+            // The user is read on every call, so bans, deletions and role changes apply without a new token.
             validate { credential ->
-                credential.payload.subject
-                    ?.toIntOrNull()
-                    ?.let(::UserPrincipal)
+                val id = credential.payload.subject?.toIntOrNull() ?: return@validate null
+                withTransaction {
+                    UserDAO.findById(id)?.takeUnless { it.isBanned }?.let { UserPrincipal(id, it.role) }
+                }
             }
-            onUnauthorized = { call.respondProblem(HttpStatusCode.Unauthorized, "Authentication required") }
+            onUnauthorized = {
+                if (call.request.headers.contains(HttpHeaders.Authorization)) {
+                    audit("authn_token_invalid", "path" to call.request.path(), level = Level.WARN)
+                }
+                call.respondProblem(HttpStatusCode.Unauthorized, "Authentication required")
+            }
         }
-    // Roles come from the database on every call, so promotions and bans apply without a new token.
     val roleAuth =
         jwtAuth.withRoles(
             onForbidden =
                 ForbiddenHandler<UserPrincipal, Unit, UserRole> {
+                    audit("authz_fail", "user" to call.principal<UserPrincipal>()?.id, "path" to call.request.path(), level = Level.WARN)
                     call.respondProblem(HttpStatusCode.Forbidden, "Admin access required")
                 },
-        ) { setOf(if (isAdmin(it.id)) UserRole.ADMIN else UserRole.USER) }
+        ) { setOf(it.role) }
     attributes.put(RoleAuthKey, roleAuth)
 }
 
 /**
- * Body of [authenticated] (logged-in callers, 401 otherwise) and [adminOnly] (also 403 for non-admins, banned admins
- * included); `call.principal` is the caller.
+ * Body of [authenticated] (logged-in callers, 401 otherwise) and [adminOnly] (also 403 for non-admins); banned or
+ * deleted users get 401; `call.principal` is the caller.
  */
 typealias UserRoutes = context(PrincipalContext<UserPrincipal>, Unit, RolesContext<UserPrincipal, UserRole>)
 Route.() -> Unit
@@ -95,7 +114,8 @@ typealias OptionalUserRoutes =
 // No comments directly above these: the OpenAPI compiler plugin would copy them into every route's summary.
 fun Route.authenticated(build: UserRoutes): Route = authenticateWith(roleAuth, build = build)
 
-fun Route.adminOnly(build: UserRoutes): Route = authenticateWith(roleAuth, roles = setOf(UserRole.ADMIN), build = build)
+fun Route.adminOnly(build: UserRoutes): Route =
+    authenticateWith(roleAuth, roles = setOf(UserRole.ADMIN), build = build).apply { install(AdminAudit) }
 
 fun Route.optionallyAuthenticated(build: OptionalUserRoutes): Route =
     authenticateWithOptional(roleAuth, build = build).describe { security { optional() } }
@@ -103,3 +123,17 @@ fun Route.optionallyAuthenticated(build: OptionalUserRoutes): Route =
 /** Whether the caller is a logged-in, not banned admin. */
 context(_: RolesContext<UserPrincipal, UserRole>, _: RoutingContext)
 val UserPrincipal?.isAdmin: Boolean get() = this != null && UserRole.ADMIN in roles
+
+/** Logs every admin change (anything but reads) as `authz_admin`, with who, what and the outcome. */
+private val AdminAudit =
+    createRouteScopedPlugin("AdminAudit") {
+        on(ResponseSent) { call ->
+            if (call.request.httpMethod == HttpMethod.Get || call.request.httpMethod == HttpMethod.Head) return@on
+            audit(
+                "authz_admin",
+                "user" to call.principal<UserPrincipal>()?.id,
+                "action" to "${call.request.httpMethod.value} ${call.request.path()}",
+                "status" to call.response.status()?.value,
+            )
+        }
+    }

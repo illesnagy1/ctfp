@@ -21,4 +21,5 @@ build
 package
 coverage*
 **/.env
+**/.env.*
 redis-data

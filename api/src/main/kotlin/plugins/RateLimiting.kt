@@ -14,8 +14,10 @@ import io.ktor.server.plugins.ratelimit.RateLimiter
 import io.ktor.server.response.header
 import kotlin.math.ceil
 import kotlin.time.Duration
+import kotlin.time.Duration.Companion.milliseconds
 import kotlin.time.Duration.Companion.minutes
 import kotlin.time.Duration.Companion.seconds
+import kotlin.time.DurationUnit
 
 /** Logins, registrations and password resets: guessing passwords or flooding mail. Wrap routes with `rateLimit`. */
 val AuthRateLimit = RateLimitName("auth")
@@ -74,4 +76,4 @@ private fun ApplicationCall.rateLimitHeaders(
     }
 }
 
-private fun Long.ceilSeconds() = ceil(this / 1000.0).toLong()
+private fun Long.ceilSeconds() = ceil(milliseconds.toDouble(DurationUnit.SECONDS)).toLong()

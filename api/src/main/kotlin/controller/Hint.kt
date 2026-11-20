@@ -35,10 +35,6 @@ fun Route.hint(service: HintService) {
 
                 call.respond(HttpStatusCode.Created)
             }.operation("createHint", BadRequest, Unauthorized, Forbidden)
-            put {
-            }.hide()
-            delete {
-            }.hide()
             route("/{id}") {
                 get {
                     val id = call.getId()

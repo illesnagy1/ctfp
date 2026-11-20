@@ -568,6 +568,89 @@
                 ]
             }
         },
+        "/v1/challenges/{id}/start": {
+            "post": {
+                "operationId": "startChallenge",
+                "summary": "Starts the caller's clock on a timed challenge; the description and files unlock.",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/ChallengeResponse"
+                                }
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "content": {
+                            "application/problem+json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/ProblemDetails"
+                                }
+                            }
+                        }
+                    },
+                    "401": {
+                        "description": "Unauthorized",
+                        "content": {
+                            "application/problem+json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/ProblemDetails"
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "Not Found",
+                        "content": {
+                            "application/problem+json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/ProblemDetails"
+                                }
+                            }
+                        }
+                    },
+                    "429": {
+                        "description": "Too Many Requests",
+                        "content": {
+                            "application/problem+json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/ProblemDetails"
+                                }
+                            }
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "content": {
+                            "application/problem+json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/ProblemDetails"
+                                }
+                            }
+                        }
+                    }
+                },
+                "security": [
+                    {
+                        "jwt": []
+                    }
+                ]
+            }
+        },
         "/v1/challenges/{id}/files": {
             "post": {
                 "operationId": "uploadChallengeFile",
@@ -762,6 +845,13 @@
                 "responses": {
                     "200": {
                         "description": "",
+                        "headers": {
+                            "Cache-Control": {
+                                "content": {
+                                    "text/plain": {}
+                                }
+                            }
+                        },
                         "content": {
                             "application/json": {
                                 "schema": {
@@ -839,6 +929,13 @@
                 "responses": {
                     "201": {
                         "description": "",
+                        "headers": {
+                            "Cache-Control": {
+                                "content": {
+                                    "text/plain": {}
+                                }
+                            }
+                        },
                         "content": {
                             "application/json": {
                                 "schema": {
@@ -849,6 +946,16 @@
                     },
                     "400": {
                         "description": "Bad Request",
+                        "content": {
+                            "application/problem+json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/ProblemDetails"
+                                }
+                            }
+                        }
+                    },
+                    "403": {
+                        "description": "Forbidden",
                         "content": {
                             "application/problem+json": {
                                 "schema": {
@@ -4204,7 +4311,7 @@
         "/v1/scoreboard": {
             "get": {
                 "operationId": "getScoreboard",
-                "summary": "Public, like the challenge list.",
+                "summary": "",
                 "responses": {
                     "200": {
                         "description": "",
@@ -4239,7 +4346,13 @@
                             }
                         }
                     }
-                }
+                },
+                "security": [
+                    {
+                        "jwt": []
+                    },
+                    {}
+                ]
             }
         },
         "/v1/ctftime/scoreboard": {
@@ -4849,6 +4962,99 @@
                     }
                 ]
             },
+            "delete": {
+                "operationId": "deleteMe",
+                "summary": "409 while they own a team or are the last admin.",
+                "requestBody": {
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/DeleteAccountRequest"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "204": {
+                        "description": ""
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "content": {
+                            "application/problem+json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/ProblemDetails"
+                                }
+                            }
+                        }
+                    },
+                    "401": {
+                        "description": "Unauthorized",
+                        "content": {
+                            "application/problem+json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/ProblemDetails"
+                                }
+                            }
+                        }
+                    },
+                    "403": {
+                        "description": "Forbidden",
+                        "content": {
+                            "application/problem+json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/ProblemDetails"
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "Not Found",
+                        "content": {
+                            "application/problem+json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/ProblemDetails"
+                                }
+                            }
+                        }
+                    },
+                    "409": {
+                        "description": "Conflict",
+                        "content": {
+                            "application/problem+json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/ProblemDetails"
+                                }
+                            }
+                        }
+                    },
+                    "429": {
+                        "description": "Too Many Requests",
+                        "content": {
+                            "application/problem+json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/ProblemDetails"
+                                }
+                            }
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "content": {
+                            "application/problem+json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/ProblemDetails"
+                                }
+                            }
+                        }
+                    }
+                },
+                "security": [
+                    {
+                        "jwt": []
+                    }
+                ]
+            },
             "get": {
                 "operationId": "getMe",
                 "summary": "",
@@ -4976,6 +5182,69 @@
                     },
                     "412": {
                         "description": "Precondition Failed",
+                        "content": {
+                            "application/problem+json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/ProblemDetails"
+                                }
+                            }
+                        }
+                    },
+                    "429": {
+                        "description": "Too Many Requests",
+                        "content": {
+                            "application/problem+json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/ProblemDetails"
+                                }
+                            }
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "content": {
+                            "application/problem+json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/ProblemDetails"
+                                }
+                            }
+                        }
+                    }
+                },
+                "security": [
+                    {
+                        "jwt": []
+                    }
+                ]
+            }
+        },
+        "/v1/users/me/export": {
+            "get": {
+                "operationId": "exportMe",
+                "summary": "",
+                "responses": {
+                    "200": {
+                        "description": "",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/AccountExport"
+                                }
+                            }
+                        }
+                    },
+                    "401": {
+                        "description": "Unauthorized",
+                        "content": {
+                            "application/problem+json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/ProblemDetails"
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "Not Found",
                         "content": {
                             "application/problem+json": {
                                 "schema": {
@@ -5925,6 +6194,14 @@
                             "null"
                         ],
                         "description": "Wrong guesses the caller has left; null for guests, once solved, and without a limit."
+                    },
+                    "startedAt": {
+                        "type": [
+                            "string",
+                            "null"
+                        ],
+                        "description": "When the caller started this timed challenge; its time limit counts from here. Until then players get no description.",
+                        "format": "date-time"
                     }
                 }
             },
@@ -6089,6 +6366,7 @@
                     },
                     "password": {
                         "type": "string",
+                        "maxLength": 128,
                         "minLength": 1
                     }
                 }
@@ -6588,7 +6866,6 @@
                 "title": "RegistrationCodeResponse",
                 "required": [
                     "id",
-                    "code",
                     "maxUses",
                     "createdAt",
                     "expiresAt"
@@ -6596,9 +6873,6 @@
                 "properties": {
                     "id": {
                         "type": "integer"
-                    },
-                    "code": {
-                        "type": "string"
                     },
                     "maxUses": {
                         "type": "integer"
@@ -6656,6 +6930,30 @@
                         "description": "The most players a team can have.",
                         "maximum": 100.0,
                         "minimum": 1.0
+                    },
+                    "startsAt": {
+                        "type": [
+                            "string",
+                            "null"
+                        ],
+                        "description": "When players can see challenges and submit flags, in UTC (e.g. 2026-12-01T18:00:00Z); empty: already open.",
+                        "format": "date-time"
+                    },
+                    "endsAt": {
+                        "type": [
+                            "string",
+                            "null"
+                        ],
+                        "description": "When flags stop being accepted, in UTC; empty: never.",
+                        "format": "date-time"
+                    },
+                    "freezeAt": {
+                        "type": [
+                            "string",
+                            "null"
+                        ],
+                        "description": "The public scoreboard and challenge stats only count solves made before this, in UTC; empty: always live.",
+                        "format": "date-time"
                     }
                 }
             },
@@ -7023,7 +7321,8 @@
                         "type": [
                             "string",
                             "null"
-                        ]
+                        ],
+                        "maxLength": 4096
                     },
                     "createdAt": {
                         "type": "string",
@@ -7090,7 +7389,8 @@
                         "type": [
                             "string",
                             "null"
-                        ]
+                        ],
+                        "maxLength": 4096
                     }
                 }
             },
@@ -7141,7 +7441,41 @@
                         "type": [
                             "string",
                             "null"
-                        ]
+                        ],
+                        "maxLength": 4096
+                    }
+                }
+            },
+            "DeleteAccountRequest": {
+                "type": "object",
+                "title": "DeleteAccountRequest",
+                "required": [
+                    "password"
+                ],
+                "properties": {
+                    "password": {
+                        "type": "string",
+                        "maxLength": 128,
+                        "minLength": 1
+                    }
+                }
+            },
+            "AccountExport": {
+                "type": "object",
+                "title": "AccountExport",
+                "required": [
+                    "account",
+                    "submissions"
+                ],
+                "properties": {
+                    "account": {
+                        "$ref": "#/components/schemas/AdminUserResponse"
+                    },
+                    "submissions": {
+                        "type": "array",
+                        "items": {
+                            "$ref": "#/components/schemas/SubmissionResponse"
+                        }
                     }
                 }
             },
@@ -7225,7 +7559,8 @@
                         "type": [
                             "string",
                             "null"
-                        ]
+                        ],
+                        "maxLength": 4096
                     }
                 }
             },
@@ -7303,7 +7638,8 @@
                         "type": [
                             "string",
                             "null"
-                        ]
+                        ],
+                        "maxLength": 4096
                     }
                 }
             },
@@ -7376,7 +7712,8 @@
                         "type": [
                             "string",
                             "null"
-                        ]
+                        ],
+                        "maxLength": 4096
                     }
                 }
             }

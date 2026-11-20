@@ -126,42 +126,63 @@ private fun check(
     val number = value.doubleOrNull.takeUnless { value.isString }
     val rules =
         annotations.mapNotNull { annotation ->
-            when (annotation) {
-                is JsonSchema.MinLength -> {
-                    "must be at least ${annotation.value} characters".takeIf { length != null && length < annotation.value }
-                }
-
-                is JsonSchema.MaxLength -> {
-                    "must be at most ${annotation.value} characters".takeIf { length != null && length > annotation.value }
-                }
-
-                is JsonSchema.Pattern -> {
-                    "must match ${annotation.value}".takeIf { text != null && !Regex(annotation.value).containsMatchIn(text) }
-                }
-
-                is JsonSchema.Format -> {
-                    "must be an email address".takeIf { annotation.value == "email" && text != null && !EMAIL.matches(text) }
-                }
-
-                is JsonSchema.Minimum -> {
-                    "must be ${if (annotation.exclusive) "more than" else "at least"} ${annotation.value.format()}".takeIf {
-                        number != null && (if (annotation.exclusive) number <= annotation.value else number < annotation.value)
-                    }
-                }
-
-                is JsonSchema.Maximum -> {
-                    "must be ${if (annotation.exclusive) "less than" else "at most"} ${annotation.value.format()}".takeIf {
-                        number != null && (if (annotation.exclusive) number >= annotation.value else number > annotation.value)
-                    }
-                }
-
-                else -> {
-                    null
-                }
+            when {
+                text != null && length != null -> textViolation(annotation, text, length)
+                number != null -> numberViolation(annotation, number)
+                else -> null
             }
         }
     return rules.map { Violation(field, it) }
 }
+
+private fun textViolation(
+    annotation: Annotation,
+    text: String,
+    length: Int,
+): String? =
+    when (annotation) {
+        is JsonSchema.MinLength -> {
+            "must be at least ${annotation.value} characters".takeIf { length < annotation.value }
+        }
+
+        is JsonSchema.MaxLength -> {
+            "must be at most ${annotation.value} characters".takeIf { length > annotation.value }
+        }
+
+        is JsonSchema.Pattern -> {
+            "must match ${annotation.value}".takeIf { !Regex(annotation.value).containsMatchIn(text) }
+        }
+
+        is JsonSchema.Format -> {
+            "must be an email address".takeIf { annotation.value == "email" && !EMAIL.matches(text) }
+        }
+
+        else -> {
+            null
+        }
+    }
+
+private fun numberViolation(
+    annotation: Annotation,
+    number: Double,
+): String? =
+    when (annotation) {
+        is JsonSchema.Minimum -> {
+            "must be ${if (annotation.exclusive) "more than" else "at least"} ${annotation.value.format()}".takeIf {
+                if (annotation.exclusive) number <= annotation.value else number < annotation.value
+            }
+        }
+
+        is JsonSchema.Maximum -> {
+            "must be ${if (annotation.exclusive) "less than" else "at most"} ${annotation.value.format()}".takeIf {
+                if (annotation.exclusive) number >= annotation.value else number > annotation.value
+            }
+        }
+
+        else -> {
+            null
+        }
+    }
 
 /** 1.0 → "1", so integer limits read as integers. */
 private fun Double.format() = if (this % 1.0 == 0.0) toLong().toString() else toString()

@@ -29,12 +29,13 @@ class FileService(
     private val challenges: ChallengeService,
     val maxBytes: Long,
 ) {
-    /** A challenge's files, visible exactly when the challenge is (see [ChallengeService.get]). */
+    /** A challenge's files, visible exactly when the challenge is, and for timed ones once started (see [ChallengeService.getUnlocked]). */
     suspend fun getChallengeFiles(
         challengeId: Int,
         includeUnreleased: Boolean,
+        userId: Int? = null,
     ): List<FileResponse> {
-        challenges.get(challengeId, includeUnreleased)
+        challenges.getUnlocked(challengeId, includeUnreleased, userId)
         return withTransaction {
             FileDAO.find { ownedBy(FileOwner.CHALLENGE, challengeId) }.sortedBy { it.id.value }.map { it.toDto() }
         }
@@ -83,10 +84,11 @@ class FileService(
     suspend fun download(
         id: Int,
         includeUnreleased: Boolean,
+        userId: Int? = null,
     ): FileDownload {
         val file = withTransaction { FileDAO.findById(id) } ?: throw notFound()
         when (file.ownerType) {
-            FileOwner.CHALLENGE -> challenges.get(file.ownerId, includeUnreleased)
+            FileOwner.CHALLENGE -> challenges.getUnlocked(file.ownerId, includeUnreleased, userId)
 
             // Owners without visibility rules yet are admin only.
             else -> if (!includeUnreleased) throw notFound()

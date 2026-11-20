@@ -12,8 +12,9 @@ import com.ctfp.dto.FlagRequest
 import com.ctfp.service.ChallengeService
 import com.ctfp.service.FlagService
 import com.ctfp.service.SubmissionService
-import com.ctfp.service.UserService
+import com.ctfp.service.AdminUserService
 import com.ctfp.service.helper.PasswordHasher
+import com.ctfp.service.helper.sha256Hex
 import com.ctfp.storage.LocalFileStorage
 import io.ktor.server.application.Application
 import io.ktor.server.application.log
@@ -41,7 +42,7 @@ suspend fun Application.configureSeed() {
     }
     if (withTransaction { !UserDAO.all().empty() }) return
 
-    val users = UserService(PasswordHasher())
+    val users = AdminUserService(PasswordHasher())
     val challenges = ChallengeService(LocalFileStorage(Path(environment.config.uploadsConfig().dir)))
     val flags = FlagService()
     val submissions = SubmissionService(challenges)
@@ -117,7 +118,7 @@ suspend fun Application.configureSeed() {
 
     withTransaction {
         RegistrationCodeDAO.new {
-            code = "DEV-CODE"
+            code = sha256Hex("DEV-CODE")
             maxUses = SEED_CODE_MAX_USES
             expiresAt = now + 30.days
         }

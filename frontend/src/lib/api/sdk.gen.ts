@@ -47,6 +47,9 @@ import type {
   DeleteHintData,
   DeleteHintErrors,
   DeleteHintResponses,
+  DeleteMeData,
+  DeleteMeErrors,
+  DeleteMeResponses,
   DeleteNotificationData,
   DeleteNotificationErrors,
   DeleteNotificationResponses,
@@ -65,6 +68,9 @@ import type {
   DownloadFileData,
   DownloadFileErrors,
   DownloadFileResponses,
+  ExportMeData,
+  ExportMeErrors,
+  ExportMeResponses,
   ForgotPasswordData,
   ForgotPasswordErrors,
   ForgotPasswordResponses,
@@ -173,6 +179,9 @@ import type {
   ResetPasswordData,
   ResetPasswordErrors,
   ResetPasswordResponses,
+  StartChallengeData,
+  StartChallengeErrors,
+  StartChallengeResponses,
   SubmitFlagData,
   SubmitFlagErrors,
   SubmitFlagResponses,
@@ -321,6 +330,18 @@ export const updateChallenge = <ThrowOnError extends boolean = false>(
       'Content-Type': 'application/json',
       ...options.headers,
     },
+  });
+
+/**
+ * Starts the caller's clock on a timed challenge; the description and files unlock.
+ */
+export const startChallenge = <ThrowOnError extends boolean = false>(
+  options: Options<StartChallengeData, ThrowOnError>,
+): RequestResult<StartChallengeResponses, StartChallengeErrors, ThrowOnError> =>
+  options.client.post<StartChallengeResponses, StartChallengeErrors, ThrowOnError>({
+    security: [{ scheme: 'bearer', type: 'http' }],
+    url: '/v1/challenges/{id}/start',
+    ...options,
   });
 
 /**
@@ -825,13 +846,14 @@ export const listUserSubmissions = <ThrowOnError extends boolean = false>(
     ...options,
   });
 
-/**
- * Public, like the challenge list.
- */
 export const getScoreboard = <ThrowOnError extends boolean = false>(
   options: Options<GetScoreboardData, ThrowOnError>,
 ): RequestResult<GetScoreboardResponses, GetScoreboardErrors, ThrowOnError> =>
-  options.client.get<GetScoreboardResponses, GetScoreboardErrors, ThrowOnError>({ url: '/v1/scoreboard', ...options });
+  options.client.get<GetScoreboardResponses, GetScoreboardErrors, ThrowOnError>({
+    security: [{ scheme: 'bearer', type: 'http' }],
+    url: '/v1/scoreboard',
+    ...options,
+  });
 
 /**
  * The same ranking for CTFtime to import (it polls every minute); public too.
@@ -906,6 +928,22 @@ export const listUsers = <ThrowOnError extends boolean = false>(
     ...options,
   });
 
+/**
+ * 409 while they own a team or are the last admin.
+ */
+export const deleteMe = <ThrowOnError extends boolean = false>(
+  options: Options<DeleteMeData, ThrowOnError>,
+): RequestResult<DeleteMeResponses, DeleteMeErrors, ThrowOnError> =>
+  options.client.delete<DeleteMeResponses, DeleteMeErrors, ThrowOnError>({
+    security: [{ scheme: 'bearer', type: 'http' }],
+    url: '/v1/users/me',
+    ...options,
+    headers: {
+      'Content-Type': 'application/json',
+      ...options.headers,
+    },
+  });
+
 export const getMe = <ThrowOnError extends boolean = false>(
   options: Options<GetMeData, ThrowOnError>,
 ): RequestResult<GetMeResponses, GetMeErrors, ThrowOnError> =>
@@ -945,6 +983,15 @@ export const updateMe = <ThrowOnError extends boolean = false>(
       'Content-Type': 'application/json',
       ...options.headers,
     },
+  });
+
+export const exportMe = <ThrowOnError extends boolean = false>(
+  options: Options<ExportMeData, ThrowOnError>,
+): RequestResult<ExportMeResponses, ExportMeErrors, ThrowOnError> =>
+  options.client.get<ExportMeResponses, ExportMeErrors, ThrowOnError>({
+    security: [{ scheme: 'bearer', type: 'http' }],
+    url: '/v1/users/me/export',
+    ...options,
   });
 
 export const getUser = <ThrowOnError extends boolean = false>(

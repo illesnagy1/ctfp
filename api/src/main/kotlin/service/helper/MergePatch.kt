@@ -37,7 +37,7 @@ fun <T : Any> patched(
     return try {
         patchJson.decodeFromJsonElement(serializer, merged)
     } catch (e: SerializationException) {
-        throw ApiException(HttpStatusCode.BadRequest, "Invalid patch: ${e.message}")
+        throw ApiException(HttpStatusCode.BadRequest, "Invalid patch: ${e.message}", e)
     }
 }
 

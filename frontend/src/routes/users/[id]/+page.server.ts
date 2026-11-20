@@ -1,5 +1,5 @@
 import { error, fail, redirect, type RequestEvent } from '@sveltejs/kit';
-import { superValidate } from 'sveltekit-superforms';
+import { setError, superValidate } from 'sveltekit-superforms';
 import { zod4 } from 'sveltekit-superforms/adapters';
 
 import {
@@ -10,12 +10,15 @@ import {
   listMySubmissions,
   patchUser,
   patchMe,
+  deleteMe,
 } from '#lib/api/index.js';
 import { status } from '#lib/http.js';
-import { editUserData, editUserFormId, editUserSchema } from '#lib/schemas/user.js';
+import { m } from '#lib/paraglide/messages.js';
+import { deleteAccountSchema, editUserData, editUserFormId, editUserSchema } from '#lib/schemas/user.js';
 import { apiClient, call } from '#lib/server/api.js';
 import { apiFormError } from '#lib/server/form.js';
 import { problemMessage } from '#lib/server/problem.js';
+import { deleteSession } from '#lib/server/session.js';
 import { isAdminUser } from '#lib/types/user.js';
 
 import type { Actions, PageServerLoad } from './$types';
@@ -63,7 +66,8 @@ export const load: PageServerLoad = async (event) => {
         ? await call(listMySubmissions({ client }))
         : undefined;
   if (submissions?.error) error(submissions.response.status, problemMessage(submissions.error));
-  return { profile: data, editForm, admin: user.role === 'ADMIN', self, submissions: submissions?.data };
+  const deleteForm = self ? await superValidate(zod4(deleteAccountSchema), { id: 'delete-account' }) : undefined;
+  return { profile: data, editForm, deleteForm, admin: user.role === 'ADMIN', self, submissions: submissions?.data };
 };
 
 export const actions: Actions = {
@@ -98,5 +102,28 @@ export const actions: Actions = {
       : await call(patchMe({ client, headers: ifMatch, body: profile }));
     if (apiError) return apiFormError(form, response, apiError, 'Updating user');
     return { form };
+  },
+
+  deleteAccount: async (event) => {
+    const { user } = event.locals;
+    if (!user) redirect(status.SEE_OTHER, '/login');
+    // Only your own account: deleteMe has no id.
+    if (userId(event) !== user.id) error(status.FORBIDDEN, 'You can only delete your own account');
+
+    const form = await superValidate(event, zod4(deleteAccountSchema));
+    if (!form.valid) return fail(status.BAD_REQUEST, { form: { ...form, data: { password: '' } } });
+
+    const { error: apiError, response } = await call(
+      deleteMe({ client: apiClient(event), body: { password: form.data.password } }),
+    );
+    // Never send the password back.
+    form.data.password = '';
+    if (response.ok) {
+      await deleteSession(event.cookies);
+      redirect(status.SEE_OTHER, '/');
+    }
+    if (response.status === status.FORBIDDEN) return setError(form, 'password', m.account_delete_wrong_password());
+    // E.g. 409 for the last admin, or an owner of a team: the api's detail shows as the form's message.
+    return apiFormError(form, response, apiError, 'Deleting account');
   },
 };

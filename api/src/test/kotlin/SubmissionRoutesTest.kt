@@ -174,7 +174,7 @@ class SubmissionRoutesTest {
             assertEquals(listOf(FieldProblem("#/flag", problem.detail!!)), problem.errors)
 
             withTransaction { UserDAO.find { UserTable.username eq "reject-player" }.single().isBanned = true }
-            assertEquals(HttpStatusCode.Forbidden, submit(id, player, "flag").status)
+            assertEquals(HttpStatusCode.Unauthorized, submit(id, player, "flag").status)
         }
 
     @Test

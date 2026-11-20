@@ -2,3 +2,4 @@ Contact: mailto:illesnagy@edu.bme.hu
 Contact: https://github.com/illesnagy1/ctfp/security
 Expires: 2027-05-17T00:00:00Z
 Preferred-Languages: en, hu
+Policy: https://github.com/illesnagy1/ctfp/security/policy

@@ -3,6 +3,7 @@ package com.ctfp.dto
 import com.ctfp.domain.dao.PageDAO
 import io.ktor.openapi.JsonSchema
 import kotlinx.serialization.Serializable
+import java.util.Locale
 import kotlin.time.Instant
 
 @Serializable
@@ -43,7 +44,7 @@ data class PageResponse(
 fun PageDAO.apply(dto: PageRequest) {
     title = dto.title
     route = dto.route
-    language = canonicalLanguageTag(dto.language)
+    language = Locale.forLanguageTag(dto.language).toLanguageTag() // canonical BCP 47, e.g. pt-br → pt-BR
     format = dto.format
     targetBlank = dto.targetBlank
     body = dto.body

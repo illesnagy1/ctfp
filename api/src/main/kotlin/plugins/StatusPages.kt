@@ -3,6 +3,7 @@ package com.ctfp.plugins
 import com.ctfp.dto.FieldProblem
 import com.ctfp.dto.ProblemDetails
 import com.ctfp.service.ApiException
+import com.ctfp.service.helper.audit
 import io.ktor.http.ContentType
 import io.ktor.http.HttpHeaders
 import io.ktor.http.HttpStatusCode
@@ -16,8 +17,9 @@ import io.ktor.server.plugins.requestvalidation.RequestValidationException
 import io.ktor.server.plugins.statuspages.StatusPages
 import io.ktor.server.request.path
 import io.ktor.server.response.respondText
-import kotlinx.serialization.json.Json
 import org.jetbrains.exposed.v1.dao.exceptions.EntityNotFoundException
+import org.slf4j.event.Level
+import kotlinx.serialization.json.Json
 import java.sql.SQLException
 
 /** SQLSTATE for a unique constraint violation, the same in PostgreSQL and H2. */
@@ -52,6 +54,7 @@ fun Application.configureStatusPages() {
         // The body broke a DTO's @JsonSchema limits; each field is listed, see RequestValidation.kt.
         exception<RequestValidationException> { call, cause ->
             val violations = violations(cause.value)
+            audit("input_validation_fail", "path" to call.request.path(), "fields" to violations.joinToString(" ") { it.pointer })
             call.respondProblem(
                 HttpStatusCode.BadRequest,
                 cause.reasons.joinToString("; "),
@@ -78,6 +81,7 @@ fun Application.configureStatusPages() {
         }
         // From RateLimit, which has set Retry-After (RateLimiting.kt).
         status(HttpStatusCode.TooManyRequests) { status ->
+            audit("malicious_excess_use", "path" to call.request.path(), level = Level.WARN)
             if (content.contentType?.match(ContentType.Application.ProblemJson) != true) {
                 val wait = call.response.headers[HttpHeaders.RetryAfter]
                 call.respondProblem(status, wait?.let { "Too many requests, try again in $it seconds" })

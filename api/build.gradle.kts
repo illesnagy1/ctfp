@@ -30,7 +30,7 @@ kover {
     reports {
         filters {
             excludes {
-                classes("GenerateMigrationKt", "com.ctfp.GenerateOpenApiKt")
+                classes("com.ctfp.GenerateOpenApiKt")
             }
         }
     }
@@ -48,28 +48,23 @@ dependencies {
     implementation(ktorLibs.server.conditionalHeaders)
     implementation(ktorLibs.server.contentNegotiation)
     implementation(ktorLibs.server.core)
-    implementation(ktorLibs.server.defaultHeaders)
     implementation(ktorLibs.server.forwardedHeader)
     implementation(ktorLibs.server.hsts)
-    implementation(ktorLibs.server.httpRedirect)
     implementation(ktorLibs.server.metrics.micrometer)
     implementation(ktorLibs.server.netty)
     implementation(ktorLibs.server.partialContent)
     implementation(ktorLibs.server.rateLimit)
     implementation(ktorLibs.server.requestValidation)
-    implementation(ktorLibs.server.resources)
     implementation(ktorLibs.server.routingOpenapi)
     implementation(ktorLibs.server.statusPages)
     implementation(ktorLibs.server.swagger)
-    implementation(ktorLibs.server.websockets)
-    implementation(ktorLibs.server.cors)
     implementation(libs.exposed.core)
     implementation(libs.exposed.jdbc)
     implementation(libs.exposed.dao)
     implementation(libs.exposed.datetime)
     implementation(libs.exposed.json)
-    implementation(libs.exposed.migration.core)
-    implementation(libs.exposed.migration.jdbc)
+    implementation(libs.flyway.core)
+    implementation(libs.flyway.database.postgresql)
     implementation(libs.kotlinmailer.smtp)
     implementation(libs.h2database.h2)
     implementation(libs.logback.classic)
@@ -83,12 +78,12 @@ dependencies {
     implementation(libs.opentelemetry.exporter.otlp)
     implementation(libs.postgresql)
     implementation(libs.bouncycastle.bcprov)
-    implementation(libs.flyway.core)
-    implementation(libs.flyway.database.postgresql)
     implementation(libs.kotlinx.serialization.hocon)
 
     testImplementation(kotlin("test"))
     testImplementation(ktorLibs.server.testHost)
+    testImplementation(libs.exposed.migration.core)
+    testImplementation(libs.exposed.migration.jdbc)
 }
 
 tasks.test {
@@ -100,18 +95,19 @@ tasks.test {
             .asFile.absolutePath,
     )
     environment("UPLOADS_MAX_BYTES", "1048576")
+    environment(
+        "SETTINGS_FILE",
+        layout.buildDirectory
+            .file("test-settings.conf")
+            .get()
+            .asFile.absolutePath,
+    )
     environment("SEED", "false")
     environment("JWT_SECRET", "test-only-jwt-secret-0123456789abcdef")
+    environment("METRICS_TOKEN", "test-metrics-token")
     environment("RATE_LIMIT_GLOBAL", "100000")
     environment("RATE_LIMIT_AUTH", "100000")
     environment("RATE_LIMIT_SUBMISSIONS", "100000")
-}
-
-tasks.register<JavaExec>("generateMigration") {
-    group = "build"
-    description = "Generate migration"
-    classpath = sourceSets.main.get().runtimeClasspath
-    mainClass = "GenerateMigrationKt"
 }
 
 tasks.register<JavaExec>("generateOpenApi") {
@@ -124,6 +120,13 @@ tasks.register<JavaExec>("generateOpenApi") {
             .file("openapi.json")
             .asFile.path,
     )
+}
+
+tasks.register<JavaExec>("generateMigration") {
+    group = "build"
+    description = "Diffs the Exposed tables against a Postgres database and writes the next Flyway migration"
+    classpath = sourceSets.test.get().runtimeClasspath
+    mainClass = "com.ctfp.GenerateMigrationKt"
 }
 
 ktor {

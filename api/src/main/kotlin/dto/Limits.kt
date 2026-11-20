@@ -37,4 +37,5 @@ object Limits {
     const val MIME_TYPE_MAX = 128
     const val IP_ADDRESS_MAX = 45
     const val USER_AGENT_MAX = 512
+    const val VISIBILITY_SETTINGS_MAX = 4096
 }

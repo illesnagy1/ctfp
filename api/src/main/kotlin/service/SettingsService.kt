@@ -70,5 +70,9 @@ class SettingsService(
         if (settings.ctfName.isBlank()) {
             throw ApiException(HttpStatusCode.BadRequest, "ctfName must not be blank")
         }
+        val (startsAt, endsAt) = settings.startsAt to settings.endsAt
+        if (startsAt != null && endsAt != null && endsAt <= startsAt) {
+            throw ApiException(HttpStatusCode.BadRequest, "endsAt must be after startsAt")
+        }
     }
 }

@@ -4,7 +4,6 @@ import io.ktor.server.application.Application
 import io.ktor.server.application.install
 import io.ktor.server.plugins.compression.Compression
 import io.ktor.server.plugins.conditionalheaders.ConditionalHeaders
-import io.ktor.server.plugins.forwardedheaders.ForwardedHeaders
 import io.ktor.server.plugins.forwardedheaders.XForwardedHeaders
 import io.ktor.server.plugins.hsts.HSTS
 import io.ktor.server.plugins.partialcontent.PartialContent
@@ -16,7 +15,7 @@ private const val MAX_RANGE_COUNT = 10
 fun Application.configureHttp() {
     install(Compression)
     install(ConditionalHeaders)
-    install(ForwardedHeaders) // WARNING: for security, do not include this if not behind a reverse proxy
+    // Only the frontend reaches the api, and it sets X-Forwarded-For to the browser's address (lib/server/api.ts).
     install(XForwardedHeaders)
     install(HSTS) {
         includeSubDomains = true

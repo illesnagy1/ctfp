@@ -1,5 +1,6 @@
 package com.ctfp
 
+import io.ktor.client.request.bearerAuth
 import io.ktor.client.request.get
 import io.ktor.client.statement.bodyAsText
 import io.ktor.http.HttpHeaders
@@ -16,7 +17,9 @@ class ServerTest {
         testApplication {
             configure()
             assertNotNull(client.get("/livez").headers[HttpHeaders.XRequestId])
-            val body = client.get("/metrics").bodyAsText()
+            assertEquals(HttpStatusCode.Unauthorized, client.get("/metrics").status)
+            assertEquals(HttpStatusCode.Unauthorized, client.get("/metrics") { bearerAuth("wrong") }.status)
+            val body = client.get("/metrics") { bearerAuth("test-metrics-token") }.bodyAsText()
             assertTrue("ktor_http_server_requests_seconds_count" in body, body)
             assertTrue("jvm_memory_used_bytes" in body, body)
         }

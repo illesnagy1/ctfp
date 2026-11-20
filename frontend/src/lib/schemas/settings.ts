@@ -10,7 +10,11 @@ import { settingsJsonSchema } from '#lib/types/schemas.js';
  * setting there shows up on the config page after `bun run gen:api`. Typed with the api's Settings type, which
  * fromJSONSchema can't infer (the pipe adds the type and keeps the schema's limits).
  */
-export const settingsSchema = z.fromJSONSchema(settingsJsonSchema).pipe(z.custom<Settings>());
+// The cast only drops `as const`'s readonly: nullable fields have `type: ['string', 'null']`, which zod wants mutable.
+export const settingsSchema = z
+  // oxlint-disable-next-line typescript/no-unsafe-type-assertion -- same object, only the readonly differs
+  .fromJSONSchema(settingsJsonSchema as unknown as Parameters<typeof z.fromJSONSchema>[0])
+  .pipe(z.custom<Settings>());
 
 const messages: Record<string, unknown> = m;
 

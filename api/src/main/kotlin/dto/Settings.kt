@@ -2,6 +2,7 @@ package com.ctfp.dto
 
 import io.ktor.openapi.JsonSchema
 import kotlinx.serialization.Serializable
+import kotlin.time.Instant
 
 /**
  * Platform-wide settings, edited on the admin config page. That page is generated from this class's schema in
@@ -20,6 +21,12 @@ data class Settings(
     @JsonSchema.Minimum(1.0)
     @JsonSchema.Maximum(MAX_TEAM_SIZE.toDouble())
     val maxTeamSize: Int = 4,
+    @JsonSchema.Description("When players can see challenges and submit flags, in UTC (e.g. 2026-12-01T18:00:00Z); empty: already open.")
+    val startsAt: Instant? = null,
+    @JsonSchema.Description("When flags stop being accepted, in UTC; empty: never.")
+    val endsAt: Instant? = null,
+    @JsonSchema.Description("The public scoreboard and challenge stats only count solves made before this, in UTC; empty: always live.")
+    val freezeAt: Instant? = null,
 ) {
     companion object {
         const val MAX_CTF_NAME_LENGTH = 64

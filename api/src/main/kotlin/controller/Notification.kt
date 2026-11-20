@@ -33,10 +33,6 @@ fun Route.notification(service: NotificationService) {
 
                 call.respond(HttpStatusCode.Created)
             }.operation("createNotification", BadRequest, Unauthorized, Forbidden)
-            put {
-            }.hide()
-            delete {
-            }.hide()
             route("/{id}") {
                 get {
                     val id = call.getId()

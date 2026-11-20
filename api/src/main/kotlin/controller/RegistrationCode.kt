@@ -34,10 +34,6 @@ fun Route.registrationCode(repository: RegistrationCodeService) {
 
                 call.respond(HttpStatusCode.Created)
             }.operation("createRegistrationCode", BadRequest, Unauthorized, Forbidden, Conflict)
-            put {
-            }.hide()
-            delete {
-            }.hide()
             route("/{id}") {
                 get {
                     val id = call.getId()

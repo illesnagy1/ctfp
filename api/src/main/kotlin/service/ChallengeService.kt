@@ -3,6 +3,7 @@ package com.ctfp.service
 import com.ctfp.domain.dao.ChallengeDAO
 import com.ctfp.domain.dao.FlagDAO
 import com.ctfp.domain.db.withTransaction
+import com.ctfp.domain.model.ChallengeStartTable
 import com.ctfp.domain.model.ChallengeTable
 import com.ctfp.domain.model.FileOwner
 import com.ctfp.domain.model.FileTable
@@ -11,6 +12,7 @@ import com.ctfp.domain.model.SubmissionTable
 import com.ctfp.domain.model.UserTable
 import com.ctfp.dto.ChallengeRequest
 import com.ctfp.dto.ChallengeResponse
+import com.ctfp.dto.Settings
 import com.ctfp.dto.apply
 import com.ctfp.dto.toDto
 import com.ctfp.service.ScoreboardService.Companion.rankedPlayers
@@ -23,19 +25,26 @@ import org.jetbrains.exposed.v1.core.eq
 import org.jetbrains.exposed.v1.core.inList
 import org.jetbrains.exposed.v1.core.lessEq
 import org.jetbrains.exposed.v1.jdbc.deleteWhere
+import org.jetbrains.exposed.v1.jdbc.insert
 import org.jetbrains.exposed.v1.jdbc.select
 import kotlin.time.Clock
 
 class ChallengeService(
     private val storage: FileStorage,
+    /** The current platform settings: start, end and freeze times. */
+    val settings: () -> Settings = { Settings() },
 ) : DefaultService<Int, ChallengeDAO, ChallengeRequest, ChallengeResponse>(
         dao = ChallengeDAO,
         table = ChallengeTable,
         apply = ChallengeDAO::apply,
         toDto = ChallengeDAO::toDto,
     ) {
-    /** Challenges players may see: visible and already published. */
-    private fun released(): Op<Boolean> = (ChallengeTable.isVisible eq true) and (ChallengeTable.publishAt lessEq Clock.System.now())
+    /** Challenges players may see: visible, already published, and the CTF has started. */
+    private fun released(): Op<Boolean> {
+        val startsAt = settings().startsAt
+        if (startsAt != null && Clock.System.now() < startsAt) return Op.FALSE
+        return (ChallengeTable.isVisible eq true) and (ChallengeTable.publishAt lessEq Clock.System.now())
+    }
 
     /** All challenges for admins, only released ones for everyone else; [userId] adds the caller's progress. */
     suspend fun getAll(
@@ -44,7 +53,7 @@ class ChallengeService(
     ): List<ChallengeResponse> =
         withTransaction {
             val challenges = if (includeUnreleased) ChallengeDAO.all().toList() else ChallengeDAO.find(released()).toList()
-            withStats(challenges, userId)
+            withStats(challenges, userId, admin = includeUnreleased)
         }
 
     /** Unreleased challenges are a 404 for non-admins, the same as missing ones, so their ids don't leak. */
@@ -56,24 +65,63 @@ class ChallengeService(
         withTransaction {
             val visible = if (includeUnreleased) ChallengeTable.id eq id else (ChallengeTable.id eq id) and released()
             val challenge = ChallengeDAO.find(visible).firstOrNull() ?: throw ApiException(HttpStatusCode.NotFound, "Not found")
-            withStats(listOf(challenge), userId).single()
+            withStats(listOf(challenge), userId, admin = includeUnreleased).single()
         }
 
     /**
-     * [challenges] with their current value and solver count, counted as on the scoreboard, and for [userId] whether
-     * they solved each one and how many attempts are left. Must run inside a transaction.
+     * Starts [userId]'s clock on a timed challenge (once; later calls keep the first start) and returns the challenge,
+     * now with its description. 400 for challenges without a time limit.
+     */
+    suspend fun start(
+        id: Int,
+        userId: Int,
+    ): ChallengeResponse {
+        val challenge = get(id, includeUnreleased = false, userId = userId)
+        if (challenge.timeLimit <= 0) throw ApiException(HttpStatusCode.BadRequest, "This challenge isn't timed")
+        withTransaction {
+            // The player's row lock (as for submissions) runs their starts one at a time, so the first one stands.
+            UserTable.select(UserTable.id).where { UserTable.id eq userId }.forUpdate().toList()
+            val mine = (ChallengeStartTable.userId eq userId) and (ChallengeStartTable.challengeId eq id)
+            if (ChallengeStartTable.select(ChallengeStartTable.id).where(mine).empty()) {
+                ChallengeStartTable.insert {
+                    it[ChallengeStartTable.userId] = userId
+                    it[challengeId] = id
+                }
+            }
+        }
+        return get(id, includeUnreleased = false, userId = userId)
+    }
+
+    /** [get], but a timed challenge the player hasn't started is a 404 too: its files wait for Start. */
+    suspend fun getUnlocked(
+        id: Int,
+        includeUnreleased: Boolean,
+        userId: Int?,
+    ): ChallengeResponse =
+        get(id, includeUnreleased, userId).also {
+            if (!includeUnreleased && it.timeLimit > 0 && it.startedAt == null) throw ApiException(HttpStatusCode.NotFound, "Not found")
+        }
+
+    /**
+     * [challenges] with their current value and solver count, counted as on the scoreboard (frozen for non-[admin]s
+     * like it), and for [userId] whether they solved each one, how many attempts are left and when they started it.
+     * A timed challenge's description is hidden from players until they start it. Must run inside a transaction.
      */
     private fun withStats(
         challenges: List<ChallengeDAO>,
         userId: Int?,
+        admin: Boolean,
     ): List<ChallengeResponse> {
         val ids = challenges.map { it.id.value }
         if (ids.isEmpty()) return emptyList()
 
+        val frozen = settings().freezeAt?.takeUnless { admin }?.let { SubmissionTable.submittedAt lessEq it } ?: Op.TRUE
         val solves =
             (SubmissionTable innerJoin UserTable)
                 .select(SubmissionTable.challengeId, SubmissionTable.flagId)
-                .where { (SubmissionTable.isCorrect eq true) and (SubmissionTable.challengeId inList ids) and rankedPlayers() }
+                .where {
+                    (SubmissionTable.isCorrect eq true) and (SubmissionTable.challengeId inList ids) and rankedPlayers() and frozen
+                }
                 .map { it[SubmissionTable.challengeId].value to it[SubmissionTable.flagId]?.value }
         val solversPerChallenge = solves.groupingBy { it.first }.eachCount()
         val solversPerFlag = solves.mapNotNull { it.second }.groupingBy { it }.eachCount()
@@ -93,11 +141,22 @@ class ChallengeService(
                     .groupBy({ (challengeId) -> challengeId }, { (_, correct) -> correct })
             }
 
+        val started =
+            userId?.let {
+                ChallengeStartTable
+                    .select(ChallengeStartTable.challengeId, ChallengeStartTable.startedAt)
+                    .where { (ChallengeStartTable.userId eq it) and (ChallengeStartTable.challengeId inList ids) }
+                    .associate { row -> row[ChallengeStartTable.challengeId].value to row[ChallengeStartTable.startedAt] }
+            }.orEmpty()
+
         return challenges.map { challenge ->
             val id = challenge.id.value
             val guesses = mine?.get(id).orEmpty()
             val solved = mine?.let { guesses.any { it } }
+            val locked = !admin && challenge.timeLimit > 0 && started[id] == null
             challenge.toDto().copy(
+                description = challenge.description.takeUnless { locked },
+                startedAt = started[id],
                 value = values[id] ?: 0,
                 solves = solversPerChallenge[id] ?: 0,
                 solved = solved,
@@ -140,10 +199,4 @@ class ChallengeService(
         FileTable.deleteWhere { owned }
         return keys
     }
-
-    fun getAllFlags(id: Int) = ChallengeDAO[id].flags
-
-    fun getAllSubmissions(id: Int) = ChallengeDAO[id].submissions
-
-    fun getAllHints(id: Int) = ChallengeDAO[id].hints
 }

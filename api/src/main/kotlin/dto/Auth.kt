@@ -28,6 +28,7 @@ data class LoginRequest(
     @JsonSchema.MaxLength(Limits.EMAIL_MAX)
     val login: String,
     @JsonSchema.MinLength(1)
+    @JsonSchema.MaxLength(Limits.PASSWORD_MAX)
     val password: String,
 )
 

@@ -2,7 +2,6 @@ package com.ctfp
 
 import com.ctfp.dto.AdminUserResponse
 import com.ctfp.dto.Limits
-import com.ctfp.dto.canonicalLanguageTag
 import io.ktor.client.request.bearerAuth
 import io.ktor.client.request.get
 import io.ktor.client.statement.bodyAsText
@@ -26,13 +25,6 @@ class LanguageTagTest {
         for (tag in listOf("", "e", "english", "en_US", "en-", "-en", "en-US-x-private", "en-u-ca-gregory", "12")) {
             assertFalse(pattern.matches(tag), tag)
         }
-    }
-
-    @Test
-    fun `stores tags in their conventional case`() {
-        assertEquals("zh-Hant-TW", canonicalLanguageTag("ZH-hant-tw"))
-        assertEquals("es-419", canonicalLanguageTag("ES-419"))
-        assertEquals("de-CH-1901", canonicalLanguageTag("de-ch-1901"))
     }
 
     @Test

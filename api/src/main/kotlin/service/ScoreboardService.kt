@@ -7,9 +7,11 @@ import com.ctfp.domain.model.SubmissionTable
 import com.ctfp.domain.model.UserTable
 import com.ctfp.dto.DecayFunction
 import com.ctfp.dto.ScoreboardEntry
+import com.ctfp.dto.Settings
 import org.jetbrains.exposed.v1.core.Op
 import org.jetbrains.exposed.v1.core.and
 import org.jetbrains.exposed.v1.core.eq
+import org.jetbrains.exposed.v1.core.lessEq
 import org.jetbrains.exposed.v1.core.neq
 import org.jetbrains.exposed.v1.jdbc.select
 import kotlin.math.ln
@@ -21,8 +23,13 @@ import kotlin.time.Instant
  * with the number of players who solved that flag, for everyone who solved it (dynamic scoring), never below its
  * minimum. Hidden, banned and admin accounts aren't ranked and don't count as solvers.
  */
-class ScoreboardService {
-    suspend fun get(): List<ScoreboardEntry> =
+class ScoreboardService(
+    private val settings: () -> Settings = { Settings() },
+) {
+    /** The ranking; frozen at the settings' `freezeAt` unless [live] (for admins). */
+    suspend fun get(live: Boolean = false): List<ScoreboardEntry> = compute(settings().freezeAt.takeUnless { live })
+
+    private suspend fun compute(frozenAt: Instant?): List<ScoreboardEntry> =
         withTransaction {
             val players =
                 UserTable
@@ -34,7 +41,10 @@ class ScoreboardService {
             val solves =
                 SubmissionTable
                     .select(SubmissionTable.userId, SubmissionTable.flagId, SubmissionTable.submittedAt)
-                    .where { SubmissionTable.isCorrect eq true }
+                    .where {
+                        (SubmissionTable.isCorrect eq true) and
+                            (frozenAt?.let { SubmissionTable.submittedAt lessEq it } ?: Op.TRUE)
+                    }
                     .map { Solve(it[SubmissionTable.userId].value, it[SubmissionTable.flagId]?.value, it[SubmissionTable.submittedAt]) }
                     .filter { it.userId in players }
 

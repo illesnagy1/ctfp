@@ -4,14 +4,18 @@ import com.ctfp.controller.helper.getId
 import com.ctfp.controller.helper.ifMatch
 import com.ctfp.controller.helper.mergePatchOf
 import com.ctfp.controller.helper.operation
+import com.ctfp.dto.AccountExport
+import com.ctfp.dto.DeleteAccountRequest
 import com.ctfp.dto.UserUpdateRequest
 import com.ctfp.dto.etag
 import com.ctfp.plugins.authenticated
+import com.ctfp.service.SubmissionService
 import com.ctfp.service.UserService
 import io.ktor.http.HttpHeaders
 import io.ktor.http.HttpStatusCode
 import io.ktor.http.HttpStatusCode.Companion.BadRequest
 import io.ktor.http.HttpStatusCode.Companion.Conflict
+import io.ktor.http.HttpStatusCode.Companion.Forbidden
 import io.ktor.http.HttpStatusCode.Companion.NotFound
 import io.ktor.http.HttpStatusCode.Companion.PreconditionFailed
 import io.ktor.http.HttpStatusCode.Companion.Unauthorized
@@ -30,7 +34,10 @@ import io.ktor.server.routing.route
 import kotlinx.serialization.json.JsonObject
 
 /** Public user views, plus the caller's own account under `/me`. Admin views live in [adminUser]. */
-fun Route.user(service: UserService) {
+fun Route.user(
+    service: UserService,
+    submissions: SubmissionService,
+) {
     authenticated {
         route("/users") {
             get {
@@ -39,7 +46,7 @@ fun Route.user(service: UserService) {
 
             route("/me") {
                 get {
-                    val user = service.getAdminUser(call.principal.id)
+                    val user = service.getMe(call.principal.id)
                     call.response.header(HttpHeaders.ETag, user.etag)
                     call.respond(user)
                 }.operation("getMe", Unauthorized, NotFound)
@@ -54,23 +61,21 @@ fun Route.user(service: UserService) {
                     service.patchUser(call.principal.id, call.receive<JsonObject>(), ifMatch = call.ifMatch)
                     call.respond(HttpStatusCode.NoContent)
                 }.operation("patchMe", BadRequest, Unauthorized, NotFound, Conflict, PreconditionFailed).mergePatchOf<UserUpdateRequest>()
+                // 409 while they own a team or are the last admin.
+                delete {
+                    service.deleteMe(call.principal.id, call.receive<DeleteAccountRequest>().password)
+                    call.respond(HttpStatusCode.NoContent)
+                }.operation("deleteMe", BadRequest, Unauthorized, Forbidden, NotFound, Conflict)
+                get("export") {
+                    val id = call.principal.id
+                    call.respond(AccountExport(service.getMe(id), submissions.list(id)))
+                }.operation("exportMe", Unauthorized, NotFound)
             }
 
             route("/{id}") {
                 get {
                     call.respond(service.getUser(call.getId()))
                 }.operation("getUser", BadRequest, Unauthorized, NotFound)
-
-                route("submissions") {
-                    get {
-                    }.hide()
-                    post {
-                    }.hide()
-                    put {
-                    }.hide()
-                    delete {
-                    }.hide()
-                }
             }
         }
     }

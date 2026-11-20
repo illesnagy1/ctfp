@@ -48,7 +48,8 @@
 
 <svelte:head><link rel="icon" href={favicon} /></svelte:head>
 
-<ModeWatcher />
+<!-- Its no-flash theme script is in app.html, where it gets the CSP nonce (hooks.server.ts fills it in). -->
+<ModeWatcher disableHeadScriptInjection />
 <!-- Shared by every `confirmDelete()` call. -->
 <ConfirmDeleteDialog />
 <!-- Shows `toast.success()` / `toast.error()` from form actions. -->

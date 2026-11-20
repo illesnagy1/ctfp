@@ -11,8 +11,12 @@ import io.ktor.server.metrics.micrometer.MicrometerMetrics
 import io.ktor.server.plugins.callid.CallId
 import io.ktor.server.plugins.callid.callIdMdc
 import io.ktor.server.plugins.calllogging.CallLogging
+import io.ktor.server.plugins.origin
+import io.ktor.server.request.header
 import io.ktor.server.request.path
 import io.ktor.server.response.respondText
+import io.ktor.server.routing.Route
+import io.ktor.server.routing.application
 import io.ktor.server.routing.get
 import io.ktor.server.routing.routing
 import io.micrometer.core.instrument.composite.CompositeMeterRegistry
@@ -23,6 +27,7 @@ import io.opentelemetry.api.OpenTelemetry
 import io.opentelemetry.instrumentation.jdbc.OpenTelemetryDriver
 import io.opentelemetry.instrumentation.ktor.v3_0.KtorServerTelemetry
 import io.opentelemetry.sdk.autoconfigure.AutoConfiguredOpenTelemetrySdk
+import java.security.MessageDigest
 import java.sql.SQLException
 import java.util.UUID
 
@@ -70,14 +75,13 @@ fun Application.configureMonitoring() {
     }
     install(CallLogging) {
         callIdMdc("call_id")
+        mdc("client_ip") { it.request.origin.remoteAddress }
         disableDefaultColors() // ANSI escapes would end up inside JSON messages
         filter { it.request.path() !in setOf("/metrics", "/livez", "/readyz") }
     }
 
     routing {
-        get("/metrics") {
-            call.respondText(prometheus.scrape())
-        }
+        metrics(prometheus, environment.config.propertyOrNull("metrics.token")?.getString().orEmpty())
         get("/livez") {
             call.respondText("ok")
         }
@@ -89,6 +93,22 @@ fun Application.configureMonitoring() {
                 log.warn("Readiness check failed: database unavailable", e)
                 call.respondText("database unavailable", status = HttpStatusCode.ServiceUnavailable)
             }
+        }
+    }
+}
+
+/** The metrics name routes and show load, so outside development they need [token] as a bearer token. */
+private fun Route.metrics(
+    prometheus: PrometheusMeterRegistry,
+    token: String,
+) {
+    if (token.isEmpty() && !application.developmentMode) return
+    get("/metrics") {
+        val sent = call.request.header(HttpHeaders.Authorization)?.removePrefix("Bearer ").orEmpty()
+        if (token.isNotEmpty() && !MessageDigest.isEqual(sent.toByteArray(), token.toByteArray())) {
+            call.respondText("", status = HttpStatusCode.Unauthorized)
+        } else {
+            call.respondText(prometheus.scrape())
         }
     }
 }

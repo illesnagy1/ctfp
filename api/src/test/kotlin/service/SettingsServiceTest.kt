@@ -11,6 +11,7 @@ import kotlin.test.assertEquals
 import kotlin.test.assertFailsWith
 import kotlin.test.assertFalse
 import kotlin.test.assertTrue
+import kotlin.time.Instant
 
 class SettingsServiceTest {
     private val file = createTempDirectory("settings").resolve("nested/settings.conf")
@@ -24,7 +25,15 @@ class SettingsServiceTest {
     @Test
     fun `update persists as hocon and survives a reload`() =
         runBlocking {
-            val updated = Settings(ctfName = "Test CTF", registrationOpen = false, maxTeamSize = 2)
+            val updated =
+                Settings(
+                    ctfName = "Test CTF",
+                    registrationOpen = false,
+                    maxTeamSize = 2,
+                    startsAt = Instant.parse("2026-12-01T18:00:00Z"),
+                    endsAt = Instant.parse("2026-12-03T18:00:00Z"),
+                    freezeAt = Instant.parse("2026-12-03T17:00:00Z"),
+                )
             SettingsService(file).updateSettings(updated)
 
             assertTrue("ctfName" in file.readText())

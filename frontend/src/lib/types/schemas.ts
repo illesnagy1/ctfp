@@ -7,5 +7,22 @@ export const settingsJsonSchema = {
     ctfName: { type: 'string', description: 'Shown in the page title and the header.', maxLength: 64, minLength: 1 },
     registrationOpen: { type: 'boolean', description: 'Whether new players can create accounts.' },
     maxTeamSize: { type: 'integer', description: 'The most players a team can have.', maximum: 100, minimum: 1 },
+    startsAt: {
+      type: ['string', 'null'],
+      description:
+        'When players can see challenges and submit flags, in UTC (e.g. 2026-12-01T18:00:00Z); empty: already open.',
+      format: 'date-time',
+    },
+    endsAt: {
+      type: ['string', 'null'],
+      description: 'When flags stop being accepted, in UTC; empty: never.',
+      format: 'date-time',
+    },
+    freezeAt: {
+      type: ['string', 'null'],
+      description:
+        'The public scoreboard and challenge stats only count solves made before this, in UTC; empty: always live.',
+      format: 'date-time',
+    },
   },
 } as const;

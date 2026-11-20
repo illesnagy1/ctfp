@@ -34,6 +34,10 @@ export type ChallengeResponse = {
    * Wrong guesses the caller has left; null for guests, once solved, and without a limit.
    */
   attemptsLeft?: number | null;
+  /**
+   * When the caller started this timed challenge; its time limit counts from here. Until then players get no description.
+   */
+  startedAt?: string | null;
 };
 
 /**
@@ -304,7 +308,6 @@ export type PageRequest = {
  */
 export type RegistrationCodeResponse = {
   id: number;
-  code: string;
   maxUses: number;
   createdAt: string;
   expiresAt: string;
@@ -335,6 +338,18 @@ export type Settings = {
    * The most players a team can have.
    */
   maxTeamSize?: number;
+  /**
+   * When players can see challenges and submit flags, in UTC (e.g. 2026-12-01T18:00:00Z); empty: already open.
+   */
+  startsAt?: string | null;
+  /**
+   * When flags stop being accepted, in UTC; empty: never.
+   */
+  endsAt?: string | null;
+  /**
+   * The public scoreboard and challenge stats only count solves made before this, in UTC; empty: always live.
+   */
+  freezeAt?: string | null;
 };
 
 /**
@@ -507,6 +522,21 @@ export type UserUpdatePatch = {
   website?: string | null;
   soundEnabled?: boolean;
   visibilitySettings?: string | null;
+};
+
+/**
+ * DeleteAccountRequest
+ */
+export type DeleteAccountRequest = {
+  password: string;
+};
+
+/**
+ * AccountExport
+ */
+export type AccountExport = {
+  account: AdminUserResponse;
+  submissions: Array<SubmissionResponse>;
 };
 
 /**
@@ -853,6 +883,46 @@ export type UpdateChallengeResponses = {
 
 export type UpdateChallengeResponse = UpdateChallengeResponses[keyof UpdateChallengeResponses];
 
+export type StartChallengeData = {
+  body?: never;
+  path: {
+    id: string;
+  };
+  query?: never;
+  url: '/v1/challenges/{id}/start';
+};
+
+export type StartChallengeErrors = {
+  /**
+   * Bad Request
+   */
+  400: ProblemDetails;
+  /**
+   * Unauthorized
+   */
+  401: ProblemDetails;
+  /**
+   * Not Found
+   */
+  404: ProblemDetails;
+  /**
+   * Too Many Requests
+   */
+  429: ProblemDetails;
+  /**
+   * Internal Server Error
+   */
+  500: ProblemDetails;
+};
+
+export type StartChallengeError = StartChallengeErrors[keyof StartChallengeErrors];
+
+export type StartChallengeResponses = {
+  200: ChallengeResponse;
+};
+
+export type StartChallengeResponse = StartChallengeResponses[keyof StartChallengeResponses];
+
 export type ListChallengeFilesData = {
   body?: never;
   path: {
@@ -987,6 +1057,10 @@ export type RegisterErrors = {
    * Bad Request
    */
   400: ProblemDetails;
+  /**
+   * Forbidden
+   */
+  403: ProblemDetails;
   /**
    * Conflict
    */
@@ -2926,6 +3000,52 @@ export type ListUsersResponses = {
 
 export type ListUsersResponse = ListUsersResponses[keyof ListUsersResponses];
 
+export type DeleteMeData = {
+  body?: DeleteAccountRequest;
+  path?: never;
+  query?: never;
+  url: '/v1/users/me';
+};
+
+export type DeleteMeErrors = {
+  /**
+   * Bad Request
+   */
+  400: ProblemDetails;
+  /**
+   * Unauthorized
+   */
+  401: ProblemDetails;
+  /**
+   * Forbidden
+   */
+  403: ProblemDetails;
+  /**
+   * Not Found
+   */
+  404: ProblemDetails;
+  /**
+   * Conflict
+   */
+  409: ProblemDetails;
+  /**
+   * Too Many Requests
+   */
+  429: ProblemDetails;
+  /**
+   * Internal Server Error
+   */
+  500: ProblemDetails;
+};
+
+export type DeleteMeError = DeleteMeErrors[keyof DeleteMeErrors];
+
+export type DeleteMeResponses = {
+  204: void;
+};
+
+export type DeleteMeResponse = DeleteMeResponses[keyof DeleteMeResponses];
+
 export type GetMeData = {
   body?: never;
   path?: never;
@@ -3051,6 +3171,40 @@ export type UpdateMeResponses = {
 };
 
 export type UpdateMeResponse = UpdateMeResponses[keyof UpdateMeResponses];
+
+export type ExportMeData = {
+  body?: never;
+  path?: never;
+  query?: never;
+  url: '/v1/users/me/export';
+};
+
+export type ExportMeErrors = {
+  /**
+   * Unauthorized
+   */
+  401: ProblemDetails;
+  /**
+   * Not Found
+   */
+  404: ProblemDetails;
+  /**
+   * Too Many Requests
+   */
+  429: ProblemDetails;
+  /**
+   * Internal Server Error
+   */
+  500: ProblemDetails;
+};
+
+export type ExportMeError = ExportMeErrors[keyof ExportMeErrors];
+
+export type ExportMeResponses = {
+  200: AccountExport;
+};
+
+export type ExportMeResponse = ExportMeResponses[keyof ExportMeResponses];
 
 export type GetUserData = {
   body?: never;

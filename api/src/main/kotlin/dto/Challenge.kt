@@ -43,6 +43,10 @@ data class ChallengeResponse(
     val solved: Boolean? = null,
     @JsonSchema.Description("Wrong guesses the caller has left; null for guests, once solved, and without a limit.")
     val attemptsLeft: Int? = null,
+    @JsonSchema.Description(
+        "When the caller started this timed challenge; its time limit counts from here. Until then players get no description.",
+    )
+    val startedAt: Instant? = null,
 )
 
 fun ChallengeDAO.apply(dto: ChallengeRequest) {

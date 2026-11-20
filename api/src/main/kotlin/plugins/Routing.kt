@@ -19,6 +19,7 @@ import com.ctfp.controller.settings
 import com.ctfp.controller.submission
 import com.ctfp.controller.team
 import com.ctfp.controller.user
+import com.ctfp.service.AdminUserService
 import com.ctfp.service.AuthService
 import com.ctfp.service.ChallengeService
 import com.ctfp.service.EmailTemplateService
@@ -55,13 +56,15 @@ fun Application.configureRouting() {
         val userService = UserService(hasher)
         val uploads = environment.config.uploadsConfig()
         val storage = LocalFileStorage(Path(uploads.dir))
-        val challengeService = ChallengeService(storage)
+        val settingsService = SettingsService(Path(environment.config.settingsFileConfig().file))
+        val challengeService = ChallengeService(storage, settingsService::getSettings)
+        val submissionService = SubmissionService(challengeService)
         val mail = environment.config.mailConfig()
         val passwordResets = PasswordResetService(hasher, mailSender(mail), mail.publicUrl, this@configureRouting)
 
         route("v1") {
             challenge(challengeService)
-            auth(AuthService(environment.config.jwtConfig(), hasher), passwordResets)
+            auth(AuthService(environment.config.jwtConfig(), hasher, settingsService), passwordResets)
             emailTemplate(EmailTemplateService())
             file(FileService(storage, challengeService, uploads.maxBytes))
             flag(FlagService())
@@ -69,12 +72,12 @@ fun Application.configureRouting() {
             notification(NotificationService())
             page(PageService())
             registrationCode(RegistrationCodeService())
-            settings(SettingsService(Path(environment.config.settingsFileConfig().file)))
-            submission(SubmissionService(challengeService))
-            scoreboard(ScoreboardService())
+            settings(settingsService)
+            submission(submissionService)
+            scoreboard(ScoreboardService(settingsService::getSettings))
             team(TeamService())
-            user(userService)
-            adminUser(userService)
+            user(userService, submissionService)
+            adminUser(AdminUserService(hasher))
         }
     }
 }

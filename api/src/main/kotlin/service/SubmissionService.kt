@@ -9,9 +9,11 @@ import com.ctfp.domain.model.ChallengeTable
 import com.ctfp.domain.model.FlagTable
 import com.ctfp.domain.model.SubmissionTable
 import com.ctfp.domain.model.UserTable
+import com.ctfp.dto.ChallengeResponse
 import com.ctfp.dto.Limits
 import com.ctfp.dto.SubmissionResponse
 import com.ctfp.dto.SubmissionResult
+import com.ctfp.service.helper.audit
 import com.ctfp.service.helper.findUser
 import io.ktor.http.HttpStatusCode
 import org.jetbrains.exposed.v1.core.SortOrder
@@ -19,13 +21,18 @@ import org.jetbrains.exposed.v1.core.and
 import org.jetbrains.exposed.v1.core.eq
 import org.jetbrains.exposed.v1.jdbc.select
 import org.jetbrains.exposed.v1.jdbc.selectAll
+import org.slf4j.event.Level
+import kotlin.time.Clock
+import kotlin.time.Duration.Companion.milliseconds
+import kotlin.time.Duration.Companion.seconds
 
 class SubmissionService(
     private val challenges: ChallengeService,
 ) {
     /**
      * Checks [submitted] against the challenge's flags and records the guess. Hidden and unpublished challenges are a
-     * 404 for non-admins, as when viewing them. Not yet enforced: the challenge's time limit, and team solves.
+     * 404 for non-admins, as when viewing them; after the CTF ends, and outside a timed challenge's window, a 403.
+     * Not yet enforced: team solves.
      * [ipAddress] and [userAgent] are kept with the guess, the user agent cut to [Limits.USER_AGENT_MAX].
      */
     suspend fun submit(
@@ -36,7 +43,8 @@ class SubmissionService(
         ipAddress: String? = null,
         userAgent: String? = null,
     ): SubmissionResult {
-        challenges.get(challengeId, includeUnreleased = isAdmin)
+        val visible = challenges.get(challengeId, includeUnreleased = isAdmin, userId = userId)
+        if (!isAdmin) ensureOpen(visible)
         val flag = validFlag(submitted)
 
         return withTransaction {
@@ -68,6 +76,16 @@ class SubmissionService(
                 attemptsLeft = if (matched == null && limit != null) limit - wrong - 1 else null,
             )
         }
+    }
+
+    /** 403 once the CTF is over, and for a timed challenge before the player starts it or once their time is up. */
+    private fun ensureOpen(challenge: ChallengeResponse) {
+        val now = Clock.System.now()
+        val endsAt = challenges.settings().endsAt
+        if (endsAt != null && now >= endsAt) throw ApiException(HttpStatusCode.Forbidden, "The CTF is over")
+        if (challenge.timeLimit <= 0) return
+        val startedAt = challenge.startedAt ?: throw ApiException(HttpStatusCode.Forbidden, "Start the challenge first")
+        if (now > startedAt + challenge.timeLimit.seconds) throw ApiException(HttpStatusCode.Forbidden, "Time is up for this challenge")
     }
 
     /** [submitted] trimmed, since players paste with whitespace; 400 if that leaves nothing. */
@@ -128,7 +146,36 @@ class SubmissionService(
 
     private fun FlagDAO.matches(submitted: String): Boolean {
         val options = if (isCaseSensitive) emptySet() else setOf(RegexOption.IGNORE_CASE)
-        // Patterns are checked when saved; a broken one just never matches.
-        return runCatching { Regex(pattern, options).matches(submitted) }.getOrDefault(false)
+        // Patterns are checked when saved; a broken one just never matches, nor does one that backtracks too long.
+        val input = Deadline(submitted, System.nanoTime() + MATCH_TIMEOUT.inWholeNanoseconds)
+        return runCatching { Regex(pattern, options).matches(input) }
+            .onFailure { if (it is MatchTimeout) audit("flag_pattern_timeout", "flag" to id.value, level = Level.WARN) }
+            .getOrDefault(false)
     }
+
+    private companion object {
+        val MATCH_TIMEOUT = 100.milliseconds
+    }
+}
+
+private class MatchTimeout : RuntimeException()
+
+/** [text] that throws [MatchTimeout] once [deadline] (System.nanoTime) passes; the regex engine reads it char by char. */
+private class Deadline(
+    private val text: CharSequence,
+    private val deadline: Long,
+) : CharSequence {
+    override val length get() = text.length
+
+    override fun get(index: Int): Char {
+        if (System.nanoTime() > deadline) throw MatchTimeout()
+        return text[index]
+    }
+
+    override fun subSequence(
+        startIndex: Int,
+        endIndex: Int,
+    ): CharSequence = Deadline(text.subSequence(startIndex, endIndex), deadline)
+
+    override fun toString() = text.toString()
 }

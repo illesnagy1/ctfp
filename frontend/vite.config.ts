@@ -24,6 +24,25 @@ export default defineConfig({
       // Public URL, baked in at build time; trusted origin for CSRF checks on form actions.
       // Unset: derived from the Host header with https assumed, so plain-http form posts get a 403.
       paths: { origin: process.env.ORIGIN || undefined },
+      // Nonces for SSR pages, hashes for prerendered ones; the nonce reaches app.html's theme script too.
+      // Inline styles stay allowed: components (bits-ui, the editor) set style attributes.
+      csp: {
+        mode: 'auto',
+        directives: {
+          'default-src': ['self'],
+          'script-src': ['self'],
+          'style-src': ['self', 'unsafe-inline'],
+          // Challenge descriptions may embed images from other sites (sanitized markdown allows any https image).
+          'img-src': ['self', 'data:', 'https:'],
+          'font-src': ['self', 'data:'],
+          'connect-src': ['self'],
+          'object-src': ['none'],
+          'base-uri': ['none'],
+          'form-action': ['self'],
+          // Nobody may frame the site: clickjacking on flag submission and admin actions.
+          'frame-ancestors': ['none'],
+        },
+      },
     }),
     paraglideVitePlugin({ project: './project.inlang', outdir: './src/lib/paraglide' }),
   ],

@@ -48,6 +48,12 @@ class PasswordHasher(
             }.getOrDefault(false)
         }
 
+    /** Whether [encoded] was made with other parameters than these, so it should be replaced after a successful login. */
+    fun needsRehash(encoded: String): Boolean =
+        runCatching { encoded.toArgon2id() }
+            .map { it.memoryKib != memoryKib || it.iterations != iterations || it.parallelism != parallelism }
+            .getOrDefault(true)
+
     private fun derive(
         password: String,
         salt: ByteArray,

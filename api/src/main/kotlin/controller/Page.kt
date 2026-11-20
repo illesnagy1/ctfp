@@ -34,10 +34,6 @@ fun Route.page(service: PageService) {
 
                 call.respond(HttpStatusCode.Created)
             }.operation("createPage", BadRequest, Unauthorized, Forbidden, Conflict)
-            put {
-            }.hide()
-            delete {
-            }.hide()
             route("/{id}") {
                 get {
                     val id = call.getId()

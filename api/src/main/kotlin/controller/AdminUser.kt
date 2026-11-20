@@ -10,7 +10,7 @@ import com.ctfp.dto.AdminUserUpdateRequest
 import com.ctfp.dto.etag
 import com.ctfp.plugins.adminOnly
 import com.ctfp.service.ApiException
-import com.ctfp.service.UserService
+import com.ctfp.service.AdminUserService
 import io.ktor.http.HttpHeaders
 import io.ktor.http.HttpStatusCode
 import io.ktor.http.HttpStatusCode.Companion.BadRequest
@@ -34,7 +34,7 @@ import io.ktor.server.routing.route
 import kotlinx.serialization.json.JsonObject
 
 /** Full user views and management, admins only. */
-fun Route.adminUser(service: UserService) {
+fun Route.adminUser(service: AdminUserService) {
     adminOnly {
         route("/admin/users") {
             get {
@@ -61,8 +61,6 @@ fun Route.adminUser(service: UserService) {
 
                 call.respond(HttpStatusCode.NoContent)
             }.operation("patchUsers", BadRequest, Unauthorized, Forbidden, NotFound, Conflict).mergePatchesOf<AdminUserUpdateRequest>()
-            delete {
-            }.hide()
 
             route("/{id}") {
                 get {

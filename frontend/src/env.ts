@@ -5,4 +5,13 @@ export const variables = defineEnvVars({
   API_URL: { schema: (input) => input || 'http://localhost:8080' },
   // Session store. Unset or empty keeps sessions in memory (see src/lib/server/session.ts).
   REDIS_URL: { schema: (input) => input || undefined },
+  // Minutes without a request after which a session ends (OWASP idle timeout); it never outlives its token either.
+  SESSION_IDLE_MINUTES: {
+    schema: (input) => {
+      const minutes = Number(input || 120);
+      if (!Number.isInteger(minutes) || minutes <= 0)
+        throw new Error('SESSION_IDLE_MINUTES must be a positive integer');
+      return minutes;
+    },
+  },
 });

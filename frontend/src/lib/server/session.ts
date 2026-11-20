@@ -1,5 +1,5 @@
 import { dev } from '$app/env';
-import { REDIS_URL } from '$app/env/private';
+import { REDIS_URL, SESSION_IDLE_MINUTES } from '$app/env/private';
 import type { Cookies } from '@sveltejs/kit';
 import { createClient } from 'redis';
 import { z } from 'zod';
@@ -22,33 +22,41 @@ export type Session = z.infer<typeof sessionSchema>;
 
 interface SessionStore {
   get(key: string): Promise<Session | undefined>;
+  /** Stores [session] until [ttlSeconds] from now. */
   set(key: string, session: Session, ttlSeconds: number): Promise<void>;
+  /** Moves an existing session's end to [ttlSeconds] from now. */
+  touch(key: string, ttlSeconds: number): Promise<void>;
   delete(key: string): Promise<void>;
 }
 
 class MemoryStore implements SessionStore {
-  private readonly sessions = new Map<string, Session>();
+  private readonly sessions = new Map<string, { session: Session; until: number }>();
 
   constructor() {
     setInterval(() => {
       const now = Date.now() / 1000;
-      for (const [key, session] of this.sessions) {
-        if (session.expiresAt <= now) this.sessions.delete(key);
+      for (const [key, { until }] of this.sessions) {
+        if (until <= now) this.sessions.delete(key);
       }
     }, 60_000).unref?.();
   }
 
   async get(key: string) {
-    const session = this.sessions.get(key);
-    if (session && session.expiresAt <= Date.now() / 1000) {
+    const entry = this.sessions.get(key);
+    if (entry && entry.until <= Date.now() / 1000) {
       this.sessions.delete(key);
       return undefined;
     }
-    return session;
+    return entry?.session;
   }
 
-  async set(key: string, session: Session) {
-    this.sessions.set(key, session);
+  async set(key: string, session: Session, ttlSeconds: number) {
+    this.sessions.set(key, { session, until: Date.now() / 1000 + ttlSeconds });
+  }
+
+  async touch(key: string, ttlSeconds: number) {
+    const entry = this.sessions.get(key);
+    if (entry) entry.until = Date.now() / 1000 + ttlSeconds;
   }
 
   async delete(key: string) {
@@ -80,6 +88,11 @@ class RedisStore implements SessionStore {
     await this.client.set(`session:${key}`, JSON.stringify(session), { expiration: { type: 'EX', value: ttlSeconds } });
   }
 
+  async touch(key: string, ttlSeconds: number) {
+    await this.ready;
+    await this.client.expire(`session:${key}`, ttlSeconds);
+  }
+
   async delete(key: string) {
     await this.ready;
     await this.client.del(`session:${key}`);
@@ -90,7 +103,14 @@ class RedisStore implements SessionStore {
 const globalStore = globalThis as typeof globalThis & { ctfpSessionStore?: SessionStore };
 const store = (globalStore.ctfpSessionStore ??= REDIS_URL ? new RedisStore(REDIS_URL) : new MemoryStore());
 
-export const SESSION_COOKIE = 'session';
+// `__Host-`: the browser only accepts it over HTTPS, for this exact host and path `/`, so a subdomain or plain-HTTP
+// page can't plant or overwrite it (session fixation). Dev runs on plain HTTP, where the prefix isn't allowed.
+export const SESSION_COOKIE = dev ? 'session' : '__Host-session';
+
+/** Seconds [session] may stay unused: the idle timeout, but never past its token's expiry. */
+function ttlFor(session: Session) {
+  return Math.min(SESSION_IDLE_MINUTES * 60, Math.floor(session.expiresAt - Date.now() / 1000));
+}
 
 /** Sessions are stored under a hash of the cookie value, so a leaked store dump can't be replayed as cookies. */
 async function storeKey(sessionId: string) {
@@ -99,11 +119,14 @@ async function storeKey(sessionId: string) {
 }
 
 export async function createSession(cookies: Cookies, session: Session) {
+  // The cookie lasts as long as the token; the store entry ends sooner when idle (see getSession).
   const ttlSeconds = Math.floor(session.expiresAt - Date.now() / 1000);
   if (ttlSeconds <= 0) return;
 
+  // A new login replaces the browser's previous session instead of leaving it valid in the store.
+  await deleteSession(cookies);
   const sessionId = Buffer.from(crypto.getRandomValues(new Uint8Array(32))).toString('base64url');
-  await store.set(await storeKey(sessionId), session, ttlSeconds);
+  await store.set(await storeKey(sessionId), session, ttlFor(session));
 
   cookies.set(SESSION_COOKIE, sessionId, {
     path: '/',
@@ -114,8 +137,12 @@ export async function createSession(cookies: Cookies, session: Session) {
   });
 }
 
+/** The session for a cookie value, if it exists and hasn't been idle too long; each use restarts the idle timer. */
 export async function getSession(sessionId: string): Promise<Session | undefined> {
-  return store.get(await storeKey(sessionId));
+  const key = await storeKey(sessionId);
+  const session = await store.get(key);
+  if (session) await store.touch(key, ttlFor(session));
+  return session;
 }
 
 export async function deleteSession(cookies: Cookies) {

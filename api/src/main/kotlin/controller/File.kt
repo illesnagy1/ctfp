@@ -34,7 +34,7 @@ fun Route.file(service: FileService) {
         optionallyAuthenticated {
             // Same visibility as the challenge itself.
             get {
-                call.respond(service.getChallengeFiles(call.getId(), includeUnreleased = call.principalOrNull.isAdmin))
+                call.respond(service.getChallengeFiles(call.getId(), call.principalOrNull.isAdmin, call.principalOrNull?.id))
             }.operation("listChallengeFiles", BadRequest, NotFound)
         }
         adminOnly {
@@ -67,7 +67,7 @@ fun Route.file(service: FileService) {
     route("/files/{id}") {
         optionallyAuthenticated {
             get("/download") {
-                val download = service.download(call.getId(), includeUnreleased = call.principalOrNull.isAdmin)
+                val download = service.download(call.getId(), call.principalOrNull.isAdmin, call.principalOrNull?.id)
 
                 // Always a download, never rendered: an uploaded .html or .svg can't run script on our origin.
                 call.response.header(

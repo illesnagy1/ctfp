@@ -34,10 +34,6 @@ fun Route.emailTemplate(service: EmailTemplateService) {
 
                 call.respond(HttpStatusCode.Created)
             }.operation("createEmailTemplate", BadRequest, Unauthorized, Forbidden, Conflict)
-            put {
-            }.hide()
-            delete {
-            }.hide()
             route("/{id}") {
                 get {
                     val id = call.getId()

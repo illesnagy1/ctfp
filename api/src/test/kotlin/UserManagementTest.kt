@@ -2,6 +2,7 @@ package com.ctfp
 
 import com.ctfp.domain.dao.UserDAO
 import com.ctfp.domain.db.withTransaction
+import com.ctfp.dto.AccountExport
 import com.ctfp.dto.AdminUserResponse
 import com.ctfp.dto.UserResponse
 import io.ktor.client.statement.bodyAsText
@@ -150,7 +151,7 @@ class UserManagementTest {
         }
 
     @Test
-    fun `a banned admin's token loses admin rights`() =
+    fun `a banned admin's token stops working`() =
         testApplication {
             configure()
             startApplication()
@@ -158,6 +159,39 @@ class UserManagementTest {
             assertEquals(HttpStatusCode.OK, call(HttpMethod.Get, "/v1/admin/users", token).status)
 
             withTransaction { UserDAO[userId("banned-admin")].isBanned = true }
-            assertEquals(HttpStatusCode.Forbidden, call(HttpMethod.Get, "/v1/admin/users", token).status)
+            assertEquals(HttpStatusCode.Unauthorized, call(HttpMethod.Get, "/v1/admin/users", token).status)
+        }
+
+    @Test
+    fun `a banned user's token is rejected`() =
+        testApplication {
+            configure()
+            startApplication()
+            val token = register("banned-player")
+            assertEquals(HttpStatusCode.OK, call(HttpMethod.Get, "/v1/users/me", token).status)
+
+            withTransaction { UserDAO[userId("banned-player")].isBanned = true }
+            assertEquals(HttpStatusCode.Unauthorized, call(HttpMethod.Get, "/v1/users/me", token).status)
+        }
+
+    @Test
+    fun `players export and delete their own account`() =
+        testApplication {
+            configure()
+            startApplication()
+            val admin = registerAdmin("delete-admin")
+            val token = register("delete-me")
+            val id = challengeWithFlag(admin, "delete-me-challenge", """{"pattern":"delete-flag","baseValue":1}""")
+            call(HttpMethod.Post, "/v1/challenges/$id/submissions", token, """{"flag":"delete-flag"}""")
+
+            val export = Json.decodeFromString<AccountExport>(call(HttpMethod.Get, "/v1/users/me/export", token).bodyAsText())
+            assertEquals("delete-me", export.account.username)
+            assertEquals(1, export.submissions.size)
+
+            val wrong = call(HttpMethod.Delete, "/v1/users/me", token, """{"password":"not-the-password"}""")
+            assertEquals(HttpStatusCode.Forbidden, wrong.status)
+            val deleted = call(HttpMethod.Delete, "/v1/users/me", token, """{"password":"correct-horse"}""")
+            assertEquals(HttpStatusCode.NoContent, deleted.status)
+            assertEquals(HttpStatusCode.Unauthorized, call(HttpMethod.Get, "/v1/users/me", token).status)
         }
 }

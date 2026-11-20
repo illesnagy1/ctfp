@@ -4,6 +4,7 @@ import com.ctfp.controller.helper.getId
 import com.ctfp.controller.helper.operation
 import com.ctfp.dto.ChallengeRequest
 import com.ctfp.plugins.adminOnly
+import com.ctfp.plugins.authenticated
 import com.ctfp.plugins.isAdmin
 import com.ctfp.plugins.optionallyAuthenticated
 import com.ctfp.service.ChallengeService
@@ -13,6 +14,7 @@ import io.ktor.http.HttpStatusCode.Companion.Conflict
 import io.ktor.http.HttpStatusCode.Companion.Forbidden
 import io.ktor.http.HttpStatusCode.Companion.NotFound
 import io.ktor.http.HttpStatusCode.Companion.Unauthorized
+import io.ktor.server.auth.principal
 import io.ktor.server.auth.principalOrNull
 import io.ktor.server.request.receive
 import io.ktor.server.response.respond
@@ -62,6 +64,12 @@ fun Route.challenge(service: ChallengeService) {
                     call.respond(challenge)
                 }.operation("getChallenge", BadRequest, NotFound)
             }
+            authenticated {
+                // Starts the caller's clock on a timed challenge; the description and files unlock.
+                post("start") {
+                    call.respond(service.start(call.getId(), call.principal.id))
+                }.operation("startChallenge", BadRequest, Unauthorized, NotFound)
+            }
             adminOnly {
                 put {
                     val id = call.getId()
@@ -76,17 +84,6 @@ fun Route.challenge(service: ChallengeService) {
 
                     call.respond(HttpStatusCode.NoContent)
                 }.operation("deleteChallenge", BadRequest, Unauthorized, Forbidden, NotFound)
-            }
-
-            route("hints") {
-                get {
-                }.hide()
-                post {
-                }.hide()
-                put {
-                }.hide()
-                delete {
-                }.hide()
             }
         }
     }

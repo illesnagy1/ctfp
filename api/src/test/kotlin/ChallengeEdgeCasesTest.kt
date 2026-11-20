@@ -4,6 +4,7 @@ import com.ctfp.domain.dao.ChallengeDAO
 import com.ctfp.domain.db.withTransaction
 import com.ctfp.dto.ChallengeResponse
 import com.ctfp.dto.FlagResponse
+import com.ctfp.dto.SubmissionResult
 import io.ktor.client.statement.bodyAsText
 import io.ktor.http.HttpMethod
 import io.ktor.http.HttpStatusCode
@@ -12,6 +13,8 @@ import kotlinx.serialization.json.Json
 import kotlin.test.Test
 import kotlin.test.assertEquals
 import kotlin.test.assertTrue
+import kotlin.time.Duration.Companion.seconds
+import kotlin.time.TimeSource
 
 /** Challenge and flag routes beyond the happy paths. The embedded database is shared, so names are unique per test. */
 class ChallengeEdgeCasesTest {
@@ -113,5 +116,21 @@ class ChallengeEdgeCasesTest {
             for ((case, body) in invalid) {
                 assertEquals(HttpStatusCode.BadRequest, call(HttpMethod.Post, "/v1/challenges/$challenge/flags", admin, body).status, case)
             }
+        }
+
+    @Test
+    fun `a catastrophically backtracking flag pattern gives up instead of hanging`() =
+        testApplication {
+            configure()
+            startApplication()
+            val admin = registerAdmin("edge-redos-admin")
+            val player = register("edge-redos-player")
+            val id = challengeWithFlag(admin, "edge-redos", """{"pattern":"(a+)+b","baseValue":1}""")
+
+            val started = TimeSource.Monotonic.markNow()
+            val response = call(HttpMethod.Post, "/v1/challenges/$id/submissions", player, """{"flag":"${"a".repeat(64)}"}""")
+            assertEquals(HttpStatusCode.OK, response.status)
+            assertEquals(SubmissionResult(correct = false), Json.decodeFromString<SubmissionResult>(response.bodyAsText()))
+            assertTrue(started.elapsedNow() < 5.seconds)
         }
 }

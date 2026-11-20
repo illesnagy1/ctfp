@@ -15,6 +15,8 @@ data class JwtConfig(
     val ttlHours: Long,
 ) {
     val ttl: Duration get() = ttlHours.hours
+
+    override fun toString() = "JwtConfig(issuer=$issuer, audience=$audience, realm=$realm, ttlHours=$ttlHours)"
 }
 
 @Serializable
@@ -23,7 +25,9 @@ data class PostgresConfig(
     val url: String,
     val user: String,
     val password: String,
-)
+) {
+    override fun toString() = "PostgresConfig(embedded=$embedded, url=$url, user=$user)"
+}
 
 @Serializable
 data class SettingsFileConfig(

@@ -8,6 +8,7 @@ import com.ctfp.service.ApiException
 import io.ktor.http.HttpStatusCode
 import io.ktor.openapi.JsonSchema
 import kotlinx.serialization.Serializable
+import java.util.Locale
 import kotlin.time.Instant
 
 /** Fields a user may change on their own account. */
@@ -18,6 +19,7 @@ interface UserProfileFields {
     val country: String?
     val website: String?
     val soundEnabled: Boolean
+    @JsonSchema.MaxLength(Limits.VISIBILITY_SETTINGS_MAX)
     val visibilitySettings: String?
 }
 
@@ -50,6 +52,7 @@ data class UserUpdateRequest(
     @JsonSchema.MaxLength(Limits.SHORT_TEXT_MAX)
     override val website: String?,
     override val soundEnabled: Boolean = true,
+    @JsonSchema.MaxLength(Limits.VISIBILITY_SETTINGS_MAX)
     override val visibilitySettings: String?,
 ) : UserProfileFields
 
@@ -78,6 +81,7 @@ data class AdminUserUpdateRequest(
     override val isHidden: Boolean = false,
     override val isBanned: Boolean = false,
     override val soundEnabled: Boolean = true,
+    @JsonSchema.MaxLength(Limits.VISIBILITY_SETTINGS_MAX)
     override val visibilitySettings: String?,
 ) : AdminUserFields
 
@@ -110,6 +114,7 @@ data class AdminUserCreateRequest(
     override val isHidden: Boolean = false,
     override val isBanned: Boolean = false,
     override val soundEnabled: Boolean = true,
+    @JsonSchema.MaxLength(Limits.VISIBILITY_SETTINGS_MAX)
     override val visibilitySettings: String?,
 ) : AdminUserFields
 
@@ -139,6 +144,7 @@ data class AdminUserResponse(
     val isBanned: Boolean = false,
     val totpEnabled: Boolean = false,
     val soundEnabled: Boolean = true,
+    @JsonSchema.MaxLength(Limits.VISIBILITY_SETTINGS_MAX)
     val visibilitySettings: String?,
     val createdAt: Instant,
     val updatedAt: Instant,
@@ -185,7 +191,7 @@ fun UserDAO.applyProfile(dto: UserProfileFields) {
     version += 1
     username = dto.username
     email = dto.email.lowercase()
-    language = dto.language?.let(::canonicalLanguageTag)
+    language = dto.language?.let { Locale.forLanguageTag(it).toLanguageTag() } // canonical BCP 47, e.g. pt-br → pt-BR
     country = dto.country
     website = dto.website
     soundEnabled = dto.soundEnabled
@@ -234,3 +240,18 @@ fun UserDAO.toAdminDto() =
         updatedAt = updatedAt,
         version = version,
     )
+
+/** Everything stored about the caller (GDPR art. 15/20): the account and their flag submissions. */
+@Serializable
+data class AccountExport(
+    val account: AdminUserResponse,
+    val submissions: List<SubmissionResponse>,
+)
+
+/** Deleting the account needs the password, so a stolen session alone can't. */
+@Serializable
+data class DeleteAccountRequest(
+    @JsonSchema.MinLength(1)
+    @JsonSchema.MaxLength(Limits.PASSWORD_MAX)
+    val password: String,
+)

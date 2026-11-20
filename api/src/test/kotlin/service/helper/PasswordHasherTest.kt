@@ -112,4 +112,12 @@ class PasswordHasherTest {
                 assertFalse(hasher.verify("hunter2", it), it)
             }
         }
+
+    @Test
+    fun `hashes with other parameters need rehashing`() =
+        runBlocking {
+            assertFalse(hasher.needsRehash(hasher.hash("hunter2")))
+            assertTrue(hasher.needsRehash(REFERENCE))
+            assertTrue(hasher.needsRehash("not a hash"))
+        }
 }

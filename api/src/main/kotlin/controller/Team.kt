@@ -34,10 +34,6 @@ fun Route.team(service: TeamService) {
 
                 call.respond(HttpStatusCode.Created)
             }.operation("createTeam", BadRequest, Unauthorized, Forbidden, Conflict)
-            put {
-            }.hide()
-            delete {
-            }.hide()
             route("/{id}") {
                 get {
                     val id = call.getId()
@@ -58,28 +54,6 @@ fun Route.team(service: TeamService) {
 
                     call.respond(HttpStatusCode.NoContent)
                 }.operation("deleteTeam", BadRequest, Unauthorized, Forbidden, NotFound)
-
-                route("/submissions") {
-                    get {
-                    }.hide()
-                    post {
-                    }.hide()
-                    put {
-                    }.hide()
-                    delete {
-                    }.hide()
-                }
-
-                route("users") {
-                    get {
-                    }.hide()
-                    post {
-                    }.hide()
-                    put {
-                    }.hide()
-                    delete {
-                    }.hide()
-                }
             }
         }
     }

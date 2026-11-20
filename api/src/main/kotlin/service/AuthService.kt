@@ -15,16 +15,20 @@ import com.ctfp.dto.LoginRequest
 import com.ctfp.dto.RegisterRequest
 import com.ctfp.dto.toAuthUser
 import com.ctfp.service.helper.PasswordHasher
+import com.ctfp.service.helper.audit
 import com.ctfp.service.helper.ensureAvailable
+import com.ctfp.service.helper.sha256Hex
 import io.ktor.http.HttpStatusCode
 import org.jetbrains.exposed.v1.core.eq
 import org.jetbrains.exposed.v1.core.or
-import java.util.Date
+import org.slf4j.event.Level
 import kotlin.time.Clock
+import java.util.Date
 
 class AuthService(
     private val jwt: JwtConfig,
     private val hasher: PasswordHasher,
+    private val settings: SettingsService,
 ) {
     private val algorithm = Algorithm.HMAC256(jwt.secret)
 
@@ -32,6 +36,8 @@ class AuthService(
     private var dummyHash: String? = null
 
     suspend fun register(request: RegisterRequest): AuthResponse {
+        if (!settings.getSettings().registrationOpen) throw ApiException(HttpStatusCode.Forbidden, "Registration is closed")
+
         val username = request.username
         val email = request.email.lowercase()
 
@@ -52,6 +58,7 @@ class AuthService(
                         this.registrationCode = code
                     }.toAuthUser()
             }
+        audit("user_created", "user" to user.id, "username" to user.username, "code" to request.registrationCode?.isNotBlank())
 
         return issue(user)
     }
@@ -68,17 +75,26 @@ class AuthService(
 
         if (user == null) {
             hasher.verify(request.password, dummyHash ?: hasher.hash("dummy").also { dummyHash = it })
+            audit("authn_login_fail", "login" to login, "reason" to "unknown user", level = Level.WARN)
             throw ApiException(HttpStatusCode.Unauthorized, "Invalid username or password")
         }
 
         val (authUser, passwordHash, isBanned) = user
         if (!hasher.verify(request.password, passwordHash)) {
+            audit("authn_login_fail", "user" to authUser.id, "reason" to "wrong password", level = Level.WARN)
             throw ApiException(HttpStatusCode.Unauthorized, "Invalid username or password")
         }
         if (isBanned) {
+            audit("authn_login_fail", "user" to authUser.id, "reason" to "banned", level = Level.WARN)
             throw ApiException(HttpStatusCode.Forbidden, "This account is banned")
         }
+        // Hashes made before the work factor was raised are upgraded while the password is at hand.
+        if (hasher.needsRehash(passwordHash)) {
+            val upgraded = hasher.hash(request.password)
+            withTransaction { UserDAO[authUser.id].passwordHash = upgraded }
+        }
 
+        audit("authn_login_success", "user" to authUser.id)
         return issue(authUser)
     }
 
@@ -109,7 +125,7 @@ class AuthService(
 
     private fun findUsableCode(code: String): RegistrationCodeDAO {
         // Locked, so parallel registrations count each other's uses instead of all passing the maxUses check.
-        val registrationCode = RegistrationCodeDAO.find { RegistrationCodeTable.code eq code }.forUpdate().firstOrNull()
+        val registrationCode = RegistrationCodeDAO.find { RegistrationCodeTable.code eq sha256Hex(code) }.forUpdate().firstOrNull()
         if (
             registrationCode == null ||
             registrationCode.expiresAt < Clock.System.now() ||

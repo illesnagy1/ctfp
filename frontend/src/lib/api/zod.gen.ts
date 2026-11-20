@@ -20,6 +20,7 @@ export const zChallengeResponse = z.object({
   solves: z.int().optional(),
   solved: z.boolean().nullish(),
   attemptsLeft: z.int().nullish(),
+  startedAt: z.iso.datetime().nullish(),
 });
 
 /**
@@ -72,7 +73,7 @@ export const zFileResponse = z.object({
  */
 export const zLoginRequest = z.object({
   login: z.string().min(1).max(255),
-  password: z.string().min(1),
+  password: z.string().min(1).max(128),
 });
 
 /**
@@ -253,7 +254,6 @@ export const zPageRequest = z.object({
  */
 export const zRegistrationCodeResponse = z.object({
   id: z.int(),
-  code: z.string(),
   maxUses: z.int(),
   createdAt: z.iso.datetime(),
   expiresAt: z.iso.datetime(),
@@ -275,6 +275,9 @@ export const zSettings = z.object({
   ctfName: z.string().min(1).max(64).optional(),
   registrationOpen: z.boolean().optional(),
   maxTeamSize: z.int().gte(1).lte(100).optional(),
+  startsAt: z.iso.datetime().nullish(),
+  endsAt: z.iso.datetime().nullish(),
+  freezeAt: z.iso.datetime().nullish(),
 });
 
 /**
@@ -397,7 +400,7 @@ export const zAdminUserResponse = z.object({
   isBanned: z.boolean().optional(),
   totpEnabled: z.boolean().optional(),
   soundEnabled: z.boolean().optional(),
-  visibilitySettings: z.string().nullish(),
+  visibilitySettings: z.string().max(4096).nullish(),
   createdAt: z.iso.datetime(),
   updatedAt: z.iso.datetime(),
   version: z.int(),
@@ -425,7 +428,7 @@ export const zUserUpdateRequest = z.object({
     .nullish(),
   website: z.string().max(255).nullish(),
   soundEnabled: z.boolean().optional(),
-  visibilitySettings: z.string().nullish(),
+  visibilitySettings: z.string().max(4096).nullish(),
 });
 
 /**
@@ -451,7 +454,22 @@ export const zUserUpdatePatch = z.object({
     .nullish(),
   website: z.string().max(255).nullish(),
   soundEnabled: z.boolean().optional(),
-  visibilitySettings: z.string().nullish(),
+  visibilitySettings: z.string().max(4096).nullish(),
+});
+
+/**
+ * DeleteAccountRequest
+ */
+export const zDeleteAccountRequest = z.object({
+  password: z.string().min(1).max(128),
+});
+
+/**
+ * AccountExport
+ */
+export const zAccountExport = z.object({
+  account: zAdminUserResponse,
+  submissions: z.array(zSubmissionResponse),
 });
 
 /**
@@ -482,7 +500,7 @@ export const zAdminUserCreateRequest = z.object({
   isHidden: z.boolean().optional(),
   isBanned: z.boolean().optional(),
   soundEnabled: z.boolean().optional(),
-  visibilitySettings: z.string().nullish(),
+  visibilitySettings: z.string().max(4096).nullish(),
 });
 
 /**
@@ -512,7 +530,7 @@ export const zAdminUserUpdateRequest = z.object({
   isHidden: z.boolean().optional(),
   isBanned: z.boolean().optional(),
   soundEnabled: z.boolean().optional(),
-  visibilitySettings: z.string().nullish(),
+  visibilitySettings: z.string().max(4096).nullish(),
 });
 
 /**
@@ -543,5 +561,5 @@ export const zAdminUserUpdatePatch = z.object({
   isHidden: z.boolean().optional(),
   isBanned: z.boolean().optional(),
   soundEnabled: z.boolean().optional(),
-  visibilitySettings: z.string().nullish(),
+  visibilitySettings: z.string().max(4096).nullish(),
 });

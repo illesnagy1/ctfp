@@ -1,6 +1,7 @@
 import { z } from 'zod';
 
 import type { AdminUserResponse } from '#lib/api/index.js';
+import { m } from '#lib/paraglide/messages.js';
 
 import { zAdminUserCreateRequest, zAdminUserUpdateRequest } from './api.js';
 import { country, email, username, website } from './fields.js';
@@ -53,3 +54,6 @@ export const editUserData = (user: AdminUserResponse): z.infer<typeof editUserSc
 
 /** Superform id of a user's edit form; unique, so the users table can hold several. */
 export const editUserFormId = (id: number) => `edit-user-${id}`;
+
+/** Confirms account deletion; never sent back to the page. */
+export const deleteAccountSchema = z.object({ password: z.string().min(1, { error: () => m.validation_required() }) });

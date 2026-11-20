@@ -6,6 +6,7 @@ import com.ctfp.domain.dao.RegistrationCodeDAO
 import com.ctfp.domain.dao.UserDAO
 import com.ctfp.domain.db.withTransaction
 import com.ctfp.dto.AuthResponse
+import com.ctfp.service.helper.sha256Hex
 import io.ktor.client.statement.bodyAsText
 import io.ktor.http.HttpMethod
 import io.ktor.http.HttpStatusCode
@@ -43,7 +44,7 @@ class AuthRoutesTest {
         expiresIn: kotlin.time.Duration = 1.days,
     ) = withTransaction {
         RegistrationCodeDAO.new {
-            this.code = code
+            this.code = sha256Hex(code)
             this.maxUses = maxUses
             expiresAt = Clock.System.now() + expiresIn
         }
@@ -85,6 +86,29 @@ class AuthRoutesTest {
 
             assertEquals(HttpStatusCode.Forbidden, login("login-banned").status)
             assertEquals(HttpStatusCode.Unauthorized, login("login-banned", "not-the-password").status)
+        }
+
+    @Test
+    fun `nobody can register while registration is closed`() =
+        testApplication {
+            configure()
+            startApplication()
+            val admin = registerAdmin("closed-admin")
+            suspend fun setOpen(open: Boolean) =
+                assertEquals(
+                    HttpStatusCode.OK,
+                    call(HttpMethod.Put, "/v1/admin/settings", admin, """{"registrationOpen":$open}""").status,
+                )
+
+            setOpen(false)
+            try {
+                assertEquals(HttpStatusCode.Forbidden, registerWith("closed-user").status)
+                registrationCode("closed-code", maxUses = 1)
+                assertEquals(HttpStatusCode.Forbidden, registerWith("closed-coded", code = "closed-code").status)
+            } finally {
+                setOpen(true)
+            }
+            assertEquals(HttpStatusCode.Created, registerWith("closed-user").status)
         }
 
     @Test
@@ -163,7 +187,7 @@ class AuthRoutesTest {
                 withTransaction {
                     RegistrationCodeDAO
                         .all()
-                        .single { it.code == "code-once" }
+                        .single { it.code == sha256Hex("code-once") }
                         .id.value
                 },
                 codeId,

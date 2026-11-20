@@ -7,23 +7,25 @@ import com.ctfp.domain.model.PasswordResetTokenTable
 import com.ctfp.domain.model.UserTable
 import com.ctfp.service.helper.MailSender
 import com.ctfp.service.helper.PasswordHasher
+import com.ctfp.service.helper.audit
+import com.ctfp.service.helper.sha256Hex
 import io.ktor.http.HttpStatusCode
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Job
-import kotlinx.coroutines.launch
 import org.jetbrains.exposed.v1.core.and
 import org.jetbrains.exposed.v1.core.eq
 import org.jetbrains.exposed.v1.core.greater
 import org.jetbrains.exposed.v1.core.isNull
 import org.jetbrains.exposed.v1.jdbc.update
 import org.slf4j.LoggerFactory
-import java.security.MessageDigest
-import java.security.SecureRandom
-import java.util.Base64
+import org.slf4j.event.Level
 import kotlin.time.Clock
 import kotlin.time.Duration
 import kotlin.time.Duration.Companion.hours
 import kotlin.time.Duration.Companion.minutes
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Job
+import kotlinx.coroutines.launch
+import java.security.SecureRandom
+import java.util.Base64
 
 /**
  * Password recovery by email. The link carries a random token; only its SHA-256 is stored, so a leaked database
@@ -54,9 +56,10 @@ class PasswordResetService(
                 val recent = (PasswordResetTokenTable.userId eq user.id) and (PasswordResetTokenTable.createdAt greater now - COOLDOWN)
                 if (!PasswordResetTokenDAO.find(recent).empty()) return@withTransaction null
 
+                audit("authn_password_reset_requested", "user" to user.id.value)
                 PasswordResetTokenDAO.new {
                     this.user = user
-                    this.token = sha256(token)
+                    this.token = sha256Hex(token)
                     expiresAt = now + ttl
                 }
                 user.email to user.username
@@ -81,13 +84,15 @@ class PasswordResetService(
             // Locked, so two requests with the same link can't both use it.
             val reset =
                 PasswordResetTokenDAO
-                    .find { PasswordResetTokenTable.token eq sha256(token.trim()) }
+                    .find { PasswordResetTokenTable.token eq sha256Hex(token.trim()) }
                     .forUpdate()
                     .firstOrNull()
             if (reset == null || reset.usedAt != null || reset.expiresAt < now) {
+                audit("authn_password_reset_fail", level = Level.WARN)
                 throw ApiException(HttpStatusCode.BadRequest, "This reset link is invalid or has expired")
             }
             reset.user.passwordHash = passwordHash
+            audit("authn_password_change", "user" to reset.user.id.value)
             // Using one link spends every other open link of the account too.
             PasswordResetTokenTable.update({
                 (PasswordResetTokenTable.userId eq reset.user.id) and PasswordResetTokenTable.usedAt.isNull()
@@ -113,8 +118,5 @@ class PasswordResetService(
         val COOLDOWN = 1.minutes
         val random = SecureRandom()
         val log = LoggerFactory.getLogger(PasswordResetService::class.java)
-
-        fun sha256(token: String): String =
-            MessageDigest.getInstance("SHA-256").digest(token.toByteArray()).joinToString("") { "%02x".format(it) }
     }
 }

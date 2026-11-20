@@ -9,6 +9,7 @@ import {
   listChallengeFiles,
   listChallengeFlags,
   createFlag,
+  startChallenge,
   submitFlag,
 } from '#lib/api/index.js';
 import { status } from '#lib/http.js';
@@ -39,15 +40,16 @@ export const load: PageServerLoad = async (event) => {
   const { data, error: apiError, response } = challenge;
   if (apiError)
     error(response.status, response.status === status.NOT_FOUND ? 'Challenge not found' : problemMessage(apiError));
-  // Same visibility as the challenge, so this only fails if something else went wrong.
-  if (files.error) error(files.response.status, problemMessage(files.error));
+  // 404 for a timed challenge that isn't started yet: no files to show. Otherwise same visibility as the challenge.
+  if (files.error && files.response.status !== status.NOT_FOUND)
+    error(files.response.status, problemMessage(files.error));
   if (flags?.error) error(flags.response.status, problemMessage(flags.error));
 
   // Rendered here so the page never sees unsanitized markup.
   const descriptionHtml = data.description ? await renderMarkdown(data.description) : undefined;
   return {
     challenge: data,
-    files: files.data,
+    files: files.data ?? [],
     descriptionHtml,
     flags: flags?.data,
     // Two superforms on one page, so each needs its own id.
@@ -57,6 +59,16 @@ export const load: PageServerLoad = async (event) => {
 };
 
 export const actions: Actions = {
+  start: async (event) => {
+    if (!event.locals.user) error(status.UNAUTHORIZED, 'Log in to start challenges');
+
+    const { error: apiError, response } = await call(
+      startChallenge({ client: apiClient(event), path: { id: event.params.id } }),
+    );
+    if (apiError) return fail(response.status, { message: problemMessage(apiError) });
+    return { success: true };
+  },
+
   submitFlag: async (event) => {
     if (!event.locals.user) error(status.UNAUTHORIZED, 'Log in to submit flags');
 

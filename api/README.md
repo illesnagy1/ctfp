@@ -62,7 +62,7 @@ To build or run the project, use one of the following tasks:
 | `./gradlew publishImageToLocalRegistry` | Publish the docker image locally                                     |
 | `./gradlew run`                         | Run the server                                                       |
 | `./gradlew runDocker`                   | Run using the local docker image                                     |
-| `./gradlew generateMigration`           | Generates database migration                                         |
+| `./gradlew generateMigration`           | Writes the next Flyway migration from the Exposed tables (see below) |
 | `./gradlew generateOpenApi`             | Writes the OpenAPI document inferred from the routes to openapi.json |
 
 If the server starts successfully, you'll see the following output:
@@ -71,3 +71,15 @@ If the server starts successfully, you'll see the following output:
 2024-12-04 14:32:45.584 [main] INFO  Application - Application started in 0.303 seconds.
 2024-12-04 14:32:45.682 [main] INFO  Application - Responding at http://0.0.0.0:8080
 ```
+
+## Database migrations
+
+On Postgres the server applies the pending Flyway scripts in `src/main/resources/db/migration` at startup; the embedded
+H2 database is created straight from the Exposed tables. After changing a table:
+
+1. Start a scratch Postgres, e.g. `podman run --rm -e POSTGRES_DB=ctfp -e POSTGRES_USER=ctfp -e POSTGRES_PASSWORD=ctfp -p 5432:5432 docker.io/postgres:18-alpine`.
+2. Run `./gradlew generateMigration --args="add_user_avatar"`. It applies the existing migrations, diffs the database
+   against the tables and writes `V<next>__add_user_avatar.sql` (connection from `POSTGRES_URL`, `POSTGRES_USER`,
+   `POSTGRES_PASSWORD`).
+3. Review the script before committing: Exposed may emit `DROP` statements, and a renamed column shows up as a drop
+   plus an add, which loses its data. Never edit a migration that has already been applied; add a new one instead.

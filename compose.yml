@@ -32,6 +32,12 @@ services:
       - '127.0.0.1:8080:8080' # frontend reaches the api over the compose network
     restart: unless-stopped
     mem_limit: 1g
+    pids_limit: 512
+    # Writes only to /data (volume) and /tmp; no Linux capabilities, no privilege gain through setuid binaries.
+    read_only: true
+    tmpfs: [/tmp]
+    cap_drop: [ALL]
+    security_opt: [no-new-privileges:true]
 
   db:
     image: docker.io/postgres:18-alpine
@@ -42,6 +48,11 @@ services:
       POSTGRES_USER: ctfp
       POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-ctfp}
     restart: unless-stopped
+    pids_limit: 256
+    # The entrypoint starts as root, fixes data dir ownership and drops to the postgres user: those capabilities only.
+    cap_drop: [ALL]
+    cap_add: [CHOWN, DAC_OVERRIDE, FOWNER, SETGID, SETUID]
+    security_opt: [no-new-privileges:true]
     healthcheck:
       test: [ "CMD-SHELL", "pg_isready -U ctfp -d ctfp" ]
       interval: 5s
@@ -63,18 +74,32 @@ services:
       # Uploads stream through the frontend; keep this a bit above the api's UPLOADS_MAX_BYTES (500 MiB).
       BODY_SIZE_LIMIT: 501M
       REDIS_URL: redis://redis:6379
+      # Behind a TLS reverse proxy, set ADDRESS_HEADER=X-Forwarded-For (XFF_DEPTH = trusted proxy hops)
+      # Empty uses the socket address (no proxy).
+      ADDRESS_HEADER: ${ADDRESS_HEADER:-}
+      XFF_DEPTH: ${XFF_DEPTH:-1}
       # Same collector as the api; set, page loads and their api calls are traced together (W3C Trace Context).
       OTEL_EXPORTER_OTLP_ENDPOINT: ${OTEL_EXPORTER_OTLP_ENDPOINT:-}
       OTEL_SERVICE_NAME: ctfp-frontend
     ports:
       - '0.0.0.0:3000:3000'
     restart: unless-stopped
+    mem_limit: 512m
+    pids_limit: 256
+    read_only: true
+    tmpfs: [/tmp]
+    cap_drop: [ALL]
+    security_opt: [no-new-privileges:true]
 
   redis:
     image: docker.io/redis:8-alpine
     volumes:
       - redis-data:/data
     restart: unless-stopped
+    pids_limit: 128
+    cap_drop: [ALL]
+    cap_add: [CHOWN, SETGID, SETUID]
+    security_opt: [no-new-privileges:true]
     healthcheck:
       test: [ "CMD", "redis-cli", "ping" ]
       interval: 5s

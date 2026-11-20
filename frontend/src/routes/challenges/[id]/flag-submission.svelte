@@ -11,15 +11,19 @@
   let {
     data,
     attemptsLeft,
+    timeUp = false,
   }: {
     data: SuperValidated<Infer<typeof submitFlagSchema>, SubmitFlagResult | string>;
     /** From the page data, which reloads after each guess; null without a limit. */
     attemptsLeft: number | null;
+    /** The challenge's time limit has run out. */
+    timeUp?: boolean;
   } = $props();
 
   /** The last wrong guess or api error, shown next to the input rather than in a corner toast. */
   let feedback = $state<string>();
   const outOfAttempts = $derived(attemptsLeft === 0);
+  const locked = $derived(outOfAttempts || timeUp);
 
   // Created once from the initial data; superForm keeps it up to date itself.
   // svelte-ignore state_referenced_locally
@@ -56,13 +60,13 @@
             spellcheck={false}
             placeholder={'flag{...}'}
             aria-label={m.flag_submission_title()}
-            disabled={outOfAttempts}
+            disabled={locked}
           />
         {/snippet}
       </Form.Control>
       <Form.FieldErrors />
     </Form.Field>
-    <Form.Button disabled={$submitting || outOfAttempts} pending={$delayed}>{m.flag_submission_submit()}</Form.Button>
+    <Form.Button disabled={$submitting || locked} pending={$delayed}>{m.flag_submission_submit()}</Form.Button>
   </div>
   <p role="status" class="flex flex-wrap gap-x-2 text-sm empty:hidden">
     {#if feedback}<span class="font-medium text-destructive">{feedback}</span>{/if}

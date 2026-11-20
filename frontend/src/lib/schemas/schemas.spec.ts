@@ -133,9 +133,15 @@ describe('settingsSchema', () => {
     expect(issuePaths(settingsSchema.safeParse({ ...valid, maxTeamSize: 1.5 }))).toEqual(['maxTeamSize']);
   });
 
+  it('takes the CTF times as UTC date-times or empty', () => {
+    const times = { startsAt: '2026-12-01T18:00:00Z', endsAt: '2026-12-03T18:00:00Z', freezeAt: null };
+    expect(settingsSchema.safeParse({ ...valid, ...times }).success).toBe(true);
+    expect(issuePaths(settingsSchema.safeParse({ ...valid, startsAt: 'tomorrow' }))).toEqual(['startsAt']);
+  });
+
   it('labels every setting', () => {
     const ui = settingsUiSchema();
-    expect(Object.keys(ui)).toEqual(Object.keys(valid));
+    expect(Object.keys(ui)).toEqual([...Object.keys(valid), 'startsAt', 'endsAt', 'freezeAt']);
     expect(ui).toMatchObject({ maxTeamSize: { 'ui:options': { title: 'Max team size' } } });
   });
 });
