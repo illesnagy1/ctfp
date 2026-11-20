@@ -74,7 +74,7 @@
     "eslint-plugin-svelte": "^3.23.0",
     "formsnap": "^2.1.0",
     "globals": "^17.12.0",
-    "mdsvex": "^0.12.8",
+    "mdsvex": "^1.0.0",
     "mode-watcher": "^1.1.0",
     "oxfmt": "^0.79.0",
     "oxlint": "^1.85.0",
